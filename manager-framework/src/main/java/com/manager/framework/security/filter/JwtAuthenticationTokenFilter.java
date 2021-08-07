@@ -19,7 +19,7 @@ import com.manager.common.utils.StringUtils;
 
 /**
  * token过滤器 验证token有效性
- * 
+ *
  * @author marvin
  */
 @Component
