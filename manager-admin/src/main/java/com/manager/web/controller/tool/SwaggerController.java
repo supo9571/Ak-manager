@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * swagger 接口
- * 
+ *
  * @author marvin
  */
-@Controller
-@RequestMapping("/tool/swagger")
+//@Controller
+//@RequestMapping("/tool/swagger")
 public class SwaggerController extends BaseController
 {
     @PreAuthorize("@ss.hasPermi('tool:swagger:view')")

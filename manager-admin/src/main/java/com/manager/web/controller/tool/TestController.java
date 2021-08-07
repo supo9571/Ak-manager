@@ -13,12 +13,12 @@ import java.util.Map;
 
 /**
  * swagger 用户测试方法
- * 
+ *
  * @author marvin
  */
 @Api("用户信息管理")
-@RestController
-@RequestMapping("/test/user")
+//@RestController
+//@RequestMapping("/test/user")
 public class TestController extends BaseController
 {
     private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();

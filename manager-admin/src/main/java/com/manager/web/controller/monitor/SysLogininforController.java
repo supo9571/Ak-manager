@@ -11,15 +11,17 @@ import com.manager.system.service.ISysLogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
 /**
  * 系统访问记录
- * 
+ *
  * @author marvin
  */
 @RestController
+@ApiIgnore
 @RequestMapping("/monitor/logininfor")
 public class SysLogininforController extends BaseController
 {

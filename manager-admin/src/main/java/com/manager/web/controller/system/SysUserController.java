@@ -17,6 +17,8 @@ import com.manager.framework.web.service.TokenService;
 import com.manager.system.service.ISysPostService;
 import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -28,10 +30,11 @@ import java.util.stream.Collectors;
 
 /**
  * 用户信息
- * 
+ *
  * @author marvin
  */
 @RestController
+@Api(tags = "用户管理")
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
 {
@@ -51,6 +54,7 @@ public class SysUserController extends BaseController
      * 获取用户列表
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
     public TableDataInfo list(SysUser user)
     {
@@ -61,6 +65,7 @@ public class SysUserController extends BaseController
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:user:export')")
+    @ApiOperation(value = "导出用户列表")
     @GetMapping("/export")
     public AjaxResult export(SysUser user)
     {
@@ -70,6 +75,7 @@ public class SysUserController extends BaseController
     }
 
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    @ApiOperation(value = "导入用户")
     @PreAuthorize("@ss.hasPermi('system:user:import')")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
@@ -83,6 +89,7 @@ public class SysUserController extends BaseController
     }
 
     @GetMapping("/importTemplate")
+    @ApiOperation(value = "导出用户模板")
     public AjaxResult importTemplate()
     {
         ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
@@ -93,6 +100,7 @@ public class SysUserController extends BaseController
      * 根据用户编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @ApiOperation(value = "根据用户编号获取详细信息")
     @GetMapping(value = { "/", "/{userId}" })
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
@@ -114,6 +122,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @ApiOperation(value = "新增用户")
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysUser user)
     {
@@ -141,6 +150,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "修改用户")
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysUser user)
     {
@@ -164,6 +174,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    @ApiOperation(value = "删除用户")
     @DeleteMapping("/{userIds}")
     public AjaxResult remove(@PathVariable Long[] userIds)
     {
@@ -175,6 +186,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "重置密码")
     @PutMapping("/resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user)
     {
@@ -189,6 +201,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "状态修改")
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUser user)
     {
@@ -201,6 +214,7 @@ public class SysUserController extends BaseController
      * 根据用户编号获取授权角色
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @ApiOperation(value = "根据用户编号获取授权角色")
     @GetMapping("/authRole/{userId}")
     public AjaxResult authRole(@PathVariable("userId") Long userId)
     {
@@ -217,6 +231,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @ApiOperation(value = "用户授权角色")
     @PutMapping("/authRole")
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds)
     {

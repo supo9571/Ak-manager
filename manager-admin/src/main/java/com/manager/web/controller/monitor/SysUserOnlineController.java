@@ -14,6 +14,7 @@ import com.manager.system.service.ISysUserOnlineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,10 +23,11 @@ import java.util.List;
 
 /**
  * 在线用户监控
- * 
+ *
  * @author marvin
  */
 @RestController
+@ApiIgnore
 @RequestMapping("/monitor/online")
 public class SysUserOnlineController extends BaseController
 {
