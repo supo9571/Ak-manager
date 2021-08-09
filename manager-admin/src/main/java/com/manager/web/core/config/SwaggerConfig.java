@@ -1,6 +1,7 @@
 package com.manager.web.core.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.google.common.base.Predicates;
 import com.manager.common.config.ManagerConfig;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,6 @@ public class SwaggerConfig
     /** 是否开启swagger */
     @Value("${swagger.enabled}")
     private boolean enabled;
-
-    /** 设置请求的统一前缀 */
-    @Value("${swagger.pathMapping}")
-    private String pathMapping;
-
     /**
      * 创建API
      */
@@ -48,10 +44,16 @@ public class SwaggerConfig
     public Docket createRestApi()
     {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(enabled)
                 .apiInfo(apiInfo())
                 .select()
                 //为当前包下controller生成API文档
-                .apis(RequestHandlerSelectors.basePackage("com.manager.web.controller"))
+//                .apis(RequestHandlerSelectors.basePackage("com.manager.web.controller"))
+                .apis(Predicates.or(
+                        RequestHandlerSelectors.basePackage("com.manager.web.controller.system"),
+//                        RequestHandlerSelectors.basePackage("com.manager.quartz.controller"),
+                        RequestHandlerSelectors.basePackage("com.manager.web.controller.common")
+                ))
                 .paths(PathSelectors.any())
                 .build()
                 //添加登录认证
@@ -110,7 +112,7 @@ public class SwaggerConfig
                 // 设置标题
                 .title("后台管理系统_接口文档")
                 // 描述
-                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
+                .description("描述：方便开发人员测试对接接口......")
                 // 作者信息
                 .contact(new Contact(managerConfig.getName(), null, null))
                 // 版本

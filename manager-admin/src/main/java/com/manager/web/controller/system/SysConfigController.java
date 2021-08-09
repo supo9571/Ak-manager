@@ -15,15 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
 /**
  * 参数配置 信息操作处理
- * 
+ *
  * @author marvin
  */
 @RestController
+@ApiIgnore
 @RequestMapping("/system/config")
 public class SysConfigController extends BaseController
 {

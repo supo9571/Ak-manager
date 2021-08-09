@@ -17,15 +17,17 @@ import com.manager.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 
 /**
  * 个人信息 业务处理
- * 
+ *
  * @author marvin
  */
 @RestController
+@ApiIgnore
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController
 {

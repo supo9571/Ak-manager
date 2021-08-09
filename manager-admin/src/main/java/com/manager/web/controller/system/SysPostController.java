@@ -14,15 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
 /**
  * 岗位信息操作处理
- * 
+ *
  * @author marvin
  */
 @RestController
+@ApiIgnore
 @RequestMapping("/system/post")
 public class SysPostController extends BaseController
 {
@@ -40,7 +42,7 @@ public class SysPostController extends BaseController
         List<SysPost> list = postService.selectPostList(post);
         return getDataTable(list);
     }
-    
+
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:post:export')")
     @GetMapping("/export")

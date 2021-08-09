@@ -7,6 +7,8 @@ import com.manager.common.core.redis.RedisCache;
 import com.manager.common.utils.sign.Base64;
 import com.manager.common.utils.uuid.IdUtils;
 import com.manager.system.service.ISysConfigService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -22,9 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码操作处理
- * 
+ *
  * @author marvin
  */
+@Api(tags = "验证码管理")
 @RestController
 public class CaptchaController
 {
@@ -36,16 +39,17 @@ public class CaptchaController
 
     @Autowired
     private RedisCache redisCache;
-    
+
     // 验证码类型
     @Value("${manager.captchaType}")
     private String captchaType;
-    
+
     @Autowired
     private ISysConfigService configService;
     /**
      * 生成验证码
      */
+    @ApiOperation(value = "生成验证码")
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
