@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 表格分页数据对象
- * 
+ *
  * @author marvin
  */
 public class TableDataInfo implements Serializable
@@ -18,29 +18,22 @@ public class TableDataInfo implements Serializable
     /** 列表数据 */
     private List<?> rows;
 
-    /** 消息状态码 */
-    private int code;
+    /** 每页条数 */
+    private int size;
 
-    /** 消息内容 */
-    private String msg;
-
+    /** 当前页数条数 */
+    private int page;
     /**
      * 表格数据对象
      */
-    public TableDataInfo()
-    {
+    public TableDataInfo(){
     }
 
-    /**
-     * 分页
-     * 
-     * @param list 列表数据
-     * @param total 总记录数
-     */
-    public TableDataInfo(List<?> list, int total)
-    {
-        this.rows = list;
+    public TableDataInfo(long total, List<?> rows, int size, int page) {
         this.total = total;
+        this.rows = rows;
+        this.size = size;
+        this.page = page;
     }
 
     public long getTotal()
@@ -63,23 +56,19 @@ public class TableDataInfo implements Serializable
         this.rows = rows;
     }
 
-    public int getCode()
-    {
-        return code;
+    public int getSize() {
+        return size;
     }
 
-    public void setCode(int code)
-    {
-        this.code = code;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public String getMsg()
-    {
-        return msg;
+    public int getPage() {
+        return page;
     }
 
-    public void setMsg(String msg)
-    {
-        this.msg = msg;
+    public void setPage(int page) {
+        this.page = page;
     }
 }

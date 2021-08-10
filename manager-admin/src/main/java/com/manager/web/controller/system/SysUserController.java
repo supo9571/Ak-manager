@@ -24,8 +24,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +37,7 @@ import java.util.stream.Collectors;
  * @author marvin
  */
 @RestController
-@Api(tags = "用户管理")
+@Api(tags = "账号管理")
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
 {
@@ -54,18 +57,18 @@ public class SysUserController extends BaseController
      * 获取用户列表
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
-    @ApiOperation(value = "获取用户列表")
+    @ApiOperation(value = "查询用户列表")
     @GetMapping("/list")
-    public TableDataInfo list(SysUser user)
+    public AjaxResult list(SysUser user)
     {
         startPage();
         List<SysUser> list = userService.selectUserList(user);
-        return getDataTable(list);
+        return AjaxResult.success("查询成功",getDataTable(list));
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:user:export')")
-    @ApiOperation(value = "导出用户列表")
+    @ApiIgnore
     @GetMapping("/export")
     public AjaxResult export(SysUser user)
     {
@@ -75,7 +78,7 @@ public class SysUserController extends BaseController
     }
 
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
-    @ApiOperation(value = "导入用户")
+    @ApiIgnore
     @PreAuthorize("@ss.hasPermi('system:user:import')")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
@@ -89,7 +92,7 @@ public class SysUserController extends BaseController
     }
 
     @GetMapping("/importTemplate")
-    @ApiOperation(value = "导出用户模板")
+    @ApiIgnore
     public AjaxResult importTemplate()
     {
         ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
@@ -100,21 +103,21 @@ public class SysUserController extends BaseController
      * 根据用户编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @ApiOperation(value = "根据用户编号获取详细信息")
+    @ApiOperation(value = "获取用户详细")
     @GetMapping(value = { "/", "/{userId}" })
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
-        AjaxResult ajax = AjaxResult.success();
+        Map map = new HashMap<>();
         List<SysRole> roles = roleService.selectRoleAll();
-        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        ajax.put("posts", postService.selectPostAll());
+        map.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        map.put("posts", postService.selectPostAll());
         if (StringUtils.isNotNull(userId))
         {
-            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-            ajax.put("postIds", postService.selectPostListByUserId(userId));
-            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
+            map.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
+            map.put("postIds", postService.selectPostListByUserId(userId));
+            map.put("roleIds", roleService.selectRoleListByUserId(userId));
         }
-        return ajax;
+        return AjaxResult.success(map);
     }
 
     /**
@@ -201,7 +204,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @ApiOperation(value = "状态修改")
+    @ApiOperation(value = "状态启停")
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUser user)
     {
@@ -214,16 +217,16 @@ public class SysUserController extends BaseController
      * 根据用户编号获取授权角色
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @ApiOperation(value = "根据用户编号获取授权角色")
+    @ApiOperation(value = "用户权限详情")
     @GetMapping("/authRole/{userId}")
     public AjaxResult authRole(@PathVariable("userId") Long userId)
     {
-        AjaxResult ajax = AjaxResult.success();
+        Map map = new HashMap();
         SysUser user = userService.selectUserById(userId);
         List<SysRole> roles = roleService.selectRolesByUserId(userId);
-        ajax.put("user", user);
-        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        return ajax;
+        map.put("user", user);
+        map.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        return AjaxResult.success(map);
     }
 
     /**
@@ -231,7 +234,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
-    @ApiOperation(value = "用户授权角色")
+    @ApiOperation(value = "用户权限授权")
     @PutMapping("/authRole")
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds)
     {

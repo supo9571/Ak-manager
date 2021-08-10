@@ -50,9 +50,9 @@ public class SwaggerConfig
                 //为当前包下controller生成API文档
 //                .apis(RequestHandlerSelectors.basePackage("com.manager.web.controller"))
                 .apis(Predicates.or(
-                        RequestHandlerSelectors.basePackage("com.manager.web.controller.system"),
+                        RequestHandlerSelectors.basePackage("com.manager.web.controller.system")
 //                        RequestHandlerSelectors.basePackage("com.manager.quartz.controller"),
-                        RequestHandlerSelectors.basePackage("com.manager.web.controller.common")
+//                        RequestHandlerSelectors.basePackage("com.manager.web.controller.common")
                 ))
                 .paths(PathSelectors.any())
                 .build()

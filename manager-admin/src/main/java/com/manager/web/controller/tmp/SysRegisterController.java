@@ -1,12 +1,10 @@
-package com.manager.web.controller.system;
+package com.manager.web.controller.tmp;
 
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.RegisterBody;
 import com.manager.framework.web.service.SysRegisterService;
 import com.manager.system.service.ISysConfigService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;

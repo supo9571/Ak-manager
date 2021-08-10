@@ -21,7 +21,7 @@ import com.manager.common.utils.sql.SqlUtil;
 
 /**
  * web层通用数据处理
- * 
+ *
  * @author marvin
  */
 public class BaseController
@@ -79,17 +79,14 @@ public class BaseController
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected TableDataInfo getDataTable(List<?> list)
     {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(list);
-        rspData.setTotal(new PageInfo(list).getTotal());
+        PageInfo pageInfo = new PageInfo(list);
+        TableDataInfo rspData = new TableDataInfo(pageInfo.getTotal(),list,pageInfo.getSize(),pageInfo.getPageNum());
         return rspData;
     }
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param rows 影响行数
      * @return 操作结果
      */
@@ -100,7 +97,7 @@ public class BaseController
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param result 结果
      * @return 操作结果
      */

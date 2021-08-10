@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -53,12 +55,12 @@ public class SysLoginController
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
-        AjaxResult ajax = AjaxResult.success();
+        Map map = new HashMap();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid());
-        ajax.put(Constants.TOKEN, token);
-        return ajax;
+        map.put(Constants.TOKEN, token);
+        return AjaxResult.success(map);
     }
 
     /**
@@ -76,11 +78,11 @@ public class SysLoginController
         Set<String> roles = permissionService.getRolePermission(user);
         // 权限集合
         Set<String> permissions = permissionService.getMenuPermission(user);
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", user);
-        ajax.put("roles", roles);
-        ajax.put("permissions", permissions);
-        return ajax;
+        Map map = new HashMap();
+        map.put("user", user);
+        map.put("roles", roles);
+        map.put("permissions", permissions);
+        return AjaxResult.success(map);
     }
 
     /**

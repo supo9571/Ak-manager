@@ -4,7 +4,7 @@ import com.manager.common.utils.ServletUtils;
 
 /**
  * 表格数据处理
- * 
+ *
  * @author marvin
  */
 public class TableSupport
@@ -12,12 +12,12 @@ public class TableSupport
     /**
      * 当前记录起始索引
      */
-    public static final String PAGE_NUM = "pageNum";
+    public static final String PAGE_NUM = "page";
 
     /**
      * 每页显示记录数
      */
-    public static final String PAGE_SIZE = "pageSize";
+    public static final String PAGE_SIZE = "size";
 
     /**
      * 排序列
