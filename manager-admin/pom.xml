@@ -66,10 +66,10 @@
 <!--        </dependency>-->
 
         <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ak</groupId>
-            <artifactId>manager-generator</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.ak</groupId>-->
+<!--            <artifactId>manager-generator</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 

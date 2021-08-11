@@ -1,4 +1,4 @@
-package com.manager.web.controller.tmp;
+package com.manager.web.controller.system;
 
 import com.manager.common.annotation.Log;
 import com.manager.common.constant.UserConstants;

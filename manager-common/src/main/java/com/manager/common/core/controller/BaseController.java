@@ -1,14 +1,5 @@
 package com.manager.common.core.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.List;
-
-import com.manager.common.constant.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.manager.common.core.domain.AjaxResult;
@@ -18,6 +9,14 @@ import com.manager.common.core.page.TableSupport;
 import com.manager.common.utils.DateUtils;
 import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.sql.SqlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
 
 /**
  * web层通用数据处理

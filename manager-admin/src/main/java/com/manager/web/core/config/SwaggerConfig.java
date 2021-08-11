@@ -110,7 +110,7 @@ public class SwaggerConfig
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("后台管理系统_接口文档")
+                .title("Swagger_接口文档")
                 // 描述
                 .description("描述：方便开发人员测试对接接口......")
                 // 作者信息

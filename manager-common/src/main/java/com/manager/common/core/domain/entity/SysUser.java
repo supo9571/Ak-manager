@@ -97,22 +97,6 @@ public class SysUser extends BaseEntity
     /** googleSwitch */
     private String googleSwitch;
 
-    public String getGoogleKey() {
-        return googleKey;
-    }
-
-    public void setGoogleKey(String googleKey) {
-        this.googleKey = googleKey;
-    }
-
-    public Boolean getGoogleSwitch() {
-        return true?"1".equals(googleSwitch):false;
-    }
-
-    public void setGoogleSwitch(String googleSwitch) {
-        this.googleSwitch = googleSwitch;
-    }
-
     public SysUser()
     {
 
@@ -329,6 +313,22 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public String getGoogleKey() {
+        return googleKey;
+    }
+
+    public void setGoogleKey(String googleKey) {
+        this.googleKey = googleKey;
+    }
+
+    public Boolean getGoogleSwitch() {
+        return true?"1".equals(googleSwitch):false;
+    }
+
+    public void setGoogleSwitch(String googleSwitch) {
+        this.googleSwitch = googleSwitch;
     }
 
     @Override
