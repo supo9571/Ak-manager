@@ -27,37 +27,30 @@ public class SysUser extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
-    @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
-    @ApiModelProperty(value = "用户序号")
+    @ApiModelProperty(value = "用户ID")
     private Long userId;
 
     /** 部门ID */
-    @Excel(name = "部门编号", type = Type.IMPORT)
     @ApiModelProperty(value = "部门编号")
     private Long deptId;
 
     /** 用户账号 */
-    @Excel(name = "登录名称")
     @ApiModelProperty(value = "登录名称")
     private String userName;
 
     /** 用户昵称 */
-    @Excel(name = "用户名称")
     @ApiModelProperty(value = "用户名称")
     private String nickName;
 
     /** 用户邮箱 */
-    @Excel(name = "用户邮箱")
     @ApiModelProperty(value = "用户邮箱")
     private String email;
 
     /** 手机号码 */
-    @Excel(name = "手机号码")
     @ApiModelProperty(value = "手机号码")
     private String phonenumber;
 
     /** 用户性别 */
-    @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
     @ApiModelProperty(value = "用户性别")
     private String sex;
 
@@ -72,7 +65,6 @@ public class SysUser extends BaseEntity
     private String salt;
 
     /** 帐号状态（0正常 1停用） */
-    @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
     @ApiModelProperty(value = "帐号状态")
     private String status;
 
@@ -80,18 +72,11 @@ public class SysUser extends BaseEntity
     private String delFlag;
 
     /** 最后登录IP */
-    @Excel(name = "最后登录IP", type = Type.EXPORT)
     private String loginIp;
 
     /** 最后登录时间 */
-    @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
 
-    /** 部门对象 */
-    @Excels({
-        @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
-        @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
-    })
     private SysDept dept;
 
     /** 角色对象 */
@@ -105,6 +90,28 @@ public class SysUser extends BaseEntity
 
     /** 角色ID */
     private Long roleId;
+
+    /** google密钥 */
+    private String googleKey;
+
+    /** googleSwitch */
+    private String googleSwitch;
+
+    public String getGoogleKey() {
+        return googleKey;
+    }
+
+    public void setGoogleKey(String googleKey) {
+        this.googleKey = googleKey;
+    }
+
+    public Boolean getGoogleSwitch() {
+        return true?"1".equals(googleSwitch):false;
+    }
+
+    public void setGoogleSwitch(String googleSwitch) {
+        this.googleSwitch = googleSwitch;
+    }
 
     public SysUser()
     {

@@ -1,4 +1,4 @@
-package com.manager.web.controller.tmp;
+package com.manager.web.controller.system;
 
 import com.manager.common.annotation.Log;
 import com.manager.common.constant.UserConstants;
@@ -19,11 +19,14 @@ import com.manager.system.domain.SysUserRole;
 import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -50,18 +53,18 @@ public class SysRoleController extends BaseController
     private ISysUserService userService;
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @ApiOperation(value = "获取角色列表")
+    @ApiOperation(value = "角色列表")
     @GetMapping("/list")
-    public TableDataInfo list(SysRole role)
+    public AjaxResult list(SysRole role)
     {
         startPage();
         List<SysRole> list = roleService.selectRoleList(role);
-        return getDataTable(list);
+        return AjaxResult.success(getDataTable(list));
     }
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:role:export')")
-    @ApiOperation(value = "导出角色数据")
+    @ApiIgnore
     @GetMapping("/export")
     public AjaxResult export(SysRole role)
     {
@@ -74,9 +77,9 @@ public class SysRoleController extends BaseController
      * 根据角色编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
-    @ApiOperation(value = "根据角色编号获取详细信息")
+    @ApiOperation(value = "获取角色详细")
     @GetMapping(value = "/{roleId}")
-    public AjaxResult getInfo(@PathVariable Long roleId)
+    public AjaxResult getInfo(@PathVariable @ApiParam(name = "角色id",value = "1") Long roleId)
     {
         return AjaxResult.success(roleService.selectRoleById(roleId));
     }
@@ -107,7 +110,7 @@ public class SysRoleController extends BaseController
      * 修改保存角色
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @ApiOperation(value = "修改保存角色")
+    @ApiOperation(value = "修改角色")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)

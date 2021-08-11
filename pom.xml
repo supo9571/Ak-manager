@@ -268,7 +268,7 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--                <configuration>-->
-<!--                    <imageName>manager/${project.artifactId}:${project.version}</imageName>-->
+<!--                    <imageName>manager/${project.artifactId}:01</imageName>-->
 <!--                    <dockerHost>http://54.151.183.63:2375</dockerHost>-->
 <!--                    <baseImage>java:8</baseImage>-->
 <!--                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=dev","/${project.build.finalName}.jar"]-->

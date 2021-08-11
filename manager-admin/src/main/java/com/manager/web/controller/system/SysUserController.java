@@ -12,6 +12,7 @@ import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.ServletUtils;
 import com.manager.common.utils.StringUtils;
+import com.manager.common.utils.google.GoogleAuth;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.framework.web.service.TokenService;
 import com.manager.system.service.ISysPostService;
@@ -19,6 +20,7 @@ import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -66,39 +68,6 @@ public class SysUserController extends BaseController
         return AjaxResult.success("查询成功",getDataTable(list));
     }
 
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:user:export')")
-    @ApiIgnore
-    @GetMapping("/export")
-    public AjaxResult export(SysUser user)
-    {
-        List<SysUser> list = userService.selectUserList(user);
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.exportExcel(list, "用户数据");
-    }
-
-    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
-    @ApiIgnore
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
-    @PostMapping("/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
-    {
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        List<SysUser> userList = util.importExcel(file.getInputStream());
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        String operName = loginUser.getUsername();
-        String message = userService.importUser(userList, updateSupport, operName);
-        return AjaxResult.success(message);
-    }
-
-    @GetMapping("/importTemplate")
-    @ApiIgnore
-    public AjaxResult importTemplate()
-    {
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.importTemplateExcel("用户数据");
-    }
-
     /**
      * 根据用户编号获取详细信息
      */
@@ -126,7 +95,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @ApiOperation(value = "新增用户")
-    @PostMapping
+    @PostMapping("/add")
     public AjaxResult add(@Validated @RequestBody SysUser user)
     {
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
@@ -154,7 +123,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "修改用户")
-    @PutMapping
+    @PostMapping("/edit")
     public AjaxResult edit(@Validated @RequestBody SysUser user)
     {
         userService.checkUserAllowed(user);
@@ -178,7 +147,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @ApiOperation(value = "删除用户")
-    @DeleteMapping("/{userIds}")
+    @PostMapping("/{userIds}")
     public AjaxResult remove(@PathVariable Long[] userIds)
     {
         return toAjax(userService.deleteUserByIds(userIds));
@@ -190,7 +159,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "重置密码")
-    @PutMapping("/resetPwd")
+    @PostMapping("/resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user)
     {
         userService.checkUserAllowed(user);
@@ -205,7 +174,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "状态启停")
-    @PutMapping("/changeStatus")
+    @PostMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUser user)
     {
         userService.checkUserAllowed(user);
@@ -219,7 +188,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @ApiOperation(value = "用户权限详情")
     @GetMapping("/authRole/{userId}")
-    public AjaxResult authRole(@PathVariable("userId") Long userId)
+    public AjaxResult authRole(@ApiParam(value = "用户id") Long userId)
     {
         Map map = new HashMap();
         SysUser user = userService.selectUserById(userId);
@@ -235,10 +204,21 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
     @ApiOperation(value = "用户权限授权")
-    @PutMapping("/authRole")
+    @PostMapping("/authRole")
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds)
     {
         userService.insertUserAuth(userId, roleIds);
         return success();
+    }
+
+    /**
+     * 获取google随机密钥
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @ApiOperation(value = "获取google密钥")
+    @GetMapping("/getGoogleKey")
+    public AjaxResult getGoogleKey()
+    {
+        return AjaxResult.success("获取google密钥成功",GoogleAuth.getKeyStr());
     }
 }

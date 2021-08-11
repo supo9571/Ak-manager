@@ -57,8 +57,7 @@ public class SysLoginController
     {
         Map map = new HashMap();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(),loginBody.getGoogleCode());
         map.put(Constants.TOKEN, token);
         return AjaxResult.success(map);
     }

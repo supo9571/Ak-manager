@@ -2,6 +2,7 @@ package com.manager.framework.web.service;
 
 import javax.annotation.Resource;
 
+import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.manager.AsyncManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ import com.manager.system.service.ISysUserService;
 
 /**
  * 登录校验方法
- * 
+ *
  * @author marvin
  */
 @Component
@@ -41,7 +42,7 @@ public class SysLoginService
 
     @Autowired
     private RedisCache redisCache;
-    
+
     @Autowired
     private ISysUserService userService;
 
@@ -50,21 +51,14 @@ public class SysLoginService
 
     /**
      * 登录验证
-     * 
+     *
      * @param username 用户名
      * @param password 密码
-     * @param code 验证码
-     * @param uuid 唯一标识
+     * @param googleCode 验证码
      * @return 结果
      */
-    public String login(String username, String password, String code, String uuid)
+    public String login(String username, String password, String googleCode)
     {
-        boolean captchaOnOff = configService.selectCaptchaOnOff();
-        // 验证码开关
-        if (captchaOnOff)
-        {
-            validateCaptcha(username, code, uuid);
-        }
         // 用户验证
         Authentication authentication = null;
         try
@@ -86,16 +80,21 @@ public class SysLoginService
                 throw new CustomException(e.getMessage());
             }
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        recordLoginInfo(loginUser.getUser());
-        // 生成token
-        return tokenService.createToken(loginUser);
+        //验证google验证码
+        if(loginUser.getUser().getGoogleSwitch() && GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+            recordLoginInfo(loginUser.getUser());
+            // 生成token
+            return tokenService.createToken(loginUser);
+        }else {
+            throw new CustomException("google验证码错误");
+        }
     }
 
     /**
      * 校验验证码
-     * 
+     *
      * @param username 用户名
      * @param code 验证码
      * @param uuid 唯一标识
