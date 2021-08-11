@@ -59,17 +59,6 @@
             <artifactId>manager-framework</artifactId>
         </dependency>
 
-        <!-- 定时任务-->
-<!--        <dependency>-->
-<!--            <groupId>com.ak</groupId>-->
-<!--            <artifactId>manager-quartz</artifactId>-->
-<!--        </dependency>-->
-
-        <!-- 代码生成-->
-<!--        <dependency>-->
-<!--            <groupId>com.ak</groupId>-->
-<!--            <artifactId>manager-generator</artifactId>-->
-<!--        </dependency>-->
 
     </dependencies>
 

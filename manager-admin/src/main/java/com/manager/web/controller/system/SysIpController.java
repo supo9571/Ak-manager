@@ -6,6 +6,7 @@ import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.utils.ServletUtils;
 import com.manager.framework.web.service.TokenService;
+import com.manager.system.service.SysIpBlackService;
 import com.manager.system.service.SysIpWhiteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,6 +61,45 @@ public class SysIpController extends BaseController {
     public AjaxResult list(String deptId,String userId,String ip){
         startPage();
         List list = sysIpWhiteService.selectIpWhiteList(deptId,userId,ip);
+        return AjaxResult.success("查询白名单成功",getDataTable(list));
+    }
+
+    @Autowired
+    private SysIpBlackService sysIpBlackService;
+
+    /**
+     * 添加黑名单
+     */
+    @PreAuthorize("@ss.hasPermi('system:ip:list')")
+    @ApiOperation(value = "添加黑名单")
+    @GetMapping("/black/add")
+    public AjaxResult addBlack(long deptId,long userId,String ips){
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        sysIpBlackService.addIpBlack(deptId,userId,ips,user.getUserId());
+        return success();
+    }
+
+    /**
+     * 删除黑名单
+     */
+    @PreAuthorize("@ss.hasPermi('system:ip:delete')")
+    @ApiOperation(value = "删除黑名单")
+    @GetMapping("/black/delete")
+    public AjaxResult deleteBlack(long id){
+        sysIpBlackService.delIpBlack(id);
+        return success();
+    }
+
+    /**
+     * 查询黑名单
+     */
+    @PreAuthorize("@ss.hasPermi('system:ip:delete')")
+    @ApiOperation(value = "查询黑名单")
+    @GetMapping("/black/list")
+    public AjaxResult listBlack(String deptId,String userId,String ip){
+        startPage();
+        List list = sysIpBlackService.selectIpBlackList(deptId,userId,ip);
         return AjaxResult.success("查询白名单成功",getDataTable(list));
     }
 }

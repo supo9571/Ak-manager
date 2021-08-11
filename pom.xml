@@ -166,20 +166,6 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
-<!--            <dependency>-->
-<!--                <groupId>com.ak</groupId>-->
-<!--                <artifactId>manager-quartz</artifactId>-->
-<!--                <version>${master.version}</version>-->
-<!--            </dependency>-->
-
-            <!-- 代码生成-->
-<!--            <dependency>-->
-<!--                <groupId>com.ak</groupId>-->
-<!--                <artifactId>manager-generator</artifactId>-->
-<!--                <version>${master.version}</version>-->
-<!--            </dependency>-->
-
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.ak</groupId>
@@ -208,8 +194,6 @@
         <module>manager-admin</module>
         <module>manager-framework</module>
         <module>manager-system</module>
-        <module>manager-quartz</module>
-        <module>manager-generator</module>
         <module>manager-common</module>
     </modules>
     <packaging>pom</packaging>

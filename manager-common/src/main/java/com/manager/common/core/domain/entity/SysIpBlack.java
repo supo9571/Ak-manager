@@ -4,12 +4,12 @@ import com.manager.common.core.domain.BaseEntity;
 import lombok.Data;
 
 /**
- * 白名单 sys_ip_while
+ * 黑名单 sys_ip_Black
  *
  * @author marvin
  */
 @Data
-public class SysIpWhite extends BaseEntity {
+public class SysIpBlack extends BaseEntity {
     private long id;
 
     private long deptId;
@@ -22,10 +22,10 @@ public class SysIpWhite extends BaseEntity {
 
     private String creatTime;
 
-    public SysIpWhite() {
+    public SysIpBlack() {
     }
 
-    public SysIpWhite(long deptId, long userId, long createUserId, String ip) {
+    public SysIpBlack(long deptId, long userId, long createUserId, String ip) {
         this.deptId = deptId;
         this.userId = userId;
         this.ip = ip;
