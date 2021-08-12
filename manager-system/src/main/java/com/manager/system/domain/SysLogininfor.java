@@ -18,6 +18,7 @@ public class SysLogininfor extends BaseEntity
 
     /** ID */
     @Excel(name = "序号", cellType = ColumnType.NUMERIC)
+    @ApiModelProperty(value = "ID")
     private Long infoId;
 
     /** 用户账号 */

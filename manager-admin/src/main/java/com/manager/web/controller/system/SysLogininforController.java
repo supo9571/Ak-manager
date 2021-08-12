@@ -24,14 +24,14 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "登录日志")
-@RequestMapping("/system/info")
+@RequestMapping("/system/logininfor")
 public class SysLogininforController extends BaseController
 {
     @Autowired
     private ISysLogininforService logininforService;
 
-    @PreAuthorize("@ss.hasPermi('sys:info:list')")
-    @ApiOperation(value = "查询登录列表")
+    @PreAuthorize("@ss.hasPermi('system:info:list')")
+    @ApiOperation(value = "查询登录日志列表")
     @GetMapping("/list")
     public TableDataInfo list(SysLogininfor logininfor)
     {
@@ -42,7 +42,7 @@ public class SysLogininforController extends BaseController
 
     @Log(title = "登录日志", businessType = BusinessType.EXPORT)
     @ApiIgnore
-    @PreAuthorize("@ss.hasPermi('monitor:logininfor:export')")
+    @PreAuthorize("@ss.hasPermi('system:logininfor:export')")
     @GetMapping("/export")
     public AjaxResult export(SysLogininfor logininfor)
     {
@@ -51,7 +51,7 @@ public class SysLogininforController extends BaseController
         return util.exportExcel(list, "登录日志");
     }
 
-    @PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
+    @PreAuthorize("@ss.hasPermi('system:logininfor:remove')")
     @ApiIgnore
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{infoIds}")
@@ -60,7 +60,7 @@ public class SysLogininforController extends BaseController
         return toAjax(logininforService.deleteLogininforByIds(infoIds));
     }
 
-    @PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
+    @PreAuthorize("@ss.hasPermi('system:logininfor:remove')")
     @ApiIgnore
     @Log(title = "登录日志", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")

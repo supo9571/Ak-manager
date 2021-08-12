@@ -252,7 +252,7 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--                <configuration>-->
-<!--                    <imageName>manager/${project.artifactId}:1.0.0</imageName>-->
+<!--                    <imageName>manager/${project.artifactId}:${project.version}</imageName>-->
 <!--                    <dockerHost>http://54.151.183.63:2375</dockerHost>-->
 <!--                    <baseImage>java:8</baseImage>-->
 <!--                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=dev","/${project.build.finalName}.jar"]-->
@@ -268,30 +268,4 @@
 <!--            </plugin>-->
         </plugins>
     </build>
-
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>public</id>-->
-    <!--            <name>aliyun nexus</name>-->
-    <!--            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
-    <!--            <releases>-->
-    <!--                <enabled>true</enabled>-->
-    <!--            </releases>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
-
-    <!--    <pluginRepositories>-->
-    <!--        <pluginRepository>-->
-    <!--            <id>public</id>-->
-    <!--            <name>aliyun nexus</name>-->
-    <!--            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
-    <!--            <releases>-->
-    <!--                <enabled>true</enabled>-->
-    <!--            </releases>-->
-    <!--            <snapshots>-->
-    <!--                <enabled>false</enabled>-->
-    <!--            </snapshots>-->
-    <!--        </pluginRepository>-->
-    <!--    </pluginRepositories>-->
-
 </project>

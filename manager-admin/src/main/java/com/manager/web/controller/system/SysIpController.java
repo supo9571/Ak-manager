@@ -1,9 +1,11 @@
 package com.manager.web.controller.system;
 
+import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
+import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.ServletUtils;
 import com.manager.framework.web.service.TokenService;
 import com.manager.system.service.SysIpBlackService;
@@ -33,6 +35,7 @@ public class SysIpController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:ip:add')")
     @ApiOperation(value = "添加白名单")
+    @Log(title = "添加白名单", businessType = BusinessType.INSERT)
     @GetMapping("/white/add")
     public AjaxResult add(long deptId,long userId,String ips){
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
@@ -46,6 +49,7 @@ public class SysIpController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:ip:delete')")
     @ApiOperation(value = "删除白名单")
+    @Log(title = "删除白名单", businessType = BusinessType.DELETE)
     @GetMapping("/white/delete")
     public AjaxResult delete(long id){
         sysIpWhiteService.delIpWhite(id);
@@ -72,6 +76,7 @@ public class SysIpController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:ip:add')")
     @ApiOperation(value = "添加黑名单")
+    @Log(title = "添加黑名单", businessType = BusinessType.INSERT)
     @GetMapping("/black/add")
     public AjaxResult addBlack(long deptId,long userId,String ips){
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
@@ -85,6 +90,7 @@ public class SysIpController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:ip:delete')")
     @ApiOperation(value = "删除黑名单")
+    @Log(title = "删除黑名单", businessType = BusinessType.DELETE)
     @GetMapping("/black/delete")
     public AjaxResult deleteBlack(long id){
         sysIpBlackService.delIpBlack(id);

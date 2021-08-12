@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.manager.common.annotation.Excel;
 import com.manager.common.annotation.Excel.ColumnType;
 import com.manager.common.core.domain.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 操作日志记录表 oper_log
- * 
+ *
  * @author marvin
  */
 public class SysOperLog extends BaseEntity
@@ -17,14 +18,17 @@ public class SysOperLog extends BaseEntity
 
     /** 日志主键 */
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
+    @ApiModelProperty(value = "ID")
     private Long operId;
 
     /** 操作模块 */
     @Excel(name = "操作模块")
+    @ApiModelProperty(value = "操作模块")
     private String title;
 
     /** 业务类型（0其它 1新增 2修改 3删除） */
     @Excel(name = "业务类型", readConverterExp = "0=其它,1=新增,2=修改,3=删除,4=授权,5=导出,6=导入,7=强退,8=生成代码,9=清空数据")
+    @ApiModelProperty(value = "操作类型 0=其它,1=新增,2=修改,3=删除")
     private Integer businessType;
 
     /** 业务类型数组 */
@@ -44,6 +48,7 @@ public class SysOperLog extends BaseEntity
 
     /** 操作人员 */
     @Excel(name = "操作人员")
+    @ApiModelProperty(value = "操作人员")
     private String operName;
 
     /** 部门名称 */
@@ -56,6 +61,7 @@ public class SysOperLog extends BaseEntity
 
     /** 操作地址 */
     @Excel(name = "操作地址")
+    @ApiModelProperty(value = "操作IP")
     private String operIp;
 
     /** 操作地点 */
@@ -80,6 +86,7 @@ public class SysOperLog extends BaseEntity
 
     /** 操作时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "操作时间")
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date operTime;
 

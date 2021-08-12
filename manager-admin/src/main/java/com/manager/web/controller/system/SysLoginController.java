@@ -89,7 +89,7 @@ public class SysLoginController
      *
      * @return 路由信息
      */
-    @ApiOperation(value = "获取用户身份信息")
+    @ApiOperation(value = "获取用户路由")
     @GetMapping("getRouters")
     public AjaxResult getRouters()
     {
