@@ -6,8 +6,11 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
+import com.manager.common.core.domain.entity.SystemUser;
+import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
+import com.manager.common.utils.ServletUtils;
 import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.web.service.TokenService;
@@ -55,11 +58,30 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @ApiOperation(value = "查询用户列表")
     @GetMapping("/list")
-    public AjaxResult list(SysUser user)
+    public AjaxResult list(SystemUser user)
     {
         startPage();
-        List<SysUser> list = userService.selectUserList(user);
+        List list = userService.selectUserList(user);
         return AjaxResult.success("查询成功",getDataTable(list));
+    }
+
+    /**
+     * 新增用户
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:add')")
+    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @ApiOperation(value = "新增用户")
+    @PostMapping("/add")
+    public AjaxResult add(@Validated @RequestBody SystemUser user)
+    {
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
+        {
+            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
+        }
+        user.setCreateBy(SecurityUtils.getUsername());
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        return toAjax(userService.insertUser(user,loginUser.getUser().getUserId()));
     }
 
     /**
@@ -72,7 +94,7 @@ public class SysUserController extends BaseController
     {
         Map map = new HashMap<>();
         List<SysRole> roles = roleService.selectRoleAll();
-        map.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
         map.put("posts", postService.selectPostAll());
         if (StringUtils.isNotNull(userId))
         {
@@ -83,33 +105,7 @@ public class SysUserController extends BaseController
         return AjaxResult.success(map);
     }
 
-    /**
-     * 新增用户
-     */
-    @PreAuthorize("@ss.hasPermi('system:user:add')")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
-    @ApiOperation(value = "新增用户")
-    @PostMapping("/add")
-    public AjaxResult add(@Validated @RequestBody SysUser user)
-    {
-        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
-        {
-            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
-        }
-        else if (StringUtils.isNotEmpty(user.getPhonenumber())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
-        {
-            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
-        }
-        else if (StringUtils.isNotEmpty(user.getEmail())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
-        {
-            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
-        }
-        user.setCreateBy(SecurityUtils.getUsername());
-        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        return toAjax(userService.insertUser(user));
-    }
+
 
     /**
      * 修改用户
@@ -121,16 +117,6 @@ public class SysUserController extends BaseController
     public AjaxResult edit(@Validated @RequestBody SysUser user)
     {
         userService.checkUserAllowed(user);
-        if (StringUtils.isNotEmpty(user.getPhonenumber())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
-        {
-            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
-        }
-        else if (StringUtils.isNotEmpty(user.getEmail())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
-        {
-            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
-        }
         user.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(userService.updateUser(user));
     }
@@ -188,7 +174,7 @@ public class SysUserController extends BaseController
         SysUser user = userService.selectUserById(userId);
         List<SysRole> roles = roleService.selectRolesByUserId(userId);
         map.put("user", user);
-        map.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
         return AjaxResult.success(map);
     }
 

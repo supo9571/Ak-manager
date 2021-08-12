@@ -12,7 +12,7 @@ import lombok.Data;
 public class SysIpWhite extends BaseEntity {
     private long id;
 
-    private long deptId;
+    private long tId;
 
     private long userId;
 
@@ -25,8 +25,8 @@ public class SysIpWhite extends BaseEntity {
     public SysIpWhite() {
     }
 
-    public SysIpWhite(long deptId, long userId, long createUserId, String ip) {
-        this.deptId = deptId;
+    public SysIpWhite(long tId, long userId, long createUserId, String ip) {
+        this.tId = tId;
         this.userId = userId;
         this.ip = ip;
         this.createUserId = createUserId;

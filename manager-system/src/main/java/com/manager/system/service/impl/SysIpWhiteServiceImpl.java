@@ -18,11 +18,11 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     private SysIpWhiteMapper sysIpWhiteMapper;
 
     @Override
-    public void addIpWhite(long deptId, long userId, String ips,long createUserId) {
+    public void addIpWhite(long tId, long userId, String ips,long createUserId) {
         List<SysIpWhite> list = new ArrayList<>();
         List<String> ipList = Arrays.asList(ips.split(","));
         ipList.forEach(ip->{
-            list.add(new SysIpWhite(deptId,userId,createUserId,ip));
+            list.add(new SysIpWhite(tId,userId,createUserId,ip));
         });
         sysIpWhiteMapper.insertIpWhite(list);
     }
