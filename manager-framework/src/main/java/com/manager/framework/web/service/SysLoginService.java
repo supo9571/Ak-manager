@@ -82,7 +82,7 @@ public class SysLoginService
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //验证google验证码
-        if(loginUser.getUser().getGoogleSwitch() && GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
+        if(!loginUser.getUser().getGoogleSwitch() || GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
             recordLoginInfo(loginUser.getUser());
             // 生成token

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sys/ip")
+@RequestMapping("/system/ip")
 @Api(tags = "IP管理")
 public class SysIpController extends BaseController {
 
@@ -31,7 +31,7 @@ public class SysIpController extends BaseController {
     /**
      * 添加白名单
      */
-    @PreAuthorize("@ss.hasPermi('system:ip:list')")
+    @PreAuthorize("@ss.hasPermi('system:ip:add')")
     @ApiOperation(value = "添加白名单")
     @GetMapping("/white/add")
     public AjaxResult add(long deptId,long userId,String ips){
@@ -55,7 +55,7 @@ public class SysIpController extends BaseController {
     /**
      * 查询白名单
      */
-    @PreAuthorize("@ss.hasPermi('system:ip:delete')")
+    @PreAuthorize("@ss.hasPermi('system:ip:list')")
     @ApiOperation(value = "查询白名单")
     @GetMapping("/white/list")
     public AjaxResult list(String deptId,String userId,String ip){
@@ -70,7 +70,7 @@ public class SysIpController extends BaseController {
     /**
      * 添加黑名单
      */
-    @PreAuthorize("@ss.hasPermi('system:ip:list')")
+    @PreAuthorize("@ss.hasPermi('system:ip:add')")
     @ApiOperation(value = "添加黑名单")
     @GetMapping("/black/add")
     public AjaxResult addBlack(long deptId,long userId,String ips){
@@ -94,7 +94,7 @@ public class SysIpController extends BaseController {
     /**
      * 查询黑名单
      */
-    @PreAuthorize("@ss.hasPermi('system:ip:delete')")
+    @PreAuthorize("@ss.hasPermi('system:ip:list')")
     @ApiOperation(value = "查询黑名单")
     @GetMapping("/black/list")
     public AjaxResult listBlack(String deptId,String userId,String ip){

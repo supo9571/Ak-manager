@@ -79,7 +79,7 @@ public class BaseController
     protected TableDataInfo getDataTable(List<?> list)
     {
         PageInfo pageInfo = new PageInfo(list);
-        TableDataInfo rspData = new TableDataInfo(pageInfo.getTotal(),list,pageInfo.getSize(),pageInfo.getPageNum());
+        TableDataInfo rspData = new TableDataInfo(pageInfo.getTotal(),list,pageInfo.getPageSize(),pageInfo.getPageNum());
         return rspData;
     }
 
