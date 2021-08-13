@@ -1,7 +1,6 @@
 package com.manager.system.service.impl;
 
 import com.manager.common.core.domain.entity.SysIpWhite;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.system.mapper.SysIpWhiteMapper;
 import com.manager.system.service.SysIpWhiteService;
 import org.springframework.beans.factory.annotation.Autowired;

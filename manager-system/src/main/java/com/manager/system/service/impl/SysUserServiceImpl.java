@@ -4,14 +4,12 @@ import com.manager.common.annotation.DataScope;
 import com.manager.common.constant.UserConstants;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
-import com.manager.common.core.domain.entity.SystemUser;
 import com.manager.common.exception.CustomException;
 import com.manager.common.utils.StringUtils;
 import com.manager.system.domain.SysPost;
 import com.manager.system.domain.SysUserPost;
 import com.manager.system.domain.SysUserRole;
 import com.manager.system.mapper.*;
-import com.manager.system.service.ISysConfigService;
 import com.manager.system.service.ISysUserService;
 import com.manager.system.service.SysIpWhiteService;
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +60,7 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List selectUserList(SystemUser user)
+    public List selectUserList(SysUser user)
     {
         List list = userMapper.selectUserList(user);
         if(!list.isEmpty()){
@@ -90,7 +87,7 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @Transactional
-    public int insertUser(SystemUser user,long userId)
+    public int insertUser(SysUser user, long userId)
     {
         // 新增用户信息
         int rows = userMapper.insertUser(user);
@@ -225,11 +222,6 @@ public class SysUserServiceImpl implements ISysUserService
     public String checkPhoneUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
-        {
-            return UserConstants.NOT_UNIQUE;
-        }
         return UserConstants.UNIQUE;
     }
 
@@ -243,11 +235,6 @@ public class SysUserServiceImpl implements ISysUserService
     public String checkEmailUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkEmailUnique(user.getEmail());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
-        {
-            return UserConstants.NOT_UNIQUE;
-        }
         return UserConstants.UNIQUE;
     }
 
@@ -267,23 +254,15 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 修改保存用户信息
-     *
-     * @param user 用户信息
-     * @return 结果
      */
     @Override
     @Transactional
-    public int updateUser(SysUser user)
-    {
+    public int updateUser(SysUser user) {
         Long userId = user.getUserId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
         insertUserRole(user);
-        // 删除用户与岗位关联
-        userPostMapper.deleteUserPostByUserId(userId);
-        // 新增用户与岗位管理
-        insertUserPost(user);
         return userMapper.updateUser(user);
     }
 
@@ -368,25 +347,11 @@ public class SysUserServiceImpl implements ISysUserService
      *
      * @param user 用户对象
      */
-    public void insertUserRole(SysUser user)
-    {
-        Long[] roles = user.getRoleIds();
-        if (StringUtils.isNotNull(roles))
-        {
-            // 新增用户与角色管理
-            List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roles)
-            {
-                SysUserRole ur = new SysUserRole();
-                ur.setUserId(user.getUserId());
-                ur.setRoleId(roleId);
-                list.add(ur);
-            }
-            if (list.size() > 0)
-            {
-                userRoleMapper.batchUserRole(list);
-            }
+    public void insertUserRole(SysUser user){
+        if(StringUtils.isNotEmpty(user.getRoleId())){
+            userRoleMapper.insertUserRole(user.getUserId(),user.getRoleId());
         }
+
     }
 
     /**
@@ -396,23 +361,23 @@ public class SysUserServiceImpl implements ISysUserService
      */
     public void insertUserPost(SysUser user)
     {
-        Long[] posts = user.getPostIds();
-        if (StringUtils.isNotNull(posts))
-        {
-            // 新增用户与岗位管理
-            List<SysUserPost> list = new ArrayList<SysUserPost>();
-            for (Long postId : posts)
-            {
-                SysUserPost up = new SysUserPost();
-                up.setUserId(user.getUserId());
-                up.setPostId(postId);
-                list.add(up);
-            }
-            if (list.size() > 0)
-            {
-                userPostMapper.batchUserPost(list);
-            }
-        }
+//        Long[] posts = user.getPostIds();
+//        if (StringUtils.isNotNull(posts))
+//        {
+//            // 新增用户与岗位管理
+//            List<SysUserPost> list = new ArrayList<SysUserPost>();
+//            for (Long postId : posts)
+//            {
+//                SysUserPost up = new SysUserPost();
+//                up.setUserId(user.getUserId());
+//                up.setPostId(postId);
+//                list.add(up);
+//            }
+//            if (list.size() > 0)
+//            {
+//                userPostMapper.batchUserPost(list);
+//            }
+//        }
     }
 
     /**
@@ -468,15 +433,16 @@ public class SysUserServiceImpl implements ISysUserService
     @Transactional
     public int deleteUserByIds(Long[] userIds)
     {
-        for (Long userId : userIds)
-        {
-            checkUserAllowed(new SysUser(userId));
-        }
-        // 删除用户与角色关联
-        userRoleMapper.deleteUserRole(userIds);
-        // 删除用户与岗位关联
-        userPostMapper.deleteUserPost(userIds);
-        return userMapper.deleteUserByIds(userIds);
+//        for (Long userId : userIds)
+//        {
+//            checkUserAllowed(new SysUser(userId));
+//        }
+//        // 删除用户与角色关联
+//        userRoleMapper.deleteUserRole(userIds);
+//        // 删除用户与岗位关联
+//        userPostMapper.deleteUserPost(userIds);
+//        return userMapper.deleteUserByIds(userIds);
+        return 0;
     }
 
 }

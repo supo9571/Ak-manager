@@ -1,7 +1,5 @@
 package com.manager.system.service;
 
-import com.manager.common.core.domain.entity.SysUser;
-
 import java.util.List;
 
 public interface SysIpWhiteService {

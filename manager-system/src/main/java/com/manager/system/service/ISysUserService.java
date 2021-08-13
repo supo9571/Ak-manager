@@ -1,8 +1,8 @@
 package com.manager.system.service;
 
 import java.util.List;
+
 import com.manager.common.core.domain.entity.SysUser;
-import com.manager.common.core.domain.entity.SystemUser;
 
 /**
  * 用户 业务层
@@ -17,7 +17,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    List selectUserList(SystemUser user);
+    List selectUserList(SysUser user);
 
     /**
      * 新增用户信息
@@ -25,7 +25,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    int insertUser(SystemUser user,long loginUserId);
+    int insertUser(SysUser user, long loginUserId);
 
 
     /**

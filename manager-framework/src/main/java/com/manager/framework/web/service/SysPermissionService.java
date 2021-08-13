@@ -2,15 +2,16 @@ package com.manager.framework.web.service;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.manager.common.core.domain.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.system.service.ISysMenuService;
 import com.manager.system.service.ISysRoleService;
 
 /**
  * 用户权限处理
- * 
+ *
  * @author marvin
  */
 @Component
@@ -24,7 +25,7 @@ public class SysPermissionService
 
     /**
      * 获取角色数据权限
-     * 
+     *
      * @param user 用户信息
      * @return 角色权限信息
      */
@@ -45,7 +46,7 @@ public class SysPermissionService
 
     /**
      * 获取菜单数据权限
-     * 
+     *
      * @param user 用户信息
      * @return 菜单权限信息
      */

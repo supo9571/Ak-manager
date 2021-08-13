@@ -2,6 +2,7 @@ package com.manager.framework.web.service;
 
 import javax.annotation.Resource;
 
+import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.manager.AsyncManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import com.manager.common.constant.Constants;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.core.redis.RedisCache;
 import com.manager.common.exception.CustomException;
@@ -71,12 +71,12 @@ public class SysLoginService
         {
             if (e instanceof BadCredentialsException)
             {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+//                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
             }
             else
             {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+//                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
                 throw new CustomException(e.getMessage());
             }
         }

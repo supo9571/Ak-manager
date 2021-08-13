@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.manager.common.core.domain.entity.SysUser;
 import com.manager.system.domain.vo.MetaVo;
 import com.manager.system.domain.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import com.manager.common.constant.UserConstants;
 import com.manager.common.core.domain.TreeSelect;
 import com.manager.common.core.domain.entity.SysMenu;
 import com.manager.common.core.domain.entity.SysRole;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.StringUtils;
 import com.manager.system.mapper.SysMenuMapper;
@@ -28,7 +28,7 @@ import com.manager.system.service.ISysMenuService;
 
 /**
  * 菜单 业务层处理
- * 
+ *
  * @author marvin
  */
 @Service
@@ -47,7 +47,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据用户查询系统菜单列表
-     * 
+     *
      * @param userId 用户ID
      * @return 菜单列表
      */
@@ -59,7 +59,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 查询系统菜单列表
-     * 
+     *
      * @param menu 菜单信息
      * @return 菜单列表
      */
@@ -82,7 +82,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据用户ID查询权限
-     * 
+     *
      * @param userId 用户ID
      * @return 权限列表
      */
@@ -103,7 +103,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据用户ID查询菜单
-     * 
+     *
      * @param userId 用户名称
      * @return 菜单列表
      */
@@ -124,7 +124,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据角色ID查询菜单树信息
-     * 
+     *
      * @param roleId 角色ID
      * @return 选中菜单列表
      */
@@ -137,7 +137,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 构建前端路由所需要的菜单
-     * 
+     *
      * @param menus 菜单列表
      * @return 路由列表
      */
@@ -193,7 +193,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 构建前端所需要树结构
-     * 
+     *
      * @param menus 菜单列表
      * @return 树结构列表
      */
@@ -225,7 +225,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 构建前端所需要下拉树结构
-     * 
+     *
      * @param menus 菜单列表
      * @return 下拉树结构列表
      */
@@ -238,7 +238,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据菜单ID查询信息
-     * 
+     *
      * @param menuId 菜单ID
      * @return 菜单信息
      */
@@ -250,7 +250,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 是否存在菜单子节点
-     * 
+     *
      * @param menuId 菜单ID
      * @return 结果
      */
@@ -263,7 +263,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 查询菜单使用数量
-     * 
+     *
      * @param menuId 菜单ID
      * @return 结果
      */
@@ -276,7 +276,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 新增保存菜单信息
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -288,7 +288,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 修改保存菜单信息
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -300,7 +300,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 删除菜单管理信息
-     * 
+     *
      * @param menuId 菜单ID
      * @return 结果
      */
@@ -312,7 +312,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 校验菜单名称是否唯一
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -330,7 +330,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 获取路由名称
-     * 
+     *
      * @param menu 菜单信息
      * @return 路由名称
      */
@@ -347,7 +347,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 获取路由地址
-     * 
+     *
      * @param menu 菜单信息
      * @return 路由地址
      */
@@ -375,7 +375,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 获取组件信息
-     * 
+     *
      * @param menu 菜单信息
      * @return 组件信息
      */
@@ -399,7 +399,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 是否为菜单内部跳转
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -411,7 +411,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 是否为内链组件
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -422,7 +422,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 是否为parent_view组件
-     * 
+     *
      * @param menu 菜单信息
      * @return 结果
      */
@@ -433,7 +433,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 根据父节点的ID获取所有子节点
-     * 
+     *
      * @param list 分类表
      * @param parentId 传入的父节点ID
      * @return String
@@ -456,7 +456,7 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 递归列表
-     * 
+     *
      * @param list
      * @param t
      */

@@ -5,7 +5,6 @@ import com.manager.common.constant.UserConstants;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysRole;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.core.page.TableDataInfo;
 import com.manager.common.enums.BusinessType;
@@ -19,7 +18,6 @@ import com.manager.system.domain.SysUserRole;
 import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +130,7 @@ public class SysRoleController extends BaseController
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
             {
-                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+//                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
                 loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
             }
@@ -194,28 +192,28 @@ public class SysRoleController extends BaseController
     /**
      * 查询已分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @ApiOperation(value = "查询已分配用户角色列表")
-    @GetMapping("/authUser/allocatedList")
-    public TableDataInfo allocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectAllocatedList(user);
-        return getDataTable(list);
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:list')")
+//    @ApiOperation(value = "查询已分配用户角色列表")
+//    @GetMapping("/authUser/allocatedList")
+//    public TableDataInfo allocatedList(SysUser user)
+//    {
+//        startPage();
+//        List<SysUser> list = userService.selectAllocatedList(user);
+//        return getDataTable(list);
+//    }
 
     /**
      * 查询未分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @ApiOperation(value = "查询未分配用户角色列表")
-    @GetMapping("/authUser/unallocatedList")
-    public TableDataInfo unallocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectUnallocatedList(user);
-        return getDataTable(list);
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:list')")
+//    @ApiOperation(value = "查询未分配用户角色列表")
+//    @GetMapping("/authUser/unallocatedList")
+//    public TableDataInfo unallocatedList(SysUser user)
+//    {
+//        startPage();
+//        List<SysUser> list = userService.selectUnallocatedList(user);
+//        return getDataTable(list);
+//    }
 
     /**
      * 取消授权用户

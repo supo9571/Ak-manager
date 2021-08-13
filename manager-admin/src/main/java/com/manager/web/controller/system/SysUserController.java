@@ -6,7 +6,6 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
-import com.manager.common.core.domain.entity.SystemUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
@@ -46,19 +45,13 @@ public class SysUserController extends BaseController
     @Autowired
     private ISysRoleService roleService;
 
-    @Autowired
-    private ISysPostService postService;
-
-    @Autowired
-    private TokenService tokenService;
-
     /**
      * 获取用户列表
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @ApiOperation(value = "查询用户列表")
     @GetMapping("/list")
-    public AjaxResult list(SystemUser user)
+    public AjaxResult list(SysUser user)
     {
         startPage();
         List list = userService.selectUserList(user);
@@ -72,7 +65,7 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/add")
-    public AjaxResult add(@Validated @RequestBody SystemUser user)
+    public AjaxResult add(@Validated @RequestBody SysUser user)
     {
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
         {
@@ -80,7 +73,7 @@ public class SysUserController extends BaseController
         }
         user.setCreateBy(SecurityUtils.getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         return toAjax(userService.insertUser(user,loginUser.getUser().getUserId()));
     }
 
@@ -93,13 +86,12 @@ public class SysUserController extends BaseController
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
         Map map = new HashMap<>();
-        List<SysRole> roles = roleService.selectRoleAll();
-        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        map.put("posts", postService.selectPostAll());
+//        List<SysRole> roles = roleService.selectRoleAll();
+//        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
         if (StringUtils.isNotNull(userId))
         {
             map.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-            map.put("postIds", postService.selectPostListByUserId(userId));
+//            map.put("postIds", postService.selectPostListByUserId(userId));
             map.put("roleIds", roleService.selectRoleListByUserId(userId));
         }
         return AjaxResult.success(map);
@@ -124,29 +116,29 @@ public class SysUserController extends BaseController
     /**
      * 删除用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @ApiOperation(value = "删除用户")
-    @PostMapping("/{userIds}")
-    public AjaxResult remove(@PathVariable Long[] userIds)
-    {
-        return toAjax(userService.deleteUserByIds(userIds));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:user:remove')")
+//    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+//    @ApiOperation(value = "删除用户")
+//    @PostMapping("/{userIds}")
+//    public AjaxResult remove(@PathVariable Long[] userIds)
+//    {
+//        return toAjax(userService.deleteUserByIds(userIds));
+//    }
 
     /**
      * 重置密码
      */
-    @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @ApiOperation(value = "重置密码")
-    @PostMapping("/resetPwd")
-    public AjaxResult resetPwd(@RequestBody SysUser user)
-    {
-        userService.checkUserAllowed(user);
-        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        user.setUpdateBy(SecurityUtils.getUsername());
-        return toAjax(userService.resetPwd(user));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
+//    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+//    @ApiOperation(value = "重置密码")
+//    @PostMapping("/resetPwd")
+//    public AjaxResult resetPwd(@RequestBody SysUser user)
+//    {
+//        userService.checkUserAllowed(user);
+//        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+//        user.setUpdateBy(SecurityUtils.getUsername());
+//        return toAjax(userService.resetPwd(user));
+//    }
 
     /**
      * 状态修改

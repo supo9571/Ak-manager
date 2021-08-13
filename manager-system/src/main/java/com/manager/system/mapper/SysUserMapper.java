@@ -2,9 +2,8 @@ package com.manager.system.mapper;
 
 import java.util.List;
 
-import com.manager.common.core.domain.entity.SystemUser;
-import org.apache.ibatis.annotations.Param;
 import com.manager.common.core.domain.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户表 数据层
@@ -117,17 +116,17 @@ public interface SysUserMapper
     /**
      * 根据条件分页查询用户列表
      */
-    List selectUserList(SystemUser sysUser);
+    List selectUserList(SysUser sysUser);
 
     /**
      * 新增用户信息
      */
-    int insertUser(SystemUser user);
+    int insertUser(SysUser user);
 
     /**
      * 新增用户与角色关联
      */
-    void insertUserRole(@Param("userId") String userId,@Param("roleId") String roleId);
+    void insertUserRole(@Param("userId") long userId,@Param("roleId") String roleId);
 
     /**
      * 新增用户 ip白名单
