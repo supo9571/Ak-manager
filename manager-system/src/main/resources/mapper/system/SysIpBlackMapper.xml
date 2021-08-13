@@ -2,47 +2,14 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.manager.system.mapper.SysIpBlackMapper">
+<mapper namespace="com.manager.system.mapper.SysTenantMapper">
 
-    <insert id="insertIpBlack">
-        insert into sys_ip_black(
-            dept_id,
-            user_id,
-            ip,
-            create_user_id)
-        values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-                #{item.deptId},
-                #{item.userId},
-                #{item.ip},
-                #{item.createUserId}
-            )
-        </foreach>
-
-    </insert>
-
-    <select id="selectIpBlackList" resultType="java.util.Map">
-        select su.user_name userName
-        ,sur.user_name createName
-        ,ip.ip
-        ,ip.create_time createTime
-        ,ip.id
-        ,sd.dept_name deptName
-        from sys_ip_black ip
-        left join sys_user su on ip.user_id = su.user_id
-        left join sys_user sur on ip.create_user_id = su.user_id
-        left join sys_dept sd on ip.dept_id = sd.dept_id
-        <where>
-            <if test="deptId != null and deptId != ''">
-                and ip.dept_id = #{deptId}
-            </if>
-            <if test="userId != null and userId != ''">
-                and ip.user_id = #{userId}
-            </if>
-            <if test="ip != null and ip != ''">
-                and ip.ip = #{ip}
-            </if>
-        </where>
+    <select id="selectTenants" resultType="java.util.Map">
+        SELECT t_id tId,t_name tName FROM sys_tenant
+        WHERE t_type = #{tType}
+        <if test="tId!=null and tId != '' ">
+            and parent_id = #{tId}
+        </if>
     </select>
+
 </mapper>

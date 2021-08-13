@@ -4,6 +4,7 @@ import com.manager.common.annotation.Log;
 import com.manager.common.constant.UserConstants;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.domain.entity.SysMenu;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
@@ -16,6 +17,7 @@ import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.framework.web.service.SysPermissionService;
 import com.manager.framework.web.service.TokenService;
 import com.manager.system.domain.SysUserRole;
+import com.manager.system.service.ISysMenuService;
 import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
 import io.swagger.annotations.Api;
@@ -111,7 +113,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @ApiOperation(value = "修改角色")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)
     {
         roleService.checkRoleAllowed(role);
@@ -146,7 +148,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "修改保存数据权限")
-    @PutMapping("/dataScope")
+    @PostMapping("/dataScope")
     public AjaxResult dataScope(@RequestBody SysRole role)
     {
         roleService.checkRoleAllowed(role);
@@ -222,7 +224,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @ApiOperation(value = "取消授权用户")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
-    @PutMapping("/authUser/cancel")
+    @PostMapping("/authUser/cancel")
     public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
     {
         return toAjax(roleService.deleteAuthUser(userRole));
@@ -234,7 +236,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @ApiOperation(value = "批量取消授权用户")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
-    @PutMapping("/authUser/cancelAll")
+    @PostMapping("/authUser/cancelAll")
     public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
     {
         return toAjax(roleService.deleteAuthUsers(roleId, userIds));
@@ -246,9 +248,26 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @ApiOperation(value = "批量选择用户授权")
-    @PutMapping("/authUser/selectAll")
+    @PostMapping("/authUser/selectAll")
     public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
     {
         return toAjax(roleService.insertAuthUsers(roleId, userIds));
+    }
+
+    @Autowired
+    private ISysMenuService menuService;
+    /**
+     * 加载对应角色菜单列表树
+     */
+    @ApiOperation(value = "加载对应角色菜单列表树")
+    @GetMapping(value = "/roleMenuTreeselect/{roleId}")
+    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
+    {
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<SysMenu> menus = menuService.selectMenuList(loginUser.getUser().getUserId());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
+        ajax.put("menus", menuService.buildMenuTreeSelect(menus));
+        return ajax;
     }
 }

@@ -8,7 +8,6 @@ import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.ServletUtils;
 import com.manager.framework.web.service.TokenService;
-import com.manager.system.service.SysIpBlackService;
 import com.manager.system.service.SysIpWhiteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
