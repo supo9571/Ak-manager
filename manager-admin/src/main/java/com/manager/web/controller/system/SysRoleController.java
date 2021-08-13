@@ -91,7 +91,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:add')")
     @ApiOperation(value = "新增角色")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("add")
     public AjaxResult add(@Validated @RequestBody SysRole role)
     {
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
@@ -113,7 +113,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @ApiOperation(value = "修改角色")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-    @PostMapping
+    @PostMapping("edit")
     public AjaxResult edit(@Validated @RequestBody SysRole role)
     {
         roleService.checkRoleAllowed(role);

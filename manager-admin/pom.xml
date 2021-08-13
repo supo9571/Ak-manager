@@ -52,8 +52,6 @@
             <groupId>com.ak</groupId>
             <artifactId>manager-framework</artifactId>
         </dependency>
-
-
     </dependencies>
 
     <build>
