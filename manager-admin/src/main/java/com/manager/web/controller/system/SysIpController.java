@@ -62,50 +62,10 @@ public class SysIpController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:ip:list')")
     @ApiOperation(value = "查询白名单")
     @GetMapping("/white/list")
-    public AjaxResult list(String deptId,String userId,String ip){
+    public AjaxResult list(String tId,String userId,String ip){
         startPage();
-        List list = sysIpWhiteService.selectIpWhiteList(deptId,userId,ip);
+        List list = sysIpWhiteService.selectIpWhiteList(tId,userId,ip);
         return AjaxResult.success("查询白名单成功",getDataTable(list));
     }
 
-    @Autowired
-    private SysIpBlackService sysIpBlackService;
-
-    /**
-     * 添加黑名单
-     */
-    @PreAuthorize("@ss.hasPermi('system:ip:add')")
-    @ApiOperation(value = "添加黑名单")
-    @Log(title = "添加黑名单", businessType = BusinessType.INSERT)
-    @GetMapping("/black/add")
-    public AjaxResult addBlack(long deptId,long userId,String ips){
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        SysUser user = loginUser.getUser();
-        sysIpBlackService.addIpBlack(deptId,userId,ips,user.getUserId());
-        return success();
-    }
-
-    /**
-     * 删除黑名单
-     */
-    @PreAuthorize("@ss.hasPermi('system:ip:delete')")
-    @ApiOperation(value = "删除黑名单")
-    @Log(title = "删除黑名单", businessType = BusinessType.DELETE)
-    @GetMapping("/black/delete")
-    public AjaxResult deleteBlack(long id){
-        sysIpBlackService.delIpBlack(id);
-        return success();
-    }
-
-    /**
-     * 查询黑名单
-     */
-    @PreAuthorize("@ss.hasPermi('system:ip:list')")
-    @ApiOperation(value = "查询黑名单")
-    @GetMapping("/black/list")
-    public AjaxResult listBlack(String deptId,String userId,String ip){
-        startPage();
-        List list = sysIpBlackService.selectIpBlackList(deptId,userId,ip);
-        return AjaxResult.success("查询白名单成功",getDataTable(list));
-    }
 }

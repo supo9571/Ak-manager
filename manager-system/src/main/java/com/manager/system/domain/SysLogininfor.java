@@ -6,12 +6,14 @@ import com.manager.common.annotation.Excel;
 import com.manager.common.annotation.Excel.ColumnType;
 import com.manager.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * 系统访问记录表 sys_logininfor
  *
  * @author marvin
  */
+@Data
 public class SysLogininfor extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -57,6 +59,9 @@ public class SysLogininfor extends BaseEntity
     @ApiModelProperty(value = "登录时间")
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
+
+    @ApiModelProperty(value = "平台id")
+    private String tId;
 
     public Long getInfoId()
     {

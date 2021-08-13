@@ -5,6 +5,7 @@ import com.manager.common.constant.UserConstants;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysRole;
+import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.core.page.TableDataInfo;
 import com.manager.common.enums.BusinessType;
@@ -60,16 +61,16 @@ public class SysRoleController extends BaseController
         return AjaxResult.success(getDataTable(list));
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:role:export')")
-    @ApiIgnore
-    @GetMapping("/export")
-    public AjaxResult export(SysRole role)
-    {
-        List<SysRole> list = roleService.selectRoleList(role);
-        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-        return util.exportExcel(list, "角色数据");
-    }
+//    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+//    @PreAuthorize("@ss.hasPermi('system:role:export')")
+//    @ApiIgnore
+//    @GetMapping("/export")
+//    public AjaxResult export(SysRole role)
+//    {
+//        List<SysRole> list = roleService.selectRoleList(role);
+//        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
+//        return util.exportExcel(list, "角色数据");
+//    }
 
     /**
      * 根据角色编号获取详细信息
@@ -130,7 +131,7 @@ public class SysRoleController extends BaseController
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
             {
-//                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
                 loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
             }
@@ -152,31 +153,31 @@ public class SysRoleController extends BaseController
         return toAjax(roleService.authDataScope(role));
     }
 
-    /**
-     * 状态修改
-     */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-    @ApiOperation(value = "角色状态修改")
-    @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody SysRole role)
-    {
-        roleService.checkRoleAllowed(role);
-        role.setUpdateBy(SecurityUtils.getUsername());
-        return toAjax(roleService.updateRoleStatus(role));
-    }
+//    /**
+//     * 状态修改
+//     */
+//    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+//    @ApiOperation(value = "角色状态修改")
+//    @PutMapping("/changeStatus")
+//    public AjaxResult changeStatus(@RequestBody SysRole role)
+//    {
+//        roleService.checkRoleAllowed(role);
+//        role.setUpdateBy(SecurityUtils.getUsername());
+//        return toAjax(roleService.updateRoleStatus(role));
+//    }
 
     /**
      * 删除角色
      */
-    @PreAuthorize("@ss.hasPermi('system:role:remove')")
-    @Log(title = "角色管理", businessType = BusinessType.DELETE)
-    @ApiOperation(value = "角色删除")
-    @DeleteMapping("/{roleIds}")
-    public AjaxResult remove(@PathVariable Long[] roleIds)
-    {
-        return toAjax(roleService.deleteRoleByIds(roleIds));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:remove')")
+//    @Log(title = "角色管理", businessType = BusinessType.DELETE)
+//    @ApiOperation(value = "角色删除")
+//    @DeleteMapping("/{roleIds}")
+//    public AjaxResult remove(@PathVariable Long[] roleIds)
+//    {
+//        return toAjax(roleService.deleteRoleByIds(roleIds));
+//    }
 
     /**
      * 获取角色选择框列表
@@ -192,28 +193,28 @@ public class SysRoleController extends BaseController
     /**
      * 查询已分配用户角色列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:role:list')")
-//    @ApiOperation(value = "查询已分配用户角色列表")
-//    @GetMapping("/authUser/allocatedList")
-//    public TableDataInfo allocatedList(SysUser user)
-//    {
-//        startPage();
-//        List<SysUser> list = userService.selectAllocatedList(user);
-//        return getDataTable(list);
-//    }
+    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @ApiOperation(value = "查询已分配用户角色列表")
+    @GetMapping("/authUser/allocatedList")
+    public TableDataInfo allocatedList(SysUser user)
+    {
+        startPage();
+        List<SysUser> list = userService.selectAllocatedList(user);
+        return getDataTable(list);
+    }
 
     /**
      * 查询未分配用户角色列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:role:list')")
-//    @ApiOperation(value = "查询未分配用户角色列表")
-//    @GetMapping("/authUser/unallocatedList")
-//    public TableDataInfo unallocatedList(SysUser user)
-//    {
-//        startPage();
-//        List<SysUser> list = userService.selectUnallocatedList(user);
-//        return getDataTable(list);
-//    }
+    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @ApiOperation(value = "查询未分配用户角色列表")
+    @GetMapping("/authUser/unallocatedList")
+    public TableDataInfo unallocatedList(SysUser user)
+    {
+        startPage();
+        List<SysUser> list = userService.selectUnallocatedList(user);
+        return getDataTable(list);
+    }
 
     /**
      * 取消授权用户

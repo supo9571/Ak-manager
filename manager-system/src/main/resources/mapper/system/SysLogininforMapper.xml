@@ -22,7 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
-		select info_id, user_name, ipaddr, login_location, browser, os, status, msg, login_time from sys_logininfor
+		select lf.info_id, lf.user_name, lf.ipaddr, lf.login_location, lf.browser, lf.os, lf.status, lf.msg, lf.login_time
+		from sys_logininfor lf
+		left join sys_user u on lf.user_name = u.user_name
+		left join sys_tenant t on t.t_id = u.t_id
 		<where>
 			<if test="ipaddr != null and ipaddr != ''">
 				AND ipaddr like concat('%', #{ipaddr}, '%')
@@ -38,6 +41,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 				and date_format(login_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+			<if test="tId != null and tId != ''">
+				and t.t_id = #{tId}
 			</if>
 		</where>
 		order by info_id desc
