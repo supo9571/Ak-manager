@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.manager.AsyncManager;
+import com.manager.system.service.SysIpWhiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,6 +26,8 @@ import com.manager.common.utils.ip.IpUtils;
 import com.manager.framework.manager.factory.AsyncFactory;
 import com.manager.system.service.ISysConfigService;
 import com.manager.system.service.ISysUserService;
+
+import java.util.List;
 
 /**
  * 登录校验方法
@@ -49,6 +52,8 @@ public class SysLoginService
     @Autowired
     private ISysConfigService configService;
 
+    @Autowired
+    private SysIpWhiteService sysIpWhiteService;
     /**
      * 登录验证
      *
@@ -82,13 +87,18 @@ public class SysLoginService
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //验证google验证码
-        if(!loginUser.getUser().getGoogleSwitch() || GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
+        if(loginUser.getUser().getGoogleSwitch() && !GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
+            throw new CustomException("google验证码错误");
+        }
+        //验证ip
+        String ips = sysIpWhiteService.selectIpByUserId(loginUser.getUser().getUserId()+"");
+        if(ips.isEmpty() || ips.contains(IpUtils.getHostIp())){
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
             recordLoginInfo(loginUser.getUser());
             // 生成token
             return tokenService.createToken(loginUser);
         }else {
-            throw new CustomException("google验证码错误");
+            throw new CustomException("ip被限制");
         }
     }
 

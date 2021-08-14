@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysIpWhiteServiceImpl implements SysIpWhiteService {
@@ -34,5 +35,13 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     @Override
     public List selectIpWhiteList(String tId, String userId, String ip) {
         return sysIpWhiteMapper.selectIpWhiteList(tId,userId,ip);
+    }
+
+    @Override
+    public String selectIpByUserId(String userId) {
+        StringBuffer userIp = new StringBuffer();
+        List ips = sysIpWhiteMapper.selectIpByUserId(userId);
+        ips.forEach(ip -> userIp.append(((Map)ip).get("ip")+","));
+        return userIp.length()>1?userIp.substring(0,userIp.length()-1):"";
     }
 }

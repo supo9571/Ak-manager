@@ -8,4 +8,6 @@ public interface SysIpWhiteService {
     void delIpWhite(long id);
 
     List selectIpWhiteList(String tId, String userId, String ip);
+
+    String selectIpByUserId(String userId);
 }
