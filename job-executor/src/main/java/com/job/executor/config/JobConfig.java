@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class XxlJobConfig {
-    private Logger logger = LoggerFactory.getLogger(XxlJobConfig.class);
+public class JobConfig {
+    private Logger logger = LoggerFactory.getLogger(JobConfig.class);
 
     @Value("${xxl.job.admin.addresses}")
     private String adminAddresses;

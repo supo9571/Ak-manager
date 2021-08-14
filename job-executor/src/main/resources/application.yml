@@ -1,0 +1,23 @@
+server:
+  port: 8051
+
+spring:
+  profiles:
+    active: dev
+
+xxl:
+  job:
+    accessToken:
+    admin:
+#      addresses: http://54.151.183.63:8050/job-admin
+      addresses: http://127.0.0.1:8050/job-admin
+    executor:
+      address:
+      appname: job-executor
+      ip:
+      logpath: /logs/jobhandler
+      logretentiondays: 15
+      port: 6651
+
+logging:
+  config: classpath:logback.xml

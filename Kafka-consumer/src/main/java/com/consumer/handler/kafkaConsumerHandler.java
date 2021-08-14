@@ -43,8 +43,10 @@ public class kafkaConsumerHandler {
             String op = jsonObject.getString("op");
             //在线玩家人数
             if("online_player".equals(op)){
+                log.info("insert online_player");
                 testService.updateUserOnline(jsonObject.getString("online_count"),jsonObject.getString("time"));
             }else {
+                log.info("insert Msg");
                 testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
             }
 
@@ -55,7 +57,7 @@ public class kafkaConsumerHandler {
             jsonObject.put("errMsg",e.getMessage());
             jsonObject.put("value",record.value());
             List errMsgs = new ArrayList();
-            errMsgs.add(jsonObject);
+            errMsgs.add(jsonObject.toJSONString());
             log.error(e.getMessage());
             redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
