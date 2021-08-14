@@ -18,7 +18,7 @@
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>2.7.0</swagger.version>
         <kaptcha.version>2.3.2</kaptcha.version>
-        <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
         <pagehelper.boot.version>1.3.1</pagehelper.boot.version>
         <fastjson.version>1.2.76</fastjson.version>
         <oshi.version>5.8.0</oshi.version>
@@ -29,6 +29,7 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>1.7</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <lombok.version>1.16.10</lombok.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -194,6 +195,11 @@
                 <version>${master.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -205,6 +211,7 @@
         <module>job-admin</module>
         <module>job-core</module>
         <module>job-executor</module>
+        <module>Kafka-consumer</module>
     </modules>
     <packaging>pom</packaging>
 
