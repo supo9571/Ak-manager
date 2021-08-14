@@ -37,8 +37,7 @@ import java.util.stream.Collectors;
 @RestController
 @Api(tags = "账号管理")
 @RequestMapping("/system/user")
-public class SysUserController extends BaseController
-{
+public class SysUserController extends BaseController {
     @Autowired
     private ISysUserService userService;
 
@@ -51,11 +50,10 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @ApiOperation(value = "查询用户列表")
     @GetMapping("/list")
-    public AjaxResult list(SysUser user)
-    {
+    public AjaxResult list(SysUser user) {
         startPage();
         List list = userService.selectUserList(user);
-        return AjaxResult.success("查询成功",getDataTable(list));
+        return AjaxResult.success("查询成功", getDataTable(list));
     }
 
     /**
@@ -65,16 +63,14 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/add")
-    public AjaxResult add(@Validated @RequestBody SysUser user)
-    {
-        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
-        {
+    public AjaxResult add(@Validated @RequestBody SysUser user) {
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName()))) {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         }
         user.setCreateBy(SecurityUtils.getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        return toAjax(userService.insertUser(user,loginUser.getUser().getUserId()));
+        return toAjax(userService.insertUser(user, loginUser.getUser().getUserId()));
     }
 
     /**
@@ -82,21 +78,18 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @ApiOperation(value = "获取用户详细")
-    @GetMapping(value = { "/", "/{userId}" })
-    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
-    {
+    @GetMapping(value = {"/", "/{userId}"})
+    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
         Map map = new HashMap<>();
 //        List<SysRole> roles = roleService.selectRoleAll();
 //        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        if (StringUtils.isNotNull(userId))
-        {
+        if (StringUtils.isNotNull(userId)) {
             map.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
 //            map.put("postIds", postService.selectPostListByUserId(userId));
             map.put("roleIds", roleService.selectRoleListByUserId(userId));
         }
         return AjaxResult.success(map);
     }
-
 
 
     /**
@@ -106,8 +99,7 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "修改用户")
     @PostMapping("/edit")
-    public AjaxResult edit(@Validated @RequestBody SysUser user)
-    {
+    public AjaxResult edit(@Validated @RequestBody SysUser user) {
         userService.checkUserAllowed(user);
         user.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(userService.updateUser(user));
@@ -147,8 +139,7 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "状态启停")
     @PostMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody SysUser user)
-    {
+    public AjaxResult changeStatus(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
         user.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(userService.updateUserStatus(user));
@@ -160,8 +151,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @ApiOperation(value = "用户权限详情")
     @GetMapping("/authRole/{userId}")
-    public AjaxResult authRole(@ApiParam(value = "用户id") Long userId)
-    {
+    public AjaxResult authRole(@ApiParam(value = "用户id") Long userId) {
         Map map = new HashMap();
         SysUser user = userService.selectUserById(userId);
         List<SysRole> roles = roleService.selectRolesByUserId(userId);
@@ -177,8 +167,7 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
     @ApiOperation(value = "用户权限授权")
     @PostMapping("/authRole")
-    public AjaxResult insertAuthRole(Long userId, Long[] roleIds)
-    {
+    public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {
         userService.insertUserAuth(userId, roleIds);
         return success();
     }
@@ -186,11 +175,21 @@ public class SysUserController extends BaseController
     /**
      * 获取google随机密钥
      */
-    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @PreAuthorize("@ss.hasPermi('system:google:edit')")
     @ApiOperation(value = "获取google密钥")
     @GetMapping("/getGoogleKey")
-    public AjaxResult getGoogleKey()
-    {
-        return AjaxResult.success("获取google密钥成功",GoogleAuth.getKeyStr());
+    public AjaxResult getGoogleKey() {
+        return AjaxResult.success("获取google密钥成功", GoogleAuth.getKeyStr());
     }
+
+    /**
+     * 获取 用户google密钥
+     */
+    @PreAuthorize("@ss.hasPermi('system:google:query')")
+    @ApiOperation(value = "查询用户google密钥")
+    @GetMapping("/queryGoogleKey")
+    public AjaxResult queryGoogleKey(Long userId) {
+        return AjaxResult.success("查询google密钥成功", userService.queryGoogleKey(userId));
+    }
+
 }

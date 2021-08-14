@@ -183,4 +183,5 @@ public interface ISysUserService
      */
     public int deleteUserByIds(Long[] userIds);
 
+    String queryGoogleKey(Long userId);
 }

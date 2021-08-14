@@ -69,5 +69,10 @@ public class SysUser extends BaseEntity {
         return true?"1".equals(googleSwitch):false;
     }
 
+    public SysUser() {
+    }
 
+    public SysUser(long userId) {
+        this.userId = userId;
+    }
 }

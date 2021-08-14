@@ -129,7 +129,7 @@ public interface SysUserMapper
     void insertUserRole(@Param("userId") long userId,@Param("roleId") String roleId);
 
     /**
-     * 新增用户 ip白名单
+     * 查询google密钥
      */
-    void addIpWhite(String tId, String userId, String ips, String userId1);
+    String queryGoogleKey(@Param("userId") Long userId);
 }

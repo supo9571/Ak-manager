@@ -194,4 +194,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into sys_user_role(user_id, role_id) values
 		(#{userId},#{roleId})
 	</insert>
+
+	<select id="queryGoogleKey" resultType="java.lang.String">
+		select google_key from sys_user where user_id =#{userId} limit 0,1
+	</select>
 </mapper>

@@ -433,16 +433,20 @@ public class SysUserServiceImpl implements ISysUserService
     @Transactional
     public int deleteUserByIds(Long[] userIds)
     {
-//        for (Long userId : userIds)
-//        {
-//            checkUserAllowed(new SysUser(userId));
-//        }
-//        // 删除用户与角色关联
-//        userRoleMapper.deleteUserRole(userIds);
-//        // 删除用户与岗位关联
-//        userPostMapper.deleteUserPost(userIds);
-//        return userMapper.deleteUserByIds(userIds);
-        return 0;
+        for (Long userId : userIds)
+        {
+            checkUserAllowed(new SysUser(userId));
+        }
+        // 删除用户与角色关联
+        userRoleMapper.deleteUserRole(userIds);
+        // 删除用户与岗位关联
+        userPostMapper.deleteUserPost(userIds);
+        return userMapper.deleteUserByIds(userIds);
+    }
+
+    @Override
+    public String queryGoogleKey(Long userId) {
+        return userMapper.queryGoogleKey(userId);
     }
 
 }
