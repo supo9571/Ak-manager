@@ -11,10 +11,10 @@ datasource:
     maxActive: 20
   #从库
   slave:
-    #并非url而是jdbcUrl(因为这个在获取数据源时一直报错，看了DataSource的属性才知道是jdbcUrl)
-    jdbcUrl: jdbc:mysql://54.151.183.63:3306/sys-data?useUnicode=true&characterEncoding=utf-8
+    #10.39.1.88:3306 root 123456
+    jdbcUrl: jdbc:mysql://10.39.1.88:3306/db_payment?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: ak-root
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
     initialSize: 5
     minIdle: 5
