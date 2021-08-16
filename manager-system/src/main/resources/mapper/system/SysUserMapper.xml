@@ -198,4 +198,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="queryGoogleKey" resultType="java.lang.String">
 		select google_key from sys_user where user_id =#{userId} limit 0,1
 	</select>
+
+	<select id="selectUserIdByUserName" resultType="java.lang.Long">
+		select user_id from sys_user where user_name=#{userName} limit 0,1
+	</select>
 </mapper>

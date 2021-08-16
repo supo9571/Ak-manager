@@ -36,10 +36,10 @@ public class SysIpController extends BaseController {
     @ApiOperation(value = "添加白名单")
     @Log(title = "添加白名单", businessType = BusinessType.INSERT)
     @GetMapping("/white/add")
-    public AjaxResult add(long tId,long userId,String ips){
+    public AjaxResult add(Long tId,Long userId,String ips,String userName){
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
-        sysIpWhiteService.addIpWhite(tId,userId,ips,user.getUserId());
+        sysIpWhiteService.addIpWhite(tId,userId,ips,user.getUserId(),userName);
         return success();
     }
 

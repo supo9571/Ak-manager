@@ -94,7 +94,7 @@ public class SysUserServiceImpl implements ISysUserService
         // 新增ip白名单
         if(StringUtils.isNotEmpty(user.getIps())){
             sysIpWhiteService.addIpWhite(Long.valueOf(user.getTId()),
-                    Long.valueOf(user.getUserId()), user.getIps(),userId);
+                    Long.valueOf(user.getUserId()), user.getIps(),userId,user.getUserName());
         }
         // 新增用户与角色关联
         userMapper.insertUserRole(user.getUserId(),user.getRoleId());

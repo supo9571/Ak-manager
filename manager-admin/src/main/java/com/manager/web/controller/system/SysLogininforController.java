@@ -33,11 +33,11 @@ public class SysLogininforController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:info:list')")
     @ApiOperation(value = "查询登录日志列表")
     @GetMapping("/list")
-    public TableDataInfo list(SysLogininfor logininfor)
+    public AjaxResult list(SysLogininfor logininfor)
     {
         startPage();
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
-        return getDataTable(list);
+        return AjaxResult.success(getDataTable(list));
     }
 
     @Log(title = "登录日志", businessType = BusinessType.EXPORT)

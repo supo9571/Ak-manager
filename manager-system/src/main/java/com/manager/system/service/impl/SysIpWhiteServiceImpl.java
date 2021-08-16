@@ -1,7 +1,9 @@
 package com.manager.system.service.impl;
 
 import com.manager.common.core.domain.entity.SysIpWhite;
+import com.manager.common.exception.CustomException;
 import com.manager.system.mapper.SysIpWhiteMapper;
+import com.manager.system.mapper.SysUserMapper;
 import com.manager.system.service.SysIpWhiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,21 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     @Autowired
     private SysIpWhiteMapper sysIpWhiteMapper;
 
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
     @Override
-    public void addIpWhite(long tId, long userId, String ips,long createUserId) {
+    public void addIpWhite(long tId, Long userId, String ips,long createUserId,String userName) {
+        if(userId==null || userId ==0){
+            //根据userName 查询id
+            userId = sysUserMapper.selectUserIdByUserName(userName);
+            if(userId==null || userId ==0) throw new CustomException("用户名错误！");
+        }
         List<SysIpWhite> list = new ArrayList<>();
         List<String> ipList = Arrays.asList(ips.split(","));
+        Long finalUserId = userId;
         ipList.forEach(ip->{
-            list.add(new SysIpWhite(tId,userId,createUserId,ip));
+            list.add(new SysIpWhite(tId, finalUserId,createUserId,ip));
         });
         sysIpWhiteMapper.insertIpWhite(list);
     }

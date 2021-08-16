@@ -132,4 +132,6 @@ public interface SysUserMapper
      * 查询google密钥
      */
     String queryGoogleKey(@Param("userId") Long userId);
+
+    Long selectUserIdByUserName(@Param("userName") String userName);
 }
