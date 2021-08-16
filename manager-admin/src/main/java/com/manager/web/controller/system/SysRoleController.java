@@ -6,14 +6,11 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysMenu;
 import com.manager.common.core.domain.entity.SysRole;
-import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
-import com.manager.common.core.page.TableDataInfo;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.ServletUtils;
 import com.manager.common.utils.StringUtils;
-import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.framework.web.service.SysPermissionService;
 import com.manager.framework.web.service.TokenService;
 import com.manager.system.domain.SysUserRole;
@@ -27,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -91,11 +87,10 @@ public class SysRoleController extends BaseController {
     @ApiOperation(value = "新增角色")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping("add")
-    public AjaxResult add(@Validated @RequestBody SysRole role) {
+    public AjaxResult add(String roleName) {
+        SysRole role = new SysRole(roleName);
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
-            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(SecurityUtils.getUsername());
         return toAjax(roleService.insertRole(role));
@@ -106,7 +101,7 @@ public class SysRoleController extends BaseController {
      * 修改保存角色
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @ApiOperation(value = "修改角色")
+    @ApiOperation(value = "修改角色权限")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PostMapping("edit")
     public AjaxResult edit(@Validated @RequestBody SysRole role) {
@@ -129,6 +124,24 @@ public class SysRoleController extends BaseController {
             return AjaxResult.success();
         }
         return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+    }
+
+    /**
+     * 修改保存角色名称
+     */
+    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @ApiOperation(value = "修改保存角色名称")
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @PostMapping("editName")
+    public AjaxResult editName(String roleName,Long roleId) {
+        SysRole role = new SysRole(roleId,roleName);
+        roleService.checkRoleAllowed(role);
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        }
+        role.setCreateBy(SecurityUtils.getUsername());
+        roleService.updateRoleName(role);
+        return AjaxResult.success();
     }
 
     /**

@@ -1,4 +1,4 @@
-##多数据源
+#多数据源
 datasource:
   #主库
   master:
@@ -30,9 +30,14 @@ datasource:
     minIdle: 5
     maxActive: 20
 
-##mybatis
+#mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.job.executor.domain
   check-config-location: true
   config-location: classpath:mybatis-config.xml
+
+#接口地址
+global-config:
+  domain: http://10.39.1.88:8888
+  onlinePlay: /get_play_info
