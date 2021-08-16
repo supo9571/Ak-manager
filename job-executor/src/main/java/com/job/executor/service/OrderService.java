@@ -4,5 +4,7 @@ import java.util.Map;
 
 public interface OrderService {
 
-    Map getNewRecharge(long orderTime);
+    Map getNewRecharge(String orderTime);
+
+    Map getNewWithdraw(String withdrawTime);
 }

@@ -4,8 +4,10 @@ public enum DataSourceType {
 
 	// 主表
 	Master("master"),
-	// 从表
-	Slave("slave");
+	// 从表1
+	Slave1("slave1"),
+	// 从表2
+	Slave2("slave2");
 
 	private String name;
 

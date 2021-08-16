@@ -8,8 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +32,8 @@ public class DataSourceAspect {
                 .getMethod().getParameterTypes();
         try {
             Method m = classz.getMethod(method, parameterTypes);
-            if (m != null && m.isAnnotationPresent(MyDataSource.class)) {
-            	MyDataSource data = m.getAnnotation(MyDataSource.class);
+            if (m != null && m.isAnnotationPresent(DataSource.class)) {
+            	DataSource data = m.getAnnotation(DataSource.class);
                 JdbcContextHolder.putDataSource(data.value().getName());
                 log.info("===============上下文赋值完成:{}",data.value().getName());
             }

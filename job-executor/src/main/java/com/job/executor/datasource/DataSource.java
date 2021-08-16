@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface MyDataSource {
+public @interface DataSource {
 
 	DataSourceType value() default DataSourceType.Master;	//默认主表
 

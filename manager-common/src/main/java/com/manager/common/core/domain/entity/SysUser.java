@@ -66,7 +66,7 @@ public class SysUser extends BaseEntity {
     }
 
     public boolean getGoogleSwitch() {
-        return true?"1".equals(googleSwitch):false;
+        return "1".equals(googleSwitch);
     }
 
     public SysUser() {

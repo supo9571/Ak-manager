@@ -1,9 +1,10 @@
 package com.job.executor.service;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public interface TotalService {
-    int getOrderTime();
+    Map getTimes();
 
-    void updateTotalRecharge(BigDecimal addMoney, long time);
+    void updateTotal(BigDecimal addOrderMoney, long orderTime,BigDecimal addWithdrawMoney, long withdrawTime);
 }
