@@ -44,8 +44,8 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     }
 
     @Override
-    public List selectIpWhiteList(String tId, String userId, String ip) {
-        return sysIpWhiteMapper.selectIpWhiteList(tId,userId,ip);
+    public List selectIpWhiteList(String tId, String userId, String ip, String userName) {
+        return sysIpWhiteMapper.selectIpWhiteList(tId,userId,ip,userName);
     }
 
     @Override

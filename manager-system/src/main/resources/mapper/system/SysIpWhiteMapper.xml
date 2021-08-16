@@ -26,12 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select su.user_name userName
         ,sur.user_name createName
         ,ip.ip
-        ,ip.create_time createTime
+        ,DATE_FORMAT(ip.create_time,'%Y-%m-%d %H:%i-%s') createTime
         ,ip.id
         ,t.t_name tName
         from sys_ip_white ip
         left join sys_user su on ip.user_id = su.user_id
-        left join sys_user sur on ip.create_user_id = su.user_id
+        left join sys_user sur on ip.create_user_id = sur.user_id
         left join sys_tenant t on ip.t_id = t.t_id
         <where>
             <if test="tId != null and tId != ''">
@@ -39,6 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="userId != null and userId != ''">
                 and ip.user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and su.user_name = #{userName}
             </if>
             <if test="ip != null and ip != ''">
                 and ip.ip = #{ip}

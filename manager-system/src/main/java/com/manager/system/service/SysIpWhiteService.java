@@ -7,7 +7,7 @@ public interface SysIpWhiteService {
 
     void delIpWhite(long id);
 
-    List selectIpWhiteList(String tId, String userId, String ip);
+    List selectIpWhiteList(String tId, String userId, String ip,String userName);
 
     String selectIpByUserId(String userId);
 }

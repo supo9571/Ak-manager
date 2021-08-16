@@ -15,7 +15,7 @@ public interface SysIpWhiteMapper {
     @Delete("delete from sys_ip_white where id = #{id}")
     void delIpWhite(@Param("id") long id);
 
-    List selectIpWhiteList(@Param("tId") String tId,@Param("userId") String userId, @Param("ip")String ip);
+    List selectIpWhiteList(@Param("tId") String tId,@Param("userId") String userId, @Param("ip")String ip,@Param("userName")String userName);
 
     List selectIpByUserId(@Param("userId")Object userId);
 }

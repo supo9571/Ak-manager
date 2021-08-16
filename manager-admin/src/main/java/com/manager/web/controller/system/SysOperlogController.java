@@ -33,11 +33,11 @@ public class SysOperlogController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:operlog:list')")
     @ApiOperation(value = "查询操作日志列表")
     @GetMapping("/list")
-    public TableDataInfo list(SysOperLog operLog)
+    public AjaxResult list(SysOperLog operLog)
     {
         startPage();
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
-        return getDataTable(list);
+        return AjaxResult.success(getDataTable(list));
     }
 
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)
