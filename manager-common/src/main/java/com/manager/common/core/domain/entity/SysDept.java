@@ -11,7 +11,7 @@ import com.manager.common.core.domain.BaseEntity;
 
 /**
  * 部门表 sys_dept
- * 
+ *  废除
  * @author marvin
  */
 public class SysDept extends BaseEntity
@@ -50,7 +50,7 @@ public class SysDept extends BaseEntity
 
     /** 父部门名称 */
     private String parentName;
-    
+
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
 

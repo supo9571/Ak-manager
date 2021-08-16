@@ -29,7 +29,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色信息
@@ -39,8 +41,7 @@ import java.util.List;
 @RestController
 @Api(tags = "角色管理")
 @RequestMapping("/system/role")
-public class SysRoleController extends BaseController
-{
+public class SysRoleController extends BaseController {
     @Autowired
     private ISysRoleService roleService;
 
@@ -56,8 +57,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @ApiOperation(value = "角色列表")
     @GetMapping("/list")
-    public AjaxResult list(SysRole role)
-    {
+    public AjaxResult list(SysRole role) {
         startPage();
         List<SysRole> list = roleService.selectRoleList(role);
         return AjaxResult.success(getDataTable(list));
@@ -80,8 +80,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @ApiOperation(value = "获取角色详细")
     @GetMapping(value = "/{roleId}")
-    public AjaxResult getInfo(@PathVariable @ApiParam(name = "角色id",value = "1") Long roleId)
-    {
+    public AjaxResult getInfo(@PathVariable @ApiParam(name = "角色id", value = "1") Long roleId) {
         return AjaxResult.success(roleService.selectRoleById(roleId));
     }
 
@@ -92,14 +91,10 @@ public class SysRoleController extends BaseController
     @ApiOperation(value = "新增角色")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping("add")
-    public AjaxResult add(@Validated @RequestBody SysRole role)
-    {
-        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
-        {
+    public AjaxResult add(@Validated @RequestBody SysRole role) {
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-        {
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(SecurityUtils.getUsername());
@@ -114,25 +109,19 @@ public class SysRoleController extends BaseController
     @ApiOperation(value = "修改角色")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PostMapping("edit")
-    public AjaxResult edit(@Validated @RequestBody SysRole role)
-    {
+    public AjaxResult edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
-        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
-        {
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-        {
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
             return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(SecurityUtils.getUsername());
 
-        if (roleService.updateRole(role) > 0)
-        {
+        if (roleService.updateRole(role) > 0) {
             // 更新缓存用户权限
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
-            {
+            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
                 loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
@@ -145,19 +134,19 @@ public class SysRoleController extends BaseController
     /**
      * 修改保存数据权限
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-    @ApiOperation(value = "修改保存数据权限")
-    @PostMapping("/dataScope")
-    public AjaxResult dataScope(@RequestBody SysRole role)
-    {
-        roleService.checkRoleAllowed(role);
-        return toAjax(roleService.authDataScope(role));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+//    @ApiOperation(value = "修改保存数据权限")
+//    @PostMapping("/dataScope")
+//    public AjaxResult dataScope(@RequestBody SysRole role)
+//    {
+//        roleService.checkRoleAllowed(role);
+//        return toAjax(roleService.authDataScope(role));
+//    }
 
-//    /**
-//     * 状态修改
-//     */
+    /**
+     * 状态修改
+     */
 //    @PreAuthorize("@ss.hasPermi('system:role:edit')")
 //    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
 //    @ApiOperation(value = "角色状态修改")
@@ -187,36 +176,35 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @ApiOperation(value = "获取角色选择框列表")
     @GetMapping("/optionselect")
-    public AjaxResult optionselect()
-    {
+    public AjaxResult optionselect() {
         return AjaxResult.success(roleService.selectRoleAll());
     }
 
     /**
      * 查询已分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @ApiOperation(value = "查询已分配用户角色列表")
-    @GetMapping("/authUser/allocatedList")
-    public TableDataInfo allocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectAllocatedList(user);
-        return getDataTable(list);
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:list')")
+//    @ApiOperation(value = "查询已分配用户角色列表")
+//    @GetMapping("/authUser/allocatedList")
+//    public AjaxResult allocatedList(SysUser user)
+//    {
+//        startPage();
+//        List<SysUser> list = userService.selectAllocatedList(user);
+//        return AjaxResult.success(getDataTable(list));
+//    }
 
     /**
      * 查询未分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @ApiOperation(value = "查询未分配用户角色列表")
-    @GetMapping("/authUser/unallocatedList")
-    public TableDataInfo unallocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectUnallocatedList(user);
-        return getDataTable(list);
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:list')")
+//    @ApiOperation(value = "查询未分配用户角色列表")
+//    @GetMapping("/authUser/unallocatedList")
+//    public TableDataInfo unallocatedList(SysUser user)
+//    {
+//        startPage();
+//        List<SysUser> list = userService.selectUnallocatedList(user);
+//        return getDataTable(list);
+//    }
 
     /**
      * 取消授权用户
@@ -225,49 +213,60 @@ public class SysRoleController extends BaseController
     @ApiOperation(value = "取消授权用户")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PostMapping("/authUser/cancel")
-    public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
-    {
+    public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole) {
         return toAjax(roleService.deleteAuthUser(userRole));
     }
 
     /**
      * 批量取消授权用户
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @ApiOperation(value = "批量取消授权用户")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
-    @PostMapping("/authUser/cancelAll")
-    public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
-    {
-        return toAjax(roleService.deleteAuthUsers(roleId, userIds));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+//    @ApiOperation(value = "批量取消授权用户")
+//    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+//    @PostMapping("/authUser/cancelAll")
+//    public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
+//    {
+//        return toAjax(roleService.deleteAuthUsers(roleId, userIds));
+//    }
 
     /**
      * 批量选择用户授权
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
-    @ApiOperation(value = "批量选择用户授权")
-    @PostMapping("/authUser/selectAll")
-    public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
-    {
-        return toAjax(roleService.insertAuthUsers(roleId, userIds));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+//    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+//    @ApiOperation(value = "批量选择用户授权")
+//    @PostMapping("/authUser/selectAll")
+//    public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
+//    {
+//        return toAjax(roleService.insertAuthUsers(roleId, userIds));
+//    }
 
     @Autowired
     private ISysMenuService menuService;
+
     /**
      * 加载对应角色菜单列表树
      */
     @ApiOperation(value = "加载对应角色菜单列表树")
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
-    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
-    {
+    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId) {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SysMenu> menus = menuService.selectMenuList(loginUser.getUser().getUserId());
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
-        ajax.put("menus", menuService.buildMenuTreeSelect(menus));
-        return ajax;
+        Map map = new HashMap();
+        map.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
+        map.put("menus", menuService.buildMenuTreeSelect(menus));
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 获取菜单下拉树列表
+     */
+    @ApiOperation(value = "获取登录账号菜单下拉树列表")
+    @GetMapping("/treeselect")
+    public AjaxResult treeselect(SysMenu menu) {
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        List<SysMenu> menus = menuService.selectMenuList(menu, userId);
+        return AjaxResult.success(menuService.buildMenuTreeSelect(menus));
     }
 }

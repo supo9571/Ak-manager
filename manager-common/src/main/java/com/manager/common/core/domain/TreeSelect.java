@@ -9,7 +9,7 @@ import com.manager.common.core.domain.entity.SysMenu;
 
 /**
  * Treeselect树结构实体类
- * 
+ *
  * @author marvin
  */
 public class TreeSelect implements Serializable
@@ -21,6 +21,9 @@ public class TreeSelect implements Serializable
 
     /** 节点名称 */
     private String label;
+
+    /** 目录路径 */
+    private String path;
 
     /** 子节点 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -42,6 +45,7 @@ public class TreeSelect implements Serializable
     {
         this.id = menu.getMenuId();
         this.label = menu.getMenuName();
+        this.path = menu.getPath();
         this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
@@ -73,5 +77,13 @@ public class TreeSelect implements Serializable
     public void setChildren(List<TreeSelect> children)
     {
         this.children = children;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
