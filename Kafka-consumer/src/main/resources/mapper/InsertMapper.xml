@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.consumer.mapper.InsertMapper">
+
+	<insert id="insertReg" parameterType="com.consumer.domain.Register">
+		insert into data_register (`key`,`op`,`uid`,
+							 `ip`,`name`,`time`,
+							 `mstime`,`channel`,`agent_id`,
+							 `device_id`,`cur_channel`,`register_ip`,
+							 `device_brand`,`client_version`,`register_machine`)
+		values (#{key},#{op},#{uid},
+		        #{ip},#{name},#{time},
+		        #{mstime},#{channel},#{agentId},
+		        #{deviceId},#{curChannel},#{registerIp},
+		        #{deviceBrand},#{clientVersion},#{registerMachine})
+	</insert>
+
+	<insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">
+		insert into data_addcoins (`key`,`op`,`r`,
+		                           `uid`,`curr`,`time`,
+		                           `mstime`,`value`,`before`,
+		                           `channel`,`device_id`,`game_type`,
+		                           `table_type`,`cur_channel`,`device_brand`,
+		                           `client_version`)
+		values (#{key},#{op},#{r},
+		        #{uid},#{curr},#{time},
+		        #{mstime},#{value},#{before},
+		        #{channel},#{deviceId},#{gameType},
+		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion})
+	</insert>
+
+	<insert id="insertReduceCoins" parameterType="com.consumer.domain.Coins">
+		insert into data_reducecoins (`key`,`op`,`r`,
+		                           `uid`,`curr`,`time`,
+		                           `mstime`,`value`,`before`,
+		                           `channel`,`device_id`,`game_type`,
+		                           `table_type`,`cur_channel`,`device_brand`,
+		                           `client_version`,`safe_box`)
+		values (#{key},#{op},#{r},
+		        #{uid},#{curr},#{time},
+		        #{mstime},#{value},#{before},
+		        #{channel},#{deviceId},#{gameType},
+		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion},#{safeBox})
+	</insert>
+</mapper>

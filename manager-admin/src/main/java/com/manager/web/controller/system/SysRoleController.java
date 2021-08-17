@@ -93,6 +93,7 @@ public class SysRoleController extends BaseController {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
         }
         role.setCreateBy(SecurityUtils.getUsername());
+        role.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(roleService.insertRole(role));
 
     }
