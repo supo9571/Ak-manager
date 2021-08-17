@@ -23,7 +23,7 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public void addIpWhite(long tId, Long userId, String ips,long createUserId,String userName) {
+    public void addIpWhite(long tid, Long userId, String ips,long createUserId,String userName) {
         if(userId==null || userId ==0){
             //根据userName 查询id
             userId = sysUserMapper.selectUserIdByUserName(userName);
@@ -33,7 +33,7 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
         List<String> ipList = Arrays.asList(ips.split(","));
         Long finalUserId = userId;
         ipList.forEach(ip->{
-            list.add(new SysIpWhite(tId, finalUserId,createUserId,ip));
+            list.add(new SysIpWhite(tid, finalUserId,createUserId,ip));
         });
         sysIpWhiteMapper.insertIpWhite(list);
     }
@@ -44,8 +44,8 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     }
 
     @Override
-    public List selectIpWhiteList(String tId, String userId, String ip, String userName) {
-        return sysIpWhiteMapper.selectIpWhiteList(tId,userId,ip,userName);
+    public List selectIpWhiteList(String tid, String userId, String ip, String userName) {
+        return sysIpWhiteMapper.selectIpWhiteList(tid,userId,ip,userName);
     }
 
     @Override

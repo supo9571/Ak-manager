@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface SysTenantMapper {
 
-    List selectTenants(@Param("tId") String tId,@Param("tType") String tType);
+    List selectTenants(@Param("tid") String tId,@Param("tType") String tType);
 }

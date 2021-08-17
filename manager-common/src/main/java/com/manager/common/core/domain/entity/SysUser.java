@@ -25,7 +25,7 @@ public class SysUser extends BaseEntity {
     private String nickName;
 
     @ApiModelProperty(value = "平台id")
-    private String tId;
+    private String tid;
 
     @ApiModelProperty(value = "账号状态")
     private String status;

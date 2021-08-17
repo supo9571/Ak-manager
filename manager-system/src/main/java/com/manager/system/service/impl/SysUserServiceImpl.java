@@ -93,7 +93,7 @@ public class SysUserServiceImpl implements ISysUserService
         int rows = userMapper.insertUser(user);
         // 新增ip白名单
         if(StringUtils.isNotEmpty(user.getIps())){
-            sysIpWhiteService.addIpWhite(Long.valueOf(user.getTId()),
+            sysIpWhiteService.addIpWhite(Long.valueOf(user.getTid()),
                     Long.valueOf(user.getUserId()), user.getIps(),userId,user.getUserName());
         }
         // 新增用户与角色关联
@@ -447,6 +447,11 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String queryGoogleKey(Long userId) {
         return userMapper.queryGoogleKey(userId);
+    }
+
+    @Override
+    public int saveGoogleKey(Long userId, String googleKey) {
+        return userMapper.saveGoogleKey(userId,googleKey);
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.manager.common.core.domain.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 用户表 数据层
@@ -134,4 +135,7 @@ public interface SysUserMapper
     String queryGoogleKey(@Param("userId") Long userId);
 
     Long selectUserIdByUserName(@Param("userName") String userName);
+
+    @Update("update sys_user set google_key = #{googleKey} where user_id = #{userId}")
+    int saveGoogleKey(@Param("userId") Long userId, @Param("googleKey") String googleKey);
 }

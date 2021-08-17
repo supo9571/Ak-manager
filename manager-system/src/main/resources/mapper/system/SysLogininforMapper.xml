@@ -42,8 +42,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
 				and date_format(login_time,'%Y-%m-%d %H:%i-%s') &lt;= date_format(#{endTime},'%Y-%m-%d %H:%i-%s')
 			</if>
-			<if test="tId != null and tId != ''">
-				and t.t_id = #{tId}
+			<if test="tid != null and tid != ''">
+				and t.t_id = #{tid}
 			</if>
 		</where>
 		order by info_id desc

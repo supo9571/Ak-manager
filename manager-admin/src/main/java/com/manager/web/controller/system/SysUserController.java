@@ -4,6 +4,7 @@ import com.manager.common.annotation.Log;
 import com.manager.common.constant.UserConstants;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.domain.entity.SysMenu;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
@@ -13,6 +14,7 @@ import com.manager.common.utils.ServletUtils;
 import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.web.service.TokenService;
+import com.manager.system.service.ISysMenuService;
 import com.manager.system.service.ISysPostService;
 import com.manager.system.service.ISysRoleService;
 import com.manager.system.service.ISysUserService;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +47,8 @@ public class SysUserController extends BaseController {
     @Autowired
     private ISysRoleService roleService;
 
+    @Autowired
+    private ISysPostService postService;
     /**
      * 获取用户列表
      */
@@ -77,15 +82,15 @@ public class SysUserController extends BaseController {
      * 根据用户编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @ApiOperation(value = "获取用户详细")
+    @ApiIgnore
     @GetMapping(value = {"/", "/{userId}"})
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
         Map map = new HashMap<>();
-//        List<SysRole> roles = roleService.selectRoleAll();
-//        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        List<SysRole> roles = roleService.selectRoleAll();
+        map.put("roles", roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
         if (StringUtils.isNotNull(userId)) {
             map.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-//            map.put("postIds", postService.selectPostListByUserId(userId));
+            map.put("postIds", postService.selectPostListByUserId(userId));
             map.put("roleIds", roleService.selectRoleListByUserId(userId));
         }
         return AjaxResult.success(map);
@@ -192,4 +197,25 @@ public class SysUserController extends BaseController {
         return AjaxResult.success("查询google密钥成功", userService.queryGoogleKey(userId));
     }
 
+    /**
+     * 保存 用户google密钥
+     */
+    @PreAuthorize("@ss.hasPermi('system:google:save')")
+    @ApiOperation(value = "保存用户google密钥")
+    @GetMapping("/saveGoogleKey")
+    public AjaxResult saveGoogleKey(Long userId,String googleKey) {
+        return AjaxResult.success("保存google密钥成功", userService.saveGoogleKey(userId,googleKey));
+    }
+
+    @Autowired
+    private ISysMenuService menuService;
+    /**
+     * 获取用户菜单下拉树列表
+     */
+    @ApiOperation(value = "获取用户菜单下拉树列表")
+    @GetMapping("/userTree")
+    public AjaxResult treeselect(Long userId) {
+        List<SysMenu> menus = menuService.selectMenuList(new SysMenu(), userId);
+        return AjaxResult.success(menuService.buildMenuTreeSelect(menus));
+    }
 }

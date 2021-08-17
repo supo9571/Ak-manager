@@ -120,13 +120,13 @@ public class DataScopeAspect
             }
             else if (DATA_SCOPE_DEPT.equals(dataScope))
             {
-                sqlString.append(StringUtils.format(" OR {}.t_id = {} ", deptAlias, user.getTId()));
+                sqlString.append(StringUtils.format(" OR {}.t_id = {} ", deptAlias, user.getTid()));
             }
             else if (DATA_SCOPE_DEPT_AND_CHILD.equals(dataScope))
             {
                 sqlString.append(StringUtils.format(
                         " OR {}.t_id IN ( SELECT t_id FROM sys_tenant WHERE t_id = {} or find_in_set( {} , ancestors ) )",
-                        deptAlias, user.getTId(), user.getTId()));
+                        deptAlias, user.getTid(), user.getTid()));
             }
             else if (DATA_SCOPE_SELF.equals(dataScope))
             {

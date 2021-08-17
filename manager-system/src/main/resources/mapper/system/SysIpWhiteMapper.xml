@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (
-                #{item.tId},
+                #{item.tid},
                 #{item.userId},
                 #{item.ip},
                 #{item.createUserId}
@@ -34,8 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join sys_user sur on ip.create_user_id = sur.user_id
         left join sys_tenant t on ip.t_id = t.t_id
         <where>
-            <if test="tId != null and tId != ''">
-                and ip.t_id = #{tId}
+            <if test="tid != null and tid != ''">
+                and ip.t_id = #{tid}
             </if>
             <if test="userId != null and userId != ''">
                 and ip.user_id = #{userId}

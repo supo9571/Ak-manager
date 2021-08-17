@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface SysTenantService {
 
-    List selectTenants(String tId, String type);
+    List selectTenants(String tid, String type);
 }

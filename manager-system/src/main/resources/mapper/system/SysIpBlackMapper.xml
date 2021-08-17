@@ -7,8 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectTenants" resultType="java.util.Map">
         SELECT t_id tId,t_name tName FROM sys_tenant
         WHERE t_type = #{tType}
-        <if test="tId!=null and tId != '' ">
-            and parent_id = #{tId}
+        <if test="tid!=null and tid != '' ">
+            and parent_id = #{tid}
         </if>
     </select>
 

@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="requestMethod"  column="request_method" />
 		<result property="operatorType"   column="operator_type"  />
 		<result property="operName"       column="oper_name"      />
-		<result property="tId"       column="t_id"      />
+		<result property="tid"       column="t_id"      />
 		<result property="operUrl"        column="oper_url"       />
 		<result property="operIp"         column="oper_ip"        />
 		<result property="operLocation"   column="oper_location"  />
@@ -60,8 +60,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 				and date_format(oper_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 			</if>
-			<if test="tId != null and tId != ''">
-				AND t_id = #{tId}
+			<if test="tid != null and tid != ''">
+				AND t_id = #{tid}
 			</if>
 		</where>
 		order by oper_id desc

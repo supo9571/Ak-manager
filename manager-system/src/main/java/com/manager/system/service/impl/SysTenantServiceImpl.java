@@ -14,7 +14,7 @@ public class SysTenantServiceImpl implements SysTenantService {
     private SysTenantMapper sysTenantMapper;
 
     @Override
-    public List selectTenants(String tId, String tType) {
-        return sysTenantMapper.selectTenants(tId,tType);
+    public List selectTenants(String tid, String tType) {
+        return sysTenantMapper.selectTenants(tid,tType);
     }
 }

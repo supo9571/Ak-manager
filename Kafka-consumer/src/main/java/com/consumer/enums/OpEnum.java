@@ -5,10 +5,42 @@ package com.consumer.enums;
  */
 public enum OpEnum {
 
+    //注册
     REGISTER("register"),
+    //减金币
     REDUCECOINS("reducecoins"),
-    ADDCOINS("addcoins")
-    ;
+    //加金币
+    ADDCOINS("addcoins"),
+    //
+    TAKE_OUT_SAFE_BOX("take_out_safe_box"),
+    //
+    DESPOSIT_SAFE_BOX("desposit_safe_box"),
+    //
+    REDUCE_ITEM("reduce_item"),
+    //
+    LOGOUT("logout"),
+    //登录
+    LOGIN("login"),
+    //
+    ONLINE_PLAYER("online_player"),
+    //
+    PLAYER_BIND_PHONE("player_bind_phone"),
+    //
+    RMBBUY("rmbbuy"),
+    //
+    USER_LEAVE_GAME("user_leave_game"),
+    //
+    CARD_RECORD("card_record"),
+    //
+    STOP_TABLE("stop_table"),
+    //
+    CLOSE_TABLE("close_table"),
+    //
+    deskhelper_close_table("deskHelper.close_table"),
+    //
+    ENTER("enter"),
+    //
+    WATER_HISTORY("water_history");
 
     OpEnum(String opName) {
         this.opName = opName;

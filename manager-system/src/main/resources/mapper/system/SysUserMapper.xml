@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="SysUser" id="SysUserResult">
 		<id     property="userId"       column="user_id"      />
-		<result property="tId"       column="t_id"      />
+		<result property="tid"       column="t_id"      />
 		<result property="userName"     column="user_name"    />
 		<result property="password"     column="password"     />
 		<result property="status"       column="status"       />
@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="remark"       column="remark"       />
 		<result property="googleSwitch" column="google_switch"       />
 		<result property="googleKey"    column="google_key"       />
-		<result property="tId"    column="t_id"       />
+		<result property="tid"    column="t_id"       />
 		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
 	</resultMap>
 
@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateUser" parameterType="SysUser">
  		update sys_user
  		<set>
- 			<if test="tId != null and tId != 0">t_id = #{tId},</if>
+ 			<if test="tid != null and tid != 0">t_id = #{tId},</if>
  			<if test="userName != null and userName != ''">user_name = #{userName},</if>
  			<if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
  			<if test="password != null and password != ''">password = #{password},</if>
@@ -145,8 +145,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			,u.create_time createTime
 			,u.login_date loginDate
 			,u.google_key googleKey
+			,u.google_switch google_switch
+			,u.t_id tid
+			,r.role_id roleId
+			,r.role_name roleName
 		FROM sys_user u
 		LEFT JOIN sys_tenant t ON t.t_id = u.t_id
+		left join sys_user_role ur on ur.user_id = u.user_id
+		left join sys_role r on ur.role_id = r.role_id
 		<where>
 			<if test="userName != null and userName != ''">
 				AND u.user_name like concat('%', #{userName}, '%')
@@ -154,13 +160,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="userId != null and userId != ''">
 				AND u.user_id = #{userId}
 			</if>
-			<if test="tId != null and tId != ''">
-				AND u.tId = #{tId}
+			<if test="tid != null and tid != ''">
+				AND u.tid = #{tid}
 			</if>
 			<if test="status != null and status != ''">
 				AND u.status = #{status}
 			</if>
 		</where>
+		order by u.create_time desc
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>
@@ -168,7 +175,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!--新增用户 -->
 	<insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" >
 		insert into sys_user(
-		<if test="tId != null and tId != ''">t_id,</if>
+		<if test="tid != null and tid != ''">t_id,</if>
 		<if test="userName != null and userName != ''">user_name,</if>
 		<if test="nickName != null and nickName != ''">nick_name,</if>
 		<if test="password != null and password != ''">password,</if>
@@ -178,7 +185,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="googleKey != null and googleKey != ''">google_key,</if>
 		create_time
 		)values(
-		<if test="tId != null and tId != ''">#{tId},</if>
+		<if test="tid != null and tid != ''">#{tid},</if>
 		<if test="userName != null and userName != ''">#{userName},</if>
 		<if test="nickName != null and nickName != ''">#{nickName},</if>
 		<if test="password != null and password != ''">#{password},</if>
