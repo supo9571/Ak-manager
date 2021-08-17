@@ -7,4 +7,6 @@ public interface TotalService {
     Map getTimes();
 
     void updateTotal(BigDecimal addOrderMoney, long orderTime,BigDecimal addWithdrawMoney, long withdrawTime);
+
+    void updateOnlinePlay(int size);
 }

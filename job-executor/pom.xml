@@ -53,6 +53,12 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
         <!-- job-core -->
         <dependency>
             <groupId>com.ak</groupId>

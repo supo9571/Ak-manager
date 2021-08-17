@@ -18,4 +18,7 @@ public interface TotalMapper {
 			",total_withdraw = total_withdraw + #{addWithdrawMoney} ,withdraw_time = #{withdrawTime}")
 	void updateTotalRecharge(@Param("addOrderMoney") BigDecimal addOrderMoney, @Param("orderTime") long orderTime
 			,@Param("addWithdrawMoney") BigDecimal addWithdrawMoney, @Param("withdrawTime") long withdrawTime);
+
+	@Update("update sys_total set online_play =  #{size} ")
+    void updateOnlinePlay(@Param("size") int size);
 }

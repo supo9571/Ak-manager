@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "global-config")
 @Data
 public class GlobalConfig {
+
     private String domain;
 
     private String onlinePlay;
+    
 }

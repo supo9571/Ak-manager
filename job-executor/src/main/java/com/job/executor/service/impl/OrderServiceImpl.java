@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * 用于操作 各种从库
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
