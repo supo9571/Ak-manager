@@ -25,16 +25,14 @@ import java.util.List;
 @RestController
 @Api(tags = "登录日志")
 @RequestMapping("/system/logininfor")
-public class SysLogininforController extends BaseController
-{
+public class SysLogininforController extends BaseController {
     @Autowired
     private ISysLogininforService logininforService;
 
     @PreAuthorize("@ss.hasPermi('system:info:list')")
     @ApiOperation(value = "查询登录日志列表")
     @GetMapping("/list")
-    public AjaxResult list(SysLogininfor logininfor)
-    {
+    public AjaxResult list(SysLogininfor logininfor) {
         startPage();
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
         return AjaxResult.success(getDataTable(list));
@@ -44,8 +42,7 @@ public class SysLogininforController extends BaseController
     @ApiIgnore
     @PreAuthorize("@ss.hasPermi('system:logininfor:export')")
     @GetMapping("/export")
-    public AjaxResult export(SysLogininfor logininfor)
-    {
+    public AjaxResult export(SysLogininfor logininfor) {
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
         ExcelUtil<SysLogininfor> util = new ExcelUtil<SysLogininfor>(SysLogininfor.class);
         return util.exportExcel(list, "登录日志");
@@ -55,8 +52,7 @@ public class SysLogininforController extends BaseController
     @ApiIgnore
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{infoIds}")
-    public AjaxResult remove(@PathVariable Long[] infoIds)
-    {
+    public AjaxResult remove(@PathVariable Long[] infoIds) {
         return toAjax(logininforService.deleteLogininforByIds(infoIds));
     }
 
@@ -64,8 +60,7 @@ public class SysLogininforController extends BaseController
     @ApiIgnore
     @Log(title = "登录日志", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")
-    public AjaxResult clean()
-    {
+    public AjaxResult clean() {
         logininforService.cleanLogininfor();
         return AjaxResult.success();
     }

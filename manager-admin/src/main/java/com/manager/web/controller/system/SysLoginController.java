@@ -31,8 +31,7 @@ import java.util.Set;
  */
 @Api(tags = "登录管理")
 @RestController
-public class SysLoginController
-{
+public class SysLoginController {
     @Autowired
     private SysLoginService loginService;
 
@@ -53,11 +52,10 @@ public class SysLoginController
      */
     @ApiOperation(value = "登录方法")
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody)
-    {
+    public AjaxResult login(@RequestBody LoginBody loginBody) {
         Map map = new HashMap();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(),loginBody.getGoogleCode());
+        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getGoogleCode());
         map.put(Constants.TOKEN, token);
         return AjaxResult.success(map);
     }
@@ -69,8 +67,7 @@ public class SysLoginController
      */
     @ApiOperation(value = "获取用户信息")
     @GetMapping("getInfo")
-    public AjaxResult getInfo()
-    {
+    public AjaxResult getInfo() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
         // 角色集合
@@ -91,8 +88,7 @@ public class SysLoginController
      */
     @ApiOperation(value = "获取用户路由")
     @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
+    public AjaxResult getRouters() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         // 用户信息
         SysUser user = loginUser.getUser();

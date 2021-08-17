@@ -29,6 +29,7 @@ public class SysIpController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+
     /**
      * 添加白名单
      */
@@ -36,10 +37,10 @@ public class SysIpController extends BaseController {
     @ApiOperation(value = "添加白名单")
     @Log(title = "添加白名单", businessType = BusinessType.INSERT)
     @GetMapping("/white/add")
-    public AjaxResult add(Long tId,Long userId,String ips,String userName){
+    public AjaxResult add(Long tId, Long userId, String ips, String userName) {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
-        sysIpWhiteService.addIpWhite(tId,userId,ips,user.getUserId(),userName);
+        sysIpWhiteService.addIpWhite(tId, userId, ips, user.getUserId(), userName);
         return success();
     }
 
@@ -50,7 +51,7 @@ public class SysIpController extends BaseController {
     @ApiOperation(value = "删除白名单")
     @Log(title = "删除白名单", businessType = BusinessType.DELETE)
     @GetMapping("/white/delete")
-    public AjaxResult delete(long id){
+    public AjaxResult delete(long id) {
         sysIpWhiteService.delIpWhite(id);
         return success();
     }
@@ -61,10 +62,10 @@ public class SysIpController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:ip:list')")
     @ApiOperation(value = "查询白名单")
     @GetMapping("/white/list")
-    public AjaxResult list(String tId,String userId,String ip,String userName){
+    public AjaxResult list(String tId, String userId, String ip, String userName) {
         startPage();
-        List list = sysIpWhiteService.selectIpWhiteList(tId,userId,ip,userName);
-        return AjaxResult.success("查询白名单成功",getDataTable(list));
+        List list = sysIpWhiteService.selectIpWhiteList(tId, userId, ip, userName);
+        return AjaxResult.success("查询白名单成功", getDataTable(list));
     }
 
 }

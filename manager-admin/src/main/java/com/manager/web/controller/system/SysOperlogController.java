@@ -25,16 +25,14 @@ import java.util.List;
 @RestController
 @Api(tags = "操作日志")
 @RequestMapping("/system/operlog")
-public class SysOperlogController extends BaseController
-{
+public class SysOperlogController extends BaseController {
     @Autowired
     private ISysOperLogService operLogService;
 
     @PreAuthorize("@ss.hasPermi('system:operlog:list')")
     @ApiOperation(value = "查询操作日志列表")
     @GetMapping("/list")
-    public AjaxResult list(SysOperLog operLog)
-    {
+    public AjaxResult list(SysOperLog operLog) {
         startPage();
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
         return AjaxResult.success(getDataTable(list));
@@ -44,8 +42,7 @@ public class SysOperlogController extends BaseController
     @ApiIgnore
     @PreAuthorize("@ss.hasPermi('system:operlog:export')")
     @GetMapping("/export")
-    public AjaxResult export(SysOperLog operLog)
-    {
+    public AjaxResult export(SysOperLog operLog) {
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
         ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
         return util.exportExcel(list, "操作日志");
@@ -55,8 +52,7 @@ public class SysOperlogController extends BaseController
     @ApiIgnore
     @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
     @DeleteMapping("/{operIds}")
-    public AjaxResult remove(@PathVariable Long[] operIds)
-    {
+    public AjaxResult remove(@PathVariable Long[] operIds) {
         return toAjax(operLogService.deleteOperLogByIds(operIds));
     }
 
@@ -64,8 +60,7 @@ public class SysOperlogController extends BaseController
     @ApiIgnore
     @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
     @DeleteMapping("/clean")
-    public AjaxResult clean()
-    {
+    public AjaxResult clean() {
         operLogService.cleanOperLog();
         return AjaxResult.success();
     }

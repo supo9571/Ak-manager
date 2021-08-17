@@ -106,13 +106,12 @@ public class SysRoleController extends BaseController {
     @PostMapping("edit")
     public AjaxResult edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
-        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
-            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
-            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
-        }
+//        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+//            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+//        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+//            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
+//        }
         role.setUpdateBy(SecurityUtils.getUsername());
-
         if (roleService.updateRole(role) > 0) {
             // 更新缓存用户权限
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
@@ -133,8 +132,8 @@ public class SysRoleController extends BaseController {
     @ApiOperation(value = "修改保存角色名称")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PostMapping("editName")
-    public AjaxResult editName(String roleName,Long roleId) {
-        SysRole role = new SysRole(roleId,roleName);
+    public AjaxResult editName(String roleName, Long roleId) {
+        SysRole role = new SysRole(roleId, roleName);
         roleService.checkRoleAllowed(role);
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
