@@ -5,11 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.manager.system.mapper.SysTenantMapper">
 
     <select id="selectTenants" resultType="java.util.Map">
-        SELECT t_id tId,t_name tName FROM sys_tenant
+        SELECT t_id tid,t_name tName FROM sys_tenant
         WHERE t_type = #{tType}
         <if test="tid!=null and tid != '' ">
             and parent_id = #{tid}
         </if>
     </select>
 
+    <select id="selectAllTenant" resultType="java.util.Map">
+        SELECT t_id tid,t_name tName,parent_id parentId FROM sys_tenant
+    </select>
 </mapper>

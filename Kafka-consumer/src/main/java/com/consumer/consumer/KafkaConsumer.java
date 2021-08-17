@@ -55,7 +55,7 @@ public class KafkaConsumer {
                 insertHandler.insertAddcoins(jsonObject);
             }
             if(OpEnum.REDUCECOINS.equals(op)){
-                insertHandler.insertAddcoins(jsonObject);
+                insertHandler.insertReducecoins(jsonObject);
             }
         }catch (Exception e){
             //记录失败信息

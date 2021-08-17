@@ -29,14 +29,14 @@ public enum OpEnum {
     RMBBUY("rmbbuy"),
     //
     USER_LEAVE_GAME("user_leave_game"),
-    //
+    //牌局记录
     CARD_RECORD("card_record"),
     //
     STOP_TABLE("stop_table"),
     //
     CLOSE_TABLE("close_table"),
     //
-    deskhelper_close_table("deskHelper.close_table"),
+    DESKHELPER_CLOSE_TABLE("deskHelper.close_table"),
     //
     ENTER("enter"),
     //

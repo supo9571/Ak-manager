@@ -101,7 +101,7 @@ public class LogAspect
             if (loginUser != null)
             {
                 operLog.setOperName(loginUser.getUsername());
-                operLog.setTId(loginUser.getUser().getTid());
+                operLog.setTid(loginUser.getUser().getTid());
             }
 
             if (e != null)

@@ -41,14 +41,11 @@ public class kafkaConsumerHandler {
             //存库
             String op = jsonObject.getString("op");
 
-            if(opList.contains(op)){
-
-            }else {
+            if(!opList.contains(op)){
                 log.info("insert Msg");
                 opList.add(op);
                 testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
             }
-
         }catch (Exception e){
             //记录失败信息
             log.error(e.getMessage());

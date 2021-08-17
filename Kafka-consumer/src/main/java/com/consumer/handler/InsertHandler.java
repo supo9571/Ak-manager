@@ -26,7 +26,6 @@ public class InsertHandler {
         insertMapper.insertAddcoins(addCoins);
     }
 
-    @PostConstruct
     public void insertReducecoins(JSONObject result) {
         Coins reduceCoins = JSON.toJavaObject(result, Coins.class);
         insertMapper.insertReduceCoins(reduceCoins);

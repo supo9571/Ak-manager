@@ -55,7 +55,7 @@ public class SysOperLog extends BaseEntity
 
     /** 部门名称 */
     @Excel(name = "部门ID")
-    private String tId;
+    private String tid;
 
     /** 请求url */
     @Excel(name = "请求地址")

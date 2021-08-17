@@ -63,6 +63,6 @@ public class SysLogininfor extends BaseEntity
     private Date loginTime;
 
     @ApiModelProperty(value = "平台id")
-    private String tId;
+    private String tid;
 
 }

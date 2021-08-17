@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 首页
  *
@@ -34,4 +36,12 @@ public class SysCommonController {
     public AjaxResult selectTenants(String tid, String type) {
         return AjaxResult.success(sysTenantService.selectTenants(tid, type));
     }
+
+    @ApiOperation(value = "管理范围树结构")
+    @GetMapping("/tenantTree")
+    public AjaxResult tenantTree() {
+        List list = sysTenantService.selectAllTenant();
+        return AjaxResult.success(sysTenantService.buildTree(list));
+    }
+
 }
