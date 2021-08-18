@@ -211,7 +211,7 @@
         <module>job-admin</module>
         <module>job-core</module>
         <module>job-executor</module>
-        <module>Kafka-consumer</module>
+        <module>kafka-consumer</module>
     </modules>
     <packaging>pom</packaging>
 

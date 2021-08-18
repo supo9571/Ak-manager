@@ -58,9 +58,6 @@ public class KafkaConsumer {
                 case REDUCECOINS:
                     insertHandler.insertReducecoins(jsonObject);
                     break;
-                case CARD_RECORD:
-                    insertHandler.insertReducecoins(jsonObject);
-                    break;
                 default:
                     log.info("NEW OP -->{}",op);
             }
