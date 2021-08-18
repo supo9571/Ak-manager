@@ -57,6 +57,9 @@ public class SysUserController extends BaseController {
     @GetMapping("/list")
     public AjaxResult list(SysUser user) {
         startPage();
+        if(SecurityUtils.getLoginUser().getUser().isAdmin()){
+            user.setIsLoginAdmin("admin");
+        }
         List list = userService.selectUserList(user);
         return AjaxResult.success("查询成功", getDataTable(list));
     }
@@ -107,6 +110,9 @@ public class SysUserController extends BaseController {
     public AjaxResult edit(@Validated @RequestBody SysUser user) {
         userService.checkUserAllowed(user);
         user.setUpdateBy(SecurityUtils.getUsername());
+        if(StringUtils.isNotEmpty(user.getPassword())){
+            user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        }
         return toAjax(userService.updateUser(user));
     }
 

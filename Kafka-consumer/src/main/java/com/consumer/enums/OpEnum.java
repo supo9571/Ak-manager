@@ -52,4 +52,12 @@ public enum OpEnum {
         return opName;
     }
 
+    public static OpEnum getByValue(String opName) {
+        for (OpEnum opEnum : values()) {
+            if (opEnum.getOpName() == opName) {
+                return opEnum;
+            }
+        }
+        return null;
+    }
 }

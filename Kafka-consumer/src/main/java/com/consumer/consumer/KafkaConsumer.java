@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.consumer.enums.OpEnum.REGISTER;
+
 /**
  * @author marvin 2021/8/17
  */
@@ -33,9 +35,7 @@ public class KafkaConsumer {
     @Autowired
     private InsertHandler insertHandler;
 
-    private static List opList = new ArrayList();
-
-//    @KafkaListener(groupId = "group003", topics = "bills_log")
+    @KafkaListener(groupId = "group003", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
@@ -48,14 +48,21 @@ public class KafkaConsumer {
             //存库
             String op = jsonObject.getString("op");
 
-            if(OpEnum.REGISTER.equals(op)){
-                insertHandler.insertRegister(jsonObject);
-            }
-            if(OpEnum.ADDCOINS.equals(op)){
-                insertHandler.insertAddcoins(jsonObject);
-            }
-            if(OpEnum.REDUCECOINS.equals(op)){
-                insertHandler.insertReducecoins(jsonObject);
+            switch (OpEnum.getByValue(op)){
+                case REGISTER:
+                    insertHandler.insertRegister(jsonObject);
+                    break;
+                case ADDCOINS:
+                    insertHandler.insertAddcoins(jsonObject);
+                    break;
+                case REDUCECOINS:
+                    insertHandler.insertReducecoins(jsonObject);
+                    break;
+                case CARD_RECORD:
+                    insertHandler.insertReducecoins(jsonObject);
+                    break;
+                default:
+                    log.info("NEW OP -->{}",op);
             }
         }catch (Exception e){
             //记录失败信息

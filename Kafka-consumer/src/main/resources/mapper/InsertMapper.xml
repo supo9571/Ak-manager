@@ -17,7 +17,7 @@
 	</insert>
 
 	<insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">
-		insert into data_addcoins (`key`,`op`,`r`,
+		insert into data_coins (`key`,`op`,`r`,
 		                           `uid`,`curr`,`time`,
 		                           `mstime`,`value`,`before`,
 		                           `channel`,`device_id`,`game_type`,
@@ -31,7 +31,7 @@
 	</insert>
 
 	<insert id="insertReduceCoins" parameterType="com.consumer.domain.Coins">
-		insert into data_reducecoins (`key`,`op`,`r`,
+		insert into data_coins (`key`,`op`,`r`,
 		                           `uid`,`curr`,`time`,
 		                           `mstime`,`value`,`before`,
 		                           `channel`,`device_id`,`game_type`,
@@ -39,7 +39,7 @@
 		                           `client_version`,`safe_box`)
 		values (#{key},#{op},#{r},
 		        #{uid},#{curr},#{time},
-		        #{mstime},#{value},#{before},
+		        #{mstime},0-#{value},#{before},
 		        #{channel},#{deviceId},#{gameType},
 		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion},#{safeBox})
 	</insert>

@@ -16,7 +16,7 @@ import java.util.List;
 public class SysUser extends BaseEntity {
 
     @ApiModelProperty(value = "用户id")
-    private long userId;
+    private Long userId;
 
     @ApiModelProperty(value = "用户名")
     private String userName;
@@ -57,15 +57,18 @@ public class SysUser extends BaseEntity {
     /** 角色对象 */
     private List<SysRole> roles;
 
+    /** 角色对象 */
+    private String isLoginAdmin;
+
     public boolean isAdmin() {
-        return true?userId==1:false;
+        return userId==1;
     }
 
     public static boolean isAdmin(Long userId) {
-        return true?userId==1:false;
+        return userId==1;
     }
 
-    public boolean getGoogleSwitch() {
+    public boolean isSwitchOpen() {
         return "1".equals(googleSwitch);
     }
 

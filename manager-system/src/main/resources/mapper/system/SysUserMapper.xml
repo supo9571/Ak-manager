@@ -107,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="loginDate != null">login_date = #{loginDate},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
  			<if test="remark != null">remark = #{remark},</if>
+ 			<if test="googleSwitch != null and googleSwitch!=''">google_switch = #{googleSwitch},</if>
  			update_time = sysdate()
  		</set>
  		where user_id = #{userId}
@@ -165,6 +166,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="status != null and status != ''">
 				AND u.status = #{status}
+			</if>
+			<if test="isLoginAdmin == null or isLoginAdmin!='admin' ">
+				and u.user_id !=1
 			</if>
 		</where>
 		order by u.create_time desc

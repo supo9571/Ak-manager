@@ -87,7 +87,7 @@ public class SysLoginService
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //验证google验证码
-        if(loginUser.getUser().getGoogleSwitch() && !GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
+        if(loginUser.getUser().isSwitchOpen() && !GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(),googleCode)){
             throw new CustomException("google验证码错误");
         }
         //验证ip
