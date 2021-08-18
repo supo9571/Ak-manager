@@ -53,3 +53,6 @@ spring:
     listener:
       ack-mode: manual # 手工签收
       concurrency: 5
+shardingjdbc:
+  sql:
+    show: true

@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and ip.ip = #{ip}
             </if>
         </where>
+        order by ip.create_time desc
     </select>
 
     <select id="selectIpByUserId" resultType="java.util.Map">

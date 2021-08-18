@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND browser = #{browser}
 			</if>
 			<if test="userName != null and userName != ''">
-				AND user_name like concat('%', #{userName}, '%')
+				AND lf.user_name like concat('%', #{userName}, '%')
 			</if>
 			<if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
 				and date_format(login_time,'%Y-%m-%d %H:%i-%s') &gt;= date_format(#{beginTime},'%Y-%m-%d %H:%i-%s')

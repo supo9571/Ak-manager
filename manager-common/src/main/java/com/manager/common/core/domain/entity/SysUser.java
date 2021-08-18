@@ -16,7 +16,7 @@ import java.util.List;
 public class SysUser extends BaseEntity {
 
     @ApiModelProperty(value = "用户id")
-    private Long userId;
+    private long userId;
 
     @ApiModelProperty(value = "用户名")
     private String userName;

@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.consumer.enums.OpEnum.REGISTER;
-
 /**
  * @author marvin 2021/8/17
  */
@@ -35,7 +33,7 @@ public class KafkaConsumer {
     @Autowired
     private InsertHandler insertHandler;
 
-    @KafkaListener(groupId = "group003", topics = "bills_log")
+//    @KafkaListener(groupId = "group003", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
