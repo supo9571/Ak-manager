@@ -1,12 +1,10 @@
 package com.data.controller.common;
 
-import com.data.domain.common.AjaxResult;
-import com.data.domain.common.PageDomain;
-import com.data.domain.common.TableDataInfo;
-import com.data.domain.common.TableSupport;
-import com.data.utils.SqlUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.page.PageDomain;
+import com.manager.common.core.page.TableDataInfo;
 
 import java.util.List;
 
@@ -18,24 +16,17 @@ public class BaseController {
     /**
      * 设置请求分页数据
      */
-    protected void startPage() {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
+    protected void startPage(Integer page,Integer size,String orderByColumn,String isAsc) {
+        PageDomain pageDomain = new PageDomain();
+        pageDomain.setPageNum(page);
+        pageDomain.setPageSize(size);
+        pageDomain.setOrderByColumn(orderByColumn);
+        pageDomain.setIsAsc(isAsc);
+
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
         if (pageNum != null && pageSize != null) {
-            String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.startPage(pageNum, pageSize, orderBy);
-        }
-    }
-
-    /**
-     * 设置请求排序数据
-     */
-    protected void startOrderBy() {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        if (pageDomain.getOrderBy() != "") {
-            String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.orderBy(orderBy);
+            PageHelper.startPage(page, size, orderByColumn);
         }
     }
 

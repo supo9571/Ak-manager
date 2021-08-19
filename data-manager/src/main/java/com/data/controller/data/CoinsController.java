@@ -1,11 +1,13 @@
 package com.data.controller.data;
 
 import com.data.controller.common.BaseController;
-import com.data.domain.Coins;
-import com.data.domain.common.AjaxResult;
 import com.data.service.CoinsService;
+import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.domain.model.Coins;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
  * 账变记录
  */
 @RestController
+@RequestMapping("/data/coins")
 public class CoinsController extends BaseController {
 
     @Autowired
@@ -22,9 +25,9 @@ public class CoinsController extends BaseController {
     /**
      * 获取用户列表
      */
-    @GetMapping("/list")
-    public AjaxResult list(Coins coins) {
-        startPage();
+    @PostMapping("/list")
+    public AjaxResult list(@RequestBody Coins coins) {
+        startPage(coins.getPage(),coins.getSize(),coins.getOrderByColumn(),coins.getIsAsc());
         List list = coinsService.selectCoins(coins);
         return AjaxResult.success("查询成功", getDataTable(list));
     }

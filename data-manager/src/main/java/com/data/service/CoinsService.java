@@ -1,6 +1,6 @@
 package com.data.service;
 
-import com.data.domain.Coins;
+import com.manager.common.core.domain.model.Coins;
 
 import java.util.List;
 

@@ -1,4 +1,11 @@
 spring:
+  application:
+    name: data-manager
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 54.151.183.63:8848 #Nacos服务注册中心地址
+
   # redis 配置
   redis:
     # 地址
@@ -40,20 +47,6 @@ spring:
       validation-timeout: 1000
     dataNodes: sys-data.data_coins_2108,sys-data.data_coins_2109,sys-data.data_coins_2110
 
-  kafka:
-    bootstrap-servers: 10.39.1.88:9092
-    consumer:
-      enable-auto-commit: false # 消息的签收机制：手工签收
-      # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：
-      # latest（默认值）在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）
-      # earliest ：在偏移量无效的情况下，消费者将从起始位置读取分区的记录
-      auto-offset-reset: earliest
-      ## 序列化配置
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    listener:
-      ack-mode: manual # 手工签收
-      concurrency: 5
 shardingjdbc:
   sql:
     show: true

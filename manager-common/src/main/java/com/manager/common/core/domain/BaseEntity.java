@@ -61,6 +61,14 @@ public class BaseEntity implements Serializable {
      */
     private String remark;
 
+    private Integer page;
+
+    private Integer size;
+
+    private String orderByColumn;
+
+    private String isAsc;
+
     /**
      * 请求参数
      */

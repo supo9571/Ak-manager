@@ -1,4 +1,10 @@
 spring:
+  application:
+    name: manager-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 54.151.183.63:8848 #Nacos服务注册中心地址
   # redis 配置
   redis:
     # 地址
@@ -138,3 +144,13 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+ribbon:
+  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
+  ReadTimeout: 60000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 6000 #ribbon请求连接的超时时间，默认值2000
+  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
+feign:
+  httpclient:
+    enabled: true

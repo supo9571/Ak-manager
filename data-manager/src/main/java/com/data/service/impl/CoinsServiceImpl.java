@@ -1,8 +1,8 @@
 package com.data.service.impl;
 
-import com.data.domain.Coins;
 import com.data.mapper.CoinsMapper;
 import com.data.service.CoinsService;
+import com.manager.common.core.domain.model.Coins;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,7 @@
 package com.data.mapper;
 
-import com.data.domain.Coins;
+import com.manager.common.core.domain.model.Coins;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -12,6 +11,5 @@ import java.util.List;
 @Mapper
 public interface CoinsMapper {
 
-//    @Select("select * from data_coins")
     List selectCoins(Coins coins);
 }

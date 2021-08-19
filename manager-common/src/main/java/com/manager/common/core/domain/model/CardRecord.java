@@ -1,13 +1,13 @@
-package com.data.domain;
+package com.manager.common.core.domain.model;
 
-import com.data.domain.common.Params;
+import com.manager.common.core.domain.BaseEntity;
 import lombok.Data;
 
 /**
  * @author marvin 2021/8/18
  */
 @Data
-public class CardRecord extends Params {
+public class CardRecord extends BaseEntity {
 
     private String key;
     private String op;
