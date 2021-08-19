@@ -1,12 +1,13 @@
-package com.consumer.domain;
+package com.data.domain;
 
+import com.data.domain.common.Params;
 import lombok.Data;
 
 /**
  * @author marvin 2021/8/17
  */
 @Data
-public class Coins {
+public class Coins extends Params {
 
     private String key;
     private String op;

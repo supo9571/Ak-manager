@@ -162,7 +162,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND u.user_id = #{userId}
 			</if>
 			<if test="tid != null and tid != ''">
-				AND u.tid = #{tid}
+				AND u.t_id = #{tid}
 			</if>
 			<if test="status != null and status != ''">
 				AND u.status = #{status}

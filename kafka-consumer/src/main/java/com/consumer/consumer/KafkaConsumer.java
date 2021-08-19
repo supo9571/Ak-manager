@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.consumer.enums.OpEnum;
 import com.consumer.handler.InsertHandler;
-import com.consumer.redis.RedisCache;
+import com.consumer.config.redis.RedisCache;
+import com.consumer.service.DataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -33,6 +34,11 @@ public class KafkaConsumer {
     @Autowired
     private InsertHandler insertHandler;
 
+    @Autowired
+    private DataService testService;
+
+    private static List opList = new ArrayList();
+
 //    @KafkaListener(groupId = "group003", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
@@ -49,15 +55,20 @@ public class KafkaConsumer {
             switch (OpEnum.getByValue(op)){
                 case REGISTER:
                     insertHandler.insertRegister(jsonObject);
+                    log.info("insertRegister");
                     break;
                 case ADDCOINS:
                     insertHandler.insertAddcoins(jsonObject);
+                    log.info("insertAddcoins");
                     break;
                 case REDUCECOINS:
                     insertHandler.insertReducecoins(jsonObject);
+                    log.info("insertReducecoins");
                     break;
                 default:
                     log.info("NEW OP -->{}",op);
+                    opList.add(op);
+                    testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
             }
         }catch (Exception e){
             //记录失败信息

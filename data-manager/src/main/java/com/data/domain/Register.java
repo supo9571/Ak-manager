@@ -1,29 +1,28 @@
-package com.consumer.domain;
+package com.data.domain;
 
+import com.data.domain.common.Params;
 import lombok.Data;
 
 /**
  * @author marvin 2021/8/17
  */
 @Data
-public class Coins {
+public class Register extends Params {
 
     private String key;
     private String op;
-    private int r; //加钱原因
     private Long uid;
-    private Long curr;//改变之后的金额
+    private Long ip;
+    private String name;
     private Long time;
-    private Long value;// 改变数量
-    private Long before;//之前的金额
     private Long mstime;
     private String channel;
+    private int agentId;
     private String deviceId;
-    private Long gameType;
-    private Long tableType;
     private String curChannel;
+    private String registerIp;
     private String deviceBrand;
     private String clientVersion;
+    private String registerMachine;
 
-    private Long safeBox;//保险箱余额
 }

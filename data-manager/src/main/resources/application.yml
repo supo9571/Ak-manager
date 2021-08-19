@@ -1,10 +1,10 @@
 server:
-  port: 8040
+  port: 8030
 
 spring:
   profiles:
     active: dev
 
 mybatis:
-  type-aliases-package: com.consumer.domain
+  type-aliases-package: com.data.domain
   mapper-locations: classpath:/mapper/*Mapper.xml
