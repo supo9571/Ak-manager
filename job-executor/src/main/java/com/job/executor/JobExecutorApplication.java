@@ -7,11 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-@SpringBootApplication(exclude = {
-		DataSourceAutoConfiguration.class
-})
-@EnableTransactionManagement(order = 2)	//设置事务执行顺序(需要在切换数据源之后，否则只走主库)
-@MapperScan(basePackages = "com.job.executor.mapper")
+@SpringBootApplication
 public class JobExecutorApplication {
 
 	public static void main(String[] args) {

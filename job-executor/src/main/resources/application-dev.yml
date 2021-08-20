@@ -1,30 +1,8 @@
-#多数据源
-datasource:
-  #主库
-  master:
-    jdbcUrl: jdbc:mysql://54.151.183.63:3306/sys-manager?useUnicode=true&characterEncoding=utf-8
+spring:
+  datasource:
+    url: jdbc:mysql://54.151.183.63:3306/sys-data?useUnicode=true&characterEncoding=utf-8
     username: root
     password: ak-root
-    driver-class-name: com.mysql.jdbc.Driver
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-  #从库
-  slave1:
-    #10.39.1.88:3306 root 123456
-    jdbcUrl: jdbc:mysql://10.39.1.88:3306/db_payment?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-
-  #从库
-  slave2:
-    jdbcUrl: jdbc:mysql://10.39.1.88:3306/db_agent?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
     initialSize: 5
     minIdle: 5
