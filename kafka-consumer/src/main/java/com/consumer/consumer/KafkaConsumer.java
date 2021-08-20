@@ -39,7 +39,7 @@ public class KafkaConsumer {
 
     private static List opList = new ArrayList();
 
-//    @KafkaListener(groupId = "group003", topics = "bills_log")
+    @KafkaListener(groupId = "group001", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
@@ -66,20 +66,23 @@ public class KafkaConsumer {
                     log.info("insertReducecoins");
                     break;
                 default:
-                    log.info("NEW OP -->{}",op);
-                    opList.add(op);
-                    testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
+                    if(!opList.contains(op)){
+                        log.info("NEW OP -->{}",op);
+                        testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
+                        opList.add(op);
+                    }
+
             }
         }catch (Exception e){
             //记录失败信息
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("offset",record.offset());
-            jsonObject.put("errMsg",e.getMessage());
-            jsonObject.put("value",record.value());
-            List errMsgs = new ArrayList();
-            errMsgs.add(jsonObject.toJSONString());
-            log.error(e.getMessage());
-            redisCache.setCacheList("kafka_error", errMsgs);
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("offset",record.offset());
+//            jsonObject.put("errMsg",e.getMessage());
+//            jsonObject.put("value",record.value());
+//            List errMsgs = new ArrayList();
+//            errMsgs.add(jsonObject.toJSONString());
+//            log.error(e.getMessage());
+//            redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
             // 手工签收机制
             consumer.commitSync(currentOffset);

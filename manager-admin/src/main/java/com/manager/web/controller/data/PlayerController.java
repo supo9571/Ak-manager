@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author marvin 2021/8/19
  */
-//@RestController
-//@Api(tags = "玩家列表")
-//@RequestMapping("/data/player")
-public class UserController extends BaseController {
+@RestController
+@Api(tags = "玩家列表")
+@RequestMapping("/data/player")
+public class PlayerController extends BaseController {
 
     @Autowired
     private UserService userService;
     /**
      * 获取用户列表
      */
-    @PreAuthorize("@ss.hasPermi('data:coins:list')")
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
     @ApiOperation(value = "查询账变列表")
     @GetMapping("/list")
     public AjaxResult list(PlayUser playUser) {
-        return AjaxResult.success(userService.list(playUser));
+        return userService.list(playUser);
     }
 }

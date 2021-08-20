@@ -56,4 +56,4 @@ spring:
       concurrency: 5
 shardingjdbc:
   sql:
-    show: true
+    show: false

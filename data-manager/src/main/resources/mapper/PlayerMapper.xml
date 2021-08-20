@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.PlayerMapper">
+
+    <select id="selectPlayer" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.PlayUser">
+        select uid,name,FROM_UNIXTIME(time) time,channel,agent_id agentId,
+        device_id deviceId,register_ip registerIp,device_brand deviceBrand,
+        register_machine registerMachine
+        from data_register
+        <where>
+            <if test="uid!=null and name !=0">
+                and uid = #{uid}
+            </if>
+            <if test="name!=null and name !=''">
+                and name = #{name}
+            </if>
+            <if test="registerIp!=null and registerIp !=''">
+                and  register_ip = #{registerIp}
+            </if>
+            <if test="registerMachine!=null and registerMachine !=''">
+                and  register_machine = #{registerMachine}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and time >= UNIX_TIMESTAMP(#{beginTime})
+            </if>
+            <if test="endTime!=null and endTime !=''">
+                and  UNIX_TIMESTAMP(#{endTime}) >= time
+            </if>
+        </where>
+    </select>
+</mapper>

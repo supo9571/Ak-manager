@@ -83,7 +83,8 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-
+  main:
+    allow-bean-definition-overriding: true
 # 项目相关配置
 manager:
   # 名称

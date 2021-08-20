@@ -3,7 +3,18 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.data.mapper.CoinsMapper">
 
-	<select id="selectCoins" resultType="java.util.Map" >
+	<select id="selectCoins" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
 		select * from data_coins
+		<where>
+			<if test="uid!=null and uid !=''">
+				and uid = #{uid}
+			</if>
+			<if test="beginTime!=null and beginTime !=''">
+				and time >= UNIX_TIMESTAMP(#{beginTime})
+			</if>
+			<if test="endTime!=null and endTime !=''">
+				and  UNIX_TIMESTAMP(#{endTime}) >= time
+			</if>
+		</where>
 	</select>
 </mapper>

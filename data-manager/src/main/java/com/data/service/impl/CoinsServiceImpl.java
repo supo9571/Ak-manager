@@ -18,7 +18,6 @@ public class CoinsServiceImpl implements CoinsService {
     private CoinsMapper coinsMapper;
     @Override
     public List selectCoins(Coins coins) {
-        coins.setMstime(1629359812025l);
         return coinsMapper.selectCoins(coins);
     }
 }
