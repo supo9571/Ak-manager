@@ -80,14 +80,14 @@ public class ShardingDataSourceConfiguration {
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
 
         orderTableRuleConfig.setLogicTable("data_coins");
-        orderTableRuleConfig.setLogicIndex("mstime");
+        orderTableRuleConfig.setLogicIndex("time");
 
-        // 设置数据库策略，传入的是sys_time
+        // 设置数据库策略，传入的是time
 //        orderTableRuleConfig.setDatabaseShardingStrategyConfig(
-//                new StandardShardingStrategyConfiguration("mstime", DatabaseShardingAlgorithm.class.getName()));
-        // 设置数据表策略，传入的是sys_time
+//                new StandardShardingStrategyConfiguration("time", DatabaseShardingAlgorithm.class.getName()));
+        // 设置数据表策略，传入的是time
         orderTableRuleConfig.setTableShardingStrategyConfig(
-                new StandardShardingStrategyConfiguration("mstime", TableShardingAlgorithm.class.getName()));
+                new StandardShardingStrategyConfiguration("time", TableShardingAlgorithm.class.getName()));
 
         // 设置数据节点，格式为dbxx.tablexx。这里的名称要和map的别名一致。下面两种方式都可以
         // orderTableRuleConfig.setActualDataNodes("db_${0..1}.t_order_${0..1}");

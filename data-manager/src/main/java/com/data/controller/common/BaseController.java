@@ -17,17 +17,14 @@ public class BaseController {
      * 设置请求分页数据
      */
     protected void startPage(Integer page,Integer size,String orderByColumn,String isAsc) {
+        page = (page == null) ? 1 : page;
+        size = (size == null) ? 10 : size;
         PageDomain pageDomain = new PageDomain();
         pageDomain.setPageNum(page);
         pageDomain.setPageSize(size);
         pageDomain.setOrderByColumn(orderByColumn);
         pageDomain.setIsAsc(isAsc);
-
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        if (pageNum != null && pageSize != null) {
-            PageHelper.startPage(page, size, orderByColumn);
-        }
+        PageHelper.startPage(page, size, orderByColumn);
     }
 
     /**

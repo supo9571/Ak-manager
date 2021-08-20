@@ -4,17 +4,44 @@
 <mapper namespace="com.data.mapper.CoinsMapper">
 
 	<select id="selectCoins" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
-		select * from data_coins
+		select c.uid,
+			substring(replace(c.key,'_',''),8) `key`,
+		       c.curr,
+			   FROM_UNIXTIME(c.time) time,
+		       c.value,
+		       c.before,c.channel,
+		       c.table_type tableType,
+		       c.device_brand deviceBrand,
+		       g.game_name,
+		       r.r_name rname,
+		       u.name uname
+		from data_coins c
+		left join config_reason r on c.r=r.r_id
+		left join config_game g on c.game_type = g.game_id
+		left join data_register u on u.uid = c.uid
 		<where>
 			<if test="uid!=null and uid !=''">
-				and uid = #{uid}
+				and c.uid in
+				<foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
+			<if test="gameType!=null and gameType !=''">
+				and c.game_type = #{gameType}
+			</if>
+			<if test="channel!=null and channel !=''">
+				and c.channel = #{channel}
+			</if>
+			<if test="uname!=null and uname !=''">
+				and u.name = #{uname}
 			</if>
 			<if test="beginTime!=null and beginTime !=''">
-				and time >= UNIX_TIMESTAMP(#{beginTime})
+				and c.time >= UNIX_TIMESTAMP(#{beginTime})
 			</if>
 			<if test="endTime!=null and endTime !=''">
-				and  UNIX_TIMESTAMP(#{endTime}) >= time
+				and  UNIX_TIMESTAMP(#{endTime}) >= c.time
 			</if>
+
 		</where>
 	</select>
 </mapper>

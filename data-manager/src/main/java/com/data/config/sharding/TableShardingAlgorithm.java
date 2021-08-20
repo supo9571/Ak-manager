@@ -19,7 +19,7 @@ public class TableShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
         String tableName = preciseShardingValue.getLogicTableName() + "_";
         try {
             Long time = preciseShardingValue.getValue();
-            Date date  = new Date(time);
+            Date date  = new Date(time*1000);
             String year = String.format("%ty", date);
             String mon = String.format("%tm", date);
             tableName = tableName + year + mon;

@@ -11,5 +11,5 @@ import java.util.List;
 @Mapper
 public interface CoinsMapper {
 
-    List selectCoins(Coins coins);
+    List<Coins> selectCoins(Coins coins);
 }
