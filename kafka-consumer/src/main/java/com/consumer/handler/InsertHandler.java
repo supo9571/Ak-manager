@@ -3,6 +3,7 @@ package com.consumer.handler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.consumer.domain.Coins;
+import com.consumer.domain.Login;
 import com.consumer.domain.Register;
 import com.consumer.mapper.InsertMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,38 @@ public class InsertHandler {
         insertMapper.insertReduceCoins(reduceCoins);
         insertMapper.updateCurr(reduceCoins.getUid(),reduceCoins.getCurr());
     }
+
+    @Transactional
+    public void insertLogin(JSONObject result) {
+        Login login = JSON.toJavaObject(result, Login.class);
+        insertMapper.insertLogin(login);
+        insertMapper.updateUser(login.getUid(),longIp(login.getIp()),login.getDeviceId(),login.getDeviceBrand(),login.getVipLevel());
+    }
+
+    public void insertLogout(JSONObject result) {
+        Login login = JSON.toJavaObject(result, Login.class);
+        insertMapper.insertLogout(login);
+    }
+
+//    @PostConstruct
+//    public void test() {
+//        JSONObject result = JSONObject.parseObject("{\"r\": 200002, \"ip\": 170328366, \"op\": \"logout\", \"key\": \"hallsvr_1_1628959455_12\", \"uid\": 113188, \"time\": 1628959455, \"mstime\": 1628959455765, \"channel\": \"guanwang\", \"device_id\": \"707BC84934541EF08AE008C3F225E593\", \"cur_channel\": \"guanwang\", \"device_brand\": \"mi-4c\", \"client_version\": \"1.0.0\"}");
+//        Login login = JSON.toJavaObject(result, Login.class);
+//        insertMapper.insertLogout(login);
+//    }
+
+
+
+    private String longIp(final long ip) {
+        final long[] mask = { 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000 };
+        final StringBuilder ipAddress = new StringBuilder();
+        for (int i = 0; i < mask.length; i++) {
+            ipAddress.insert(0, (ip & mask[i]) >> (i * 8));
+            if (i < mask.length - 1) {
+                ipAddress.insert(0, ".");
+            }
+        }
+        return ipAddress.toString();
+    }
+
 }

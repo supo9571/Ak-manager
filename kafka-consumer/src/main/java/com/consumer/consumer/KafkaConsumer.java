@@ -39,7 +39,7 @@ public class KafkaConsumer {
 
     private static List opList = new ArrayList();
 
-    @KafkaListener(groupId = "group001", topics = "bills_log")
+//    @KafkaListener(groupId = "group001", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
@@ -55,15 +55,20 @@ public class KafkaConsumer {
             switch (OpEnum.getByValue(op)){
                 case REGISTER:
                     insertHandler.insertRegister(jsonObject);
-                    log.info("insertRegister");
                     break;
                 case ADDCOINS:
                     insertHandler.insertAddcoins(jsonObject);
-                    log.info("insertAddcoins");
                     break;
                 case REDUCECOINS:
                     insertHandler.insertReducecoins(jsonObject);
-                    log.info("insertReducecoins");
+                    break;
+                case LOGIN:
+                    insertHandler.insertLogin(jsonObject);
+                    log.info("login");
+                    break;
+                case LOGOUT:
+                    insertHandler.insertLogout(jsonObject);
+                    log.info("logout");
                     break;
                 default:
                     if(!opList.contains(op)){

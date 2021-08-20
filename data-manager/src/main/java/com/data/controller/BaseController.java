@@ -1,4 +1,4 @@
-package com.data.controller.common;
+package com.data.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

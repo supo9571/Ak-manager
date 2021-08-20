@@ -1,6 +1,6 @@
-package com.data.controller.data;
+package com.data.controller;
 
-import com.data.controller.common.BaseController;
+import com.data.controller.BaseController;
 import com.data.service.CoinsService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Coins;

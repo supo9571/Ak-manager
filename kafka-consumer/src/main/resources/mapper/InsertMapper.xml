@@ -43,4 +43,22 @@
 		        #{channel},#{deviceId},#{gameType},
 		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion},#{safeBox})
 	</insert>
+
+	<insert id="insertLogin" parameterType="com.consumer.domain.Login">
+		insert into data_login (`key`,`op`,`uid`,`name`,`sex`,`phone`,
+		                           `r`,`ip`,`time`,`mstime`,`level`,`channel`,
+		                           `device_id`,`vip_level`,`cur_channel`,
+		                           `register_ip`,`device_brand`,`client_version`)
+		values (#{key},#{op},#{uid},#{nickName},#{sex},#{phone},
+		        #{r},#{ip},#{time},
+		        #{mstime},#{level},#{channel},
+		        #{deviceId},#{vipLevel},#{curChannel},#{registerIp},#{deviceBrand},#{clientVersion})
+	</insert>
+
+	<insert id="insertLogout" parameterType="com.consumer.domain.Login">
+		insert into data_logout (`key`,`op`,`uid`,`r`,`ip`,`time`,`mstime`,`channel`,
+								`device_id`,`cur_channel`,`device_brand`,`client_version`)
+		values (#{key},#{op},#{uid},#{r},#{ip},#{time},
+				#{mstime},#{channel},#{deviceId},#{curChannel},#{deviceBrand},#{clientVersion})
+	</insert>
 </mapper>
