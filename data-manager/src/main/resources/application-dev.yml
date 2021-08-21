@@ -33,7 +33,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://54.151.183.63:3306/sys-data?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: ak-root
+    password: AAK212@VS%
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       auto-commit: true
