@@ -27,21 +27,21 @@ public class InsertHandler {
     public void insertAddcoins(JSONObject result) {
         Coins addCoins = JSON.toJavaObject(result, Coins.class);
         insertMapper.insertAddcoins(addCoins);
-        insertMapper.updateCurr(addCoins.getUid(),addCoins.getCurr());
+        insertMapper.updateCurrByAdd(addCoins.getUid(),addCoins.getCurr());
     }
 
     @Transactional
     public void insertReducecoins(JSONObject result) {
         Coins reduceCoins = JSON.toJavaObject(result, Coins.class);
         insertMapper.insertReduceCoins(reduceCoins);
-        insertMapper.updateCurr(reduceCoins.getUid(),reduceCoins.getCurr());
+        insertMapper.updateCurrByRed(reduceCoins.getUid(),reduceCoins.getCurr(),reduceCoins.getSafeBox());
     }
 
     @Transactional
     public void insertLogin(JSONObject result) {
         Login login = JSON.toJavaObject(result, Login.class);
         insertMapper.insertLogin(login);
-        insertMapper.updateUser(login.getUid(),longIp(login.getIp()),login.getDeviceId(),login.getDeviceBrand(),login.getVipLevel());
+        insertMapper.updateUser(login.getUid(),longIp(login.getIp()),login.getDeviceId(),login.getDeviceBrand(),login.getVipLevel(),login.getTime());
     }
 
     public void insertLogout(JSONObject result) {

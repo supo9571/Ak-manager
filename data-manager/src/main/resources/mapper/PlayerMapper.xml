@@ -6,7 +6,13 @@
     <select id="selectPlayer" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.PlayUser">
         select uid,name,FROM_UNIXTIME(time) time,channel,agent_id agentId,
         device_id deviceId,register_ip registerIp,device_brand deviceBrand,
-        register_machine registerMachine
+        register_machine registerMachine,
+        login_ip loginIp,
+        login_device_id loginDeviceId,
+        login_device_brand loginDeviceBrand,
+        vip_level vipLevel,
+        phone,safe_box safeBox,
+        FROM_UNIXTIME(login_time) loginTime
         from data_register
         <where>
             <if test="uid!=null and uid !=''">

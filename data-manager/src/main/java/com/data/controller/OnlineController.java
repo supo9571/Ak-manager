@@ -1,6 +1,7 @@
 package com.data.controller;
 
 import com.data.service.CoinsService;
+import com.data.service.OnlineService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Coins;
 import com.manager.common.core.domain.model.OnlinePlayer;
@@ -19,14 +20,14 @@ import java.util.List;
 public class OnlineController extends BaseController {
 
     @Autowired
-    private CoinsService coinsService;
+    private OnlineService onlineService;
     /**
      * 获取在线玩家列表
      */
     @PostMapping("/list")
     public AjaxResult list(OnlinePlayer onlinePlayer) {
         startPage(onlinePlayer.getPage(),onlinePlayer.getSize(),onlinePlayer.getOrderByColumn(),onlinePlayer.getIsAsc());
-        List list =null;// coinsService.selectCoins(onlinePlayer);
+        List list =onlineService.selectOnline(onlinePlayer);
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 }

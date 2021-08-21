@@ -1,6 +1,5 @@
 package com.data.controller;
 
-import com.data.controller.BaseController;
 import com.data.service.PlayerService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;

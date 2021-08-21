@@ -39,7 +39,7 @@ public class KafkaConsumer {
 
     private static List opList = new ArrayList();
 
-//    @KafkaListener(groupId = "group001", topics = "bills_log")
+    @KafkaListener(groupId = "group110", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
@@ -48,7 +48,7 @@ public class KafkaConsumer {
             JSONObject jsonObject = JSON.parseObject(record.value().toString());
             //设置偏移量
             currentOffset.put(new TopicPartition(record.topic(), record.partition()),
-                    new OffsetAndMetadata(record.offset() + 5));
+                    new OffsetAndMetadata(record.offset() + 3));
             //存库
             String op = jsonObject.getString("op");
 
@@ -86,7 +86,7 @@ public class KafkaConsumer {
 //            jsonObject.put("value",record.value());
 //            List errMsgs = new ArrayList();
 //            errMsgs.add(jsonObject.toJSONString());
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
 //            redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
             // 手工签收机制

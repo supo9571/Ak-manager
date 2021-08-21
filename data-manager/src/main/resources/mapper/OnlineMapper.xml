@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.OnlineMaper">
+
+    <select id="selectOnline" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.OnlinePlayer">
+        select o.uid,o.name,g.game_name gameName,
+               o.coins,r.safe_box safeBox,r.today_add todayAdd,
+               r.today_red todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
+               r.register_ip registerIp,r.login_ip loginIp,r.login_device_id loginDeviceId
+        from data_online o
+        left join data_register r on o.uid = r.uid
+        left join config_game g on o.game_type = g.game_id
+        <where>
+            <if test="gameType!=null and gameType !=''">
+                and g.game_id = #{gameType}
+            </if>
+            <if test="loginIp!=null and loginIp !=''">
+                and  r.login_ip = #{loginIp}
+            </if>
+            <if test="channel!=null and channel !=''">
+                and  r.channel = #{channel}
+            </if>
+        </where>
+    </select>
+</mapper>

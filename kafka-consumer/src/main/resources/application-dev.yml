@@ -47,10 +47,13 @@ spring:
       # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：
       # latest（默认值）在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）
       # earliest ：在偏移量无效的情况下，消费者将从起始位置读取分区的记录
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       ## 序列化配置
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-commit-interval: 100ms
+      properties:
+        session.timeout.ms: 15000
     listener:
       ack-mode: manual # 手工签收
       concurrency: 5

@@ -45,7 +45,7 @@ spring:
       minimum-idle: 10
       pool-name: HikariCP
       validation-timeout: 1000
-    dataNodes: sys-data.data_coins_2107,sys-data.data_coins_2108,sys-data.data_coins_2109
+    dataNodes: sys-data.data_coins_2108,sys-data.data_coins_2109
 
 shardingjdbc:
   sql:

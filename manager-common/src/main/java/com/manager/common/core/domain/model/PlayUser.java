@@ -42,4 +42,24 @@ public class PlayUser extends BaseEntity {
     @ApiModelProperty("机器码")
     private String registerMachine;
 
+    @ApiModelProperty("最后登录ip")
+    private String loginIp;
+
+    @ApiModelProperty("最后登录机器码")
+    private String loginDeviceId;
+
+    @ApiModelProperty("最后登录设备")
+    private String loginDeviceBrand;
+
+    @ApiModelProperty("最后登录时间")
+    private String loginTime;
+
+    @ApiModelProperty("vip等级")
+    private String vipLevel;
+
+    @ApiModelProperty("电话号码")
+    private String phone;
+
+    @ApiModelProperty("保险箱余额")
+    private String safeBox;
 }
