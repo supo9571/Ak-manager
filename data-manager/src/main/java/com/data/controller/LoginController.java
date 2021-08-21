@@ -42,7 +42,7 @@ public class LoginController extends BaseController{
      * 近期登录数
      */
     @PostMapping("/count")
-    public AjaxResult today(String type) {
+    public AjaxResult count(String type) {
         return AjaxResult.success("查询成功", loginservice.selectLoginCounts(type));
     }
 }
