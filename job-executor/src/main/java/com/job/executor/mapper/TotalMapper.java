@@ -13,4 +13,9 @@ public interface TotalMapper {
 	void cleanOnline();
 
 	void insertOnline(List list);
+
+	@Select("select count(1) from data_login where mstime >= #{time}")
+    int selectTodayLogins(Long time);
+
+	void saveTodayLogins(@Param("date") String date, @Param("num") int num);
 }

@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -30,7 +33,6 @@ public class TotalHandle {
      * 在线玩家人数
      */
     @XxlJob("online_play")
-    @PostConstruct
     public void onlinePlay() {
         String domain = globaConfig.getDomain();
         String onlinePlay = globaConfig.getOnlinePlay();
@@ -49,6 +51,28 @@ public class TotalHandle {
         } else {
             log.error(result);
         }
+    }
 
+    /**
+     * 今日登录统计
+     */
+    @XxlJob("login_count")
+    public void login() {
+        String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+        Long time = getTodayTime();
+        int num = totalMapper.selectTodayLogins(time);
+        totalMapper.saveTodayLogins(date,num);
+    }
+
+    private Long getTodayTime(){
+        Long time = 0l;
+        try {
+            time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+" 00:00:00")
+                    .getTime();
+        } catch (ParseException e) {
+            log.error("getTodayTime方法出错：{}",e.getMessage());
+        }
+        return time;
     }
 }

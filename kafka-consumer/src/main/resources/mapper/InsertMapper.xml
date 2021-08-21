@@ -48,11 +48,11 @@
 		insert into data_login (`key`,`op`,`uid`,`name`,`sex`,`phone`,
 		                           `r`,`ip`,`time`,`mstime`,`level`,`channel`,
 		                           `device_id`,`vip_level`,`cur_channel`,
-		                           `register_ip`,`device_brand`,`client_version`)
+		                           `register_ip`,`device_brand`,`client_version`,`ip_address`)
 		values (#{key},#{op},#{uid},#{nickName},#{sex},#{phone},
 		        #{r},#{ip},#{time},
 		        #{mstime},#{level},#{channel},
-		        #{deviceId},#{vipLevel},#{curChannel},#{registerIp},#{deviceBrand},#{clientVersion})
+		        #{deviceId},#{vipLevel},#{curChannel},#{registerIp},#{deviceBrand},#{clientVersion},#{ipAddress})
 	</insert>
 
 	<insert id="insertLogout" parameterType="com.consumer.domain.Login">

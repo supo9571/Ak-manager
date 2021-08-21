@@ -1,9 +1,7 @@
 package com.data.controller;
 
-import com.data.service.CoinsService;
 import com.data.service.OnlineService;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.Coins;
 import com.manager.common.core.domain.model.OnlinePlayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

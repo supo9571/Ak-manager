@@ -40,6 +40,7 @@ public class InsertHandler {
     @Transactional
     public void insertLogin(JSONObject result) {
         Login login = JSON.toJavaObject(result, Login.class);
+        login.setIpAddress(longIp(login.getIp()));
         insertMapper.insertLogin(login);
         insertMapper.updateUser(login.getUid(),longIp(login.getIp()),login.getDeviceId(),login.getDeviceBrand(),login.getVipLevel(),login.getTime());
     }

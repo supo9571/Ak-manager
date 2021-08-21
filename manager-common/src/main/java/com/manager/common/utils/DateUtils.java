@@ -3,12 +3,13 @@ package com.manager.common.utils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 时间工具类
- * 
+ *
  * @author marvin
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils
@@ -22,15 +23,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-    
+
     private static String[] parsePatterns = {
-            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", 
+            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
             "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
             "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
 
     /**
      * 获取当前Date型日期
-     * 
+     *
      * @return Date() 当前日期
      */
     public static Date getNowDate()
@@ -40,7 +41,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     /**
      * 获取当前日期, 默认格式为yyyy-MM-dd
-     * 
+     *
      * @return String
      */
     public static String getDate()
@@ -121,7 +122,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
             return null;
         }
     }
-    
+
     /**
      * 获取服务器启动时间
      */
@@ -151,5 +152,40 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         // 计算差多少秒//输出结果
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
+    }
+
+    /**
+     * 获取一周前日期
+     */
+    public static String getWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, -7);
+        Date d = c.getTime();
+        String day = DateFormatUtils.format(d, "yyyy/MM/dd");
+        return day;
+    }
+
+    /**
+     * 获取一周前日期
+     */
+    public static String getMonth() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -1);
+        Date d = c.getTime();
+        String day = DateFormatUtils.format(d, "yyyy/MM/dd");
+        return day;
+    }
+    /**
+     * 获取一周前日期
+     */
+    public static String getYear() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, -1);
+        Date d = c.getTime();
+        String day = DateFormatUtils.format(d, "yyyy/MM/dd");
+        return day;
     }
 }

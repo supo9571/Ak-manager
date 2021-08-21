@@ -9,4 +9,11 @@
             (#{item.uid},#{item.name},#{item.gameType},#{item.tableType},#{item.coins})
         </foreach>
     </insert>
+
+    <insert id="saveTodayLogins">
+        insert into data_login_count(`date`,`num`)
+        values (#{date},#{num})
+        ON DUPLICATE KEY
+        UPDATE num=#{num};
+    </insert>
 </mapper>

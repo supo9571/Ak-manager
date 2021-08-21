@@ -22,6 +22,8 @@ public class Login {
 
     private Long ip;
 
+    private String ipAddress;
+
     private Long time;
 
     private int level;
