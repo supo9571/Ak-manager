@@ -4,6 +4,8 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Login;
 import com.manager.openFegin.LoginService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +47,9 @@ public class LoginController {
      */
     @PreAuthorize("@ss.hasPermi('data:login:list')")
     @ApiOperation(value = "近期登录数")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type", dataType = "String", required = true, value = "查询范围 w:近一周 m:近一月 y:近一年")
+    })
     @PostMapping("/count")
     public AjaxResult count(String type) {
         return loginService.count(type);
