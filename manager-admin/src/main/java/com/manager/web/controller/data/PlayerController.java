@@ -3,7 +3,7 @@ package com.manager.web.controller.data;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
-import com.manager.openFegin.UserService;
+import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlayerController extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private DataService dataService;
     /**
      * 获取用户列表
      */
@@ -29,6 +29,6 @@ public class PlayerController extends BaseController {
     @ApiOperation(value = "查询账变列表")
     @GetMapping("/list")
     public AjaxResult list(PlayUser playUser) {
-        return userService.list(playUser);
+        return dataService.getPlayers(playUser);
     }
 }

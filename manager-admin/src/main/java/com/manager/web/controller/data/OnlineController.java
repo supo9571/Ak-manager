@@ -2,7 +2,7 @@ package com.manager.web.controller.data;
 
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.OnlinePlayer;
-import com.manager.openFegin.OnlineService;
+import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data/online")
 public class OnlineController {
     @Autowired
-    private OnlineService onlineService;
+    private DataService dataService;
     /**
      * 获取在线玩家列表
      */
@@ -27,7 +27,7 @@ public class OnlineController {
     @ApiOperation(value = "在线玩家")
     @PostMapping("/list")
     public AjaxResult list(OnlinePlayer onlinePlayer) {
-        return onlineService.list(onlinePlayer);
+        return dataService.getOnlines(onlinePlayer);
     }
 
 

@@ -4,18 +4,18 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 54.151.183.63:8848 #Nacos服务注册中心地址
+        server-addr: 18.142.67.104:8848 #Nacos服务注册中心地址
 
   # redis 配置
   redis:
     # 地址
-    host: 54.151.183.63
+    host: 18.142.67.104
     # 端口，默认为6379
     port: 6379
     # 数据库索引
     database: 0
     # 密码
-    password:
+    password: AAK212@VS%
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -31,7 +31,7 @@ spring:
   # 数据源配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://54.151.183.63:3306/sys-data?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://18.142.67.104:3306/sys-data?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: AAK212@VS%
     driver-class-name: com.mysql.cj.jdbc.Driver

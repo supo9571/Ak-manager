@@ -2,7 +2,7 @@ package com.manager.web.controller.data;
 
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Login;
-import com.manager.openFegin.LoginService;
+import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data/login")
 public class LoginController {
     @Autowired
-    private LoginService loginService;
+    private DataService dataService;
     /**
      * 获取登录日志列表
      */
@@ -29,7 +29,7 @@ public class LoginController {
     @ApiOperation(value = "登录日志列表")
     @PostMapping("/list")
     public AjaxResult list(Login login) {
-        return loginService.list(login);
+        return dataService.getLogins(login);
     }
 
     /**
@@ -39,7 +39,7 @@ public class LoginController {
     @ApiOperation(value = "今日登录总数")
     @PostMapping("/today")
     public AjaxResult today() {
-        return loginService.selectTodayLogins();
+        return dataService.selectTodayLogins();
     }
 
     /**
@@ -52,6 +52,6 @@ public class LoginController {
     })
     @PostMapping("/count")
     public AjaxResult count(String type) {
-        return loginService.count(type);
+        return dataService.count(type);
     }
 }

@@ -2,7 +2,7 @@ package com.manager.web.controller.data;
 
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Coins;
-import com.manager.openFegin.CoinsService;
+import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CoinsController {
 
     @Autowired
-    private CoinsService coinsService;
+    private DataService dataService;
     /**
      * 获取用户列表
      */
@@ -28,6 +28,6 @@ public class CoinsController {
     @ApiOperation(value = "查询账变列表")
     @GetMapping("/list")
     public AjaxResult list(Coins coins) {
-        return coinsService.list(coins);
+        return dataService.getCOins(coins);
     }
 }
