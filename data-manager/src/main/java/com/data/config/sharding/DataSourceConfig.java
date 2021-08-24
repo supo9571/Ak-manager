@@ -41,14 +41,14 @@ public class DataSourceConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
 
-    @Value("${shardingjdbc.sql.show}")
-    private String sqlShow;
-
     @Value("${mybatis.mapper-locations}")
     private String mapperLocations;
 
     @Value("${spring.datasource.dataNodes}")
     private String dataNodes;
+
+    @Value("${spring.datasource.sqlShow}")
+    private String sqlShow;
 
     // 配置sharding-jdbc的DataSource，给上层应用使用，这个DataSource包含所有的逻辑库和逻辑表，应用增删改查时，修改对应sql
     // 然后选择合适的数据库继续操作。因此这个DataSource创建很重要。

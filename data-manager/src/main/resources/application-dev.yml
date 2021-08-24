@@ -46,7 +46,5 @@ spring:
       pool-name: HikariCP
       validation-timeout: 1000
     dataNodes: sys-data.data_coins_2108,sys-data.data_coins_2109
+    sqlShow: true
 
-shardingjdbc:
-  sql:
-    show: true

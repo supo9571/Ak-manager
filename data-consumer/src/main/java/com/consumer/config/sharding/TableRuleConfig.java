@@ -1,10 +1,10 @@
 package com.consumer.config.sharding;
 
 import com.google.common.collect.Range;
-import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
-import io.shardingsphere.api.algorithm.sharding.RangeShardingValue;
-import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
-import io.shardingsphere.api.algorithm.sharding.standard.RangeShardingAlgorithm;
+import io.shardingjdbc.core.api.algorithm.sharding.PreciseShardingValue;
+import io.shardingjdbc.core.api.algorithm.sharding.RangeShardingValue;
+import io.shardingjdbc.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
+import io.shardingjdbc.core.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -16,13 +16,13 @@ import java.util.LinkedHashSet;
  * 数据表分表策略
  */
 @Slf4j
-public class TableRuleConfig implements PreciseShardingAlgorithm<Long>, RangeShardingAlgorithm<Long> {
+public class TableRuleConfig implements PreciseShardingAlgorithm<String> , RangeShardingAlgorithm<String> {
 
     @Override
-    public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
+    public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
         String tableName = preciseShardingValue.getLogicTableName() + "_";
         try {
-            Long time = preciseShardingValue.getValue();
+            Long time = Long.valueOf(preciseShardingValue.getValue());
             Date date  = new Date(time);
             String year = String.format("%ty", date);
             String mon = String.format("%tm", date);
@@ -43,11 +43,11 @@ public class TableRuleConfig implements PreciseShardingAlgorithm<Long>, RangeSha
     }
 
     @Override
-    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Long> rangeShardingValue) {
+    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<String> rangeShardingValue) {
         Collection<String> result = new LinkedHashSet<>(collection.size());
-        Range<Long> range = rangeShardingValue.getValueRange();
-        Long lower = range.lowerEndpoint();
-        Long upper = range.upperEndpoint();
+        Range<String> range = rangeShardingValue.getValueRange();
+        Long lower = Long.valueOf(range.lowerEndpoint());
+        Long upper = Long.valueOf(range.upperEndpoint());
 
         Date lowDate  = new Date(lower);
         String lowMon = String.format("%tm", lowDate);
