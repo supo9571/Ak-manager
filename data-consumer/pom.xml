@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>kafka-consumer</artifactId>
+    <artifactId>data-consumer</artifactId>
     <dependencies>
         <!-- spring-boot-starter-web (spring-webmvc + tomcat) -->
         <dependency>
@@ -64,18 +64,18 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!--sharding-jdbc -->
         <dependency>
-            <groupId>io.shardingjdbc</groupId>
-            <artifactId>sharding-jdbc-core</artifactId>
-            <version>2.0.3</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--sharding-jdbc -->
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
+            <groupId>io.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
+            <version>${shard-jdbc.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

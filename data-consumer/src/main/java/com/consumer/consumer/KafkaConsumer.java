@@ -39,7 +39,7 @@ public class KafkaConsumer {
 
     private static List opList = new ArrayList();
 
-    @KafkaListener(groupId = "group110", topics = "bills_log")
+//    @KafkaListener(groupId = "group110", topics = "bills_log")
     public void onMessage(ConsumerRecord<String, Object> record,
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {

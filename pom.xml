@@ -30,6 +30,7 @@
         <velocity.version>1.7</velocity.version>
         <jwt.version>0.9.1</jwt.version>
         <lombok.version>1.16.10</lombok.version>
+        <shard-jdbc.version>3.1.0</shard-jdbc.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -228,7 +229,7 @@
         <module>job-admin</module>
         <module>job-core</module>
         <module>job-executor</module>
-        <module>kafka-consumer</module>
+        <module>data-consumer</module>
         <module>data-manager</module>
     </modules>
     <packaging>pom</packaging>

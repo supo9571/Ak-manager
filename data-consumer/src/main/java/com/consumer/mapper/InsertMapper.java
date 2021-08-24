@@ -5,7 +5,11 @@ import com.consumer.domain.Login;
 import com.consumer.domain.Register;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/8/17
@@ -33,4 +37,7 @@ public interface InsertMapper {
                     @Param("deviceId") String deviceId, @Param("deviceBrand")String deviceBrand,@Param("vipLevel") int vipLevel,@Param("time") Long time);
 
     void insertLogout(Login login);
+
+    @Select("select * from data_coins where mstime BETWEEN #{beginTime} AND #{endTime}")
+    List<Map> selectCoins(@Param("beginTime") Long i, @Param("endTime") Long l);
 }
