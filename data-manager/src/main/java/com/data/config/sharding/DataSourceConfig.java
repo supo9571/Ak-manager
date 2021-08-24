@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 数据源配置和库策略、表策略
  */
 @Configuration
-public class ShardingDataSourceConfiguration {
+public class DataSourceConfig {
     @Value("${spring.datasource.username}")
     private String username;
 
@@ -56,19 +56,16 @@ public class ShardingDataSourceConfiguration {
     @Primary
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource shardingDataSource() throws SQLException {
-
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-
         // 订单表配置，可以累计添加多个配置
         shardingRuleConfig.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
-        // shardingRuleConfig.getTableRuleConfigs().add(getUserTableRuleConfiguration());
 
         // 打印SQL
         Properties props = new Properties();
         props.put("sql.show", sqlShow);
 
         return new ShardingDataSource(shardingRuleConfig.build(createDataSourceMap()),
-                new ConcurrentHashMap<String, Object>(), props);
+                new ConcurrentHashMap(), props);
 
     }
 
@@ -76,22 +73,11 @@ public class ShardingDataSourceConfiguration {
     @Bean
     TableRuleConfiguration getOrderTableRuleConfiguration() {
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
-
         orderTableRuleConfig.setLogicTable("data_coins");
-        orderTableRuleConfig.setLogicIndex("time");
-
-        // 设置数据库策略，传入的是time
-//        orderTableRuleConfig.setDatabaseShardingStrategyConfig(
-//                new StandardShardingStrategyConfiguration("time", DatabaseShardingAlgorithm.class.getName()));
-        // 设置数据表策略，传入的是time
-        orderTableRuleConfig.setTableShardingStrategyConfig(
-                new StandardShardingStrategyConfiguration("time", TableShardingAlgorithm.class.getName()));
-
-        // 设置数据节点，格式为dbxx.tablexx。这里的名称要和map的别名一致。下面两种方式都可以
-        // orderTableRuleConfig.setActualDataNodes("db_${0..1}.t_order_${0..1}");
+        // 设置数据节点
         orderTableRuleConfig.setActualDataNodes(dataNodes);
-        // 设置纵列名称
-        // orderTableRuleConfig.setKeyGeneratorColumnName("ID");
+        orderTableRuleConfig.setTableShardingStrategyConfig(
+                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
         return orderTableRuleConfig;
     }
 
@@ -106,7 +92,7 @@ public class ShardingDataSourceConfiguration {
         // 使用默认连接池
         BasicDataSource result = new BasicDataSource();
         // 指定driver的类名，默认从jdbc url中自动探测
-        result.setDriverClassName(com.mysql.jdbc.Driver.class.getName());
+        result.setDriverClassName(driverClassName);
         // 设置数据库路径
         result.setUrl(jdbcUrl);
         // 设置数据库用户名
