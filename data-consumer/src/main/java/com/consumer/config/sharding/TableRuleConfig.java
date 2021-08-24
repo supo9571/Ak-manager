@@ -16,10 +16,10 @@ import java.util.LinkedHashSet;
  * 数据表分表策略
  */
 @Slf4j
-public class TableRuleConfig implements PreciseShardingAlgorithm<String> , RangeShardingAlgorithm<String> {
+public class TableRuleConfig implements PreciseShardingAlgorithm<Long> , RangeShardingAlgorithm<Long> {
 
     @Override
-    public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
+    public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
         String tableName = preciseShardingValue.getLogicTableName() + "_";
         try {
             Long time = Long.valueOf(preciseShardingValue.getValue());
@@ -43,11 +43,11 @@ public class TableRuleConfig implements PreciseShardingAlgorithm<String> , Range
     }
 
     @Override
-    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<String> rangeShardingValue) {
+    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Long> rangeShardingValue) {
         Collection<String> result = new LinkedHashSet<>(collection.size());
-        Range<String> range = rangeShardingValue.getValueRange();
-        Long lower = Long.valueOf(range.lowerEndpoint());
-        Long upper = Long.valueOf(range.upperEndpoint());
+        Range<Long> range = rangeShardingValue.getValueRange();
+        Long lower = range.lowerEndpoint();
+        Long upper = range.upperEndpoint();
 
         Date lowDate  = new Date(lower);
         String lowMon = String.format("%tm", lowDate);

@@ -35,16 +35,6 @@ spring:
     username: root
     password: AAK212@VS%
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      auto-commit: true
-      connection-test-query: SELECT 1
-      connection-timeout: 10000
-      idle-timeout: 30000
-      max-lifetime: 900000
-      maximum-pool-size: 30
-      minimum-idle: 10
-      pool-name: HikariCP
-      validation-timeout: 1000
     dataNodes: sys-data.data_coins_2108,sys-data.data_coins_2109
     sqlShow: true
 

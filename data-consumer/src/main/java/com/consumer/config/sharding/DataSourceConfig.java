@@ -88,16 +88,15 @@ public class DataSourceConfig {
     }
 
     private DataSource createDataSource(final String jdbcUrl) {
-        // 使用默认连接池
         BasicDataSource result = new BasicDataSource();
-        // 指定driver的类名，默认从jdbc url中自动探测
         result.setDriverClassName(driverClassName);
-        // 设置数据库路径
         result.setUrl(jdbcUrl);
-        // 设置数据库用户名
         result.setUsername(username);
-        // 设置数据密码
         result.setPassword(password);
+        result.setMaxActive(10);
+        result.setMaxIdle(5);
+        result.setMinIdle(3);
+        result.setInitialSize(5);
         return result;
     }
 

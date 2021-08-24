@@ -12,7 +12,7 @@ MySQL - 5.7.35 : Database - sys-manager
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`sys-manager` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`sys-manager` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 
 USE `sys-manager`;
 
@@ -185,7 +185,7 @@ CREATE TABLE `sys_logininfor` (
   `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COMMENT='系统访问记录';
 
 /*Data for the table `sys_logininfor` */
 
@@ -254,7 +254,11 @@ insert  into `sys_logininfor`(`info_id`,`user_name`,`ipaddr`,`login_location`,`b
 (62,'admin','127.0.0.1','内网IP','Chrome 9','Windows 10','0','登录成功','2021-08-14 20:24:36'),
 (63,'admin','127.0.0.1','内网IP','Chrome 9','Windows 10','0','登录成功','2021-08-14 20:40:20'),
 (64,'admin','127.0.0.1','内网IP','Chrome 9','Windows 10','0','登录成功','2021-08-14 20:41:28'),
-(65,'admin','127.0.0.1','内网IP','Chrome 9','Windows 10','0','登录成功','2021-08-14 20:53:47');
+(65,'admin','127.0.0.1','内网IP','Chrome 9','Windows 10','0','登录成功','2021-08-14 20:53:47'),
+(66,'admin','203.175.12.49','XX XX','Chrome 9','Mac OS X','0','登录成功','2021-08-24 07:17:18'),
+(67,'admin','203.175.12.49','XX XX','Chrome 9','Mac OS X','0','登录成功','2021-08-24 07:17:49'),
+(68,'admin','203.175.12.49','XX XX','Chrome 9','Mac OS X','0','登录成功','2021-08-24 07:22:12'),
+(69,'admin','5.192.142.161','XX XX','Chrome 9','Windows 10','0','登录成功','2021-08-24 13:50:34');
 
 /*Table structure for table `sys_menu` */
 
@@ -280,94 +284,22 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1061 DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=200001 DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限表';
 
 /*Data for the table `sys_menu` */
 
 insert  into `sys_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) values 
-(1,'系统管理',0,1,'system',NULL,1,0,'M','0','0','','system','admin','2021-08-09 11:18:11','',NULL,'系统管理目录'),
-(2,'系统监控',0,2,'monitor',NULL,1,0,'M','0','0','','monitor','admin','2021-08-09 11:18:11','',NULL,'系统监控目录'),
-(3,'系统工具',0,3,'tool',NULL,1,0,'M','0','0','','tool','admin','2021-08-09 11:18:11','',NULL,'系统工具目录'),
-(4,'若依官网',0,4,'http://ruoyi.vip',NULL,0,0,'M','0','0','','guide','admin','2021-08-09 11:18:12','',NULL,'若依官网地址'),
-(100,'用户管理',1,1,'user','system/user/index',1,0,'C','0','0','system:user:list','user','admin','2021-08-09 11:18:12','',NULL,'用户管理菜单'),
-(101,'角色管理',1,2,'role','system/role/index',1,0,'C','0','0','system:role:list','peoples','admin','2021-08-09 11:18:12','',NULL,'角色管理菜单'),
-(102,'菜单管理',1,3,'menu','system/menu/index',1,0,'C','0','0','system:menu:list','tree-table','admin','2021-08-09 11:18:12','',NULL,'菜单管理菜单'),
-(103,'部门管理',1,4,'dept','system/dept/index',1,0,'C','0','0','system:dept:list','tree','admin','2021-08-09 11:18:12','',NULL,'部门管理菜单'),
-(104,'岗位管理',1,5,'post','system/post/index',1,0,'C','0','0','system:post:list','post','admin','2021-08-09 11:18:12','',NULL,'岗位管理菜单'),
-(105,'字典管理',1,6,'dict','system/dict/index',1,0,'C','0','0','system:dict:list','dict','admin','2021-08-09 11:18:12','',NULL,'字典管理菜单'),
-(106,'参数设置',1,7,'config','system/config/index',1,0,'C','0','0','system:config:list','edit','admin','2021-08-09 11:18:12','',NULL,'参数设置菜单'),
-(107,'通知公告',1,8,'notice','system/notice/index',1,0,'C','0','0','system:notice:list','message','admin','2021-08-09 11:18:12','',NULL,'通知公告菜单'),
-(108,'日志管理',1,9,'log','',1,0,'M','0','0','','log','admin','2021-08-09 11:18:13','',NULL,'日志管理菜单'),
-(109,'在线用户',2,1,'online','monitor/online/index',1,0,'C','0','0','monitor:online:list','online','admin','2021-08-09 11:18:13','',NULL,'在线用户菜单'),
-(110,'定时任务',2,2,'job','monitor/job/index',1,0,'C','0','0','monitor:job:list','job','admin','2021-08-09 11:18:13','',NULL,'定时任务菜单'),
-(111,'数据监控',2,3,'druid','monitor/druid/index',1,0,'C','0','0','monitor:druid:list','druid','admin','2021-08-09 11:18:13','',NULL,'数据监控菜单'),
-(112,'服务监控',2,4,'server','monitor/server/index',1,0,'C','0','0','monitor:server:list','server','admin','2021-08-09 11:18:13','',NULL,'服务监控菜单'),
-(113,'缓存监控',2,5,'cache','monitor/cache/index',1,0,'C','0','0','monitor:cache:list','redis','admin','2021-08-09 11:18:13','',NULL,'缓存监控菜单'),
-(114,'表单构建',3,1,'build','tool/build/index',1,0,'C','0','0','tool:build:list','build','admin','2021-08-09 11:18:13','',NULL,'表单构建菜单'),
-(115,'代码生成',3,2,'gen','tool/gen/index',1,0,'C','0','0','tool:gen:list','code','admin','2021-08-09 11:18:13','',NULL,'代码生成菜单'),
-(116,'系统接口',3,3,'swagger','tool/swagger/index',1,0,'C','0','0','tool:swagger:list','swagger','admin','2021-08-09 11:18:13','',NULL,'系统接口菜单'),
-(500,'操作日志',108,1,'operlog','monitor/operlog/index',1,0,'C','0','0','monitor:operlog:list','form','admin','2021-08-09 11:18:13','',NULL,'操作日志菜单'),
-(501,'登录日志',108,2,'logininfor','monitor/logininfor/index',1,0,'C','0','0','sys:info:list','logininfor','admin','2021-08-09 11:18:14','',NULL,'登录日志菜单'),
-(1001,'用户查询',100,1,'','',1,0,'F','0','0','system:user:query','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1002,'用户新增',100,2,'','',1,0,'F','0','0','system:user:add','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1003,'用户修改',100,3,'','',1,0,'F','0','0','system:user:edit','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1004,'用户删除',100,4,'','',1,0,'F','0','0','system:user:remove','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1005,'用户导出',100,5,'','',1,0,'F','0','0','system:user:export','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1006,'用户导入',100,6,'','',1,0,'F','0','0','system:user:import','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1007,'重置密码',100,7,'','',1,0,'F','0','0','system:user:resetPwd','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1008,'角色查询',101,1,'','',1,0,'F','0','0','system:role:query','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1009,'角色新增',101,2,'','',1,0,'F','0','0','system:role:add','#','admin','2021-08-09 11:18:14','',NULL,''),
-(1010,'角色修改',101,3,'','',1,0,'F','0','0','system:role:edit','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1011,'角色删除',101,4,'','',1,0,'F','0','0','system:role:remove','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1012,'角色导出',101,5,'','',1,0,'F','0','0','system:role:export','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1013,'菜单查询',102,1,'','',1,0,'F','0','0','system:menu:query','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1014,'菜单新增',102,2,'','',1,0,'F','0','0','system:menu:add','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1015,'菜单修改',102,3,'','',1,0,'F','0','0','system:menu:edit','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1016,'菜单删除',102,4,'','',1,0,'F','0','0','system:menu:remove','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1017,'部门查询',103,1,'','',1,0,'F','0','0','system:dept:query','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1018,'部门新增',103,2,'','',1,0,'F','0','0','system:dept:add','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1019,'部门修改',103,3,'','',1,0,'F','0','0','system:dept:edit','#','admin','2021-08-09 11:18:15','',NULL,''),
-(1020,'部门删除',103,4,'','',1,0,'F','0','0','system:dept:remove','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1021,'岗位查询',104,1,'','',1,0,'F','0','0','system:post:query','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1022,'岗位新增',104,2,'','',1,0,'F','0','0','system:post:add','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1023,'岗位修改',104,3,'','',1,0,'F','0','0','system:post:edit','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1024,'岗位删除',104,4,'','',1,0,'F','0','0','system:post:remove','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1025,'岗位导出',104,5,'','',1,0,'F','0','0','system:post:export','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1026,'字典查询',105,1,'#','',1,0,'F','0','0','system:dict:query','#','admin','2021-08-09 11:18:16','',NULL,''),
-(1027,'字典新增',105,2,'#','',1,0,'F','0','0','system:dict:add','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1028,'字典修改',105,3,'#','',1,0,'F','0','0','system:dict:edit','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1029,'字典删除',105,4,'#','',1,0,'F','0','0','system:dict:remove','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1030,'字典导出',105,5,'#','',1,0,'F','0','0','system:dict:export','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1031,'参数查询',106,1,'#','',1,0,'F','0','0','system:config:query','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1032,'参数新增',106,2,'#','',1,0,'F','0','0','system:config:add','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1033,'参数修改',106,3,'#','',1,0,'F','0','0','system:config:edit','#','admin','2021-08-09 11:18:17','',NULL,''),
-(1034,'参数删除',106,4,'#','',1,0,'F','0','0','system:config:remove','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1035,'参数导出',106,5,'#','',1,0,'F','0','0','system:config:export','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1036,'公告查询',107,1,'#','',1,0,'F','0','0','system:notice:query','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1037,'公告新增',107,2,'#','',1,0,'F','0','0','system:notice:add','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1038,'公告修改',107,3,'#','',1,0,'F','0','0','system:notice:edit','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1039,'公告删除',107,4,'#','',1,0,'F','0','0','system:notice:remove','#','admin','2021-08-09 11:18:18','',NULL,''),
-(1040,'操作查询',500,1,'#','',1,0,'F','0','0','monitor:operlog:query','#','admin','2021-08-09 11:18:19','',NULL,''),
-(1041,'操作删除',500,2,'#','',1,0,'F','0','0','monitor:operlog:remove','#','admin','2021-08-09 11:18:19','',NULL,''),
-(1042,'日志导出',500,4,'#','',1,0,'F','0','0','monitor:operlog:export','#','admin','2021-08-09 11:18:19','',NULL,''),
-(1043,'登录查询',501,1,'#','',1,0,'F','0','0','monitor:logininfor:query','#','admin','2021-08-09 11:18:19','',NULL,''),
-(1044,'登录删除',501,2,'#','',1,0,'F','0','0','monitor:logininfor:remove','#','admin','2021-08-09 11:18:19','',NULL,''),
-(1045,'日志导出',501,3,'#','',1,0,'F','0','0','monitor:logininfor:export','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1046,'在线查询',109,1,'#','',1,0,'F','0','0','monitor:online:query','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1047,'批量强退',109,2,'#','',1,0,'F','0','0','monitor:online:batchLogout','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1048,'单条强退',109,3,'#','',1,0,'F','0','0','monitor:online:forceLogout','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1049,'任务查询',110,1,'#','',1,0,'F','0','0','monitor:job:query','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1050,'任务新增',110,2,'#','',1,0,'F','0','0','monitor:job:add','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1051,'任务修改',110,3,'#','',1,0,'F','0','0','monitor:job:edit','#','admin','2021-08-09 11:18:20','',NULL,''),
-(1052,'任务删除',110,4,'#','',1,0,'F','0','0','monitor:job:remove','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1053,'状态修改',110,5,'#','',1,0,'F','0','0','monitor:job:changeStatus','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1054,'任务导出',110,7,'#','',1,0,'F','0','0','monitor:job:export','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1055,'生成查询',115,1,'#','',1,0,'F','0','0','tool:gen:query','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1056,'生成修改',115,2,'#','',1,0,'F','0','0','tool:gen:edit','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1057,'生成删除',115,3,'#','',1,0,'F','0','0','tool:gen:remove','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1058,'导入代码',115,2,'#','',1,0,'F','0','0','tool:gen:import','#','admin','2021-08-09 11:18:21','',NULL,''),
-(1059,'预览代码',115,4,'#','',1,0,'F','0','0','tool:gen:preview','#','admin','2021-08-09 11:18:22','',NULL,''),
-(1060,'生成代码',115,5,'#','',1,0,'F','0','0','tool:gen:code','#','admin','2021-08-09 11:18:22','',NULL,'');
+(10,'系统管理',0,10,'/system/system-manage',NULL,1,0,'M','0','0',NULL,'#','',NULL,'',NULL,''),
+(20,'游戏管理',0,20,'/system/game-manage',NULL,1,0,'M','0','0',NULL,'#','',NULL,'',NULL,''),
+(1000,'总览',10,10,'/system/system-manage/system-overview',NULL,1,0,'C','0','0',NULL,'#','',NULL,'',NULL,''),
+(1001,'账号管理',10,20,'/system/system-manage/account-manage',NULL,1,0,'C','0','0',NULL,'#','',NULL,'',NULL,''),
+(1002,'角色管理',10,30,'/system/system-manage/role-manage',NULL,1,0,'C','0','0',NULL,'#','',NULL,'',NULL,''),
+(2000,'子游戏管理',20,10,'/system/game-manage/sub-game-manage',NULL,1,0,'C','0','0',NULL,'#','',NULL,'',NULL,''),
+(2001,'热更新管理',20,20,'/system/game-manage/hot-update-manage',NULL,1,0,'C','0','0',NULL,'#','',NULL,'',NULL,''),
+(100100,'新增',1001,10,'account-manage-add',NULL,1,0,'F','0','0',NULL,'#','',NULL,'',NULL,''),
+(100101,'编辑',1001,20,'account-manage-edit',NULL,1,0,'F','0','0',NULL,'#','',NULL,'',NULL,''),
+(100200,'编辑',1002,10,'role-manage-edit',NULL,1,0,'F','0','0',NULL,'#','',NULL,'',NULL,''),
+(200000,'编辑',2000,10,'sub-game-manage-edit',NULL,1,0,'F','0','0',NULL,'#','',NULL,'',NULL,'');
 
 /*Table structure for table `sys_notice` */
 
@@ -674,7 +606,7 @@ CREATE TABLE `sys_user` (
 /*Data for the table `sys_user` */
 
 insert  into `sys_user`(`user_id`,`t_id`,`user_name`,`nick_name`,`user_type`,`password`,`status`,`del_flag`,`login_ip`,`login_date`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`google_key`,`google_switch`) values 
-(1,103,'admin','管理员','00','$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2','0','0','127.0.0.1','2021-08-14 20:53:45','admin','2021-08-09 11:18:10','','2021-08-14 20:53:47','管理员','FYAAK2VSJSDJKCAH',1),
+(1,103,'admin','管理员','00','$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2','0','0','5.192.142.161','2021-08-24 21:50:34','admin','2021-08-09 11:18:10','','2021-08-24 13:50:34','管理员','FYAAK2VSJSDJKCAH',1),
 (2,105,'ry','测试001','00','$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2','0','0','127.0.0.1','2021-08-09 11:18:10','admin','2021-08-09 11:18:10','',NULL,'测试员','',0),
 (3,100,'test001',NULL,'00','$2a$10$NOaYqTalT2Ywxw9zKKz6C.9dJ4HZ6lO.9dGzEf/q6aUXXQbkRK54G','0','0','',NULL,'admin','2021-08-12 22:17:38','',NULL,NULL,NULL,0),
 (11,103,'test002',NULL,'00','$2a$10$XZaFlqDCM.0puiGOYq3wMOtjvp495F2c/ZgtsrsUsx4ojNjhi4T0O','0','0','',NULL,'admin','2021-08-12 23:18:14','',NULL,NULL,NULL,0),
@@ -731,7 +663,7 @@ CREATE TABLE `xxl_job_group` (
 /*Data for the table `xxl_job_group` */
 
 insert  into `xxl_job_group`(`id`,`app_name`,`title`,`address_type`,`address_list`,`update_time`) values 
-(1,'job-executor','任务执行器',0,'http://172.17.0.7:6651/','2021-08-14 21:13:33');
+(1,'job-executor','任务执行器',0,NULL,'2021-08-24 20:49:13');
 
 /*Table structure for table `xxl_job_info` */
 
@@ -821,7 +753,7 @@ CREATE TABLE `xxl_job_log_report` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_trigger_day` (`trigger_day`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `xxl_job_log_report` */
 
@@ -829,7 +761,11 @@ insert  into `xxl_job_log_report`(`id`,`trigger_day`,`running_count`,`suc_count`
 (1,'2021-08-13 00:00:00',0,0,0,NULL),
 (2,'2021-08-12 00:00:00',0,0,0,NULL),
 (3,'2021-08-11 00:00:00',0,0,0,NULL),
-(4,'2021-08-14 00:00:00',0,0,0,NULL);
+(4,'2021-08-14 00:00:00',0,0,0,NULL),
+(5,'2021-08-23 00:00:00',0,0,0,NULL),
+(6,'2021-08-22 00:00:00',0,0,0,NULL),
+(7,'2021-08-21 00:00:00',0,0,0,NULL),
+(8,'2021-08-24 00:00:00',0,0,0,NULL);
 
 /*Table structure for table `xxl_job_logglue` */
 
@@ -860,12 +796,9 @@ CREATE TABLE `xxl_job_registry` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `i_g_k_v` (`registry_group`,`registry_key`,`registry_value`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `xxl_job_registry` */
-
-insert  into `xxl_job_registry`(`id`,`registry_group`,`registry_key`,`registry_value`,`update_time`) values 
-(13,'EXECUTOR','job-executor','http://172.17.0.7:6651/','2021-08-14 21:13:11');
 
 /*Table structure for table `xxl_job_user` */
 
