@@ -44,8 +44,11 @@ public class DataSourceConfig {
     @Value("${mybatis.mapper-locations}")
     private String mapperLocations;
 
-    @Value("${spring.datasource.dataNodes}")
-    private String dataNodes;
+    @Value("${spring.datasource.coinsNodes}")
+    private String coinsNodes;
+
+    @Value("${spring.datasource.cardNodes}")
+    private String cardNodes;
 
     @Value("${spring.datasource.sqlShow}")
     private String sqlShow;
@@ -57,7 +60,8 @@ public class DataSourceConfig {
     public DataSource shardingDataSource() throws SQLException {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         // 订单表配置，可以累计添加多个配置
-        shardingRuleConfig.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
+        shardingRuleConfig.getTableRuleConfigs().add(getCoinsTableRuleConfiguration());
+        shardingRuleConfig.getTableRuleConfigs().add(getCardTableRuleConfiguration());
 
         // 打印SQL
         Properties props = new Properties();
@@ -70,11 +74,23 @@ public class DataSourceConfig {
 
     // 创建data_coins 表规则
     @Bean
-    TableRuleConfiguration getOrderTableRuleConfiguration() {
+    TableRuleConfiguration getCoinsTableRuleConfiguration() {
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
         orderTableRuleConfig.setLogicTable("data_coins");
         // 设置数据节点
-        orderTableRuleConfig.setActualDataNodes(dataNodes);
+        orderTableRuleConfig.setActualDataNodes(coinsNodes);
+        orderTableRuleConfig.setTableShardingStrategyConfig(
+                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
+        return orderTableRuleConfig;
+    }
+
+    // 创建data_card 表规则
+    @Bean
+    TableRuleConfiguration getCardTableRuleConfiguration() {
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
+        orderTableRuleConfig.setLogicTable("data_card");
+        // 设置数据节点
+        orderTableRuleConfig.setActualDataNodes(cardNodes);
         orderTableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
         return orderTableRuleConfig;

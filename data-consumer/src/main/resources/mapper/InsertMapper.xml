@@ -61,4 +61,11 @@
 		values (#{key},#{op},#{uid},#{r},#{ip},#{time},
 				#{mstime},#{channel},#{deviceId},#{curChannel},#{deviceBrand},#{clientVersion})
 	</insert>
+
+	<insert id="insertCard" parameterType="com.consumer.domain.Card">
+		insert into data_card (`key`,`op`,`time`,`mstime`,`address`,
+								`begin_time`,`end_time`,`game_type`,`table_gid`,`table_type`,`side_list`,`loser_list`,`winner_list`,total_num,system_win)
+		values (#{key},#{op},#{time},#{mstime},#{address},
+				#{beginTime},#{endTime},#{gameType},#{tableGid},#{tableType},#{sideList},#{loserList},#{winnerList},#{totalNum},#{systemWin})
+	</insert>
 </mapper>

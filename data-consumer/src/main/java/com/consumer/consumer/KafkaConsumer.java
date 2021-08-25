@@ -70,6 +70,10 @@ public class KafkaConsumer {
                     insertHandler.insertLogout(jsonObject);
                     log.info("logout");
                     break;
+                case CARD_RECORD:
+                    insertHandler.insertCard(jsonObject);
+                    log.info("logout");
+                    break;
                 default:
                     if(!opList.contains(op)){
                         log.info("NEW OP -->{}",op);

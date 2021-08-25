@@ -2,6 +2,7 @@ package com.consumer.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.consumer.domain.Card;
 import com.consumer.domain.Coins;
 import com.consumer.domain.Login;
 import com.consumer.domain.Register;
@@ -50,6 +51,11 @@ public class InsertHandler {
         insertMapper.insertLogout(login);
     }
 
+    public void insertCard(JSONObject result) {
+        Card card = JSON.toJavaObject(result, Card.class);
+        insertMapper.insertCard(card);
+    }
+
 //    @PostConstruct
 //    public void test() {
 //        JSONObject result = JSONObject.parseObject("{\"r\": 200002, \"ip\": 170328366, \"op\": \"logout\", \"key\": \"hallsvr_1_1628959455_12\", \"uid\": 113188, \"time\": 1628959455, \"mstime\": 1628959455765, \"channel\": \"guanwang\", \"device_id\": \"707BC84934541EF08AE008C3F225E593\", \"cur_channel\": \"guanwang\", \"device_brand\": \"mi-4c\", \"client_version\": \"1.0.0\"}");
@@ -70,5 +76,4 @@ public class InsertHandler {
         }
         return ipAddress.toString();
     }
-
 }

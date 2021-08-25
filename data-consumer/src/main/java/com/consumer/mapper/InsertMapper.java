@@ -1,5 +1,6 @@
 package com.consumer.mapper;
 
+import com.consumer.domain.Card;
 import com.consumer.domain.Coins;
 import com.consumer.domain.Login;
 import com.consumer.domain.Register;
@@ -40,4 +41,6 @@ public interface InsertMapper {
 
     @Select("select * from data_coins where mstime BETWEEN #{beginTime} AND #{endTime}")
     List<Map> selectCoins(@Param("beginTime") Long i, @Param("endTime") Long l);
+
+    void insertCard(Card card);
 }
