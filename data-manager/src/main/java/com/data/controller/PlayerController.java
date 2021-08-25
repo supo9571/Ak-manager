@@ -26,4 +26,10 @@ public class PlayerController extends BaseController {
         List list = playerService.selectPlayer(playUser);
         return AjaxResult.success(getDataTable(list));
     }
+
+    @PostMapping("/curr")
+    public AjaxResult curr(Long uid){
+        List list = playerService.selectPlayerCurr(uid);
+        return AjaxResult.success(list);
+    }
 }

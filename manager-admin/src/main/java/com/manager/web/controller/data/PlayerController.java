@@ -31,4 +31,14 @@ public class PlayerController extends BaseController {
     public AjaxResult list(PlayUser playUser) {
         return dataService.getPlayers(playUser);
     }
+
+    /**
+     * 查询玩家余额
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:curr')")
+    @ApiOperation(value = "查询玩家余额")
+    @GetMapping("/curr")
+    public AjaxResult curr(Long uid) {
+        return dataService.getPlayerCurr(uid);
+    }
 }

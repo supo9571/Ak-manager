@@ -20,4 +20,9 @@ public class PlayerServiceImpl implements PlayerService {
     public List selectPlayer(PlayUser playUser) {
         return playerMapper.selectPlayer(playUser);
     }
+
+    @Override
+    public List selectPlayerCurr(Long uid) {
+        return playerMapper.selectPlayerCurr(uid);
+    }
 }

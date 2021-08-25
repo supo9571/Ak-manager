@@ -22,7 +22,7 @@ public interface DataService {
     @PostMapping(value = "/data/login/today")
     AjaxResult selectTodayLogins();
 
-    @PostMapping(value = "/data/login/count",consumes = "application/json")
+    @PostMapping(value = "/data/login/count")
     AjaxResult count(@RequestParam("type") String type);
 
     @PostMapping(value = "/data/online/list",consumes = "application/json")
@@ -31,6 +31,10 @@ public interface DataService {
     @PostMapping(value = "/data/player/list",consumes = "application/json")
     AjaxResult getPlayers(@RequestBody PlayUser playUser);
 
+    @PostMapping(value = "/data/player/curr")
+    AjaxResult getPlayerCurr(@RequestParam("uid") Long uid);
+
     @PostMapping(value = "/data/card/list",consumes = "application/json")
     AjaxResult getCards(@RequestBody Card card);
+
 }

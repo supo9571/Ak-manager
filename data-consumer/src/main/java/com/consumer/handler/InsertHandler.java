@@ -53,6 +53,9 @@ public class InsertHandler {
 
     public void insertCard(JSONObject result) {
         Card card = JSON.toJavaObject(result, Card.class);
+        if("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList())){
+            return;
+        }
         insertMapper.insertCard(card);
     }
 

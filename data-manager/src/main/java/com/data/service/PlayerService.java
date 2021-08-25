@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface PlayerService {
     List selectPlayer(PlayUser playUser);
+
+    List selectPlayerCurr(Long uid);
 }

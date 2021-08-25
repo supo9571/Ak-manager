@@ -24,4 +24,7 @@ public class Card extends BaseEntity {
 
     @ApiModelProperty("牌局详情")
     private String sideList;
+
+    @ApiModelProperty("玩家id")
+    private String uid;
 }
