@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.CardMapper">
+
+	<select id="selectCard" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
+		select c.table_gid tableGid,g.game_name tableName,
+		       if(g.parent_id = 0 ,g.game_name, ge.game_name) gameName,
+				FROM_UNIXTIME(c.begin_time) beginTime,
+				FROM_UNIXTIME(c.end_time) endTime,
+		       c.side_list sideList
+		from data_card c
+		left join config_game g on c.game_type = g.game_id
+		left join config_game ge on g.parent_id = ge.game_id
+		<where>
+			<if test="tableGid!=null and tableGid !=''">
+				and c.table_gid = #{tableGid}
+			</if>
+			<if test="beginTime!=null and beginTime !=''">
+				and c.time >= UNIX_TIMESTAMP(#{beginTime})
+			</if>
+			<if test="endTime!=null and endTime !=''">
+				and  UNIX_TIMESTAMP(#{endTime}) >= c.time
+			</if>
+
+		</where>
+	</select>
+</mapper>

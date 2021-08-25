@@ -1,10 +1,7 @@
 package com.manager.openFegin;
 
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.Coins;
-import com.manager.common.core.domain.model.Login;
-import com.manager.common.core.domain.model.OnlinePlayer;
-import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,4 +30,7 @@ public interface DataService {
 
     @PostMapping(value = "/data/player/list",consumes = "application/json")
     AjaxResult getPlayers(@RequestBody PlayUser playUser);
+
+    @PostMapping(value = "/data/card/list",consumes = "application/json")
+    AjaxResult getCards(@RequestBody Card card);
 }
