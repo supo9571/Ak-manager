@@ -50,6 +50,8 @@ public class DataSourceConfig {
     @Value("${spring.datasource.cardNodes}")
     private String cardNodes;
 
+    @Value("${spring.datasource.cardUserNodes}")
+    private String cardUserNodes;
     @Value("${spring.datasource.sqlShow}")
     private String sqlShow;
     // 配置sharding-jdbc的DataSource，给上层应用使用，这个DataSource包含所有的逻辑库和逻辑表，应用增删改查时，修改对应sql
@@ -62,6 +64,7 @@ public class DataSourceConfig {
         // 订单表配置，可以累计添加多个配置
         shardingRuleConfig.getTableRuleConfigs().add(getCoinsTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getCardTableRuleConfiguration());
+        shardingRuleConfig.getTableRuleConfigs().add(getCardUserTableRuleConfiguration());
 
         // 打印SQL
         Properties props = new Properties();
@@ -91,6 +94,18 @@ public class DataSourceConfig {
         orderTableRuleConfig.setLogicTable("data_card");
         // 设置数据节点
         orderTableRuleConfig.setActualDataNodes(cardNodes);
+        orderTableRuleConfig.setTableShardingStrategyConfig(
+                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
+        return orderTableRuleConfig;
+    }
+
+    // 创建data_card_user 表规则
+    @Bean
+    TableRuleConfiguration getCardUserTableRuleConfiguration() {
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
+        orderTableRuleConfig.setLogicTable("data_card_user");
+        // 设置数据节点
+        orderTableRuleConfig.setActualDataNodes(cardUserNodes);
         orderTableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
         return orderTableRuleConfig;

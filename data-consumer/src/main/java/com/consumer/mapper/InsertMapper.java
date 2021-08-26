@@ -1,9 +1,6 @@
 package com.consumer.mapper;
 
-import com.consumer.domain.Card;
-import com.consumer.domain.Coins;
-import com.consumer.domain.Login;
-import com.consumer.domain.Register;
+import com.consumer.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -33,14 +30,13 @@ public interface InsertMapper {
     void insertLogin(Login login);
 
     @Update("update data_register set login_ip = #{ip},login_device_id = #{deviceId},login_device_brand = #{deviceBrand}," +
-            "vip_level = #{vipLevel},login_time = #{time} where uid = #{uid}")
+            "vip_level = #{vipLevel},login_time = #{time},phone = #{phone} where uid = #{uid}")
     void updateUser(@Param("uid") Long uid, @Param("ip") String ip,
-                    @Param("deviceId") String deviceId, @Param("deviceBrand")String deviceBrand,@Param("vipLevel") int vipLevel,@Param("time") Long time);
+                    @Param("deviceId") String deviceId, @Param("deviceBrand")String deviceBrand,@Param("vipLevel") int vipLevel,@Param("time") Long time,@Param("phone") String phone);
 
     void insertLogout(Login login);
 
-    @Select("select * from data_coins where mstime BETWEEN #{beginTime} AND #{endTime}")
-    List<Map> selectCoins(@Param("beginTime") Long i, @Param("endTime") Long l);
-
     void insertCard(Card card);
+
+    void insertCardUser(List<CardUser> list);
 }

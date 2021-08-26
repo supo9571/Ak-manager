@@ -1,6 +1,5 @@
 package com.consumer.domain;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 /**
@@ -24,8 +23,15 @@ public class Card {
     private String sideList;
     private String loserList;
     private String winnerList;
+    private String exinfo;
     private int totalNum;
     private Long systemWin;
 
+    private Long addScore;
+    private Long payFee;
+    private Long betCoins;
+
+    private String uid;
+    private int aiNum;
 
 }

@@ -64,15 +64,12 @@ public class KafkaConsumer {
                     break;
                 case LOGIN:
                     insertHandler.insertLogin(jsonObject);
-                    log.info("login");
                     break;
                 case LOGOUT:
                     insertHandler.insertLogout(jsonObject);
-                    log.info("logout");
                     break;
                 case CARD_RECORD:
                     insertHandler.insertCard(jsonObject);
-                    log.info("logout");
                     break;
                 default:
                     if(!opList.contains(op)){
@@ -90,7 +87,7 @@ public class KafkaConsumer {
 //            jsonObject.put("value",record.value());
 //            List errMsgs = new ArrayList();
 //            errMsgs.add(jsonObject.toJSONString());
-            log.error(e.getMessage());
+            log.error(e.getMessage()+"||||value-->"+record.value());
 //            redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
             // 手工签收机制
