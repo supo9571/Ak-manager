@@ -20,4 +20,9 @@ public class CoinsServiceImpl implements CoinsService {
     public List selectCoins(Coins coins) {
         return coinsMapper.selectCoins(coins);
     }
+
+    @Override
+    public Long selectCoinsCount(Coins coins) {
+        return coinsMapper.selectCoinsCount(coins);
+    }
 }

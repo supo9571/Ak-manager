@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface CoinsService {
     List selectCoins(Coins coins);
+
+    Long selectCoinsCount(Coins coins);
 }

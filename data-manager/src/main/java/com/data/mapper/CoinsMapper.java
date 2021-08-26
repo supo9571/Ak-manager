@@ -12,4 +12,6 @@ import java.util.List;
 public interface CoinsMapper {
 
     List<Coins> selectCoins(Coins coins);
+
+    Long selectCoinsCount(Coins coins);
 }

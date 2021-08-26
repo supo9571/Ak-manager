@@ -3,6 +3,10 @@ package com.manager.common.core.domain.model;
 import com.manager.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * @author marvin 2021/8/17

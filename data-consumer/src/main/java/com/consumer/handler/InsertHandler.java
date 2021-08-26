@@ -104,6 +104,9 @@ public class InsertHandler {
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee();
+                if(cardUser.getBetCoins() == null){
+                    cardUser.setBetCoins(cardUser.getWaterCoins());
+                }
                 betCoins+=cardUser.getBetCoins();
                 uid.append(cardUser.getUid()+",");
             }
@@ -120,6 +123,9 @@ public class InsertHandler {
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee();
+                if(cardUser.getBetCoins() == null){
+                    cardUser.setBetCoins(cardUser.getWaterCoins());
+                }
                 betCoins+=cardUser.getBetCoins();
                 uid.append(cardUser.getUid()+",");
             }

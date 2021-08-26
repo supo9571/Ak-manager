@@ -20,6 +20,7 @@ public class CardUser {
     private Long addScore;
     private Long payFee;
     private Long betCoins;
+    private Long waterCoins;
     private Long leftScore;
     private String isRobot;
 

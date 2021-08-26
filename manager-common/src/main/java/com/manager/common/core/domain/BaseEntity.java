@@ -1,12 +1,15 @@
 package com.manager.common.core.domain;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Entity基类
@@ -73,6 +76,40 @@ public class BaseEntity implements Serializable {
      * 请求参数
      */
     private Map<String, Object> params;
+
+    /**
+     * 开始时间 ms
+     */
+    private String beginms;
+
+    /**
+     * 结束时间 ms
+     */
+    private String endms;
+
+    public String getBeginms(){
+        if(StringUtils.isNotBlank(this.beginTime)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return sdf.parse(this.beginTime).getTime() + "";
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return beginms;
+    }
+
+    public String getEndms(){
+        if(StringUtils.isNotBlank(this.endTime)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return sdf.parse(this.endTime).getTime() + "";
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return endms;
+    }
 
     public Map<String, Object> getParams() {
         if (params == null) {

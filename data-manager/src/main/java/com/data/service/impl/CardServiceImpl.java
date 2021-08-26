@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/8/25
@@ -19,5 +20,20 @@ public class CardServiceImpl implements CardService {
     @Override
     public List selectCard(Card card) {
         return cardMapper.selectCard(card);
+    }
+
+    @Override
+    public List selectCardUser(Card card) {
+        return cardMapper.selectCardUser(card);
+    }
+
+    @Override
+    public Map selectCardCount(Card card) {
+        return cardMapper.selectCardCount(card);
+    }
+
+    @Override
+    public Map selectCardUserCount(Card card) {
+        return cardMapper.selectCardUserCount(card);
     }
 }

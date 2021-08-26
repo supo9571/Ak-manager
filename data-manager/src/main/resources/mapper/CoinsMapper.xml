@@ -44,4 +44,37 @@
 
 		</where>
 	</select>
+
+	<select id="selectCoinsCount" resultType="java.lang.Long" parameterType="com.manager.common.core.domain.model.Coins">
+		select sum(c.curr) countCurr
+		from data_coins c
+		left join config_reason r on c.r=r.r_id
+		left join config_game g on c.game_type = g.game_id
+		left join data_register u on u.uid = c.uid
+		<where>
+			<if test="uid!=null and uid !=''">
+				and c.uid in
+				<foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
+			<if test="gameType!=null and gameType !=''">
+				and c.game_type = #{gameType}
+			</if>
+			<if test="channel!=null and channel !=''">
+				and c.channel = #{channel}
+			</if>
+			<if test="uname!=null and uname !=''">
+				and u.name = #{uname}
+			</if>
+			<if test="beginTime!=null and beginTime !=''">
+				and c.time >= UNIX_TIMESTAMP(#{beginTime})
+			</if>
+			<if test="endTime!=null and endTime !=''">
+				and  UNIX_TIMESTAMP(#{endTime}) >= c.time
+			</if>
+
+		</where>
+
+	</select>
 </mapper>
