@@ -4,25 +4,20 @@
 <mapper namespace="com.data.mapper.CardMapper">
 
     <select id="selectCard" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
-        select c.table_gid tableGid,g.game_name tableName,
-        if(g.parent_id = 0 ,g.game_name, ge.game_name) gameName,
+        select c.table_gid tableGid,
+               c.game_type gameType,
         FROM_UNIXTIME(c.begin_time) beginTime,
         FROM_UNIXTIME(c.end_time) endTime,
         c.side_list sideList,c.uid,
         c.total_num totalNum,c.ai_num aiNum,
         c.add_score addScore,c.pay_fee payFee,c.bet_coins betCoins
         from data_card c
-        left join config_game g on c.game_type = g.game_id
-        left join config_game ge on g.parent_id = ge.game_id
         <where>
             <if test="tableGid!=null and tableGid !=''">
                 and c.table_gid = #{tableGid}
             </if>
             <if test="beginTime!=null and beginTime !=''">
-                and c.time >= UNIX_TIMESTAMP(#{beginTime})
-            </if>
-            <if test="endTime!=null and endTime !=''">
-                and UNIX_TIMESTAMP(#{endTime}) >= c.time
+                and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
@@ -31,25 +26,20 @@
     </select>
 
     <select id="selectCardUser" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
-        select u.table_gid tableGid,g.game_name tableName,
-        if(g.parent_id = 0 ,g.game_name, ge.game_name) gameName,
+        select u.table_gid tableGid,
+               u.game_type gameType,
         FROM_UNIXTIME(u.begin_time) beginTime,
         FROM_UNIXTIME(u.end_time) endTime,
         c.total_num totalNum,u.add_score addScore,u.pay_fee payFee,u.bet_coins betCoins,
         c.ai_num aiNum,c.side_list sideList
         from data_card_user u
         left join data_card c on u.table_gid = c.table_gid
-        left join config_game g on u.game_type = g.game_id
-        left join config_game ge on g.parent_id = ge.game_id
         <where>
             <if test="tableGid!=null and tableGid !=''">
                 and u.table_gid = #{tableGid}
             </if>
             <if test="beginTime!=null and beginTime !=''">
-                and u.mstime >= UNIX_TIMESTAMP(#{beginTime})*1000
-            </if>
-            <if test="endTime!=null and endTime !=''">
-                and UNIX_TIMESTAMP(#{endTime})*1000 >= u.mstime
+                and u.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
                 and u.game_type = #{gameId}
