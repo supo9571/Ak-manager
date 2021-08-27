@@ -62,4 +62,7 @@ public class PlayUser extends BaseEntity {
 
     @ApiModelProperty("保险箱余额")
     private String safeBox;
+
+    @ApiModelProperty("登录密码")
+    private String password;
 }

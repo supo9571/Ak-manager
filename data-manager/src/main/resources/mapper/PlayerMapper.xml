@@ -48,7 +48,6 @@
         <set>
             <if test="phone != null and phone != ''">phone = #{phone},</if>
             <if test="password != null and password != ''">password = #{password},</if>
-            update_time = sysdate()
         </set>
         where uid = #{uid}
     </update>
