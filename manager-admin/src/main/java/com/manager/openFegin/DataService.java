@@ -37,4 +37,6 @@ public interface DataService {
     @PostMapping(value = "/data/card/list",consumes = "application/json")
     AjaxResult getCards(@RequestBody Card card);
 
+    @PostMapping(value = "/data/game/option")
+    AjaxResult getGames();
 }
