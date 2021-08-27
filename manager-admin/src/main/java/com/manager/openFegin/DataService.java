@@ -39,4 +39,7 @@ public interface DataService {
 
     @PostMapping(value = "/data/game/option")
     AjaxResult getGames();
+
+    @PostMapping(value = "/data/player/edit",consumes = "application/json")
+    AjaxResult updatePlayer(@RequestBody PlayUser playUser);
 }

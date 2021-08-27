@@ -12,7 +12,11 @@
         login_device_brand loginDeviceBrand,
         vip_level vipLevel,
         phone,safe_box safeBox,
-        FROM_UNIXTIME(login_time) loginTime
+        FROM_UNIXTIME(login_time) loginTime,
+        today_add todayAdd,today_red todayRed,today_give todayGive,
+        today_water todayWater,today_win todayWin,total_add totalAdd,
+        total_red totalRed,total_give totalGive,count_add countAdd,
+        total_win totalWin,total_water totalWater
         from data_register
         <where>
             <if test="uid!=null and uid !=''">
@@ -38,4 +42,14 @@
             </if>
         </where>
     </select>
+
+    <update id="updatePlayer" parameterType="com.manager.common.core.domain.model.PlayUser">
+        update data_register
+        <set>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            update_time = sysdate()
+        </set>
+        where uid = #{uid}
+    </update>
 </mapper>

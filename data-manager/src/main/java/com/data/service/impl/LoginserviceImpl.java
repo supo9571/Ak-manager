@@ -26,7 +26,7 @@ public class LoginserviceImpl implements Loginservice {
     /**
      * 今日登录总数
      */
-    public int selectTodayLogins() {
+    public Integer selectTodayLogins() {
         return loginMapper.selectTodayLogins(DateUtils.datePath());
     }
 

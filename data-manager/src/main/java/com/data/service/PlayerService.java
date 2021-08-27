@@ -11,4 +11,6 @@ public interface PlayerService {
     List selectPlayer(PlayUser playUser);
 
     List selectPlayerCurr(Long uid);
+
+    Integer updatePlayer(PlayUser playUser);
 }

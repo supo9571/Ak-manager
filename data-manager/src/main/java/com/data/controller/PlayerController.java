@@ -32,4 +32,10 @@ public class PlayerController extends BaseController {
         List list = playerService.selectPlayerCurr(uid);
         return AjaxResult.success(list);
     }
+
+    @PostMapping("/edit")
+    public AjaxResult update(PlayUser playUser){
+        Integer i = playerService.updatePlayer(playUser);
+        return i>0?AjaxResult.success():AjaxResult.error();
+    }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public interface Loginservice {
     List selectLogin(Login login);
 
-    int selectTodayLogins();
+    Integer selectTodayLogins();
 
     List selectLoginCounts(String type);
 }

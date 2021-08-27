@@ -34,7 +34,7 @@ public class LoginController extends BaseController{
      */
     @PostMapping("/today")
     public AjaxResult today() {
-        int todayLogins =loginservice.selectTodayLogins();
+        Integer todayLogins =loginservice.selectTodayLogins();
         return AjaxResult.success("查询成功", todayLogins);
     }
 

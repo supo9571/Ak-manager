@@ -4,6 +4,7 @@ import com.manager.common.core.domain.model.PlayUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +19,6 @@ public interface PlayerMapper {
 
     @Select("select curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
     List<Map> selectPlayerCurr(@Param("uid") Long uid);
+
+    Integer updatePlayer(PlayUser playUser);
 }

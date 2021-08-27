@@ -1,8 +1,10 @@
 package com.manager.web.controller.data;
 
+import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.enums.BusinessType;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +28,7 @@ public class PlayerController extends BaseController {
      * 获取用户列表
      */
     @PreAuthorize("@ss.hasPermi('data:player:list')")
-    @ApiOperation(value = "查询账变列表")
+    @ApiOperation(value = "查询玩家列表")
     @GetMapping("/list")
     public AjaxResult list(PlayUser playUser) {
         return dataService.getPlayers(playUser);
@@ -40,5 +42,17 @@ public class PlayerController extends BaseController {
     @GetMapping("/curr")
     public AjaxResult curr(Long uid) {
         return dataService.getPlayerCurr(uid);
+    }
+
+
+    /**
+     * 修改玩家信息
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:edit')")
+    @ApiOperation(value = "修改玩家信息")
+    @Log(title = "修改玩家信息", businessType = BusinessType.UPDATE)
+    @GetMapping("/edit")
+    public AjaxResult edit(PlayUser playUser) {
+        return dataService.updatePlayer(playUser);
     }
 }
