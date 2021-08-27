@@ -5,6 +5,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Coins;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class CoinsController extends BaseController {
      * 获取用户列表
      */
     @PostMapping("/list")
-    public AjaxResult list(Coins coins) {
+    public AjaxResult list(@RequestBody Coins coins) {
         startPage(coins.getPage(),coins.getSize(),coins.getOrderByColumn(),coins.getIsAsc());
         List list = coinsService.selectCoins(coins);
         //计算总计

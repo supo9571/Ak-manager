@@ -6,6 +6,7 @@ import com.manager.common.core.domain.model.Card;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ public class CardController extends BaseController {
      * 获取用户列表
      */
     @PostMapping("/list")
-    public AjaxResult list(Card card) {
+    public AjaxResult list(@RequestBody Card card) {
         startPage(card.getPage(),card.getSize(),card.getOrderByColumn(),card.getIsAsc());
         List list;
         Map map;

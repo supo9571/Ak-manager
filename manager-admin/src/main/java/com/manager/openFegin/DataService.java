@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface DataService {
 
     @PostMapping(value = "/data/coins/list",consumes = "application/json")
-    AjaxResult getCOins(@RequestBody Coins coins);
+    AjaxResult getCoins(@RequestBody Coins coins);
 
     @PostMapping(value = "/data/login/list",consumes = "application/json")
     AjaxResult getLogins(@RequestBody Login login);

@@ -28,6 +28,6 @@ public class CoinsController {
     @ApiOperation(value = "查询账变列表")
     @GetMapping("/list")
     public AjaxResult list(Coins coins) {
-        return dataService.getCOins(coins);
+        return dataService.getCoins(coins);
     }
 }

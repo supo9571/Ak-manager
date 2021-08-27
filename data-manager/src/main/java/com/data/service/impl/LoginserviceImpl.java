@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author marvin 2021/8/21
@@ -34,13 +37,14 @@ public class LoginserviceImpl implements Loginservice {
      * 近期登录总数
      */
     public List selectLoginCounts(String type) {
+        List list = new ArrayList();
         if("w".equals(type)){
-            return loginMapper.selectLoginCounts(DateUtils.getWeek(),DateUtils.datePath());
+            list = loginMapper.selectLoginCounts(DateUtils.getWeek(),DateUtils.datePath());
         }else if("m".equals(type)){
-            return loginMapper.selectLoginCounts(DateUtils.getMonth(),DateUtils.datePath());
+            list = loginMapper.selectLoginCounts(DateUtils.getMonth(),DateUtils.datePath());
         }else if("y".equals(type)){
-            return loginMapper.selectLoginCounts(DateUtils.getYear(),DateUtils.datePath());
+            list = loginMapper.selectLoginCounts(DateUtils.getYear(),DateUtils.datePath());
         }
-        return null;
+        return list;
     }
 }

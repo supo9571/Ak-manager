@@ -5,6 +5,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class PlayerController extends BaseController {
     private PlayerService playerService;
 
     @PostMapping("/list")
-    public AjaxResult list(PlayUser playUser){
+    public AjaxResult list(@RequestBody PlayUser playUser){
         startPage(playUser.getPage(),playUser.getSize(),playUser.getOrderByColumn(),playUser.getIsAsc());
         List list = playerService.selectPlayer(playUser);
         return AjaxResult.success(getDataTable(list));
@@ -34,7 +35,7 @@ public class PlayerController extends BaseController {
     }
 
     @PostMapping("/edit")
-    public AjaxResult update(PlayUser playUser){
+    public AjaxResult update(@RequestBody PlayUser playUser){
         Integer i = playerService.updatePlayer(playUser);
         return i>0?AjaxResult.success():AjaxResult.error();
     }
