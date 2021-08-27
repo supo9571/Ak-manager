@@ -2,7 +2,6 @@ package com.data.controller;
 
 import com.data.service.GameService;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.Coins;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

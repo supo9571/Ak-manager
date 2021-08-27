@@ -12,12 +12,10 @@
 		       c.before,c.channel,
 		       c.table_type tableType,
 		       c.device_brand deviceBrand,
-		       g.game_name,
-		       r.r_name rname,
+		       c.game_type gameType,
+		       c.r,
 		       u.name uname
 		from data_coins c
-		left join config_reason r on c.r=r.r_id
-		left join config_game g on c.game_type = g.game_id
 		left join data_register u on u.uid = c.uid
 		<where>
 			<if test="uid!=null and uid !=''">

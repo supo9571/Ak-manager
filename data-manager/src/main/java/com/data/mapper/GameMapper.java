@@ -12,6 +12,6 @@ import java.util.Map;
 @Mapper
 public interface GameMapper {
 
-    @Select("select game_id gameType,game_name gameName from config_game where parent_id in(0,-1) ")
+    @Select("select game_id gameType,game_name gameName,parent_id parentId from config_game ")
     List<Map> getGames();
 }
