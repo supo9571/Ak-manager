@@ -101,6 +101,8 @@ public class InsertHandler {
                 list.add(cardUser);
                 if("true".equals(cardUser.getIsRobot())){
                     aiNum+=1;
+                }else {
+                    cardUser.setIsRobot("false");
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee();
@@ -120,6 +122,8 @@ public class InsertHandler {
                 list.add(cardUser);
                 if("true".equals(cardUser.getIsRobot())){
                     aiNum+=1;
+                }else {
+                    cardUser.setIsRobot("false");
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee();

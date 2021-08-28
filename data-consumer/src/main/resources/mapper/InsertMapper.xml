@@ -8,12 +8,12 @@
 							 `ip`,`name`,`time`,
 							 `mstime`,`channel`,`agent_id`,
 							 `device_id`,`cur_channel`,`register_ip`,
-							 `device_brand`,`client_version`,`register_machine`)
+							 `device_brand`,`client_version`,`register_machine`,`account_id`)
 		values (#{key},#{op},#{uid},
 		        #{ip},#{name},#{time},
 		        #{mstime},#{channel},#{agentId},
 		        #{deviceId},#{curChannel},#{registerIp},
-		        #{deviceBrand},#{clientVersion},#{registerMachine})
+		        #{deviceBrand},#{clientVersion},#{registerMachine},#{account_id})
 	</insert>
 
 	<insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">

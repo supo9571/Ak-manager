@@ -11,6 +11,7 @@ public class Register {
     private String key;
     private String op;
     private Long uid;
+    private Long accountId;
     private Long ip;
     private String name;
     private Long time;
