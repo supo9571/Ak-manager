@@ -1,11 +1,15 @@
 package com.data.controller;
 
+import com.data.utils.IpUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.page.PageDomain;
 import com.manager.common.core.page.TableDataInfo;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -85,4 +89,18 @@ public class BaseController {
         return AjaxResult.error(message);
     }
 
+    protected HttpServletRequest getReuest(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        return request;
+    }
+
+    protected String getHeader(String name){
+        return getReuest().getHeader(name);
+    }
+
+    protected String getIp(){
+        String ip = IpUtils.getIpAddr(getReuest());
+        return ip;
+    }
 }
