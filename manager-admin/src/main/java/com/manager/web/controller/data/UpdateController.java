@@ -31,7 +31,7 @@ public class UpdateController extends BaseController {
     @Autowired
     private DataService dataService;
     /**
-     * 获取用户列表
+     * 新增 整包更新
      */
     @PreAuthorize("@ss.hasPermi('data:allupdate:add')")
     @ApiOperation(value = "新增整包更新")
@@ -41,11 +41,11 @@ public class UpdateController extends BaseController {
         return dataService.addAllUpdate(allupdate);
     }
     /**
-     * 文件上传
+     * 整包更新 文件上传
      */
     @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
-    @ApiOperation(value = "新增整包更新")
-    @Log(title = "新增整包更新",businessType= BusinessType.INSERT)
+    @ApiOperation(value = "文件上传")
+    @Log(title = "文件上传",businessType= BusinessType.INSERT)
     @PostMapping("/allupdate/upload")
     public AjaxResult upload(MultipartFile file) {
         JSONObject jsonObject = new JSONObject();
@@ -63,7 +63,7 @@ public class UpdateController extends BaseController {
     /**
      * 整包更新 查询
      */
-    @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
+    @PreAuthorize("@ss.hasPermi('data:allupdate:list')")
     @ApiOperation(value = "整包更新列表查询")
     @GetMapping("/allupdate/list")
     public AjaxResult list() {
@@ -71,10 +71,10 @@ public class UpdateController extends BaseController {
     }
 
     /**
-     * 整包更新 查询
+     * 整包更新 历史查询
      */
-    @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
-    @ApiOperation(value = "整包更新列表查询")
+    @PreAuthorize("@ss.hasPermi('data:allupdate:list')")
+    @ApiOperation(value = "整包更新历史查询")
     @GetMapping("/allupdate/history")
     public AjaxResult history(String tid) {
         return AjaxResult.success(dataService.findAllUpdateHistory(tid));
