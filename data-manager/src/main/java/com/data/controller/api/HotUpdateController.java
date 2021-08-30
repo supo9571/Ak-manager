@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
-import com.data.service.HotUpdateService;
+import com.data.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ public class HotUpdateController extends BaseController {
     private GlobalConfig globalConfig;
 
     @Autowired
-    private HotUpdateService hotUpdateService;
+    private UpdateService updateService;
 
     @PostMapping("/hotupdate")
     public JSONObject hotUpdate() {
@@ -45,9 +45,9 @@ public class HotUpdateController extends BaseController {
         data.put("errUploadUrl",globalConfig.getErrUploadUrl());
         data.put("headUrl",globalConfig.getHeadUrl());
         //添加 客服信息
-        data.put("customer",hotUpdateService.selectConsumer());
+        data.put("customer",updateService.selectConsumer());
         //添加 更新信息
-        List<Map> list = hotUpdateService.selectPackage(ip,channelId,versionId,platform);
+        List<Map> list = updateService.selectPackage(ip,channelId,versionId,platform);
         if(!list.isEmpty()){
             for (int i = 0; i < list.size(); i++) {
                 Map map = list.get(i);

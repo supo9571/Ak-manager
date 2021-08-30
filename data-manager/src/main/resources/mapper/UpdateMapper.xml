@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.data.mapper.HotUpdateMapper">
+<mapper namespace="com.data.mapper.UpdateMapper">
 
     <select id="selectPackage" resultType="java.util.Map">
         select *
@@ -32,4 +32,8 @@
         order by release_time
     </select>
 
+    <insert id="addAllUpdate" parameterType="com.manager.common.core.domain.model.Allupdate">
+        insert into config_update(`version`,`tid`,`status`,`apk_update_url`,`size`,`update_time`,`created_time`)
+        values (#{version},#{tid},#{status},#{apkUpdateUrl},#{size},sysdate(),sysdate());
+    </insert>
 </mapper>

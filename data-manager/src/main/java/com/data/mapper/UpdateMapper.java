@@ -1,5 +1,6 @@
 package com.data.mapper;
 
+import com.manager.common.core.domain.model.Allupdate;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author marvin 2021/8/30
  */
 @Mapper
-public interface HotUpdateMapper {
+public interface UpdateMapper {
 
 
     List<Map> selectPackage(@Param("ip") String ip, @Param("channelId") String channelId, @Param("versionId") String versionId, @Param("platform") String platform);
@@ -20,4 +21,6 @@ public interface HotUpdateMapper {
 
     @Select("select accord_addr,info,live_url,open_type from config_consumer where status = '1'")
     List<Map> selectConsumer();
+
+    Integer addAllUpdate(Allupdate allupdate);
 }
