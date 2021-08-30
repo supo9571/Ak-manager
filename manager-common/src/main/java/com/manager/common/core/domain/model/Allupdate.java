@@ -17,6 +17,8 @@ public class Allupdate {
 
     private String version;
 
+    private Integer verInt;
+
     private String apkUpdateUrl;
 
     private String updateTime;

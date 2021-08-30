@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * @author marvin 2021/8/19
  */
@@ -45,4 +47,10 @@ public interface DataService {
 
     @PostMapping(value = "/data/allupdate/add",consumes = "application/json")
     AjaxResult addAllUpdate(@RequestBody Allupdate allupdate);
+
+    @PostMapping(value = "/data/allupdate/list")
+    List findAllUpdate();
+
+    @PostMapping(value = "/data/allupdate/history")
+    String findAllUpdateHistory(String tid);
 }

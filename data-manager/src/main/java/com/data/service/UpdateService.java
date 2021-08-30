@@ -16,4 +16,8 @@ public interface UpdateService {
     List<Map> selectConsumer();
 
     Integer addAllUpdate(Allupdate allupdate);
+
+    List findAllUpdate();
+
+    List findAllUpdateHistory(String tid);
 }

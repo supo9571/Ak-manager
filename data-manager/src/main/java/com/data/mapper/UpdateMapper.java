@@ -23,4 +23,11 @@ public interface UpdateMapper {
     List<Map> selectConsumer();
 
     Integer addAllUpdate(Allupdate allupdate);
+
+    @Select("SELECT id,VERSION,u.tid,STATUS,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update u " +
+            "LEFT JOIN (SELECT tid,MAX(ver_int) ver_int FROM config_update GROUP BY tid) a ON u.tid = a.tid AND u.ver_int = a.ver_int ORDER BY id DESC")
+    List<Map> findAllUpdate();
+
+    @Select("SELECT id,VERSION,tid,STATUS,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update where tid= #{tid} order by ver_int desc")
+    List findAllUpdateHistory(String tid);
 }

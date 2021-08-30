@@ -1,5 +1,6 @@
 package com.manager.web.controller.data;
 
+import com.alibaba.fastjson.JSONObject;
 import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
@@ -11,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,13 +48,35 @@ public class UpdateController extends BaseController {
     @Log(title = "新增整包更新",businessType= BusinessType.INSERT)
     @PostMapping("/allupdate/upload")
     public AjaxResult upload(MultipartFile file) {
+        JSONObject jsonObject = new JSONObject();
         String url = "";
         try {
             url = FileUploadUtils.upload(file);
         } catch (IOException e) {
             return AjaxResult.error(e.getMessage());
         }
-        return AjaxResult.success("上传成功",url);
+        jsonObject.put("apkUpdateUrl",url);
+        jsonObject.put("size",file.getSize()/1024);
+        return AjaxResult.success(jsonObject);
     }
 
+    /**
+     * 整包更新 查询
+     */
+    @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
+    @ApiOperation(value = "整包更新列表查询")
+    @GetMapping("/allupdate/list")
+    public AjaxResult list() {
+        return AjaxResult.success(dataService.findAllUpdate());
+    }
+
+    /**
+     * 整包更新 查询
+     */
+    @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
+    @ApiOperation(value = "整包更新列表查询")
+    @GetMapping("/allupdate/history")
+    public AjaxResult history(String tid) {
+        return AjaxResult.success(dataService.findAllUpdateHistory(tid));
+    }
 }

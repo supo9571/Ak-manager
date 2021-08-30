@@ -33,7 +33,28 @@ public class UpdateController extends BaseController {
      */
     @PostMapping("/allupdate/add")
     public AjaxResult addAllUpdate(@RequestBody Allupdate allupdate) {
+        String version = allupdate.getVersion();
+        //计算版本号
+        String[] vers = version.split(",");
+        int verInt = Integer.valueOf(vers[0])*10000+Integer.valueOf(vers[1])*100+Integer.valueOf(vers[2]);
+        allupdate.setVerInt(verInt);
         int i = updateService.addAllUpdate(allupdate);
         return i>0?AjaxResult.success():AjaxResult.error();
+    }
+
+    /**
+     * 整包更新 查询
+     */
+    @PostMapping("/allupdate/list")
+    public AjaxResult list() {
+        return AjaxResult.success(updateService.findAllUpdate());
+    }
+
+    /**
+     * 整包更新 历史版本
+     */
+    @PostMapping("/allupdate/history")
+    public AjaxResult history(String tid) {
+        return AjaxResult.success(updateService.findAllUpdateHistory(tid));
     }
 }

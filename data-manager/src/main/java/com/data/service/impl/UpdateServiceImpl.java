@@ -39,4 +39,14 @@ public class UpdateServiceImpl implements UpdateService {
     public Integer addAllUpdate(Allupdate allupdate) {
         return updateMapper.addAllUpdate(allupdate);
     }
+
+    @Override
+    public List findAllUpdate() {
+        return updateMapper.findAllUpdate();
+    }
+
+    @Override
+    public List findAllUpdateHistory(String tid) {
+        return updateMapper.findAllUpdateHistory(tid);
+    }
 }
