@@ -33,10 +33,10 @@
     </select>
 
     <insert id="addAllUpdate" parameterType="com.manager.common.core.domain.model.Allupdate">
-        insert into config_update(`version`,`tid`,`status`,`apk_update_url`,`size`,`var_int`,`update_time`,`created_time`)
+        insert into config_update(`version`,`tid`,`status`,`apk_update_url`,`size`,`ver_int`,`update_time`,`created_time`)
         values
         <foreach item="item" index="index" collection="tid.split(',')" separator=",">
-            (#{version},#{item},#{status},#{apkUpdateUrl},#{size},#{varInt},sysdate(),sysdate())
+            (#{version},#{item},#{status},#{apkUpdateUrl},#{size},#{verInt},sysdate(),sysdate())
         </foreach>
     </insert>
 
