@@ -33,11 +33,6 @@ public class UpdateController extends BaseController {
      */
     @PostMapping("/allupdate/add")
     public AjaxResult addAllUpdate(@RequestBody Allupdate allupdate) {
-        String version = allupdate.getVersion();
-        //计算版本号
-        String[] vers = version.split(".");
-        int verInt = Integer.valueOf(vers[0])*10000+Integer.valueOf(vers[1])*100+Integer.valueOf(vers[2]);
-        allupdate.setVerInt(verInt);
         int i = updateService.addAllUpdate(allupdate);
         return i>0?AjaxResult.success():AjaxResult.error();
     }
@@ -56,5 +51,23 @@ public class UpdateController extends BaseController {
     @PostMapping("/allupdate/history")
     public AjaxResult history(String tid) {
         return AjaxResult.success(updateService.findAllUpdateHistory(tid));
+    }
+
+    /**
+     * 整包更新 编辑
+     */
+    @PostMapping("/allupdate/edit")
+    public AjaxResult edit(@RequestBody Allupdate allupdate) {
+        Integer i = updateService.editAllUpdate(allupdate);
+        return i>0?AjaxResult.success():AjaxResult.error();
+    }
+
+    /**
+     * 整包更新 删除
+     */
+    @PostMapping("/allupdate/del")
+    public AjaxResult edit(String id) {
+        Integer i = updateService.deleteAllupdate(id);
+        return i>0?AjaxResult.success():AjaxResult.error();
     }
 }

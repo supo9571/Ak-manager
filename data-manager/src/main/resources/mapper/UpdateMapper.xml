@@ -39,4 +39,18 @@
             (#{version},#{item},#{status},#{apkUpdateUrl},#{size},#{varInt},sysdate(),sysdate())
         </foreach>
     </insert>
+
+    <update id="editAllUpdate" parameterType="com.manager.common.core.domain.model.Allupdate">
+        update config_update
+        <set>
+            <if test="tid!=null and tid!=''"> tid = #{tid},</if>
+            <if test="status!=null and status!=''"> status = #{status},</if>
+            <if test="version!=null and version!=''"> version = #{version},</if>
+            <if test="verInt!=null and verInt!=''"> ver_int = #{verInt},</if>
+            <if test="apkUpdateUrl!=null and apkUpdateUrl!=''"> apk_update_url = #{apkUpdateUrl},</if>
+            <if test="size!=null and size!=''"> size = #{size},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

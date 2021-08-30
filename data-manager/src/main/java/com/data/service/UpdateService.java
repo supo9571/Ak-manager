@@ -10,7 +10,6 @@ import java.util.Map;
  */
 public interface UpdateService {
 
-
     List<Map> selectPackage(String ip, String channelId, String versionId, String platform);
 
     List<Map> selectConsumer();
@@ -20,4 +19,8 @@ public interface UpdateService {
     List findAllUpdate();
 
     List findAllUpdateHistory(String tid);
+
+    Integer editAllUpdate(Allupdate allupdate);
+
+    Integer deleteAllupdate(String id);
 }

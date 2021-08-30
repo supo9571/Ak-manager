@@ -37,6 +37,7 @@ public class UpdateServiceImpl implements UpdateService {
      */
     @Override
     public Integer addAllUpdate(Allupdate allupdate) {
+        verInt(allupdate);
         return updateMapper.addAllUpdate(allupdate);
     }
 
@@ -48,5 +49,24 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public List findAllUpdateHistory(String tid) {
         return updateMapper.findAllUpdateHistory(tid);
+    }
+
+    @Override
+    public Integer editAllUpdate(Allupdate allupdate) {
+        verInt(allupdate);
+        return updateMapper.editAllUpdate(allupdate);
+    }
+
+    @Override
+    public Integer deleteAllupdate(String id) {
+        return updateMapper.deleteAllupdate(id);
+    }
+
+    private void verInt(Allupdate allupdate){
+        String version = allupdate.getVersion();
+        //计算版本号
+        String[] vers = version.split("\\.");
+        int verInt = Integer.valueOf(vers[0])*10000+Integer.valueOf(vers[1])*100+Integer.valueOf(vers[2]);
+        allupdate.setVerInt(verInt);
     }
 }

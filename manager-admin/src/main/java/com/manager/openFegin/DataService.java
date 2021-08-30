@@ -49,8 +49,14 @@ public interface DataService {
     AjaxResult addAllUpdate(@RequestBody Allupdate allupdate);
 
     @PostMapping(value = "/data/allupdate/list")
-    List findAllUpdate();
+    AjaxResult findAllUpdate();
 
     @PostMapping(value = "/data/allupdate/history")
-    String findAllUpdateHistory(String tid);
+    AjaxResult findAllUpdateHistory(@RequestParam("tid")String tid);
+
+    @PostMapping(value = "/data/allupdate/edit",consumes = "application/json")
+    AjaxResult editAllUpdateHistory(@RequestBody Allupdate allupdate);
+
+    @PostMapping(value = "/data/allupdate/del")
+    AjaxResult deleteAllupdate(@RequestParam("id")String id);
 }

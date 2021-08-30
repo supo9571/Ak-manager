@@ -67,7 +67,7 @@ public class UpdateController extends BaseController {
     @ApiOperation(value = "整包更新列表查询")
     @GetMapping("/allupdate/list")
     public AjaxResult list() {
-        return AjaxResult.success(dataService.findAllUpdate());
+        return dataService.findAllUpdate();
     }
 
     /**
@@ -77,6 +77,26 @@ public class UpdateController extends BaseController {
     @ApiOperation(value = "整包更新历史查询")
     @GetMapping("/allupdate/history")
     public AjaxResult history(String tid) {
-        return AjaxResult.success(dataService.findAllUpdateHistory(tid));
+        return dataService.findAllUpdateHistory(tid);
+    }
+
+    /**
+     * 整包更新 编辑
+     */
+    @PreAuthorize("@ss.hasPermi('data:allupdate:edit')")
+    @ApiOperation(value = "整包更新编辑")
+    @PostMapping("/allupdate/edit")
+    public AjaxResult edit(Allupdate allupdate) {
+        return dataService.editAllUpdateHistory(allupdate);
+    }
+
+    /**
+     * 整包更新 删除
+     */
+    @PreAuthorize("@ss.hasPermi('data:allupdate:del')")
+    @ApiOperation(value = "整包更新删除")
+    @PostMapping("/allupdate/del")
+    public AjaxResult del(String id) {
+        return dataService.deleteAllupdate(id);
     }
 }
