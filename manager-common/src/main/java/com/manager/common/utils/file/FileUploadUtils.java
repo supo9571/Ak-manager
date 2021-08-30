@@ -22,9 +22,9 @@ import com.manager.common.utils.StringUtils;
 public class FileUploadUtils
 {
     /**
-     * 默认大小 50M
+     * 默认大小 1g
      */
-    public static final long DEFAULT_MAX_SIZE = 50 * 1024 * 1024;
+    public static final long DEFAULT_MAX_SIZE = 1024 * 1024 * 1024;
 
     /**
      * 默认的文件名最大长度 100
@@ -146,7 +146,7 @@ public class FileUploadUtils
     {
         int dirLastIndex = ManagerConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
-        String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
+        String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + fileName;
         return pathFileName;
     }
 

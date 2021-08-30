@@ -42,4 +42,7 @@ public interface DataService {
 
     @PostMapping(value = "/data/player/edit",consumes = "application/json")
     AjaxResult updatePlayer(@RequestBody PlayUser playUser);
+
+    @PostMapping(value = "/data/allupdate/add",consumes = "application/json")
+    AjaxResult addAllUpdate(@RequestBody Allupdate allupdate);
 }
