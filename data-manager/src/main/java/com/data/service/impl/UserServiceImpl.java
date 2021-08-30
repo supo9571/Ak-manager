@@ -5,9 +5,6 @@ import com.data.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author marvin 2021/8/28
  */
@@ -20,8 +17,4 @@ public class UserServiceImpl implements UserService {
         return userMapper.findByphone(phone);
     }
 
-    @Override
-    public List<Map> selectPackage(String ip, String channelId, String versionId, String platform) {
-        return userMapper.selectPackage(ip,channelId,versionId,platform);
-    }
 }

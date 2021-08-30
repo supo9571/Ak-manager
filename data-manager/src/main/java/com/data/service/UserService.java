@@ -9,5 +9,4 @@ import java.util.Map;
 public interface UserService {
     Integer findByphone(String phone);
 
-    List<Map> selectPackage(String ip, String channelId, String versionId, String platform);
 }

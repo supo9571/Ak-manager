@@ -18,5 +18,7 @@ public class GlobalConfig {
 
     private String headUrl;
 
+    private String resourcesUrl;
+
     private Map<String,String> gameConfig;
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.HotUpdateMapper">
+
+    <select id="selectPackage" resultType="java.util.Map">
+        select *
+        from config_package
+        where platform like CONCAT('%', #{platform}, '%')
+          and is_public = '*'
+          and allow_channel = '*'
+          and deny_channel not like CONCAT('%', #{channelId}, '%')
+          and allow_version = '*'
+          and deny_version not like CONCAT('%', #{versionId}, '%')
+          and status = '1'
+          and sysdate() >= release_time
+        order by release_time
+    </select>
+
+
+    <select id="selectPackage1" resultType="java.util.Map">
+        select *
+        from config_package
+        where platform like CONCAT('%', #{platform}, '%')
+          and is_public like CONCAT('%', #{ip}, '%')
+          and allow_channel like CONCAT('%', #{channelId}, '%')
+          and deny_channel not like CONCAT('%', #{channelId}, '%')
+          and allow_version like CONCAT('%', #{versionId}, '%')
+          and deny_version not like CONCAT('%', #{versionId}, '%')
+          and status = '1'
+          and sysdate() >= release_time
+        order by release_time
+    </select>
+
+</mapper>
