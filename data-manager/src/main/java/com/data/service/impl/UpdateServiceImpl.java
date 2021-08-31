@@ -22,10 +22,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public List<Map> selectPackage(String ip, String channelId, String versionId, String platform) {
-        List list = updateMapper.selectPackage(ip,channelId,versionId,platform);
-        List list1 = updateMapper.selectPackage1(ip,channelId,versionId,platform);
-        list.addAll(list1);
-        return list;
+        return updateMapper.selectPackage(ip,channelId,versionId,platform);
     }
 
     @Override
@@ -67,7 +64,7 @@ public class UpdateServiceImpl implements UpdateService {
     public String selectAllupdate(String channelId, String versionId) {
         //查询该平台 最新版本更新地址
         Map map = updateMapper.selectAllupdate(channelId);
-        if(map.isEmpty() || versionId.equals(map.get("version"))){
+        if(map==null || versionId.equals(map.get("version"))){
             return null;
         }
         return (String) map.get("apkUpdateUrl");

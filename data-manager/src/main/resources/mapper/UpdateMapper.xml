@@ -7,25 +7,10 @@
         select *
         from config_package
         where platform like CONCAT('%', #{platform}, '%')
-          and is_public = '*'
-          and allow_channel = '*'
+          and (is_public = '*' or is_public like CONCAT('%', #{ip}, '%'))
+          and (allow_channel = '*' or allow_channel like CONCAT('%', #{channelId}, '%') )
           and deny_channel not like CONCAT('%', #{channelId}, '%')
-          and allow_version = '*'
-          and deny_version not like CONCAT('%', #{versionId}, '%')
-          and status = '1'
-          and sysdate() >= release_time
-        order by release_time
-    </select>
-
-
-    <select id="selectPackage1" resultType="java.util.Map">
-        select *
-        from config_package
-        where platform like CONCAT('%', #{platform}, '%')
-          and is_public like CONCAT('%', #{ip}, '%')
-          and allow_channel like CONCAT('%', #{channelId}, '%')
-          and deny_channel not like CONCAT('%', #{channelId}, '%')
-          and allow_version like CONCAT('%', #{versionId}, '%')
+          and (allow_version = '*' or allow_version like CONCAT('%', #{versionId}, '%'))
           and deny_version not like CONCAT('%', #{versionId}, '%')
           and status = '1'
           and sysdate() >= release_time
