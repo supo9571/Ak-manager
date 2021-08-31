@@ -1,11 +1,12 @@
 package com.data.config.sharding;
 
-import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
-import io.shardingjdbc.core.api.config.TableRuleConfiguration;
-import io.shardingjdbc.core.api.config.strategy.StandardShardingStrategyConfiguration;
-import io.shardingjdbc.core.jdbc.core.datasource.ShardingDataSource;
-import org.apache.commons.dbcp.BasicDataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
+import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
+import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
+import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author marvin 2021/8/18
@@ -71,45 +71,45 @@ public class DataSourceConfig {
         // 打印SQL
         Properties props = new Properties();
         props.put("sql.show", sqlShow);
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(),shardingRuleConfig,props);
 
-        return new ShardingDataSource(shardingRuleConfig.build(createDataSourceMap()),
-                new ConcurrentHashMap(), props);
+        return dataSource;
 
     }
 
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
-        orderTableRuleConfig.setLogicTable("data_coins");
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
+//        orderTableRuleConfig.setLogicTable("data_coins");
         // 设置数据节点
-        orderTableRuleConfig.setActualDataNodes(coinsNodes);
+//        orderTableRuleConfig.setActualDataNodes(coinsNodes);
         orderTableRuleConfig.setTableShardingStrategyConfig(
-                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
+                new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return orderTableRuleConfig;
     }
 
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
-        orderTableRuleConfig.setLogicTable("data_card");
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
+//        orderTableRuleConfig.setLogicTable("data_card");
         // 设置数据节点
-        orderTableRuleConfig.setActualDataNodes(cardNodes);
+//        orderTableRuleConfig.setActualDataNodes(cardNodes);
         orderTableRuleConfig.setTableShardingStrategyConfig(
-                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
+                new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return orderTableRuleConfig;
     }
 
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
-        orderTableRuleConfig.setLogicTable("data_card_user");
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
+//        orderTableRuleConfig.setLogicTable("data_card_user");
         // 设置数据节点
-        orderTableRuleConfig.setActualDataNodes(cardUserNodes);
+//        orderTableRuleConfig.setActualDataNodes(cardUserNodes);
         orderTableRuleConfig.setTableShardingStrategyConfig(
-                new StandardShardingStrategyConfiguration("mstime", TableRuleConfig.class.getName(), TableRuleConfig.class.getName()));
+                new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return orderTableRuleConfig;
     }
 
@@ -126,7 +126,7 @@ public class DataSourceConfig {
         result.setUrl(jdbcUrl);
         result.setUsername(username);
         result.setPassword(password);
-        result.setMaxActive(10);
+        result.setMaxTotal(10);
         result.setMaxIdle(5);
         result.setMinIdle(3);
         result.setInitialSize(5);
