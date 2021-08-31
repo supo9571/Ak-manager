@@ -35,7 +35,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <!-- mybatis-starter：mybatis + mybatis-spring + hikari（default） -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -49,11 +48,6 @@
         </dependency>
 
         <!--sharding-jdbc -->
-<!--        <dependency>-->
-<!--            <groupId>io.shardingjdbc</groupId>-->
-<!--            <artifactId>sharding-jdbc-core</artifactId>-->
-<!--            <version>4.1.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-core</artifactId>

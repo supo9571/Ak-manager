@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
 import com.data.service.UpdateService;
+import com.manager.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,15 +47,16 @@ public class HotUpdateController extends BaseController {
         data.put("headUrl",globalConfig.getHeadUrl());
         //添加 客服信息
         data.put("customer",updateService.selectConsumer());
-        //添加 更新信息
+        //添加 整包更新信息
+        String updateUrl = updateService.selectAllupdate(channelId,versionId);
+        if(StringUtils.isNotBlank(updateUrl)){
+            data.put("appupdate",new JSONObject().put("update_url",updateUrl));
+        }
+        //添加 热更信息
         List<Map> list = updateService.selectPackage(ip,channelId,versionId,platform);
         if(!list.isEmpty()){
             for (int i = 0; i < list.size(); i++) {
                 Map map = list.get(i);
-                if("0".equals(map.get("update_type"))){//整包更新
-                    data.put("appupdate",new JSONObject().put("update_url",map.get("apk_update_url")));
-
-                }
                 JSONObject gameInfo = JSONObject.parseObject((String) map.get("game_info"));
                 Map<String,Object> platMap;
                 if("1".equals(platform)){
@@ -99,7 +101,6 @@ public class HotUpdateController extends BaseController {
                 }
                 data.put("hotfix",jsonArray);
             }
-
         }
         result.put("data",data);
         result.put("msg","ok");

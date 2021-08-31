@@ -1,6 +1,7 @@
 package com.data.service;
 
 import com.manager.common.core.domain.model.Allupdate;
+import com.manager.common.core.domain.model.Hotupdate;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,19 @@ public interface UpdateService {
 
     List findAllUpdate();
 
-    List findAllUpdateHistory(String tid);
+    List findAllUpdateHistory(Integer tid);
 
     Integer editAllUpdate(Allupdate allupdate);
 
     Integer deleteAllupdate(String id);
+
+    String selectAllupdate(String channelId, String versionId);
+
+    int addHotUpdate(Hotupdate hotUpdate);
+
+    int editHotUpdate(Hotupdate hotUpdate);
+
+    Integer delHotupdate(String id);
+
+    List findHotupdate(Integer id);
 }

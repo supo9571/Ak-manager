@@ -1,6 +1,7 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.Allupdate;
+import com.manager.common.core.domain.model.Hotupdate;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -30,10 +31,24 @@ public interface UpdateMapper {
     List<Map> findAllUpdate();
 
     @Select("SELECT id,VERSION,tid,STATUS,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update where tid= #{tid} order by ver_int desc")
-    List findAllUpdateHistory(@Param("tid") String tid);
+    List findAllUpdateHistory(@Param("tid") Integer tid);
 
     Integer editAllUpdate(Allupdate allupdate);
 
     @Delete("delete from config_update where id = #{id}")
     Integer deleteAllupdate(@Param("id") String id);
+
+    @Select("SELECT id,VERSION,tid,STATUS,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update where tid= #{tid} order by ver_int desc limit 0,1")
+    Map selectAllupdate(@Param("tid") String tid);
+
+    //添加 热更新
+    int addHotUpdate(Hotupdate hotUpdate);
+
+    //修改 热更新
+    int editHotUpdate(Hotupdate hotUpdate);
+
+    @Delete("delete from config_package where id = #{id}")
+    Integer delHotupdate(@Param("id") String id);
+
+    List<Map> findHotupdate(@Param("id") Integer id);
 }

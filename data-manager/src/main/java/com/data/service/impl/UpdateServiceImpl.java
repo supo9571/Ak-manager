@@ -3,6 +3,7 @@ package com.data.service.impl;
 import com.data.mapper.UpdateMapper;
 import com.data.service.UpdateService;
 import com.manager.common.core.domain.model.Allupdate;
+import com.manager.common.core.domain.model.Hotupdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class UpdateServiceImpl implements UpdateService {
      */
     @Override
     public Integer addAllUpdate(Allupdate allupdate) {
-        verInt(allupdate);
+        allupdate.setVerInt(verInt(allupdate.getVersion()));
         return updateMapper.addAllUpdate(allupdate);
     }
 
@@ -47,13 +48,13 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
-    public List findAllUpdateHistory(String tid) {
+    public List findAllUpdateHistory(Integer tid) {
         return updateMapper.findAllUpdateHistory(tid);
     }
 
     @Override
     public Integer editAllUpdate(Allupdate allupdate) {
-        verInt(allupdate);
+        allupdate.setVerInt(verInt(allupdate.getVersion()));
         return updateMapper.editAllUpdate(allupdate);
     }
 
@@ -62,11 +63,45 @@ public class UpdateServiceImpl implements UpdateService {
         return updateMapper.deleteAllupdate(id);
     }
 
-    private void verInt(Allupdate allupdate){
-        String version = allupdate.getVersion();
+    @Override
+    public String selectAllupdate(String channelId, String versionId) {
+        //查询该平台 最新版本更新地址
+        Map map = updateMapper.selectAllupdate(channelId);
+        if(map.isEmpty() || versionId.equals(map.get("version"))){
+            return null;
+        }
+        return (String) map.get("apkUpdateUrl");
+    }
+
+    /**
+     * 添加 热更新
+     */
+    @Override
+    public int addHotUpdate(Hotupdate hotUpdate) {
+        hotUpdate.setVerInt(verInt(hotUpdate.getVersion()));
+        return updateMapper.addHotUpdate(hotUpdate);
+    }
+
+    @Override
+    public int editHotUpdate(Hotupdate hotUpdate) {
+        hotUpdate.setVerInt(verInt(hotUpdate.getVersion()));
+        return updateMapper.editHotUpdate(hotUpdate);
+    }
+
+    @Override
+    public Integer delHotupdate(String id) {
+        return updateMapper.delHotupdate(id);
+    }
+
+    @Override
+    public List findHotupdate(Integer id) {
+        return updateMapper.findHotupdate(id);
+    }
+
+    private Integer verInt(String version){
         //计算版本号
         String[] vers = version.split("\\.");
         int verInt = Integer.valueOf(vers[0])*10000+Integer.valueOf(vers[1])*100+Integer.valueOf(vers[2]);
-        allupdate.setVerInt(verInt);
+        return verInt;
     }
 }
