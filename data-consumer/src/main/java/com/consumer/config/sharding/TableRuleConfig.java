@@ -1,11 +1,11 @@
 package com.consumer.config.sharding;
 
 import com.google.common.collect.Range;
-import io.shardingjdbc.core.api.algorithm.sharding.PreciseShardingValue;
-import io.shardingjdbc.core.api.algorithm.sharding.RangeShardingValue;
-import io.shardingjdbc.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
-import io.shardingjdbc.core.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
+import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
+import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.LinkedHashSet;
  * 数据表分表策略
  */
 @Slf4j
-public class TableRuleConfig implements PreciseShardingAlgorithm<Long> , RangeShardingAlgorithm<Long> {
+public class TableRuleConfig implements PreciseShardingAlgorithm<Long>, RangeShardingAlgorithm<Long> {
 
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {

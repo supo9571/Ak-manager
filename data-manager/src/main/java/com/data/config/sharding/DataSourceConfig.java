@@ -67,14 +67,11 @@ public class DataSourceConfig {
         shardingRuleConfig.getTableRuleConfigs().add(getCoinsTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getCardTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getCardUserTableRuleConfiguration());
-
         // 打印SQL
         Properties props = new Properties();
         props.put("sql.show", sqlShow);
         DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(),shardingRuleConfig,props);
-
         return dataSource;
-
     }
 
     // 创建data_coins 表规则
