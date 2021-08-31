@@ -24,7 +24,7 @@ public interface UpdateMapper {
     Integer addAllUpdate(Allupdate allupdate);
 
     @Select("SELECT id,version,u.tid,status,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update u " +
-            "LEFT JOIN (SELECT tid,MAX(ver_int) ver_int FROM config_update GROUP BY tid) a ON u.tid = a.tid AND u.ver_int = a.ver_int ORDER BY id DESC")
+            "RIGHT JOIN (SELECT tid,MAX(ver_int) ver_int FROM config_update GROUP BY tid) a ON u.tid = a.tid AND u.ver_int = a.ver_int ORDER BY id DESC")
     List<Map> findAllUpdate();
 
     @Select("SELECT id,version,tid,status,apk_update_url apkUpdateUrl,update_time updateTime,size FROM config_update where tid= #{tid} order by ver_int desc")
