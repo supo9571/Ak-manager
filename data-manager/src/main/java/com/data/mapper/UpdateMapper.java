@@ -31,7 +31,7 @@ public interface UpdateMapper {
     List<Map> findAllUpdate();
 
     @Select("SELECT id,VERSION,tid,STATUS,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update where tid= #{tid} order by ver_int desc")
-    List findAllUpdateHistory(@Param("tid") Integer tid);
+    List<Map> findAllUpdateHistory(@Param("tid") Integer tid);
 
     Integer editAllUpdate(Allupdate allupdate);
 
