@@ -91,8 +91,13 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
-    public List findHotupdate(Integer id) {
-        return updateMapper.findHotupdate(id);
+    public List findHotupdate() {
+        return updateMapper.findHotupdate();
+    }
+
+    @Override
+    public List findHotupdateById(Integer id) {
+        return updateMapper.findHotupdateById(id);
     }
 
     private Integer verInt(String version){

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 /**
  * @author marvin 2021/8/19
  */
@@ -62,7 +60,7 @@ public interface DataService {
 
     //热更新
     @PostMapping(value = "/data/hotupdate/list")
-    AjaxResult findHotupdate(@RequestParam("id") Integer id);
+    AjaxResult findHotupdate();
 
     @PostMapping(value = "/data/hotupdate/add")
     AjaxResult addHotUpdate(@RequestBody Hotupdate hotUpdate);
@@ -72,4 +70,7 @@ public interface DataService {
 
     @PostMapping(value = "/data/hotupdate/add")
     AjaxResult delHotupdate(@RequestParam("id") Integer id);
+
+    @PostMapping(value = "/data/hotupdate/find")
+    AjaxResult findhotUpdateById(@RequestParam("id") Integer id);
 }

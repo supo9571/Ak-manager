@@ -70,10 +70,17 @@ public class UpdateController extends BaseController {
      * 查询 热更新
      */
     @PostMapping("/hotupdate/list")
-    public AjaxResult hotUpdateList(Integer id) {
-        return AjaxResult.success(updateService.findHotupdate(id));
+    public AjaxResult hotUpdateList() {
+        return AjaxResult.success(updateService.findHotupdate());
     }
 
+    /**
+     * 根据id查询 热更新
+     */
+    @PostMapping("/hotupdate/find")
+    public AjaxResult findHotUpdate(Integer id) {
+        return AjaxResult.success(updateService.findHotupdateById(id));
+    }
     /**
      * 添加 热更新
      */

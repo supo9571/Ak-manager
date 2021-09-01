@@ -9,6 +9,7 @@ import com.manager.common.core.domain.model.Allupdate;
 import com.manager.common.core.domain.model.Hotupdate;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.file.FileUploadUtils;
+import com.manager.common.utils.file.MimeTypeUtils;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +55,8 @@ public class UpdateController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         String url = "";
         try {
-            url = FileUploadUtils.upload(ManagerConfig.getProfile(),file);
-        } catch (IOException e) {
+            url = FileUploadUtils.upload(ManagerConfig.getProfile(),file, MimeTypeUtils.APK);
+        } catch (Exception e) {
             return AjaxResult.error(e.getMessage());
         }
         jsonObject.put("apkUpdateUrl", url);
@@ -111,8 +112,18 @@ public class UpdateController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:hotupdate:list')")
     @ApiOperation(value = "查询热更新")
     @GetMapping("/hotupdate/list")
-    public AjaxResult hotUpdateList(Integer id) {
-        return dataService.findHotupdate(id);
+    public AjaxResult hotUpdateList() {
+        return dataService.findHotupdate();
+    }
+
+    /**
+     * 根据id查询 热更新
+     */
+    @PreAuthorize("@ss.hasPermi('data:hotupdate:list')")
+    @ApiOperation(value = "热更新详情")
+    @GetMapping("/hotupdate/find")
+    public AjaxResult findhotUpdate(Integer id) {
+        return dataService.findhotUpdateById(id);
     }
 
     /**

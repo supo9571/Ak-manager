@@ -47,5 +47,7 @@ public interface UpdateMapper {
     @Delete("delete from config_package where id = #{id}")
     Integer delHotupdate(@Param("id") String id);
 
-    List<Map> findHotupdate(@Param("id") Integer id);
+    List<Map> findHotupdate();
+
+    List findHotupdateById(@Param("id") Integer id);
 }

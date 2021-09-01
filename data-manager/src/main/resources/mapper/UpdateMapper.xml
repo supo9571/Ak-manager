@@ -68,14 +68,18 @@
         where id = #{id}
     </update>
 
-    <select id="findHotupdate">
+    <select id="findHotupdate" resultType="java.util.Map">
+        select id,version,allow_channel allowChannel,deny_channel denyChannel,allow_version allowVersion,
+               deny_version denyVersion,is_public isPublic,platform,status,
+        release_time releaseTime
+        from config_package
+    </select>
+
+    <select id="findHotupdateById" resultType="java.util.Map">
         select version,allow_channel allowChannel,deny_channel denyChannel,allow_version allowVersion,
                deny_version denyVersion,is_public isPublic,game_info gameInfo,platform,status,
-        release_time releaseTime,apk_update_url apkUpdateUrl,`size`
+               release_time releaseTime,apk_update_url apkUpdateUrl,`size`
         from config_package
-        <where>
-            <if test="id!=null and id!=0 "> and id = #{id} </if>
-
-        </where>
+        where id = #{id}
     </select>
 </mapper>

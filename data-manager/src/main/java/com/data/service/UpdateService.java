@@ -33,5 +33,7 @@ public interface UpdateService {
 
     Integer delHotupdate(String id);
 
-    List findHotupdate(Integer id);
+    List findHotupdate();
+
+    List findHotupdateById(Integer id);
 }
