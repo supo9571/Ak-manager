@@ -57,4 +57,9 @@ global-config:
                "pdsgj": 2021,"wzry": 2022 }
 #  profile: D:/package/apk
   profile: /home/manager/package/apk
+  #游戏服 地址
+  domain: http://10.39.1.88:8888
+  #发送游戏配置
+  gameSend: /upload
+
 

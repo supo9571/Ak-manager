@@ -21,7 +21,7 @@
         insert into config_update(`version`,`tid`,`status`,`apk_update_url`,`size`,`ver_int`,`update_time`,`created_time`)
         values
         <foreach item="item" index="index" collection="tid.split(',')" separator=",">
-            (#{version},#{item},#{status},#{apkUpdateUrl},#{size},#{verInt},sysdate(),sysdate())
+            (#{version},#{item},#{status},#{apkUpdateUrl},#{pageSize},#{verInt},sysdate(),sysdate())
         </foreach>
     </insert>
 
@@ -33,7 +33,7 @@
             <if test="version!=null and version!=''"> version = #{version},</if>
             <if test="verInt!=null and verInt!=''"> ver_int = #{verInt},</if>
             <if test="apkUpdateUrl!=null and apkUpdateUrl!=''"> apk_update_url = #{apkUpdateUrl},</if>
-            <if test="size!=null and size!=''"> size = #{size},</if>
+            <if test="pageSize!=null and pageSize!=''"> size = #{pageSize},</if>
             update_time = sysdate()
         </set>
         where id = #{id}
@@ -45,7 +45,7 @@
                                 `release_time`,`update_time`,`created_time`,`apk_update_url`,`size`)
         values
          (#{version},#{verInt},#{allowChannel},#{denyChannel},#{allowVersion},#{denyVersion},#{isPublic},#{gameInfo},#{platform},#{status},
-          #{releaseTime},sysdate(),sysdate(),#{apkUpdateUrl},#{size})
+          #{releaseTime},sysdate(),sysdate(),#{apkUpdateUrl},#{pageSize})
     </insert>
 
     <update id="editHotUpdate" parameterType="com.manager.common.core.domain.model.Hotupdate">
@@ -62,7 +62,7 @@
             <if test="version!=null and version!=''"> version = #{version},</if>
             <if test="gameInfo!=null and gameInfo!=''"> game_info = #{gameInfo},</if>
             <if test="apkUpdateUrl!=null and apkUpdateUrl!=''"> apk_update_url = #{apkUpdateUrl},</if>
-            <if test="size!=null and size!=''"> `size` = #{size},</if>
+            <if test="pageSize!=null and pageSize!=''"> `size` = #{pageSize},</if>
             update_time = sysdate()
         </set>
         where id = #{id}
@@ -73,12 +73,17 @@
                deny_version denyVersion,is_public isPublic,platform,status,
         release_time releaseTime
         from config_package
+        <where>
+            <if test="allowVersion!=null and allowVersion!='*'">
+                and allow_channel like CONCAT('%', #{allowVersion}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="findHotupdateById" resultType="java.util.Map">
         select version,allow_channel allowChannel,deny_channel denyChannel,allow_version allowVersion,
                deny_version denyVersion,is_public isPublic,game_info gameInfo,platform,status,
-               release_time releaseTime,apk_update_url apkUpdateUrl,`size`
+               release_time releaseTime,apk_update_url apkUpdateUrl,`size` pageSize
         from config_package
         where id = #{id}
     </select>

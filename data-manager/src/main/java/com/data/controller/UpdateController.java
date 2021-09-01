@@ -36,8 +36,9 @@ public class UpdateController extends BaseController {
      * 整包更新 查询
      */
     @PostMapping("/allupdate/list")
-    public AjaxResult list() {
-        return AjaxResult.success(updateService.findAllUpdate());
+    public AjaxResult list(@RequestBody Allupdate allupdate) {
+        startPage(allupdate.getPage(),allupdate.getSize(),allupdate.getOrderByColumn(),allupdate.getIsAsc());
+        return AjaxResult.success(getDataTable(updateService.findAllUpdate()));
     }
 
     /**
@@ -70,8 +71,9 @@ public class UpdateController extends BaseController {
      * 查询 热更新
      */
     @PostMapping("/hotupdate/list")
-    public AjaxResult hotUpdateList() {
-        return AjaxResult.success(updateService.findHotupdate());
+    public AjaxResult hotUpdateList(@RequestBody Hotupdate hotupdate) {
+        startPage(hotupdate.getPage(),hotupdate.getSize(),hotupdate.getOrderByColumn(),hotupdate.getIsAsc());
+        return AjaxResult.success(getDataTable(updateService.findHotupdate()));
     }
 
     /**

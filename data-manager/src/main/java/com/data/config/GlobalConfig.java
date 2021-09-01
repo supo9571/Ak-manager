@@ -23,4 +23,8 @@ public class GlobalConfig {
     private Map<String,String> gameConfig;
 
     private String profile;
+
+    private String domain;
+
+    private String gameSend;
 }
