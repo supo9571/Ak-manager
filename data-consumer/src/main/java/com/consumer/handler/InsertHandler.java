@@ -52,9 +52,11 @@ public class InsertHandler {
     }
 
     //添加牌局记录
+    @Transactional
     public void insertCard(JSONObject result) {
         Card card = JSON.toJavaObject(result, Card.class);
         if("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList()))return;
+        if(card.getLoserList()==null && card.getWinnerList()==null)return;
         List<CardUser> list = new ArrayList<>();
         setCardUser(card,list);
         insertMapper.insertCard(card);
@@ -63,13 +65,10 @@ public class InsertHandler {
 
 //    @PostConstruct
 //    public void test() {
-//        JSONObject result = JSONObject.parseObject("{\"total_num\":5,\"loser_list\":[{\"uid\":108922,\"left_score\":3745947,\"add_score\":-100000,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"water_coins\":50000,\"uid\":113188,\"left_score\":1514473688,\"add_score\":-50000,\"pay_fee\":0,\"is_banker\":false},{\"uid\":108973,\"left_score\":5361925,\"add_score\":-100000,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"uid\":112198,\"left_score\":4087479,\"add_score\":-350000,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false}],\"curr_round\":1,\"begin_time\":1629914166,\"time\":1629914232,\"table_type\":101,\"system_win\":50000,\"exinfo\":{\"total_score\":1900000,\"end_type\":1,\"control_uid\":0,\"round\":2,\"system_result\":0,\"control_info2\":{},\"control_info1\":{\"strategy_id\":8,\"game_times\":5,\"control_times\":1,\"strategy_result\":2},\"dizhu\":50000},\"end_time\":1629914232,\"winner_list\":[{\"card_type\":1,\"uid\":110903,\"left_score\":2730335,\"add_score\":570000,\"pay_fee\":30000,\"is_robot\":true,\"is_banker\":true}],\"side_list\":[{\"card_type\":1,\"uid\":113188,\"side\":1,\"add_score\":-50000,\"cards\":[101,110,205],\"bet_coins\":50000,\"win\":false},{\"card_type\":1,\"uid\":112198,\"side\":2,\"add_score\":-350000,\"cards\":[113,106,303],\"bet_coins\":350000,\"win\":false},{\"card_type\":1,\"uid\":108922,\"side\":3,\"add_score\":-100000,\"cards\":[406,105,102],\"bet_coins\":100000,\"win\":false},{\"card_type\":1,\"uid\":108973,\"side\":4,\"add_score\":-100000,\"cards\":[112,411,104],\"bet_coins\":100000,\"win\":false},{\"card_type\":1,\"uid\":110903,\"side\":5,\"add_score\":570000,\"cards\":[413,310,404],\"bet_coins\":1300000,\"win\":true}],\"game_type\":1,\"address\":\":000000a3\",\"key\":\"tablesvr_1_1629914232_1441\",\"op\":\"card_record\",\"mstime\":1629914232309,\"table_gid\":\"20210826015712_53\"}");
-//        Card card = JSON.toJavaObject(result, Card.class);
-//        if("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList()))return;
-//        List<CardUser> list = new ArrayList<>();
-//        setCardUser(card,list);
-//        insertMapper.insertCard(card);
-//        insertMapper.insertCardUser(list);
+//        JSONObject result = JSONObject.parseObject("{\"r\":1,\"key\":\"basesvr_1_1629531306_125\",\"safe_box\":9644497533,\"curr\":1022106168,\"is_robot\":false,\"before\":1022206168,\"uid\":113188,\"time\":1629531306,\"op\":\"reducecoins\",\"table_type\":200800,\"mstime\":1629531306274,\"value\":100000,\"game_type\":2008}");
+//        Coins reduceCoins = JSON.toJavaObject(result, Coins.class);
+//        insertMapper.insertReduceCoins(reduceCoins);
+//        insertMapper.updateCurrByRed(reduceCoins.getUid(),reduceCoins.getCurr(),reduceCoins.getSafeBox());
 //    }
 
 
@@ -107,7 +106,11 @@ public class InsertHandler {
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee();
                 if(cardUser.getBetCoins() == null){
-                    cardUser.setBetCoins(cardUser.getWaterCoins());
+                    if(cardUser.getWaterCoins() == null){
+                        cardUser.setBetCoins(cardUser.getAddScore());
+                    }else {
+                        cardUser.setBetCoins(cardUser.getWaterCoins());
+                    }
                 }
                 betCoins+=cardUser.getBetCoins();
                 uid.append(cardUser.getUid()+",");
@@ -129,6 +132,13 @@ public class InsertHandler {
                 payFee+=cardUser.getPayFee();
                 if(cardUser.getBetCoins() == null){
                     cardUser.setBetCoins(cardUser.getWaterCoins());
+                }
+                if(cardUser.getBetCoins() == null){
+                    if(cardUser.getWaterCoins() == null){
+                        cardUser.setBetCoins(cardUser.getAddScore());
+                    }else {
+                        cardUser.setBetCoins(cardUser.getWaterCoins());
+                    }
                 }
                 betCoins+=cardUser.getBetCoins();
                 uid.append(cardUser.getUid()+",");

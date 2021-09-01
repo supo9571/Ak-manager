@@ -2,6 +2,7 @@ package com.manager.web.controller.data;
 
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.annotation.Log;
+import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Allupdate;
@@ -51,7 +52,7 @@ public class UpdateController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         String url = "";
         try {
-            url = FileUploadUtils.upload(file);
+            url = FileUploadUtils.upload(ManagerConfig.getProfile(),file);
         } catch (IOException e) {
             return AjaxResult.error(e.getMessage());
         }

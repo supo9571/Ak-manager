@@ -21,4 +21,6 @@ public class GlobalConfig {
     private String resourcesUrl;
 
     private Map<String,String> gameConfig;
+
+    private String profile;
 }

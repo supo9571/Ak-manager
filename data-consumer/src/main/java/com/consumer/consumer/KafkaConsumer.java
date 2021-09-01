@@ -2,9 +2,9 @@ package com.consumer.consumer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.consumer.config.redis.RedisCache;
 import com.consumer.enums.OpEnum;
 import com.consumer.handler.InsertHandler;
-import com.consumer.config.redis.RedisCache;
 import com.consumer.service.DataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -16,6 +16,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,9 @@ public class KafkaConsumer {
 
             }
         }catch (Exception e){
+            if(!(e instanceof SQLIntegrityConstraintViolationException)){
+                log.error(e.getMessage()+"||||value-->"+record.value());
+            }
             //记录失败信息
 //            JSONObject jsonObject = new JSONObject();
 //            jsonObject.put("offset",record.offset());
@@ -87,7 +91,6 @@ public class KafkaConsumer {
 //            jsonObject.put("value",record.value());
 //            List errMsgs = new ArrayList();
 //            errMsgs.add(jsonObject.toJSONString());
-            log.error(e.getMessage()+"||||value-->"+record.value());
 //            redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
             // 手工签收机制

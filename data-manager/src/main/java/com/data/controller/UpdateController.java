@@ -1,17 +1,15 @@
 package com.data.controller;
 
 import com.data.service.UpdateService;
-import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Allupdate;
 import com.manager.common.core.domain.model.Hotupdate;
-import com.manager.common.utils.file.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author marvin 2021/8/30
@@ -66,22 +64,6 @@ public class UpdateController extends BaseController {
     public AjaxResult delAllupdate(String id) {
         Integer i = updateService.deleteAllupdate(id);
         return i>0?AjaxResult.success():AjaxResult.error();
-    }
-
-    /**
-     * 整包更新 文件下载
-     */
-    @GetMapping("/package/{url}")
-    public void downLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
-        try {
-            String realFileName = System.currentTimeMillis() + url.substring(url.indexOf("_") + 1);
-            String filePath = ManagerConfig.getDownloadPath() + url;
-            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, realFileName);
-            FileUtils.writeBytes(filePath, response.getOutputStream());
-        } catch (Exception e) {
-            log.error("下载文件失败", e);
-        }
     }
 
     /**
