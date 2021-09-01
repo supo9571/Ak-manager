@@ -29,9 +29,6 @@ public class Allupdate extends BaseEntity {
     @ApiModelProperty("上传url")
     private String apkUpdateUrl;
 
-    @ApiModelProperty("后台编辑时间")
-    private String updateTime;
-
     @ApiModelProperty("包大小(kb)")
     private String pageSize;
 }

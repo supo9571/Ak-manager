@@ -47,12 +47,6 @@ public class Hotupdate extends BaseEntity {
     @ApiModelProperty("更新时间")
     private String releaseTime;
 
-    @ApiModelProperty("后台编辑时间")
-    private String updateTime;
-
-    @ApiModelProperty("后台添加时间")
-    private String createdTime;
-
     @ApiModelProperty("上传url")
     private String apkUpdateUrl;
 
