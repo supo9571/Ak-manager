@@ -50,7 +50,7 @@ public class HotUpdateController extends BaseController {
         //添加 整包更新信息
         String updateUrl = updateService.selectAllupdate(channelId,versionId);
         if(StringUtils.isNotBlank(updateUrl)){
-            data.put("appupdate",new JSONObject().put("update_url",updateUrl));
+            data.put("appupdate",new JSONObject().put("update_url",globalConfig.getApiUrl()+updateUrl));
         }
         //添加 热更信息
         List<Map> list = updateService.selectPackage(ip,channelId,versionId,platform);

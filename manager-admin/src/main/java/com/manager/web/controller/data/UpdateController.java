@@ -45,7 +45,7 @@ public class UpdateController extends BaseController {
      * 整包更新 文件上传
      */
     @PreAuthorize("@ss.hasPermi('data:allupdate:upload')")
-    @ApiOperation(value = "文件上传")
+    @ApiOperation(value = "整包更新文件上传")
     @Log(title = "文件上传", businessType = BusinessType.INSERT)
     @PostMapping("/allupdate/upload")
     public AjaxResult upload(MultipartFile file) {
@@ -136,7 +136,7 @@ public class UpdateController extends BaseController {
     }
 
     /**
-     * 整包更新 删除
+     * 热更新 删除
      */
     @PreAuthorize("@ss.hasPermi('data:hotupdate:del')")
     @Log(title = "热更新", businessType = BusinessType.DELETE)
@@ -144,5 +144,25 @@ public class UpdateController extends BaseController {
     @GetMapping("/hotupdate/del")
     public AjaxResult delHotupdate(Integer id) {
         return dataService.delHotupdate(id);
+    }
+
+    /**
+     * 热更新 文件上传
+     */
+    @PreAuthorize("@ss.hasPermi('data:hotupdate:upload')")
+    @ApiOperation(value = "热更新文件上传")
+    @Log(title = "文件上传", businessType = BusinessType.INSERT)
+    @PostMapping("/hotupdate/upload")
+    public AjaxResult hotUpload(MultipartFile file) {
+        JSONObject jsonObject = new JSONObject();
+        String url = "";
+        try {
+            url = FileUploadUtils.uploadUnzip(ManagerConfig.getProfile()+"/hotpackage",file);
+        } catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
+        jsonObject.put("apkUpdateUrl", url);
+        jsonObject.put("size", file.getSize() / 1024);
+        return AjaxResult.success(jsonObject);
     }
 }

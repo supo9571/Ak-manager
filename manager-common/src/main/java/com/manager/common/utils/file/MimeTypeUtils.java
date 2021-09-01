@@ -28,6 +28,8 @@ public class MimeTypeUtils
 
     public static final String[] APK = { "apk"};
 
+    public static final String[] ZIP = { "zip"};
+
     public static final String[] DEFAULT_ALLOWED_EXTENSION = {
             // 图片
             "bmp", "gif", "jpg", "jpeg", "png",
