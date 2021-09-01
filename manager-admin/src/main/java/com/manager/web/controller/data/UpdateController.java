@@ -12,6 +12,7 @@ import com.manager.common.utils.file.FileUploadUtils;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.io.IOException;
 @RestController
 @Api(tags = "包更新管理")
 @RequestMapping("/data")
+@Slf4j
 public class UpdateController extends BaseController {
 
     @Autowired
@@ -154,15 +156,13 @@ public class UpdateController extends BaseController {
     @Log(title = "文件上传", businessType = BusinessType.INSERT)
     @PostMapping("/hotupdate/upload")
     public AjaxResult hotUpload(MultipartFile file) {
-        JSONObject jsonObject = new JSONObject();
-        String url = "";
+        JSONObject jsonObject;
         try {
-            url = FileUploadUtils.uploadUnzip(ManagerConfig.getProfile()+"/hotpackage",file);
+            jsonObject = FileUploadUtils.uploadUnzip(ManagerConfig.getProfile()+"/hotpackage",file);
         } catch (Exception e) {
+            log.error("热更新文件上传出错:{}",e.getMessage());
             return AjaxResult.error(e.getMessage());
         }
-        jsonObject.put("apkUpdateUrl", url);
-        jsonObject.put("size", file.getSize() / 1024);
         return AjaxResult.success(jsonObject);
     }
 }

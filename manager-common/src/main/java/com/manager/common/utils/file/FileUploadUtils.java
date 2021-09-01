@@ -3,19 +3,23 @@ package com.manager.common.utils.file;
 import java.io.File;
 import java.io.IOException;
 
+import com.alibaba.fastjson.JSONObject;
 import com.manager.common.config.ManagerConfig;
 import com.manager.common.constant.Constants;
 import com.manager.common.exception.file.FileNameLengthLimitExceededException;
 import com.manager.common.exception.file.InvalidExtensionException;
 import com.manager.common.utils.uuid.IdUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 import com.manager.common.exception.file.FileSizeLimitExceededException;
 import com.manager.common.utils.StringUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -205,44 +209,37 @@ public class FileUploadUtils {
         return extension;
     }
 
-    public static String uploadUnzip(String baseDir, MultipartFile file) throws InvalidExtensionException, IOException {
+    public static JSONObject uploadUnzip(String baseDir, MultipartFile file) throws InvalidExtensionException, IOException {
         int fileNamelength = file.getOriginalFilename().length();
         if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
         }
-
         assertAllowed(file, MimeTypeUtils.ZIP);
-
         String fileName = extractFilename(file);
-
         File desc = getAbsoluteFile(baseDir, fileName);
         //上传文件
         file.transferTo(desc);
         String pathFileName = getPathFileName(baseDir, fileName);
         //解压文件
-        unZipFiles(baseDir+"/"+fileName, baseDir);
-        //解析文件
-        return pathFileName;
-    }
-
-    /**
-     * 解压到指定目录
-     */
-    public static void unZipFiles(String zipPath, String descDir) throws IOException {
-        unZipFiles(new File(zipPath), descDir);
+        JSONObject gameInfo = unZipFiles(new File(baseDir+"/"+fileName), baseDir,pathFileName);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("apk_update_url",pathFileName);
+        jsonObject.put("size",file.getSize()/1024);
+        jsonObject.put("gameInfo",gameInfo);
+        return jsonObject;
     }
 
     /**
      * 解压文件到指定目录
      */
-    @SuppressWarnings("rawtypes")
-    public static void unZipFiles(File zipFile, String descDir) throws IOException {
+    private static JSONObject unZipFiles(File zipFile, String descDir,String pathName) throws IOException {
+        JSONObject relust = new JSONObject();
         File pathFile = new File(descDir);
         if (!pathFile.exists()) {
             pathFile.mkdirs();
         }
         //解决zip文件中有中文目录或者中文文件
-        ZipFile zip = new ZipFile(zipFile, Charset.forName("GBK"));
+        ZipFile zip = new ZipFile(zipFile, Charset.forName("UTF-8"));
         for (Enumeration entries = zip.entries(); entries.hasMoreElements(); ) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
             String zipEntryName = entry.getName();
@@ -258,8 +255,33 @@ public class FileUploadUtils {
             if (new File(outPath).isDirectory()) {
                 continue;
             }
-            //输出文件路径信息
-            System.out.println(outPath);
+
+            if(outPath.endsWith("NDQyMjY1/Mjk1YjM5")){// 路径 lobby/version.manifest
+                JSONObject lobby = new JSONObject();
+                lobby.put("gameCode","lobby");
+                lobby.put("manifest_res","N2ZjOTdj/NDQyMjY1/Mjk1YjM5");
+                lobby.put("resources_url",pathName);
+                relust.put("lobby",lobby);
+            }
+            if(outPath.endsWith("YzMzN2Qx/Mjk1YjM5")){// 路径 update/version.manifest
+                JSONObject update = new JSONObject();
+                update.put("gameCode","update");
+                update.put("manifest_res","N2ZjOTdj/YzMzN2Qx/Mjk1YjM5");
+                update.put("resources_url",pathName);
+                relust.put("update",update);
+            }
+            if(outPath.contains("N2ZjOTdj/NmNiOTJm")){// 路径 src/game
+                if(outPath.endsWith("Mjk1YjM5")){
+                    String gameCode = outPath.split("NmNiOTJm/")[1].split("/Mjk1YjM5")[0];
+                    String gameDecode = DecodeMap.decodeMap().get(gameCode);
+                    JSONObject game = new JSONObject();
+                    game.put("gameCode",gameDecode);
+                    game.put("manifest_res","/N2ZjOTdj/NmNiOTJm/"+gameDecode+"/Mjk1YjM5");
+                    game.put("resources_url",pathName);
+                    relust.put(gameDecode,game);
+                }
+            }
+
             OutputStream out = new FileOutputStream(outPath);
             byte[] buf1 = new byte[1024];
             int len;
@@ -269,6 +291,10 @@ public class FileUploadUtils {
             in.close();
             out.close();
         }
-        System.out.println("******************解压完毕********************");
+        JSONObject gameInfo = new JSONObject();
+        gameInfo.put("android",relust);
+        gameInfo.put("ios",relust);
+        gameInfo.put("windows",relust);
+        return gameInfo;
     }
 }
