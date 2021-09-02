@@ -112,8 +112,8 @@ public class UpdateController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:hotupdate:list')")
     @ApiOperation(value = "查询热更新")
     @GetMapping("/hotupdate/list")
-    public AjaxResult hotUpdateList() {
-        return dataService.findHotupdate();
+    public AjaxResult hotUpdateList(@RequestBody Hotupdate hotupdate) {
+        return dataService.findHotupdate(hotupdate);
     }
 
     /**

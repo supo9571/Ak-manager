@@ -60,7 +60,7 @@ public interface DataService {
 
     //热更新
     @PostMapping(value = "/data/hotupdate/list")
-    AjaxResult findHotupdate();
+    AjaxResult findHotupdate(@RequestBody Hotupdate hotupdate);
 
     @PostMapping(value = "/data/hotupdate/add")
     AjaxResult addHotUpdate(@RequestBody Hotupdate hotUpdate);
