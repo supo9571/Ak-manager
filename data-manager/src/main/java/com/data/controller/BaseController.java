@@ -28,7 +28,7 @@ public class BaseController {
         pageDomain.setPageSize(size);
         pageDomain.setOrderByColumn(orderByColumn);
         pageDomain.setIsAsc(isAsc);
-        PageHelper.startPage(page, size, orderByColumn);
+        PageHelper.startPage(page, size, orderByColumn+" "+isAsc);
     }
 
     /**

@@ -26,10 +26,9 @@ public class DownLoadController {
     @GetMapping("/profile/{url}")
     public void downLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
         try {
-            String realFileName = System.currentTimeMillis() + url.substring(url.indexOf("_") + 1);
             String filePath = globalConfig.getProfile() + "/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, realFileName);
+            FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
             log.error("下载文件失败", e);
@@ -39,13 +38,12 @@ public class DownLoadController {
     /**
      * 热更新 文件下载
      */
-    @GetMapping("/profile/hotupdate/{url}")
+    @GetMapping("/profile/hotpackage/{url}")
     public void hotDownLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
         try {
-            String realFileName = System.currentTimeMillis() + url.substring(url.indexOf("_") + 1);
-            String filePath = globalConfig.getProfile() + "/hotupdate/" + url;
+            String filePath = globalConfig.getProfile() + "/hotpackage/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, realFileName);
+            FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
             log.error("下载文件失败", e);
