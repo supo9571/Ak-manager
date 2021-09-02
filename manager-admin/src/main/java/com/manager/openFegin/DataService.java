@@ -47,7 +47,7 @@ public interface DataService {
     AjaxResult addAllUpdate(@RequestBody Allupdate allupdate);
 
     @PostMapping(value = "/data/allupdate/list")
-    AjaxResult findAllUpdate();
+    AjaxResult findAllUpdate(@RequestBody Allupdate allupdate);
 
     @PostMapping(value = "/data/allupdate/history")
     AjaxResult findAllUpdateHistory(@RequestParam("tid") Integer tid);
