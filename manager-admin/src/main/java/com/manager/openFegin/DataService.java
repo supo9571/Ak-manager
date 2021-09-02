@@ -65,10 +65,10 @@ public interface DataService {
     @PostMapping(value = "/data/hotupdate/add")
     AjaxResult addHotUpdate(@RequestBody Hotupdate hotUpdate);
 
-    @PostMapping(value = "/data/hotupdate/add")
+    @PostMapping(value = "/data/hotupdate/edit")
     AjaxResult editHotUpdate(@RequestBody Hotupdate hotUpdate);
 
-    @PostMapping(value = "/data/hotupdate/add")
+    @PostMapping(value = "/data/hotupdate/del")
     AjaxResult delHotupdate(@RequestParam("id") Integer id);
 
     @PostMapping(value = "/data/hotupdate/find")
