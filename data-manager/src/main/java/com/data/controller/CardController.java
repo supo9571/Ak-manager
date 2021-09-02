@@ -25,7 +25,7 @@ public class CardController extends BaseController {
     @Autowired
     private CardService cardService;
     /**
-     * 获取用户列表
+     * 获取牌局记录列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Card card) {
@@ -43,5 +43,13 @@ public class CardController extends BaseController {
         result.put("list",getDataTable(list));
         result.put("count",map);
         return AjaxResult.success("查询成功",result);
+    }
+
+    /**
+     * 获取牌局详情
+     */
+    @PostMapping("/info")
+    public AjaxResult info(String tableGid) {
+        return AjaxResult.success("查询成功",cardService.findCardInfo(tableGid));
     }
 }

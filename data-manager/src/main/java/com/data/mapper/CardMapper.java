@@ -2,6 +2,7 @@ package com.data.mapper;
 
 import com.manager.common.core.domain.model.Card;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,8 @@ public interface CardMapper {
     Map selectCardCount(Card card);
 
     Map selectCardUserCount(Card card);
+
+    Map findList(@Param("tableGid") String tableGid);
+
+    List<Map> findUserInfo(@Param("tableGid") String tableGid);
 }

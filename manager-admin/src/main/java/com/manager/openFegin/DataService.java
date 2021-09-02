@@ -37,6 +37,9 @@ public interface DataService {
     @PostMapping(value = "/data/card/list", consumes = "application/json")
     AjaxResult getCards(@RequestBody Card card);
 
+    @PostMapping(value = "/data/card/info")
+    AjaxResult findCardInfo(@RequestParam("tableGid")String tableGid);
+
     @PostMapping(value = "/data/game/option")
     AjaxResult getGames();
 
@@ -73,4 +76,5 @@ public interface DataService {
 
     @PostMapping(value = "/data/hotupdate/find")
     AjaxResult findhotUpdateById(@RequestParam("id") Integer id);
+
 }

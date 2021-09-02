@@ -78,4 +78,16 @@
             </if>
         </where>
     </select>
+
+    <select id="findList" resultType="java.util.Map">
+        select side_list sideList,exinfo,game_type gameType from data_card
+        where table_gid = #{tableGid}
+    </select>
+
+    <select id="findUserInfo" resultType="java.util.Map">
+        select add_score addScore,pay_fee payFee,bet_coins betCoins,
+                left_score leftScore,is_robot isRobot
+               from data_card_user
+        where table_gid = #{tableGid}
+    </select>
 </mapper>

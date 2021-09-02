@@ -22,12 +22,22 @@ public class CardController {
     @Autowired
     private DataService dataService;
     /**
-     * 获取用户列表
+     * 获取牌局记录 列表
      */
     @PreAuthorize("@ss.hasPermi('data:card:list')")
     @ApiOperation(value = "查询牌局记录列表")
     @GetMapping("/list")
     public AjaxResult list(Card card) {
         return dataService.getCards(card);
+    }
+
+    /**
+     * 获取用户列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:card:list')")
+    @ApiOperation(value = "查询牌局记录列表")
+    @GetMapping("/info")
+    public AjaxResult info(String tableGid) {
+        return dataService.findCardInfo(tableGid);
     }
 }
