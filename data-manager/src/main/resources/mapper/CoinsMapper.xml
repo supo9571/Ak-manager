@@ -5,18 +5,16 @@
 
 	<select id="selectCoins" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
 		select c.uid,
-			substring(replace(c.key,'_',''),8) `key`,
+			substring(replace(c.`key`,'_',''),8) `key`,
 		       c.curr,
-			   FROM_UNIXTIME(c.time) time,
-		       c.value,
-		       c.before,c.channel,
+			   FROM_UNIXTIME(c.`time`) `time`,
+		       c.`value`,
+		       c.`before`,c.channel,
 		       c.table_type tableType,
 		       c.device_brand deviceBrand,
 		       c.game_type gameType,
-		       c.r,
-		       u.name uname
+		       c.r
 		from data_coins c
-		left join data_register u on u.uid = c.uid
 		<where>
 			<if test="uid!=null and uid !=''">
 				and c.uid in
@@ -29,9 +27,6 @@
 			</if>
 			<if test="channel!=null and channel !=''">
 				and c.channel = #{channel}
-			</if>
-			<if test="uname!=null and uname !=''">
-				and u.name = #{uname}
 			</if>
 			<if test="beginTime!=null and beginTime !=''">
 				and c.mstime between #{beginms} and #{endms}
@@ -50,7 +45,6 @@
 		select sum(c.curr) countCurr
 		from data_coins c
 		left join config_game g on c.game_type = g.game_id
-		left join data_register u on u.uid = c.uid
 		<where>
 			<if test="uid!=null and uid !=''">
 				and c.uid in
@@ -63,9 +57,6 @@
 			</if>
 			<if test="channel!=null and channel !=''">
 				and c.channel = #{channel}
-			</if>
-			<if test="uname!=null and uname !=''">
-				and u.name = #{uname}
 			</if>
 			<if test="beginTime!=null and beginTime !=''">
 				and c.mstime between #{beginms} and #{endms}

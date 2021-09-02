@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.page.PageDomain;
 import com.manager.common.core.page.TableDataInfo;
+import com.manager.common.utils.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,7 +29,12 @@ public class BaseController {
         pageDomain.setPageSize(size);
         pageDomain.setOrderByColumn(orderByColumn);
         pageDomain.setIsAsc(isAsc);
-        PageHelper.startPage(page, size, orderByColumn+" "+isAsc);
+        if(StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)){
+            PageHelper.startPage(page, size, orderByColumn+" "+isAsc);
+        }else {
+            PageHelper.startPage(page, size);
+        }
+
     }
 
     /**

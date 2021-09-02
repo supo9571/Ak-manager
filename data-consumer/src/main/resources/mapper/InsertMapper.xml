@@ -39,7 +39,7 @@
 		                           `client_version`,`safe_box`)
 		values (#{key},#{op},#{r},
 		        #{uid},#{curr},#{time},
-		        #{mstime},0-#{value},#{before},
+		        #{mstime},0-${value},#{before},
 		        #{channel},#{deviceId},#{gameType},
 		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion},#{safeBox})
 	</insert>
