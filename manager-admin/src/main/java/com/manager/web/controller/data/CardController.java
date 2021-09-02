@@ -35,7 +35,7 @@ public class CardController {
      * 获取用户列表
      */
     @PreAuthorize("@ss.hasPermi('data:card:list')")
-    @ApiOperation(value = "查询牌局记录列表")
+    @ApiOperation(value = "查询牌局记录详情")
     @GetMapping("/info")
     public AjaxResult info(String tableGid) {
         return dataService.findCardInfo(tableGid);
