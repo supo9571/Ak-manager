@@ -22,6 +22,13 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public List<Map> selectPackage(String ip, String channelId, String versionId, String platform) {
+        if("android".equals(platform)){
+            platform = "1";
+        }else if("ios".equals(platform)){
+            platform = "2";
+        }else {
+            platform = "3";
+        }
         return updateMapper.selectPackage(ip,channelId,versionId,platform);
     }
 

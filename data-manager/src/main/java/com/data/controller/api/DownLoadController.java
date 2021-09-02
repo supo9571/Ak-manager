@@ -35,4 +35,20 @@ public class DownLoadController {
             log.error("下载文件失败", e);
         }
     }
+
+    /**
+     * 热更新 文件下载
+     */
+    @GetMapping("/profile/hotupdate/{url}")
+    public void hotDownLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
+        try {
+            String realFileName = System.currentTimeMillis() + url.substring(url.indexOf("_") + 1);
+            String filePath = globalConfig.getProfile() + "/hotupdate/" + url;
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, realFileName);
+            FileUtils.writeBytes(filePath, response.getOutputStream());
+        } catch (Exception e) {
+            log.error("下载文件失败", e);
+        }
+    }
 }
