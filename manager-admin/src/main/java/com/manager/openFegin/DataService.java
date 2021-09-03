@@ -40,10 +40,13 @@ public interface DataService {
     @PostMapping(value = "/data/game/option")
     AjaxResult getGames();
 
-    @PostMapping(value = "/data/subGame/getSubGameList", consumes = "application/json")
+    @PostMapping(value = "/data/game/send")
+    AjaxResult send();
+
+    @PostMapping(value = "/data/game/list", consumes = "application/json")
     AjaxResult getSubGameList(@RequestBody Game game);
 
-    @PostMapping(value = "/data/subGame/editSubGame", consumes = "application/json")
+    @PostMapping(value = "/data/game/edit", consumes = "application/json")
     AjaxResult editSubGame(@RequestBody Game game);
 
     @PostMapping(value = "/data/game/addIp")

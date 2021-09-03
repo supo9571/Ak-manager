@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author sieGuang 2021/09/03
  */
 @RestController
-@RequestMapping("/data/subGame")
+@RequestMapping("/data/game")
 @Slf4j
 public class SubGameController extends BaseController {
 
@@ -31,7 +31,7 @@ public class SubGameController extends BaseController {
      * 查询
      * @param game 过滤条件
      */
-    @PostMapping("/getSubGameList")
+    @PostMapping("/list")
     public AjaxResult getSubGameList(@RequestBody Game game) {
         return AjaxResult.success("查询成功", subgameService.getSubGameList(game));
     }
@@ -40,7 +40,7 @@ public class SubGameController extends BaseController {
      * 编辑
      * @param game 需要修改的内容
      */
-    @PostMapping("/editSubGame")
+    @PostMapping("/edit")
     public AjaxResult editSubGame(@RequestBody Game game) {
         int i = subgameService.editSubGame(game);
         return i>0?AjaxResult.success():AjaxResult.error();

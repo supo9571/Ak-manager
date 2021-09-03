@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
  * @author sieGuang 2021/09/03
  */
 @RestController
-@Api(tags = "子游戏管理")
-@RequestMapping("/data/subGame")
+@Api(tags = "游戏管理")
+@RequestMapping("/data/game")
 public class SubGameController {
 
     @Autowired
@@ -27,9 +27,9 @@ public class SubGameController {
      * 查询
      * @param game 过滤条件
      */
-    @PreAuthorize("@ss.hasPermi('data:subGame:list')")
+    @PreAuthorize("@ss.hasPermi('data:game:list')")
     @ApiOperation(value = "查询子游戏")
-    @PostMapping("/getSubGameList")
+    @PostMapping("/list")
     public AjaxResult getSubGameList(@RequestBody Game game) {
         return dataService.getSubGameList(game);
     }
@@ -38,10 +38,10 @@ public class SubGameController {
      * 编辑
      * @param game 需要修改的内容
      */
-    @PreAuthorize("@ss.hasPermi('data:subGame:edit')")
+    @PreAuthorize("@ss.hasPermi('data:game:edit')")
     @ApiOperation(value = "编辑子游戏")
     @Log(title = "编辑子游戏", businessType = BusinessType.UPDATE)
-    @PostMapping("/editSubGame")
+    @PostMapping("/edit")
     public AjaxResult editSubGame(@RequestBody Game game) {
         return dataService.editSubGame(game);
     }

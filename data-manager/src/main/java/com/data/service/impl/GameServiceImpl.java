@@ -1,5 +1,7 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.data.mapper.GameMapper;
 import com.data.service.GameService;
 import com.manager.common.core.domain.entity.SysDept;
@@ -37,6 +39,30 @@ public class GameServiceImpl implements GameService {
     @Override
     public void delIp(Integer id) {
         gameMapper.delIp(id);
+    }
+
+    @Override
+    public JSONObject getGameConfig() {
+        List<Map> gameList = gameMapper.getGamesConfig();
+        JSONObject result = new JSONObject();
+        JSONObject game = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < gameList.size(); i++) {
+            Map map = gameList.get(i);
+            if(game.getString(String.valueOf(map.get("tid")))==null){
+                jsonArray = new JSONArray();
+                game.put(String.valueOf(map.get("tid")),jsonArray);
+            }
+            JSONObject gameJson = new JSONObject();
+            gameJson.put("position",map.get("position"));
+            gameJson.put("game_type",map.get("game_type"));
+            gameJson.put("shown_type",map.get("shown_type"));
+            gameJson.put("notice_type",map.get("notice_type"));
+            gameJson.put("status",map.get("status"));
+            jsonArray.add(gameJson);
+        }
+        result.put("game_list.lua",game);
+        return result;
     }
 
 

@@ -21,4 +21,7 @@ public interface GameMapper {
 
     @Delete("delete from config_ip where id = #{id}")
     void delIp(Integer id);
+
+    @Select("SELECT tid, user_sort position,game_id game_type,game_type shown_type,game_bs notice_type,status FROM config_game WHERE STATUS !='3' AND parent_id = '0' order by tid")
+    List<Map> getGamesConfig();
 }

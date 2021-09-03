@@ -41,7 +41,8 @@ public class GameController extends BaseController{
         String domain = globalConfig.getDomain();
         String gameSend = globalConfig.getGameSend();
         //查询 游戏配置
-        String result = HttpUtils.sendPost(domain + gameSend, null);
+        JSONObject param = gameService.getGameConfig();
+        String result = HttpUtils.sendPost(domain + gameSend, "data="+param.toJSONString());
         JSONObject jsonObject = JSONObject.parseObject(result);
         if (!"0".equals(jsonObject.getString("code"))) {
             log.error(result);
