@@ -28,4 +28,6 @@ public interface SubGameMapper {
      */
     int editSubGame(Game game);
 
+    @Select("select count(0) from config_ip")
+    Integer getIpCount();
 }

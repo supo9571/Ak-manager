@@ -15,7 +15,7 @@
             user_sort AS userSort
         FROM
             config_game
-        where 1 = 1
+        where parent_id = "0"
         <if test="gameId!=null and gameId!=''">
             and game_id = #{gameId}
         </if>
@@ -25,7 +25,6 @@
         <if test="tId!=null and tId!=''">
             and tid = #{tId}
         </if>
-        ORDER BY user_sort
     </select>
 
     <update id="editSubGame" parameterType="com.manager.common.core.domain.model.Game">

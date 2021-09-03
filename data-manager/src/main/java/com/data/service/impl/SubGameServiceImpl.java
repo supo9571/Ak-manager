@@ -28,4 +28,9 @@ public class SubGameServiceImpl implements SubGameService {
         return subGameMapper.editSubGame(game);
     }
 
+    @Override
+    public Integer getIpCount() {
+        return subGameMapper.getIpCount();
+    }
+
 }

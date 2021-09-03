@@ -38,6 +38,15 @@ public class BaseController {
     }
 
     /**
+     * 设置排序
+     */
+    protected void startOrder(String orderByColumn,String isAsc) {
+        if(StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)){
+            PageHelper.orderBy(orderByColumn+" "+isAsc);
+        }
+    }
+
+    /**
      * 响应请求分页数据
      */
     @SuppressWarnings({"rawtypes", "unchecked"})

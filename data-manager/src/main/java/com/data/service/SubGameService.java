@@ -21,4 +21,6 @@ public interface SubGameService {
      * @param game 需要修改的内容
      */
     int editSubGame(Game game);
+
+    Integer getIpCount();
 }

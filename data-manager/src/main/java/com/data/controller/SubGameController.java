@@ -1,19 +1,17 @@
 package com.data.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.data.config.GlobalConfig;
-import com.data.service.GameService;
 import com.data.service.SubGameService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Game;
-import com.manager.common.core.domain.model.Hotupdate;
-import com.manager.common.utils.http.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 子游戏管理
@@ -33,7 +31,11 @@ public class SubGameController extends BaseController {
      */
     @PostMapping("/list")
     public AjaxResult getSubGameList(@RequestBody Game game) {
-        return AjaxResult.success("查询成功", subgameService.getSubGameList(game));
+        startOrder(game.getOrderByColumn(),game.getIsAsc());
+        Map result = new HashMap();
+        result.put("list",subgameService.getSubGameList(game));
+        result.put("count",subgameService.getIpCount());
+        return AjaxResult.success("查询成功", result);
     }
 
     /**
