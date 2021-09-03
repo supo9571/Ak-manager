@@ -37,6 +37,9 @@ public interface DataService {
     @PostMapping(value = "/data/card/list", consumes = "application/json")
     AjaxResult getCards(@RequestBody Card card);
 
+    @PostMapping(value = "/data/card/info")
+    AjaxResult findCardInfo(@RequestParam("tableGid")String tableGid);
+
     @PostMapping(value = "/data/game/option")
     AjaxResult getGames();
 
@@ -66,7 +69,7 @@ public interface DataService {
     AjaxResult addAllUpdate(@RequestBody Allupdate allupdate);
 
     @PostMapping(value = "/data/allupdate/list")
-    AjaxResult findAllUpdate();
+    AjaxResult findAllUpdate(@RequestBody Allupdate allupdate);
 
     @PostMapping(value = "/data/allupdate/history")
     AjaxResult findAllUpdateHistory(@RequestParam("tid") Integer tid);
@@ -79,15 +82,15 @@ public interface DataService {
 
     //热更新
     @PostMapping(value = "/data/hotupdate/list")
-    AjaxResult findHotupdate();
+    AjaxResult findHotupdate(@RequestBody Hotupdate hotupdate);
 
     @PostMapping(value = "/data/hotupdate/add")
     AjaxResult addHotUpdate(@RequestBody Hotupdate hotUpdate);
 
-    @PostMapping(value = "/data/hotupdate/add")
+    @PostMapping(value = "/data/hotupdate/edit")
     AjaxResult editHotUpdate(@RequestBody Hotupdate hotUpdate);
 
-    @PostMapping(value = "/data/hotupdate/add")
+    @PostMapping(value = "/data/hotupdate/del")
     AjaxResult delHotupdate(@RequestParam("id") Integer id);
 
     @PostMapping(value = "/data/hotupdate/find")
