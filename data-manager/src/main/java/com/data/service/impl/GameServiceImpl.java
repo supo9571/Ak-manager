@@ -24,6 +24,21 @@ public class GameServiceImpl implements GameService {
         return buildTree(gameMapper.getGames());
     }
 
+    @Override
+    public void saveIp(String ip, String createBy) {
+        gameMapper.saveIp(ip,createBy);
+    }
+
+    @Override
+    public List findIp(String ip, String createBy, String beginTime, String endTime) {
+        return  gameMapper.findIp(ip,createBy,beginTime,endTime);
+    }
+
+    @Override
+    public void delIp(Integer id) {
+        gameMapper.delIp(id);
+    }
+
 
     public List buildTree(List list) {
         List returnList = new ArrayList();
