@@ -46,6 +46,16 @@ public interface DataService {
     @PostMapping(value = "/data/subGame/editSubGame", consumes = "application/json")
     AjaxResult editSubGame(@RequestBody Game game);
 
+    @PostMapping(value = "/data/game/addIp")
+    AjaxResult addIp(@RequestParam("ip")String ip, @RequestParam("createBy")String createBy);
+
+    @PostMapping(value = "/data/game/findIp")
+    AjaxResult findIp(@RequestParam("ip")String ip, @RequestParam("createBy")String createBy,
+                      @RequestParam("beginTime")String beginTime, @RequestParam("endTime")String endTime);
+
+    @PostMapping(value = "/data/game/delIp")
+    AjaxResult delIp(@RequestParam("id") Integer id);
+
     @PostMapping(value = "/data/player/edit", consumes = "application/json")
     AjaxResult updatePlayer(@RequestBody PlayUser playUser);
 

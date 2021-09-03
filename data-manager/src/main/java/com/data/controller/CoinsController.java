@@ -24,7 +24,7 @@ public class CoinsController extends BaseController {
     @Autowired
     private CoinsService coinsService;
     /**
-     * 获取用户列表
+     * 获取账变记录列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Coins coins) {

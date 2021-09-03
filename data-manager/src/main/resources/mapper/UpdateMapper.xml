@@ -81,7 +81,7 @@
     </select>
 
     <select id="findHotupdateById" resultType="java.util.Map">
-        select version,allow_channel allowChannel,deny_channel denyChannel,allow_version allowVersion,
+        select id,version,allow_channel allowChannel,deny_channel denyChannel,allow_version allowVersion,
                deny_version denyVersion,is_public isPublic,game_info gameInfo,platform,status,
                release_time releaseTime,apk_update_url apkUpdateUrl,`size` pageSize
         from config_package

@@ -16,4 +16,6 @@ public interface CardService {
     Map selectCardCount(Card card);
 
     Map selectCardUserCount(Card card);
+
+    Map findCardInfo(String tableGid);
 }

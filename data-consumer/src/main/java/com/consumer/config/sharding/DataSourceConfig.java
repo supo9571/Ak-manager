@@ -76,28 +76,28 @@ public class DataSourceConfig {
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 下面函数是获取数据源，即包含有多少个数据库，读入到系统中存放于map中

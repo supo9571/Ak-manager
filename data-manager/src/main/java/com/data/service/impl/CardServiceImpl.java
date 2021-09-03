@@ -36,4 +36,11 @@ public class CardServiceImpl implements CardService {
     public Map selectCardUserCount(Card card) {
         return cardMapper.selectCardUserCount(card);
     }
+
+    @Override
+    public Map findCardInfo(String tableGid) {
+        Map map = cardMapper.findList(tableGid);
+        map.put("userList",cardMapper.findUserInfo(tableGid));
+        return map;
+    }
 }

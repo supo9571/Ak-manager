@@ -35,9 +35,12 @@ spring:
     username: root
     password: AAK212@VS%
     driver-class-name: com.mysql.cj.jdbc.Driver
-    cardNodes: sys-data.data_card_2108,sys-data.data_card_2109
-    coinsNodes: sys-data.data_coins_2107,sys-data.data_coins_2108,sys-data.data_coins_2109
-    cardUserNodes: sys-data.data_card_user_2108,sys-data.data_card_user_2109
+    cardNodes: sys-data.data_card_2108,sys-data.data_card_2109,sys-data.data_card_2110
+
+    coinsNodes: sys-data.data_coins_2108,sys-data.data_coins_2109,sys-data.data_coins_2110
+
+    cardUserNodes: sys-data.data_card_user_2108,sys-data.data_card_user_2109,sys-data.data_card_user_2110
+
     sqlShow: true
 
 
@@ -49,7 +52,7 @@ global-config:
   #头像下载地址
   headUrl: http://13.228.208.170:13003/upload
   #更新包下载地址
-  resourcesUrl: http://13.228.208.170:13003/resource/public/packages/v2/
+  resourcesUrl: http://18.142.67.104:8030
   #游戏配置
   gameConfig: { "lobby": -1,"update": -1,"psz": 1,"kpqz": 2,"ddz": 3,"ddz_laizi": 4,"hjk": 5,"fish": 6,"jzhw": 7,"ermj": 8,"shjx": 9,
                "hhdz": 2000,"brnn": 2001,"brnn_ten": 2002,"lhdz": 2003,"sgj": 2004,"bbd": 2005,"bjl": 2006,"ebg": 2007,"hbsl": 2008,"dzpk": 2009,

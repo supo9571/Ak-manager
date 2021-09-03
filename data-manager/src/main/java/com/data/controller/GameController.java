@@ -49,4 +49,30 @@ public class GameController extends BaseController{
         }
         return AjaxResult.success("发送成功");
     }
+
+    /**
+     * 添加 测试ip
+     */
+    @PostMapping("/addIp")
+    public AjaxResult addIp(String ip,String createBy) {
+        gameService.saveIp(ip,createBy);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 查询 测试ip
+     */
+    @PostMapping("/findIp")
+    public AjaxResult findIp(String ip,String createBy,String beginTime,String endTime) {
+        return AjaxResult.success(gameService.findIp(ip,createBy,beginTime,endTime));
+    }
+
+    /**
+     * 删除 测试ip
+     */
+    @PostMapping("/delIp")
+    public AjaxResult delIp(Integer id) {
+        gameService.delIp(id);
+        return AjaxResult.success();
+    }
 }

@@ -65,7 +65,7 @@ public class InsertHandler {
 
 //    @PostConstruct
 //    public void test() {
-//        JSONObject result = JSONObject.parseObject("{\"r\":1,\"key\":\"basesvr_1_1629531306_125\",\"safe_box\":9644497533,\"curr\":1022106168,\"is_robot\":false,\"before\":1022206168,\"uid\":113188,\"time\":1629531306,\"op\":\"reducecoins\",\"table_type\":200800,\"mstime\":1629531306274,\"value\":100000,\"game_type\":2008}");
+//        JSONObject result = JSONObject.parseObject("{\"device_brand\":\"SM-G977N\",\"curr\":29631324,\"before\":29641324,\"op\":\"reducecoins\",\"time\":1630161913,\"client_version\":\"1.0.0\",\"table_type\":100,\"device_id\":\"B2F3684A25E27B158E2168B127F386F3\",\"r\":1,\"mstime\":1630161913608,\"uid\":114002,\"safe_box\":0,\"channel\":\"debug_channel\",\"key\":\"basesvr_1_1630161913_138\",\"cur_channel\":\"debug_channel\",\"value\":10000,\"game_type\":1}");
 //        Coins reduceCoins = JSON.toJavaObject(result, Coins.class);
 //        insertMapper.insertReduceCoins(reduceCoins);
 //        insertMapper.updateCurrByRed(reduceCoins.getUid(),reduceCoins.getCurr(),reduceCoins.getSafeBox());

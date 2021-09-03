@@ -52,10 +52,8 @@ public class DataSourceConfig {
 
     @Value("${spring.datasource.cardUserNodes}")
     private String cardUserNodes;
-
     @Value("${spring.datasource.sqlShow}")
     private String sqlShow;
-
     // 配置sharding-jdbc的DataSource，给上层应用使用，这个DataSource包含所有的逻辑库和逻辑表，应用增删改查时，修改对应sql
     // 然后选择合适的数据库继续操作。因此这个DataSource创建很重要。
     @Bean
@@ -77,37 +75,28 @@ public class DataSourceConfig {
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
-//        orderTableRuleConfig.setLogicTable("data_coins");
-        // 设置数据节点
-//        orderTableRuleConfig.setActualDataNodes(coinsNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
-//        orderTableRuleConfig.setLogicTable("data_card");
-        // 设置数据节点
-//        orderTableRuleConfig.setActualDataNodes(cardNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
-//        orderTableRuleConfig.setLogicTable("data_card_user");
-        // 设置数据节点
-//        orderTableRuleConfig.setActualDataNodes(cardUserNodes);
-        orderTableRuleConfig.setTableShardingStrategyConfig(
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
+        tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
-        return orderTableRuleConfig;
+        return tableRuleConfig;
     }
 
     // 下面函数是获取数据源，即包含有多少个数据库，读入到系统中存放于map中

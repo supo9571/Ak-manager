@@ -70,8 +70,8 @@ public class UpdateController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:allupdate:list')")
     @ApiOperation(value = "整包更新列表查询")
     @GetMapping("/allupdate/list")
-    public AjaxResult list() {
-        return dataService.findAllUpdate();
+    public AjaxResult list(Allupdate allupdate) {
+        return dataService.findAllUpdate(allupdate);
     }
 
     /**
@@ -112,8 +112,8 @@ public class UpdateController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:hotupdate:list')")
     @ApiOperation(value = "查询热更新")
     @GetMapping("/hotupdate/list")
-    public AjaxResult hotUpdateList() {
-        return dataService.findHotupdate();
+    public AjaxResult hotUpdateList(Hotupdate hotupdate) {
+        return dataService.findHotupdate(hotupdate);
     }
 
     /**

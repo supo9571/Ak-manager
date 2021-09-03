@@ -22,7 +22,7 @@ public class CoinsController {
     @Autowired
     private DataService dataService;
     /**
-     * 获取用户列表
+     * 获取账变记录 列表
      */
     @PreAuthorize("@ss.hasPermi('data:coins:list')")
     @ApiOperation(value = "查询账变列表")

@@ -7,4 +7,10 @@ import java.util.List;
  */
 public interface GameService {
     List getGames();
+
+    void saveIp(String ip, String createBy);
+
+    List findIp(String ip, String createBy, String beginTime, String endTime);
+
+    void delIp(Integer id);
 }

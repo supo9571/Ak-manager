@@ -50,7 +50,9 @@ public class HotUpdateController extends BaseController {
         //添加 整包更新信息
         String updateUrl = updateService.selectAllupdate(channelId,versionId);
         if(StringUtils.isNotBlank(updateUrl)){
-            data.put("appupdate",new JSONObject().put("update_url",globalConfig.getApiUrl()+updateUrl));
+            JSONObject appupdate = new JSONObject();
+            appupdate.put("update_url",globalConfig.getResourcesUrl()+updateUrl);
+            data.put("appupdate",appupdate);
         }
         //添加 热更信息
         List<Map> list = updateService.selectPackage(ip,channelId,versionId,platform);
@@ -59,14 +61,7 @@ public class HotUpdateController extends BaseController {
                 Map map = list.get(i);
                 JSONObject gameInfo = JSONObject.parseObject((String) map.get("game_info"));
                 Map<String,Object> platMap;
-                if("1".equals(platform)){
-                    platMap = gameInfo.getObject("android",Map.class);
-                }else if("2".equals(platform)){
-                    platMap = gameInfo.getObject("ios",Map.class);
-                }else {
-                    platMap = gameInfo.getObject("windows",Map.class);
-                }
-
+                platMap = gameInfo.getObject(platform,Map.class);
                 JSONArray jsonArray = new JSONArray();
                 for (String key:platMap.keySet()){
                     JSONObject value = (JSONObject) platMap.get(key);

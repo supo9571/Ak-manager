@@ -29,9 +29,9 @@ spring:
     username: root
     password: AAK212@VS%
     driver-class-name: com.mysql.cj.jdbc.Driver
-    cardNodes: sys-data.data_card_2108,sys-data.data_card_2109
-    coinsNodes: sys-data.data_coins_2107,sys-data.data_coins_2108,sys-data.data_coins_2109
-    cardUserNodes: sys-data.data_card_user_2108,sys-data.data_card_user_2109
+    cardNodes: sys-data.data_card_2108,sys-data.data_card_2109,sys-data.data_card_2110
+    coinsNodes: sys-data.data_coins_2108,sys-data.data_coins_2109,sys-data.data_coins_2110
+    cardUserNodes: sys-data.data_card_user_2108,sys-data.data_card_user_2109,sys-data.data_card_user_2110
     sqlShow: false
 
   # kafka配置
