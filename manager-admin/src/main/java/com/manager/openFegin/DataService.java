@@ -43,10 +43,10 @@ public interface DataService {
     @PostMapping(value = "/data/game/option")
     AjaxResult getGames();
 
-    @PostMapping(value = "/data/game/findIp")
+    @PostMapping(value = "/data/game/addIp")
     AjaxResult addIp(@RequestParam("ip")String ip, @RequestParam("createBy")String createBy);
 
-    @PostMapping(value = "/data/game/addIp")
+    @PostMapping(value = "/data/game/findIp")
     AjaxResult findIp(@RequestParam("ip")String ip, @RequestParam("createBy")String createBy,
                       @RequestParam("beginTime")String beginTime, @RequestParam("endTime")String endTime);
 

@@ -38,7 +38,7 @@ public class GameController {
     /**
      * 添加 测试ip
      */
-    @ApiOperation(value = "添加 测试ip")
+    @ApiOperation(value = "添加测试ip")
     @Log(title = "添加测试ip",businessType = BusinessType.INSERT)
     @GetMapping("/addIp")
     @ApiImplicitParams({
@@ -51,7 +51,7 @@ public class GameController {
     /**
      * 查询 测试ip
      */
-    @ApiOperation(value = "查询 测试ip")
+    @ApiOperation(value = "查询测试ip")
     @GetMapping("/findIp")
     @ApiImplicitParams({
             @ApiImplicitParam(name="ip",value = "测试ip"),
@@ -66,7 +66,7 @@ public class GameController {
     /**
      * 删除 测试ip
      */
-    @ApiOperation(value = "查询 测试ip")
+    @ApiOperation(value = "删除测试ip")
     @GetMapping("/delIp")
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value = "id")
