@@ -46,9 +46,10 @@ spring:
       ## 序列化配置
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-commit-interval: 100ms
+      auto-commit-interval: 1000ms
+      max-poll-records: 100
       properties:
         session.timeout.ms: 15000
     listener:
       ack-mode: manual # 手工签收
-      concurrency: 5
+      concurrency: 3

@@ -13,7 +13,7 @@
 		        #{ip},#{name},#{time},
 		        #{mstime},#{channel},#{agentId},
 		        #{deviceId},#{curChannel},#{registerIp},
-		        #{deviceBrand},#{clientVersion},#{registerMachine},#{account_id})
+		        #{deviceBrand},#{clientVersion},#{registerMachine},#{accountId})
 	</insert>
 
 	<insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">

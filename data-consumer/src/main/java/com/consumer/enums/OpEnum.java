@@ -40,7 +40,13 @@ public enum OpEnum {
     //
     ENTER("enter"),
     //
-    WATER_HISTORY("water_history");
+    WATER_HISTORY("water_history"),
+
+    BACK_COINS("back_coins"),
+
+    YKCHARGE_PRO3("ykcharge_pro3"),
+
+    SYNC_WINLOSE("sync_winlose");
 
     OpEnum(String opName) {
         this.opName = opName;
