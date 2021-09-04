@@ -20,7 +20,7 @@ public class OnlinePlayer extends BaseEntity {
     private int gameType;
 
     @ApiModelProperty("游戏名称")
-    private int gameName;
+    private String gameName;
 
     @ApiModelProperty("桌号")
     private int tableType;

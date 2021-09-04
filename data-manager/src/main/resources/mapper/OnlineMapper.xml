@@ -21,6 +21,16 @@
             <if test="channel!=null and channel !=''">
                 and  r.channel = #{channel}
             </if>
+            <if test="uid!=null and uid !=''">
+                and  o.uid = #{uid}
+            </if>
+            <if test="gameName!=null and gameName !=''">
+                and g.game_name in
+                <foreach item="item" index="index" collection="gameName.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+
         </where>
     </select>
 </mapper>
