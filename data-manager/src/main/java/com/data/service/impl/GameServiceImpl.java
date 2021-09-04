@@ -42,7 +42,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public JSONObject getGameConfig() {
+    public String getGameConfig() {
         List<Map> gameList = gameMapper.getGamesConfig();
         JSONObject result = new JSONObject();
         JSONObject game = new JSONObject();
@@ -61,8 +61,12 @@ public class GameServiceImpl implements GameService {
             gameJson.put("status",map.get("status"));
             jsonArray.add(gameJson);
         }
-        result.put("game_list.lua",game);
-        return result;
+        String reslitStr = game.toJSONString();
+        reslitStr = reslitStr.replaceAll(":"," = ");
+        reslitStr = reslitStr.replaceAll("\" =","] =");
+        reslitStr = reslitStr.replaceAll("\"","[");
+        result.put("game_list.lua","return "+reslitStr);
+        return result.toJSONString();
     }
 
 

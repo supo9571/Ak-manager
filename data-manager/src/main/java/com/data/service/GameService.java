@@ -16,5 +16,5 @@ public interface GameService {
 
     void delIp(Integer id);
 
-    JSONObject getGameConfig();
+    String getGameConfig();
 }
