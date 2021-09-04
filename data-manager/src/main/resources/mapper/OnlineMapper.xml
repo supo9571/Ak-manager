@@ -24,9 +24,9 @@
             <if test="uid!=null and uid !=''">
                 and  o.uid = #{uid}
             </if>
-            <if test="gameName!=null and gameName !=''">
-                and g.game_name in
-                <foreach item="item" index="index" collection="gameName.split(',')" open="(" separator="," close=")">
+            <if test="gameType!=null and gameType !=''">
+                and g.game_id in
+                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
                     '${item}'
                 </foreach>
             </if>
