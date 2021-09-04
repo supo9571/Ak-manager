@@ -28,9 +28,6 @@
 			<if test="beginTime!=null and beginTime !=''">
 				and c.mstime between #{beginms} and #{endms}
 			</if>
-			<if test="r!=null and r !=''">
-				and  c.r = #{r}
-			</if>
 			<if test="key!=null and key !=''">
 				and  substring(replace(c.key,'_',''),8) = #{key}
 			</if>
