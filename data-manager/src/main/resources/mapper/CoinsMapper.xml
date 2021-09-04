@@ -22,9 +22,6 @@
 					'${item}'
 				</foreach>
 			</if>
-			<if test="gameType!=null and gameType !=''">
-				and c.game_type = #{gameType}
-			</if>
 			<if test="channel!=null and channel !=''">
 				and c.channel = #{channel}
 			</if>
@@ -37,7 +34,18 @@
 			<if test="key!=null and key !=''">
 				and  substring(replace(c.key,'_',''),8) = #{key}
 			</if>
-
+			<if test="gameType!=null and gameType !=''">
+				and c.game_type in
+				<foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
+			<if test="r!=null and r !=''">
+				and c.r in
+				<foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
 		</where>
 	</select>
 
