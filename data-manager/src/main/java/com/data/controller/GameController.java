@@ -1,6 +1,5 @@
 package com.data.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.service.GameService;
 import com.manager.common.core.domain.AjaxResult;
@@ -63,7 +62,9 @@ public class GameController extends BaseController{
      * 查询 测试ip
      */
     @PostMapping("/findIp")
-    public AjaxResult findIp(String ip,String createBy,String beginTime,String endTime) {
+    public AjaxResult findIp(String ip,String createBy,String beginTime,
+                             String endTime,String orderByColumn,String isAsc) {
+        startOrder(orderByColumn,isAsc);
         return AjaxResult.success(gameService.findIp(ip,createBy,beginTime,endTime));
     }
 
