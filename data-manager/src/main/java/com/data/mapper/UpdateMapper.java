@@ -35,7 +35,8 @@ public interface UpdateMapper {
     @Delete("delete from config_update where id = #{id}")
     Integer deleteAllupdate(@Param("id") String id);
 
-    @Select("SELECT id,version,tid,status,apk_update_url apkUpdateUrl,update_time updateTime FROM config_update where tid= #{tid} order by ver_int desc limit 0,1")
+    @Select("SELECT c.id,c.version,c.tid,c.status,c.apk_update_url apkUpdateUrl,c.update_time updateTime FROM config_update c LEFT JOIN sys_tenant t ON c.tid = t.tenant" +
+            " WHERE t.t_id= #{tid} ORDER BY ver_int DESC LIMIT 0,1")
     Map selectAllupdate(@Param("tid") String tid);
 
     //添加 热更新

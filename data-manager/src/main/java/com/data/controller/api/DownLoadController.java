@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 
 /**
  * @author marvin 2021/9/1
@@ -29,6 +30,7 @@ public class DownLoadController {
         try {
             String filePath = globalConfig.getProfile() + "/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            response.setHeader("Connection-Length", new File(filePath).length()+"");
             FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
