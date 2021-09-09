@@ -62,7 +62,7 @@ public class GameServiceImpl implements GameService {
             jsonArray.add(gameJson);
         }
         String resultStr = StringUtils.jsonToLua(game);
-        result.put("game_list.lua","return "+resultStr);
+        result.put("game_list.lua","return {"+resultStr+"}");
         return result.toJSONString();
     }
 
