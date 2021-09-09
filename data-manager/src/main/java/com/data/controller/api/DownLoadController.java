@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -24,7 +25,7 @@ public class DownLoadController {
      * 整包更新 文件下载
      */
     @GetMapping("/profile/{url}")
-    public void downLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
+    public void downLoad(HttpServletResponse response, @PathVariable(value = "url", required = false) String url) {
         try {
             String filePath = globalConfig.getProfile() + "/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -38,9 +39,10 @@ public class DownLoadController {
     /**
      * 热更新 文件下载
      */
-    @GetMapping("/profile/hotpackage/{url}")
-    public void hotDownLoad(HttpServletResponse response, @PathVariable(value = "url",required = false) String url) {
+    @GetMapping("/profile/hotpackage/**")
+    public void hotDownLoad(HttpServletResponse response, HttpServletRequest request) {
         try {
+            String url = request.getRequestURI().replaceAll("/profile/hotpackage/","");
             String filePath = globalConfig.getProfile() + "/hotpackage/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, url);

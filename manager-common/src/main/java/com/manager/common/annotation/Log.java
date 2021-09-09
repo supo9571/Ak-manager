@@ -11,7 +11,7 @@ import com.manager.common.enums.OperatorType;
 
 /**
  * 自定义操作日志记录注解
- * 
+ *
  * @author marvin
  *
  */
@@ -21,7 +21,7 @@ import com.manager.common.enums.OperatorType;
 public @interface Log
 {
     /**
-     * 模块 
+     * 模块
      */
     public String title() default "";
 
@@ -39,4 +39,9 @@ public @interface Log
      * 是否保存请求的参数
      */
     public boolean isSaveRequestData() default true;
+
+    /**
+     * 是否保存返回值的参数
+     */
+    public boolean isSaveResultData() default true;
 }

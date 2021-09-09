@@ -46,7 +46,7 @@ spring:
 
 global-config:
   #接口地址
-  apiUrl: http://10.39.1.24:8030
+  apiUrl: http://18.142.67.104:8030
   #错误日志上传地址
   errUploadUrl: http://13.228.208.170:6661/starry/logs/upload
   #头像下载地址
@@ -61,7 +61,7 @@ global-config:
 #  profile: D:/package/apk
   profile: /home/manager/package/apk
   #游戏服 地址
-  domain: http://10.39.1.88:6661
+  domain: http://18.142.67.104:6661
   #发送游戏配置
   gameSend: /upload
 
