@@ -45,7 +45,7 @@ public class UserController extends BaseController {
      * 注册
      * @return
      */
-    @PostMapping("/user/register_tourist")
+    @PostMapping("/user/register")
     public AjaxResult register(String requestId, String code,String phone,String password){
         if(StringUtils.isEmpty(requestId)
                 ||StringUtils.isEmpty(code)
@@ -53,11 +53,11 @@ public class UserController extends BaseController {
                 ||StringUtils.isEmpty(password)) {
             return AjaxResult.error("参数不能为空!");
         }
-        if(userService.findByphone(phone)!=null){
-            return AjaxResult.error("手机号码已注册!");
-        };
-        ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
-        if (sms.getData().isMatch()) {
+//        if(userService.findByphone(phone)!=null){
+//            return AjaxResult.error("手机号码已注册!");
+//        };
+        //ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
+        //if (sms.getData().isMatch()) {
             String pwd=DigestUtils.md5Hex(password);
             DataUser d=new DataUser();
             d.setPhone(phone);
@@ -69,7 +69,7 @@ public class UserController extends BaseController {
                 map.put("token",str);
                 return AjaxResult.success(map);
             }
-        }
+       // }
         return AjaxResult.error("验证码验证失败!");
     }
 
@@ -104,5 +104,22 @@ public class UserController extends BaseController {
             return AjaxResult.success("权限验证成功!");
         }
         return AjaxResult.error("权限不足!");
+    }
+
+    @PostMapping("/user/register_tourist")
+    public AjaxResult tourist(){
+        String pwd=DigestUtils.md5Hex("123456");
+        String phone=requestUtils.getRomodphone();
+        DataUser d=new DataUser();
+        d.setPhone(phone);
+        d.setPassword(pwd);
+        int n=userService.insertToDataUser(d);
+        if(n>0){
+            String str=requestUtils.getMD5Str(d);
+            Map map = new HashMap();
+            map.put("token",str);
+            return AjaxResult.success(map);
+        }
+        return AjaxResult.error("游客访问失败");
     }
 }
