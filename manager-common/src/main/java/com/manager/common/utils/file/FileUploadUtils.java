@@ -215,13 +215,14 @@ public class FileUploadUtils {
             throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
         }
         assertAllowed(file, MimeTypeUtils.ZIP);
-        String fileName = extractFilename(file);
+//        String fileName = extractFilename(file);
+        String fileName = file.getOriginalFilename();
         File desc = getAbsoluteFile(baseDir, fileName);
         //上传文件
         file.transferTo(desc);
         String pathFileName = getPathFileName(baseDir, fileName);
         //解压文件
-        JSONObject gameInfo = unZipFiles(new File(baseDir+"/"+fileName), baseDir,pathFileName);
+        JSONObject gameInfo = unZipFiles(new File(baseDir+"/"+fileName), baseDir,pathFileName.replaceAll(".zip",""));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("apk_update_url",pathFileName);
         jsonObject.put("size",file.getSize()/1024);
@@ -243,7 +244,14 @@ public class FileUploadUtils {
         for (Enumeration entries = zip.entries(); entries.hasMoreElements(); ) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
             String zipEntryName = entry.getName();
+            InputStream in = zip.getInputStream(entry);
             String outPath = (descDir + "/" + zipEntryName).replaceAll("\\*", "/");
+            //判断路径是否存在,不存在则创建文件路径
+            File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+
             //判断文件全路径是否为文件夹,如果是不需要解析
             if (new File(outPath).isDirectory()) {
                 continue;
@@ -269,11 +277,19 @@ public class FileUploadUtils {
                     String gameDecode = DecodeMap.decodeMap().get(gameCode);
                     JSONObject game = new JSONObject();
                     game.put("gameCode",gameDecode);
-                    game.put("manifest_res","/N2ZjOTdj/NmNiOTJm/"+gameDecode+"/Mjk1YjM5");
+                    game.put("manifest_res","/N2ZjOTdj/NmNiOTJm/"+gameCode+"/Mjk1YjM5");
                     game.put("resources_url",pathName);
                     relust.put(gameDecode,game);
                 }
             }
+            OutputStream out = new FileOutputStream(outPath);
+            byte[] buf1 = new byte[1024];
+            int len;
+            while ((len = in.read(buf1)) > 0) {
+                out.write(buf1, 0, len);
+            }
+            in.close();
+            out.close();
         }
         JSONObject gameInfo = new JSONObject();
         gameInfo.put("android",relust);

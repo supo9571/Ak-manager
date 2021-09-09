@@ -7,6 +7,7 @@ import com.data.controller.BaseController;
 import com.data.service.UpdateService;
 import com.manager.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ public class HotUpdateController extends BaseController {
     @Autowired
     private UpdateService updateService;
 
-    @PostMapping("/hotupdate")
+    @GetMapping("/hotupdate")
     public JSONObject hotUpdate() {
 //        String device = getHeader("Client-Device");//设备类型 windows,ios，android
 //        String machineid = getHeader("Client-MachineCode");//设备机器码（设备唯一id）

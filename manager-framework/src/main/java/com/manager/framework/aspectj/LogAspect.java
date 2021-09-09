@@ -95,7 +95,10 @@ public class LogAspect
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
             operLog.setOperIp(ip);
             // 返回参数
-            operLog.setJsonResult(JSON.toJSONString(jsonResult));
+            if(controllerLog.isSaveResultData()){
+                operLog.setJsonResult(JSON.toJSONString(jsonResult));
+            }
+
 
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (loginUser != null)

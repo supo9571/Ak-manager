@@ -164,7 +164,7 @@ public class UpdateController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('data:hotupdate:upload')")
     @ApiOperation(value = "热更新文件上传")
-    @Log(title = "文件上传", businessType = BusinessType.INSERT)
+    @Log(title = "文件上传", businessType = BusinessType.INSERT,isSaveResultData = false)
     @PostMapping("/hotupdate/upload")
     public AjaxResult hotUpload(MultipartFile file) {
         JSONObject jsonObject;

@@ -61,11 +61,8 @@ public class GameServiceImpl implements GameService {
             gameJson.put("status",map.get("status"));
             jsonArray.add(gameJson);
         }
-        String reslitStr = game.toJSONString();
-        reslitStr = reslitStr.replaceAll(":"," = ");
-        reslitStr = reslitStr.replaceAll("\" =","] =");
-        reslitStr = reslitStr.replaceAll("\"","[");
-        result.put("game_list.lua","return "+reslitStr);
+        String resultStr = StringUtils.jsonToLua(game);
+        result.put("game_list.lua","return "+resultStr);
         return result.toJSONString();
     }
 
