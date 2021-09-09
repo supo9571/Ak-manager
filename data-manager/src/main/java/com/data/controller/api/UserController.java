@@ -36,7 +36,7 @@ public class UserController extends BaseController {
      * 短信验证码发送
      * @return
      */
-    @GetMapping("/sandCode")
+    @GetMapping("/user/sandCode")
     public AjaxResult sendCode(String phone){
         return AjaxResult.success(RequestUtils.sandTosms(phone));
     }
@@ -45,7 +45,7 @@ public class UserController extends BaseController {
      * 注册
      * @return
      */
-    @GetMapping("/register")
+    @GetMapping("/user/register_tourist")
     public AjaxResult register(String requestId, String code,String phone,String password){
         if(StringUtils.isEmpty(requestId)
                 ||StringUtils.isEmpty(code)
@@ -78,7 +78,7 @@ public class UserController extends BaseController {
      * @param dataUser
      * @return
      */
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public AjaxResult login(DataUser dataUser) {
         String pwd=DigestUtils.md5Hex(dataUser.getPassword());
         dataUser.setPassword(pwd);
@@ -97,7 +97,7 @@ public class UserController extends BaseController {
      * @param token
      * @return
      */
-    @GetMapping("/verify")
+    @GetMapping("/user/verify")
     public AjaxResult verify(String token) {
         String ss= (String) redisTemplate.opsForValue().get(token);
         if(ss!=null && !ss.equals("")){
