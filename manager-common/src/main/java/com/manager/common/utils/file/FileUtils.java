@@ -160,7 +160,9 @@ public class FileUtils
      */
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException
     {
-        String percentEncodedFileName = percentEncode(realFileName);
+//        String percentEncodedFileName = percentEncode(realFileName);
+        String[] strings = realFileName.split("/");
+        String percentEncodedFileName = realFileName.split("/")[strings.length-1];
 
         StringBuilder contentDispositionValue = new StringBuilder();
         contentDispositionValue.append("attachment; filename=")
