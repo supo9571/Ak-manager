@@ -31,7 +31,7 @@ public class DownLoadController {
             String filePath = globalConfig.getProfile() + "/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setHeader("Connection-Length", new File(filePath).length()+"");
-            response.setHeader("Accept-Ranges", new File(filePath).length()+"");
+            response.setHeader("Accept-Ranges", "bytes");
             FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
