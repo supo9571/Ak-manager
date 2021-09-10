@@ -9,7 +9,10 @@ import lombok.Data;
  **/
 @Data
 public class DataUser {
-    private long account_id;
+    private long accountId;
     private String phone;
     private String password;
+    private String client_ip;
+    private String seed_token;
+    private String package_channel;
 }

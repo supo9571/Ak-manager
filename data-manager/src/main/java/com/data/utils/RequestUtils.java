@@ -154,7 +154,7 @@ public class RequestUtils {
         StringBuilder sb = new StringBuilder();
         sb.append(dataUser.getPhone()).append(dataUser.getPassword());
         String md5str=DigestUtils.md5Hex(sb.toString());
-        redisTemplate.opsForValue().set(md5str, "1",1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(md5str, dataUser.getAccountId(),1, TimeUnit.DAYS);
         return md5str;
     }
 
