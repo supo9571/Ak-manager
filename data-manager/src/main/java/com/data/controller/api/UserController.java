@@ -36,7 +36,7 @@ public class UserController extends BaseController {
      * 短信验证码发送
      * @return
      */
-    @PostMapping("/user/sandCode")
+    @PostMapping("/user/sandsms")
     public AjaxResult sendCode(String phone){
         return AjaxResult.success(RequestUtils.sandTosms(phone));
     }
