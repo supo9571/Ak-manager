@@ -33,8 +33,8 @@ public class HotUpdateController extends BaseController {
     public JSONObject hotUpdate() {
 //        String device = getHeader("Client-Device");//设备类型 windows,ios，android
 //        String machineid = getHeader("Client-MachineCode");//设备机器码（设备唯一id）
-//        String version = getHeader("Client-VersionRes");//当前包内热更资源版本号 例：1.0.1
-//        String channel = getHeader("Client-PackageChannel");//渠道
+        String hotVersion = getHeader("Client-VersionRes");//当前包内热更资源版本号 例：1.0.1
+        String hotChannel = getHeader("Client-PackageChannel");//热更新渠道
 
         String channelId = getHeader("Client-ChannelId");//渠道id
         String versionId = getHeader("Client-VersionId");//版本号
@@ -56,7 +56,7 @@ public class HotUpdateController extends BaseController {
             data.put("appupdate",appupdate);
         }
         //添加 热更信息
-        List<Map> list = updateService.selectPackage(ip,channelId,versionId,platform);
+        List<Map> list = updateService.selectPackage(ip,hotChannel,hotVersion,platform);
         if(!list.isEmpty()){
             for (int i = 0; i < list.size(); i++) {
                 Map map = list.get(i);
