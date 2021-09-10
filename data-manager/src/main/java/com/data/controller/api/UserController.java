@@ -1,16 +1,20 @@
 package com.data.controller.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.data.config.redis.RedisCache;
 import com.data.controller.BaseController;
 import com.data.service.UserService;
 import com.data.utils.RequestUtils;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.DataUser;
-import com.manager.common.core.domain.entity.ResponeSms;
+import com.manager.common.utils.uuid.IdUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisCache redisCache;
 
     @Autowired
     private RequestUtils requestUtils;
@@ -98,32 +102,53 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping("/user/check_token")
-    public AjaxResult verify(String key_token) {
-        Integer str= (Integer) redisTemplate.opsForValue().get(key_token);
-        if(str!=null && str.intValue()>1){
-            Map map = new HashMap();
-            map.put("account_id",str);
-            return AjaxResult.success(map);
+    public JSONObject verify(String key_token) {
+        JSONObject relust = new JSONObject();
+        Integer accountId= redisCache.getCacheObject(key_token);
+        if(accountId!=null && accountId >0){
+            relust.put("account_id",accountId);
+            relust.put("code",0);
+        }else {
+            relust.put("desc","token不合法");
+            relust.put("code",-1);
         }
-        return AjaxResult.error("权限不足!");
+        return relust;
     }
 
     @PostMapping("/user/register_tourist")
-    public AjaxResult tourist(DataUser dataUser){
-        String pwd=DigestUtils.md5Hex("123456");
-        String phone=requestUtils.getRomodphone();
-        //DataUser d=new DataUser();
-        dataUser.setPhone(phone);
-        dataUser.setPassword(pwd);
-        int n=userService.insertToDataUser(dataUser);
-        if(n>0){
-            String str=requestUtils.getMD5Str(dataUser);
-            Map map = new HashMap();
-            map.put("key_token",str);
-            map.put("account_id",dataUser.getAccountId());
-            map.put("pkg_channel",dataUser.getPackage_channel());
-            return AjaxResult.success(map);
+    public JSONObject tourist(@RequestBody DataUser dataUser){
+        JSONObject relust = new JSONObject();
+        String token = IdUtils.fastSimpleUUID();
+        if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getPackage_channel())){
+            relust.put("code",-1);
+            relust.put("desc","参数错误");
         }
-        return AjaxResult.error("游客访问失败");
+        relust.put("pkg_channel",dataUser.getPackage_channel());
+        relust.put("key_token",token);
+        //查询游客 之前是否登录过
+        DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
+        if(user!=null){
+            redisCache.setCacheObject(token,user.getAccountId(),10, TimeUnit.MINUTES);
+            relust.put("code",0);
+            relust.put("account_id",user.getAccountId());
+
+        }else{
+            String pwd=DigestUtils.md5Hex("123456");
+            String phone=requestUtils.getRomodphone();
+            //DataUser d=new DataUser();
+            dataUser.setPhone(phone);
+            dataUser.setPassword(pwd);
+            int n=userService.insertToDataUser(dataUser);
+            if(n>0){
+//                String str=requestUtils.getMD5Str(dataUser);
+                redisCache.setCacheObject(token,dataUser.getAccountId(),10, TimeUnit.MINUTES);
+                relust.put("code",0);
+                relust.put("account_id",dataUser.getAccountId());
+            }else{
+                relust.put("code",-1);
+                relust.put("desc","服务器出错");
+            }
+        }
+        return relust;
     }
 }
