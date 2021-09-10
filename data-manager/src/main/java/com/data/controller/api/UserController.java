@@ -94,30 +94,34 @@ public class UserController extends BaseController {
 
     /**
      * 权限校验
-     * @param token
+     * @param key_token
      * @return
      */
-    @PostMapping("/user/verify")
-    public AjaxResult verify(String token) {
-        String ss= (String) redisTemplate.opsForValue().get(token);
-        if(ss!=null && !ss.equals("")){
-            return AjaxResult.success("权限验证成功!");
+    @PostMapping("/user/check_token")
+    public AjaxResult verify(String key_token) {
+        Integer str= (Integer) redisTemplate.opsForValue().get(key_token);
+        if(str!=null && str.intValue()>1){
+            Map map = new HashMap();
+            map.put("account_id",str);
+            return AjaxResult.success(map);
         }
         return AjaxResult.error("权限不足!");
     }
 
     @PostMapping("/user/register_tourist")
-    public AjaxResult tourist(){
+    public AjaxResult tourist(DataUser dataUser){
         String pwd=DigestUtils.md5Hex("123456");
         String phone=requestUtils.getRomodphone();
-        DataUser d=new DataUser();
-        d.setPhone(phone);
-        d.setPassword(pwd);
-        int n=userService.insertToDataUser(d);
+        //DataUser d=new DataUser();
+        dataUser.setPhone(phone);
+        dataUser.setPassword(pwd);
+        int n=userService.insertToDataUser(dataUser);
         if(n>0){
-            String str=requestUtils.getMD5Str(d);
+            String str=requestUtils.getMD5Str(dataUser);
             Map map = new HashMap();
-            map.put("token",str);
+            map.put("key_token",str);
+            map.put("account_id",dataUser.getAccountId());
+            map.put("pkg_channel",dataUser.getPackage_channel());
             return AjaxResult.success(map);
         }
         return AjaxResult.error("游客访问失败");
