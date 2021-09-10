@@ -24,7 +24,15 @@ public class GlobalConfig {
 
     private String profile;
 
+    //游戏服 发送配置地址
     private String domain;
-
+    //发送游戏配置
     private String gameSend;
+
+    //游戏服 通讯地址
+    private String reportDomain;
+    //操作金币
+    private String changeCoins;
+    //发邮件
+    private String mail;
 }

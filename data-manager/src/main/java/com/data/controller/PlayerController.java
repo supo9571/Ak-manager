@@ -18,7 +18,7 @@ import java.util.List;
  * @author marvin 2021/8/20
  */
 @RestController
-@RequestMapping("data/player")
+@RequestMapping("/data/player")
 public class PlayerController extends BaseController {
 
     @Autowired

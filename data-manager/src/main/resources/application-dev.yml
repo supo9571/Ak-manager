@@ -66,4 +66,11 @@ global-config:
   #发送游戏配置
   gameSend: /upload
 
+  #游戏服 通讯地址
+  reportDomain: http://10.39.1.88:8888
+  #操作金币
+  changeCoins: /gm
+  #发邮件
+  mail: /mail
+
 
