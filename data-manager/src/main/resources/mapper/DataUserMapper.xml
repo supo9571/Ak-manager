@@ -4,7 +4,7 @@
 <mapper namespace="com.data.mapper.UserMapper">
 
     <insert id="insertToDataUser" parameterType="com.manager.common.core.domain.entity.DataUser" useGeneratedKeys="true" keyProperty="accountId"  keyColumn="account_id">
-        insert into data_user (phone,password,client_ip,seed_token,package_channel) values (#{phone},#{password},#{client_ip},#{seed_token},#{package_channel})
+        insert into data_user (phone,password,client_ip,seed_token,package_channel,create_time) values (#{phone},#{password},#{client_ip},#{seed_token},#{package_channel},sysdate())
     </insert>
 
     <select id="loadDataUserName" parameterType="com.manager.common.core.domain.entity.DataUser" resultType="Integer">

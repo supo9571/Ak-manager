@@ -12,6 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -115,10 +116,13 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/user/register_tourist")
-    public JSONObject tourist(DataUser dataUser){
+    public JSONObject tourist(@RequestBody DataUser dataUser){
         JSONObject relust = new JSONObject();
         String token = IdUtils.fastSimpleUUID();
-
+        if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getPackage_channel())){
+            relust.put("code",-1);
+            relust.put("desc","参数错误");
+        }
         relust.put("pkg_channel",dataUser.getPackage_channel());
         relust.put("key_token",token);
         //查询游客 之前是否登录过
