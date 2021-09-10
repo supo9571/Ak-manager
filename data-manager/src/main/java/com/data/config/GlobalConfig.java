@@ -12,6 +12,8 @@ import java.util.Map;
 @Data
 public class GlobalConfig {
 
+    private boolean verSwitch;
+
     private String apiUrl;
 
     private String errUploadUrl;

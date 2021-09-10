@@ -5,6 +5,7 @@ import com.data.controller.BaseController;
 import com.data.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,9 +34,12 @@ public class PayController extends BaseController {
      * bank_account	是	string	收款银行卡号
      * bank_user_name	是	string	收款持卡人姓名
      */
-    @PostMapping("/onebyone/submitUnionCard")
-    public JSONObject bankReg(String pay_id,String way,String bank_account,String bank_user_name,
-                              String uid,String name,Integer money,String channel){
+    @PostMapping(value = "/onebyone/submitUnionCard",produces = "application/json;charset=UTF-8")
+    public JSONObject bankReg(@RequestBody JSONObject param){
+        String uid = param.getString("uid");
+        String name = param.getString("name");
+        Integer money = param.getInteger("money");
+        String channel = param.getString("channel");
         JSONObject result = new JSONObject();
         Integer i = payService.saveBankReg(uid,name,money,channel);
         if(i>0){

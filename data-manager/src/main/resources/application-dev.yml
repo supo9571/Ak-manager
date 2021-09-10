@@ -45,6 +45,9 @@ spring:
 
 
 global-config:
+  #验证开关
+  verSwitch: false
+
   #接口地址
   apiUrl: http://18.142.67.104:8030
   #错误日志上传地址

@@ -24,6 +24,11 @@ public class Verification {
     private static long EXPIRETIME = 1800;
     //密钥
     private static String key = "ymq0ytgdv37ov95r0py4dbfik6xj1fhl";
+
+    /**
+     * 请求 签名验证 true 不通过  false 通过
+     * @return
+     */
     public static boolean checkHeader(){
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();

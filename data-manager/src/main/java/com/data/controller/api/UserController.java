@@ -1,10 +1,12 @@
 package com.data.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.config.redis.RedisCache;
 import com.data.controller.BaseController;
 import com.data.service.UserService;
 import com.data.utils.RequestUtils;
+import com.data.utils.Verification;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.DataUser;
 import com.manager.common.utils.uuid.IdUtils;
@@ -36,6 +38,10 @@ public class UserController extends BaseController {
 
     @Autowired
     private RequestUtils requestUtils;
+
+    @Autowired
+    private GlobalConfig globalConfig;
+
     /**
      * 短信验证码发送
      * @return
@@ -115,9 +121,19 @@ public class UserController extends BaseController {
         return relust;
     }
 
+    /**
+     * 游客 登录
+     * @param dataUser
+     * @return
+     */
     @PostMapping("/user/register_tourist")
     public JSONObject tourist(@RequestBody DataUser dataUser){
         JSONObject relust = new JSONObject();
+        if(globalConfig.isVerSwitch() && Verification.checkHeader()){
+            relust.put("code",-1);
+            relust.put("desc","签名不合法");
+            return relust;
+        }
         String token = IdUtils.fastSimpleUUID();
         if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getPackage_channel())){
             relust.put("code",-1);
