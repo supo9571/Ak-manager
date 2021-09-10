@@ -28,4 +28,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.loadDataUserName(dataUser);
     }
 
+    @Override
+    public DataUser findUserBySeedToken(String seedToken) {
+        return userMapper.findUserBySeedToken(seedToken);
+    }
+
 }

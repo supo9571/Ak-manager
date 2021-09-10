@@ -16,4 +16,7 @@ public interface UserMapper {
     Integer insertToDataUser(DataUser dataUser);
 
     Integer loadDataUserName(DataUser dataUser);
+
+    @Select("select account_id accountId from data_user where seed_token = #{seedToken}")
+    DataUser findUserBySeedToken(@Param("seedToken") String seedToken);
 }
