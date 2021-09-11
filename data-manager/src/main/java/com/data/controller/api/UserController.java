@@ -44,8 +44,8 @@ public class UserController extends BaseController {
      * @return
      */
     @RequestMapping("/onebyone/sandsms")
-    public Map sendCode(String phone){
-        return RequestUtils.sandTosms(phone);
+    public Map sendCode(String phone_number){
+        return RequestUtils.sandTosms(phone_number);
     }
 
     /**
