@@ -13,10 +13,7 @@ import com.manager.common.utils.uuid.IdUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +44,8 @@ public class UserController extends BaseController {
      * @return
      */
     @RequestMapping("/onebyone/sandsms")
-    public AjaxResult sendCode(String phone){
-        return AjaxResult.success(RequestUtils.sandTosms(phone));
+    public Map sendCode(String phone){
+        return RequestUtils.sandTosms(phone);
     }
 
     /**
