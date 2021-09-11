@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author marvin 2021/9/11
  * 月卡 接口
@@ -34,5 +37,20 @@ public class MonthCardController extends BaseController {
     public JSONObject book(String data){
         String channelId = getHeader("Client-ChannelId");//渠道id
         return monthCardService.getBookConfig(data,channelId);
+    }
+
+    /**
+     * vip充值 赠送比例
+     *
+     */
+    @PostMapping("/pay/get_recharge_give")
+    public JSONObject rechargeGive(){
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        JSONObject jsonObject = new JSONObject();
+        Integer give = monthCardService.getVipGive(channelId);
+        Map map = new HashMap();
+        map.put("vip",give);
+        jsonObject.put("result",map);
+        return jsonObject;
     }
 }
