@@ -30,7 +30,7 @@ public class ReportController {
     public AjaxResult editCoins(String cmd,Integer value,Integer uid,Integer reason){
         JSONObject param = new JSONObject();
         param.put("cmd",cmd);//"addcoins"=加金币 “reducecoins”=减金币 “forbidden”=踢人
-        param.put("reason",reason);//100073=银行卡充值 100070=vip充值
+        param.put("reason",reason);// 100070=vip充值  100071=金卡月卡充值 100072=银卡月卡充值 100073=银行卡充值
         param.put("type",1);//1=加金币,2=加流水
         param.put("value",value);
         param.put("uid",uid);
