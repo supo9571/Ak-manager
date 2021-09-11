@@ -26,8 +26,8 @@ public class ActingController extends BaseController {
     /**
      * 基础信息接口
      */
-    @PostMapping("/info")
-    public JSONObject info(){
+    @PostMapping("/rebate_form")
+    public JSONObject rebate_form(){
         String channelId = getHeader("Client-ChannelId");//渠道id
         JSONObject result = new JSONObject();
         String uid = getHeader("uid"); // uid
