@@ -67,6 +67,16 @@ public class MonthCardServiceImpl implements MonthCardService {
         return result;
     }
 
+    /**
+     * 获取vip充值 赠送比例
+     * @param channelId
+     * @return
+     */
+    @Override
+    public Integer getVipGive(String channelId) {
+        return monthCardMapper.getVipGive(tenantMapper.getTidByCid(channelId));
+    }
+
     private List<JSONObject> getBankInfo(List<Map> list){
         List<JSONObject> result = new ArrayList<>();
         list.forEach(m->{

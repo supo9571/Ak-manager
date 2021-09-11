@@ -3,8 +3,6 @@ package com.data.controller.api;
 import com.alibaba.fastjson.JSONObject;
 import com.data.controller.BaseController;
 import com.data.service.ConfigAgenService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +14,7 @@ import java.util.Map;
 
 /**
  * @author sieGuang 2021/9/9
- * 客服端 调用接口
+ * 推广链接 接口
  */
 @RestController
 @RequestMapping("/api/v1/agentv2")
