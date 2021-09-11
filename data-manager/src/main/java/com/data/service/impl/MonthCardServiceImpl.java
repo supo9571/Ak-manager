@@ -1,0 +1,96 @@
+package com.data.service.impl;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.data.mapper.MonthCardMapper;
+import com.data.mapper.TenantMapper;
+import com.data.service.MonthCardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+/**
+ * @author marvin 2021/9/11
+ */
+@Service
+public class MonthCardServiceImpl implements MonthCardService {
+    @Autowired
+    private MonthCardMapper monthCardMapper;
+
+    @Autowired
+    private TenantMapper tenantMapper;
+    @Override
+    public JSONObject getMonthConfig(String cid) {
+        Integer tid = tenantMapper.getTidByCid(cid);
+        JSONObject result = new JSONObject();
+        Map map = monthCardMapper.getMonthConfig(tid);
+        result.put("code","200");
+        result.put("result",map);
+        return result;
+    }
+
+    @Override
+    public JSONObject getBookConfig(String data,String cid) {
+        Integer tid = tenantMapper.getTidByCid(cid);
+        String phoneType = JSONObject.parseObject(data).getString("phone_type");
+        if("ios".equals(phoneType)){
+            phoneType = "1";
+        }else if("Android".equals(phoneType)){
+            phoneType = "2";
+        }else {
+            phoneType = "3";
+        }
+        Integer vip = JSONObject.parseObject(data).getInteger("vip_level");
+        List<Map> list = monthCardMapper.selectConfigPay(tid);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject result = new JSONObject();
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject payInfo = new JSONObject(list.get(i));
+            Integer payType = payInfo.getInteger("pay_type");
+            if(payType==1){//vip充值
+                List<Map> payList = monthCardMapper.selectVipconfig(payInfo.getInteger("id"),tid);
+                payList.forEach(map -> map.put("btn", Arrays.asList(String.valueOf(map.get("btn")).split(","))));
+                payInfo.put("pay_list",payList);
+            }else if(payType==3){//银行卡充值
+                List<Map> payList = monthCardMapper.selectBankconfig(payInfo.getInteger("id"),vip,tid);
+                payInfo.put("pay_list",getBankInfo(payList));
+            }else{//线上充值
+                List<Map> payList = monthCardMapper.selectOnlineconfig(payInfo.getInteger("id"),vip,phoneType,tid);
+                payList.forEach(map -> map.put("btn", Arrays.asList(String.valueOf(map.get("btn")).split(","))));
+                payInfo.put("pay_list",payList);
+            }
+            payInfo.remove("pay_type");
+            jsonArray.add(payInfo);
+        }
+        result.put("onRspPayList",jsonArray);
+        return result;
+    }
+
+    private List<JSONObject> getBankInfo(List<Map> list){
+        List<JSONObject> result = new ArrayList<>();
+        list.forEach(m->{
+            JSONObject jsonObject = new JSONObject(m);
+            if(2==jsonObject.getInteger("jump_type")){
+                jsonObject.remove("url");
+                String bankValue = jsonObject.getString("bank_value");
+                JSONArray jsonArray = JSONArray.parseArray(bankValue);
+                int i =new Random().nextInt(100)+1;
+                for (int l = 0; l < jsonArray.size(); l++) {
+                    JSONObject json = jsonArray.getJSONObject(l);
+                    if(Integer.valueOf(json.getInteger("bank_rate"))>=i){
+                        jsonObject.put("bank_name",json.get("bank_name"));
+                        jsonObject.put("bank_card_num",json.get("bank_card_num"));
+                        jsonObject.put("bank_user_name",json.get("bank_user_name"));
+                        break;
+                    }
+                    i = i-Integer.valueOf(json.getInteger("bank_rate"));
+                }
+            }
+            jsonObject.remove("bank_value");
+            jsonObject.put("btn",Arrays.asList(jsonObject.getString("btn").split(",")));
+            result.add(jsonObject);
+        });
+        return result;
+    }
+}
