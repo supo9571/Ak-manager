@@ -43,7 +43,7 @@ public class UserController extends BaseController {
      * 短信验证码发送
      * @return
      */
-    @RequestMapping("/onebyone/sandsms")
+    @GetMapping("/onebyone/sendsms")
     public Map sendCode(String phone_number){
         return RequestUtils.sandTosms(phone_number);
     }
