@@ -45,11 +45,14 @@ public class KafkaConsumer {
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
         Map<TopicPartition, OffsetAndMetadata> currentOffset = new HashMap<>();
+        String key = "KAFKA_OFFSET:"+record.partition();
         try {
             JSONObject jsonObject = JSON.parseObject(record.value().toString());
             //设置偏移量
+            Integer offset = redisCache.getCacheObject(key);
             currentOffset.put(new TopicPartition(record.topic(), record.partition()),
-                    new OffsetAndMetadata(record.offset() + 3));
+                    new OffsetAndMetadata(offset - 10));
+            log.info("offset:{}",record.offset());
             //存库
             String op = jsonObject.getString("op");
 
@@ -93,6 +96,7 @@ public class KafkaConsumer {
 //            errMsgs.add(jsonObject.toJSONString());
 //            redisCache.setCacheList("kafka_error", errMsgs);
         }finally {
+            redisCache.setCacheObject(key,record.offset());
             // 手工签收机制
             consumer.commitSync(currentOffset);
         }

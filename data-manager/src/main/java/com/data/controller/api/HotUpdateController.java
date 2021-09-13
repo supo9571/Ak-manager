@@ -43,7 +43,7 @@ public class HotUpdateController extends BaseController {
 
         JSONObject result = new JSONObject();
         JSONObject data = new JSONObject();
-        data.put("apiUrl",globalConfig.getApiUrl());
+        data.put("apiUrl",new String[] {globalConfig.getApiUrl()});
         data.put("errUploadUrl",globalConfig.getErrUploadUrl());
         data.put("headUrl",globalConfig.getHeadUrl());
         //添加 客服信息

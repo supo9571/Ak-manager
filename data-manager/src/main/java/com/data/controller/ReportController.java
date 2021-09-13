@@ -27,7 +27,7 @@ public class ReportController {
      * data={“cmd”:”addcoins”,”value”:1000001,”uid”:105519}
      */
     @PostMapping("/coins/edit")
-    public AjaxResult editCoins(String cmd,Integer value,Integer uid,Integer reason){
+    public AjaxResult editCoins(String cmd,Long value,Integer uid,Integer reason){
         JSONObject param = new JSONObject();
         param.put("cmd",cmd);//"addcoins"=加金币 “reducecoins”=减金币 “forbidden”=踢人
         param.put("reason",reason);// 100070=vip充值  100071=金卡月卡充值 100072=银卡月卡充值 100073=银行卡充值
@@ -40,7 +40,7 @@ public class ReportController {
         JSONObject resultJson = JSONObject.parseObject(result);
         if(resultJson!=null && resultJson.getInteger("code")==0){
             //返回操作后金额
-            return AjaxResult.success("操作成功",resultJson.getInteger("curr"));
+            return AjaxResult.success("操作成功",resultJson.getLong("curr"));
         }
         log.error("操作用户金币失败;参数:{};返回值:{}",param,result);
         return AjaxResult.error();
