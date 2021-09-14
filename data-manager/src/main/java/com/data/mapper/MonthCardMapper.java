@@ -1,9 +1,11 @@
 package com.data.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -35,4 +37,12 @@ public interface MonthCardMapper {
 
     @Select("select recharge_give from config_pay where pay_type = '1' and status = '1' and tid = #{tid} limit 0,1")
     Integer getVipGive(@Param("tid") Integer tid);
+
+    @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel})")
+    Integer saveExchange(@Param("channel") String channel,@Param("tid") Integer tid,@Param("uid") String uid,
+                         @Param("type")String type, @Param("name")String name, @Param("account")String account, @Param("originBank")String originBank);
+
+    @Insert("insert into config_exchange_order (uid,tid,type,curr_money,withdraw_money,channel) values(#{uid},#{tid},#{type},#{curr},#{withdraw},#{channel})")
+    Integer saveWithdraw(@Param("channel") String channel, @Param("tid")Integer tid, @Param("uid")String uid,
+                         @Param("type") String type,@Param("curr") BigDecimal curr,@Param("withdraw") BigDecimal withdraw);
 }

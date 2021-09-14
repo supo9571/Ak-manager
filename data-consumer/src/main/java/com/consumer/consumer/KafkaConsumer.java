@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.consumer.config.redis.RedisCache;
 import com.consumer.enums.OpEnum;
 import com.consumer.handler.InsertHandler;
-import com.consumer.service.DataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -35,9 +34,6 @@ public class KafkaConsumer {
     @Autowired
     private InsertHandler insertHandler;
 
-    @Autowired
-    private DataService testService;
-
     private static List opList = new ArrayList();
 
     @KafkaListener(groupId = "group37", topics = "bills_log")
@@ -45,14 +41,16 @@ public class KafkaConsumer {
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
         Map<TopicPartition, OffsetAndMetadata> currentOffset = new HashMap<>();
+        String key = "KAFKA_OFFSET:"+record.partition();
         try {
             JSONObject jsonObject = JSON.parseObject(record.value().toString());
             //设置偏移量
+            Integer offset = redisCache.getCacheObject(key);
             currentOffset.put(new TopicPartition(record.topic(), record.partition()),
-                    new OffsetAndMetadata(record.offset() + 3));
+                    new OffsetAndMetadata(offset - 10));
+            log.info("offset:{}",record.offset());
             //存库
             String op = jsonObject.getString("op");
-
             switch (OpEnum.getByValue(op)){
                 case REGISTER:
                     insertHandler.insertRegister(jsonObject);
@@ -73,26 +71,22 @@ public class KafkaConsumer {
                     insertHandler.insertCard(jsonObject);
                     break;
                 default:
-                    if(!opList.contains(op)){
-                        log.info("NEW OP -->{}",op);
-                        testService.insertMsg(jsonObject.getString("key"),op,jsonObject.toJSONString());
-                        opList.add(op);
-                    }
-
+                    break;
             }
         }catch (Exception e){
-            if(!(e instanceof SQLIntegrityConstraintViolationException)){
+            if(e instanceof SQLIntegrityConstraintViolationException){
                 log.error(e.getMessage()+"||||value-->"+record.value());
             }
             //记录失败信息
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("offset",record.offset());
-//            jsonObject.put("errMsg",e.getMessage());
-//            jsonObject.put("value",record.value());
-//            List errMsgs = new ArrayList();
-//            errMsgs.add(jsonObject.toJSONString());
-//            redisCache.setCacheList("kafka_error", errMsgs);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("offset",record.offset());
+            jsonObject.put("errMsg",e.getMessage());
+            jsonObject.put("value",record.value());
+            List errMsgs = new ArrayList();
+            errMsgs.add(jsonObject.toJSONString());
+            redisCache.setCacheList("KAFKA_ERROR", errMsgs);
         }finally {
+            redisCache.setCacheObject(key,record.offset());
             // 手工签收机制
             consumer.commitSync(currentOffset);
         }

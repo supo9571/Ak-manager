@@ -8,6 +8,7 @@ import com.data.service.MonthCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -75,6 +76,24 @@ public class MonthCardServiceImpl implements MonthCardService {
     @Override
     public Integer getVipGive(String channelId) {
         return monthCardMapper.getVipGive(tenantMapper.getTidByCid(channelId));
+    }
+
+    /**
+     * 绑定 提现支付宝/银行卡
+     * @return
+     */
+    @Override
+    public Integer saveExchange(String channel, String uid, String type, String name, String account, String originBank) {
+        return monthCardMapper.saveExchange(channel,tenantMapper.getTidByCid(channel),uid,type,name,account,originBank);
+    }
+
+    /**
+     * 申请 提现
+     * @return
+     */
+    @Override
+    public Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw) {
+        return monthCardMapper.saveWithdraw(channel,tenantMapper.getTidByCid(channel),uid,type,curr,withdraw);
     }
 
     private List<JSONObject> getBankInfo(List<Map> list){

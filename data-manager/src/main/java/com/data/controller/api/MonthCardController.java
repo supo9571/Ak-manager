@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,50 @@ public class MonthCardController extends BaseController {
         Map map = new HashMap();
         map.put("vip",give);
         jsonObject.put("result",map);
+        return jsonObject;
+    }
+
+    /**
+     * 绑定银行卡/支付宝
+     * type	是	string	支付宝：”alipay” 银行卡：”bank”
+     * name	是	string	支付宝/银行卡姓名
+     * account	是	string	支付宝/银行卡号码
+     * originBank	否	string	银行编码（绑银行卡必填）
+     */
+    @PostMapping("/onebyone/bingding")
+    public JSONObject bingding(String type,String name,String account,String originBank){
+        String channel = getHeader("Client-ChannelId");//渠道id
+        String uid = getHeader("uid"); // uid
+        Integer i = monthCardService.saveExchange(channel,uid,type,name,account,originBank);
+        JSONObject jsonObject = new JSONObject();
+        if(i>0){
+            jsonObject.put("code","200");
+            jsonObject.put("msg","绑定成功");
+        }else {
+            jsonObject.put("code","500");
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 提现
+     * type	是	string	银行卡/支付宝： bank/alipay
+     * currentAmount	是	int	当前携带余额 1元 = 10000
+     * withdrawAmount	是	int	提现金额 1元 = 10000
+     */
+    @PostMapping("/onebyone/withdraw")
+    public JSONObject withdraw(String type,Long currentAmount,Long withdrawAmount){
+        String channel = getHeader("Client-ChannelId");//渠道id
+        String uid = getHeader("uid"); // uid
+        Integer i = monthCardService.saveWithdraw(channel,uid,type,new BigDecimal(currentAmount).divide(new BigDecimal(10000))
+                ,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
+        JSONObject jsonObject = new JSONObject();
+        if(i>0){
+            jsonObject.put("code","200");
+            jsonObject.put("msg","绑定成功");
+        }else {
+            jsonObject.put("code","500");
+        }
         return jsonObject;
     }
 }
