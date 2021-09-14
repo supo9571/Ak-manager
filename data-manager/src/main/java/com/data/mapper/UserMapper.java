@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserMapper {
-    @Select("select * from data_user where phone = #{phone}")
+    @Select("select count(phone) from data_user where phone = #{phone}")
     Integer findByphone(@Param("phone") String phone);
 
     Integer insertToDataUser(DataUser dataUser);
