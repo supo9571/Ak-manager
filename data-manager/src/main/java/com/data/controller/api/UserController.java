@@ -148,11 +148,11 @@ public class UserController extends BaseController {
 
     /**
      * 权限校验
-     * @param key_token
      * @return
      */
     @PostMapping("/user/check_token")
-    public JSONObject verify(String key_token) {
+    public JSONObject verify(@RequestBody JSONObject param) {
+        String key_token = param.getString("key_token");
         JSONObject relust = new JSONObject();
         Integer accountId= redisCache.getCacheObject(key_token);
         if(accountId!=null && accountId >0){
