@@ -158,6 +158,7 @@ public class UserController extends BaseController {
         if(accountId!=null && accountId >0){
             relust.put("account_id",accountId);
             relust.put("code",0);
+            relust.put("key_token",key_token);
         }else {
             relust.put("desc","token不合法");
             relust.put("code",-1);
