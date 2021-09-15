@@ -94,7 +94,7 @@ public class UserController extends BaseController {
                     }
                 }else if(checkWay==8){//密码注册
                     String ip = getHeader("HTTP-CLIENT-IP");
-                    DataUser dataUser = new DataUser(phoneNumber,DigestUtils.md5Hex(password),pkgChannel,matchineToken,ip);
+                    DataUser dataUser = new DataUser(phoneNumber,DigestUtils.md5Hex(password),ip,matchineToken,pkgChannel);
                     int n = userService.insertToDataUser(dataUser);
                     if(n>0){
                         result.put("code", 0);
