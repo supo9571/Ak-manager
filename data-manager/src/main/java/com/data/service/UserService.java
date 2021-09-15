@@ -14,4 +14,12 @@ public interface UserService {
     Integer loadDataUserName(DataUser dataUser);
 
     DataUser findUserBySeedToken(String seedToken);
+
+    DataUser findByPassword(String phoneNumber, String password);
+
+    DataUser findByPhone(String phoneNumber);
+
+    void updatePassword(String phoneNumber, String password);
+
+    int updateDataUser(DataUser dataUser);
 }

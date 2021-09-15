@@ -11,11 +11,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,14 +41,12 @@ public class KafkaConsumer {
                           Consumer<?, ?> consumer,
                           Acknowledgment ack) {
         Map<TopicPartition, OffsetAndMetadata> currentOffset = new HashMap<>();
-        String key = "KAFKA_OFFSET:"+record.partition();
         try {
             JSONObject jsonObject = JSON.parseObject(record.value().toString());
             //设置偏移量
-            Integer offset = redisCache.getCacheObject(key);
             currentOffset.put(new TopicPartition(record.topic(), record.partition()),
-                    new OffsetAndMetadata(offset - 10));
-            log.info("offset:{}",record.offset());
+                    new OffsetAndMetadata(record.offset() - 10));
+//            log.info("offset:{}",record.offset());
             //存库
             String op = jsonObject.getString("op");
             switch (OpEnum.getByValue(op)){
@@ -74,19 +72,19 @@ public class KafkaConsumer {
                     break;
             }
         }catch (Exception e){
-            if(e instanceof SQLIntegrityConstraintViolationException){
+            if(e instanceof DuplicateKeyException){
                 log.error(e.getMessage()+"||||value-->"+record.value());
+            }else{
+                //记录失败信息
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("offset",record.offset());
+                jsonObject.put("errMsg",e.getMessage());
+                jsonObject.put("value",record.value());
+                List errMsgs = new ArrayList();
+                errMsgs.add(jsonObject.toJSONString());
+                redisCache.setCacheList("KAFKA_ERROR", errMsgs);
             }
-            //记录失败信息
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("offset",record.offset());
-            jsonObject.put("errMsg",e.getMessage());
-            jsonObject.put("value",record.value());
-            List errMsgs = new ArrayList();
-            errMsgs.add(jsonObject.toJSONString());
-            redisCache.setCacheList("KAFKA_ERROR", errMsgs);
         }finally {
-            redisCache.setCacheObject(key,record.offset());
             // 手工签收机制
             consumer.commitSync(currentOffset);
         }

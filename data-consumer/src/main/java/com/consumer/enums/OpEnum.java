@@ -46,6 +46,8 @@ public enum OpEnum {
 
     YKCHARGE_PRO3("ykcharge_pro3"),
 
+    ADD_ITEM("add_item"),
+
     SYNC_WINLOSE("sync_winlose");
 
     OpEnum(String opName) {

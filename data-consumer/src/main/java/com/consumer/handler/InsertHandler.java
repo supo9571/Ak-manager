@@ -104,7 +104,7 @@ public class InsertHandler {
                     cardUser.setIsRobot("false");
                 }
                 addScore+=cardUser.getAddScore();
-                payFee+=cardUser.getPayFee();
+                payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
                 if(cardUser.getBetCoins() == null){
                     if(cardUser.getWaterCoins() == null){
                         cardUser.setBetCoins(cardUser.getAddScore());
@@ -129,10 +129,7 @@ public class InsertHandler {
                     cardUser.setIsRobot("false");
                 }
                 addScore+=cardUser.getAddScore();
-                payFee+=cardUser.getPayFee();
-                if(cardUser.getBetCoins() == null){
-                    cardUser.setBetCoins(cardUser.getWaterCoins());
-                }
+                payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
                 if(cardUser.getBetCoins() == null){
                     if(cardUser.getWaterCoins() == null){
                         cardUser.setBetCoins(cardUser.getAddScore());

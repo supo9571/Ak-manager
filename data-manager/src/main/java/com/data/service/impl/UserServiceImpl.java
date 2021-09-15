@@ -5,6 +5,7 @@ import com.data.service.UserService;
 import com.manager.common.core.domain.entity.DataUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
 /**
  * @author marvin 2021/8/28
@@ -31,6 +32,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataUser findUserBySeedToken(String seedToken) {
         return userMapper.findUserBySeedToken(seedToken);
+    }
+
+    @Override
+    public DataUser findByPassword(String phoneNumber, String password) {
+        return userMapper.findByPassword(phoneNumber, password);
+    }
+
+    @Override
+    public DataUser findByPhone(String phoneNumber) {
+        return userMapper.findByPhone(phoneNumber);
+    }
+
+    @Override
+    public void updatePassword(String phoneNumber, String password) {
+        userMapper.updatePassword(phoneNumber,password);
+    }
+
+    @Override
+    public int updateDataUser(DataUser dataUser) {
+        return userMapper.updateDataUser(dataUser);
     }
 
 }

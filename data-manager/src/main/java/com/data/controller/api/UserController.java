@@ -9,6 +9,7 @@ import com.data.utils.RequestUtils;
 import com.data.utils.Verification;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.DataUser;
+import com.manager.common.core.domain.entity.ResponeSms;
 import com.manager.common.utils.uuid.IdUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,35 +56,75 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping("/user/verify_register_invitation_code")
-    public AjaxResult register(String requestId, String code,String phone_number,String password){
-        if(
-//                StringUtils.isEmpty(requestId)
-//                ||StringUtils.isEmpty(code)
-//                ||
-                        StringUtils.isEmpty(phone_number)
-                ||StringUtils.isEmpty(password)) {
-            return AjaxResult.error("参数不能为空!");
-        }
+    public JSONObject register(@RequestBody JSONObject param){
+        JSONObject result = new JSONObject();
+        String matchineToken = param.getString("matchine_token");
+        String phoneNumber = param.getString("phone_number");
+        String code = param.getString("code");
+        Integer checkWay = param.getInteger("check_way");
+        String password = param.getString("password");
+        String requestId = param.getString("requestId");
+        String pkgChannel = getHeader("Client-ChannelId");
 
-        if(userService.findByphone(phone_number)!=null){
-            return AjaxResult.error("手机号码已注册!");
-        };
-        //ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
-        //if (sms.getData().isMatch()) {
-            String pwd=DigestUtils.md5Hex(password);
-            DataUser d=new DataUser();
-            d.setPhone(phone_number);
-            d.setPassword(pwd);
-            int n=userService.insertToDataUser(d);
-            if(n>0) {
-                String str=requestUtils.getMD5Str(d);
-                Map map = new HashMap();
-                map.put("token",str);
-                map.put("account_id",d.getAccountId());
-                return AjaxResult.success(map);
+        if(checkWay==6){ //登录
+            DataUser dataUser = userService.findByPassword(phoneNumber,DigestUtils.md5Hex(password));
+            if(dataUser==null){
+                result.put("code",-1);
+                result.put("desc","用户名密码错误");
+            }else{
+                result.put("code",0);
+                result.put("account_id",dataUser.getAccountId());
+                result.put("pkg_channel",pkgChannel);
+                result.put("key_token",setToken(dataUser.getAccountId()));
             }
-       // }
-        return AjaxResult.error("验证码验证失败!");
+        }else {
+            ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
+            if (sms.getData().isMatch()) {
+                if(checkWay==7){//修改密码
+                    DataUser dataUser = userService.findByPhone(phoneNumber);
+                    if(dataUser==null){
+                        result.put("code",-1);
+                        result.put("desc","手机号未注册");
+                    }else {
+                        userService.updatePassword(phoneNumber,DigestUtils.md5Hex(password));
+                        result.put("code",0);
+                        result.put("account_id",dataUser.getAccountId());
+                        result.put("pkg_channel",pkgChannel);
+                        result.put("key_token",setToken(dataUser.getAccountId()));
+                    }
+                }else if(checkWay==8){//密码注册
+                    String ip = getHeader("HTTP-CLIENT-IP");
+                    DataUser dataUser = new DataUser(phoneNumber,DigestUtils.md5Hex(password),pkgChannel,matchineToken,ip);
+                    int n = userService.insertToDataUser(dataUser);
+                    if(n>0){
+                        result.put("code", 0);
+                        result.put("account_id", dataUser.getAccountId());
+                        result.put("pkg_channel", pkgChannel);
+                        result.put("key_token", setToken(dataUser.getAccountId()));
+                    }else{
+                        result.put("code",-1);
+                        result.put("desc","服务器出错");
+                    }
+                }else if(checkWay==9){//游客绑定手机
+                    String accountId = getHeader("account-id");
+                    DataUser dataUser = new DataUser(Long.valueOf(accountId),phoneNumber,DigestUtils.md5Hex(password));
+                    int n = userService.updateDataUser(dataUser);
+                    if(n>0){
+                        result.put("code", 0);
+                        result.put("account_id", dataUser.getAccountId());
+                        result.put("pkg_channel", pkgChannel);
+                        result.put("key_token", setToken(dataUser.getAccountId()));
+                    }else{
+                        result.put("code",-1);
+                        result.put("desc","服务器出错");
+                    }
+                }
+            }else {
+                result.put("code",-1);
+                result.put("desc","验证码错误");
+            }
+        }
+        return result;
     }
 
     /**
@@ -169,5 +210,11 @@ public class UserController extends BaseController {
             }
         }
         return relust;
+    }
+
+    private String setToken(Long accountId){
+        String token = IdUtils.fastSimpleUUID();
+        redisCache.setCacheObject(token,accountId,10, TimeUnit.MINUTES);
+        return token;
     }
 }

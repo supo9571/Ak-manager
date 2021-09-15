@@ -1,8 +1,12 @@
 package com.data.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
 import com.data.service.MonthCardService;
+import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.utils.http.HttpUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +22,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1")
+@Slf4j
 public class MonthCardController extends BaseController {
 
     @Autowired
     private MonthCardService monthCardService;
+
+    @Autowired
+    private GlobalConfig globalConfig;
     /**
      * 月卡接口
      */
@@ -85,16 +93,35 @@ public class MonthCardController extends BaseController {
      */
     @PostMapping("/onebyone/withdraw")
     public JSONObject withdraw(String type,Long currentAmount,Long withdrawAmount){
+        JSONObject jsonObject = new JSONObject();
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
-        Integer i = monthCardService.saveWithdraw(channel,uid,type,new BigDecimal(currentAmount).divide(new BigDecimal(10000))
-                ,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
-        JSONObject jsonObject = new JSONObject();
-        if(i>0){
-            jsonObject.put("code","200");
-            jsonObject.put("msg","绑定成功");
-        }else {
+        //扣除金币
+        JSONObject param = new JSONObject();
+        param.put("cmd","reducecoins");
+        param.put("reason",100040);
+        param.put("type",1);
+        param.put("value",withdrawAmount);
+        param.put("uid",uid);
+        //操作 用户金币
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                "data="+param.toJSONString());
+        JSONObject resultJson = JSONObject.parseObject(result);
+        if(resultJson!=null && resultJson.getInteger("code")==0){
+            //添加 提现记录
+            Integer i = monthCardService.saveWithdraw(channel,uid,type,new BigDecimal(currentAmount).divide(new BigDecimal(10000))
+                    ,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
+            if(i>0){
+                jsonObject.put("code","200");
+                jsonObject.put("msg","成功");
+            }else {
+                jsonObject.put("code","500");
+                jsonObject.put("code","扣钱成功，添加提现记录失败");
+                log.error("提现申请，扣钱成功，添加提现记录失败，参数：{}",param);
+            }
+        }else{
             jsonObject.put("code","500");
+            jsonObject.put("code","请求游戏服扣钱失败");
         }
         return jsonObject;
     }

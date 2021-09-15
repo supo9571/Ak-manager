@@ -10,4 +10,11 @@
     <select id="loadDataUserName" parameterType="com.manager.common.core.domain.entity.DataUser" resultType="Integer">
         select count(phone) from data_user where phone=#{phone} and password = #{password}
     </select>
+
+    <update id="updateDataUser" parameterType="com.manager.common.core.domain.entity.DataUser">
+        update data_user
+        set phone = #{phone},
+            password = #{password}
+        where account_id = #{accountId}
+    </update>
 </mapper>

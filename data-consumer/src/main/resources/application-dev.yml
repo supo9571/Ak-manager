@@ -52,4 +52,4 @@ spring:
         session.timeout.ms: 15000
     listener:
       ack-mode: manual # 手工签收
-      concurrency: 3
+      concurrency: 6
