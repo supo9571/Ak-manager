@@ -79,7 +79,7 @@ public class UserController extends BaseController {
             }
         }else {
             ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
-            if (sms.getData().isMatch()) {
+            if (!globalConfig.isVerSwitch() || sms.getData().isMatch()) {
                 if(checkWay==7){//修改密码
                     DataUser dataUser = userService.findByPhone(phoneNumber);
                     if(dataUser==null){
