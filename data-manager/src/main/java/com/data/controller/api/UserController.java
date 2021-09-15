@@ -64,6 +64,7 @@ public class UserController extends BaseController {
                 ||StringUtils.isEmpty(password)) {
             return AjaxResult.error("参数不能为空!");
         }
+
         if(userService.findByphone(phone_number)!=null){
             return AjaxResult.error("手机号码已注册!");
         };
