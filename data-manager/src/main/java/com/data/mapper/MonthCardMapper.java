@@ -42,7 +42,7 @@ public interface MonthCardMapper {
     Integer saveExchange(@Param("channel") String channel,@Param("tid") Integer tid,@Param("uid") String uid,
                          @Param("type")String type, @Param("name")String name, @Param("account")String account, @Param("originBank")String originBank);
 
-    @Insert("insert into config_exchange_order (uid,tid,type,curr_money,withdraw_money,channel) values(#{uid},#{tid},#{type},#{curr},#{withdraw},#{channel})")
+    @Insert("insert into config_exchange_order (uid,tid,withdraw_type,curr_money,withdraw_money,channel) values(#{uid},#{tid},#{type},#{curr},#{withdraw},#{channel})")
     Integer saveWithdraw(@Param("channel") String channel, @Param("tid")Integer tid, @Param("uid")String uid,
                          @Param("type") String type,@Param("curr") BigDecimal curr,@Param("withdraw") BigDecimal withdraw);
 

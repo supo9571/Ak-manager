@@ -123,7 +123,7 @@ public class MonthCardController extends BaseController {
      */
     @PostMapping("/onebyone/withdraw")
     public JSONObject withdraw(@RequestBody JSONObject param){
-        String type = param.getString("0");
+        String type = param.getString("type");
         Long currentAmount = param.getLong("currentAmount");
         Long withdrawAmount = param.getLong("withdrawAmount");
         JSONObject result = new JSONObject();

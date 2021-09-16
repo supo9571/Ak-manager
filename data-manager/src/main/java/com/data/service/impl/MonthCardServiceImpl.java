@@ -98,6 +98,11 @@ public class MonthCardServiceImpl implements MonthCardService {
      */
     @Override
     public Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw) {
+        if("alipay".equals(type)){
+            type = "2";
+        }else {
+            type = "1";
+        }
         return monthCardMapper.saveWithdraw(channel,tenantMapper.getTidByCid(channel),uid,type,curr,withdraw);
     }
 
