@@ -38,7 +38,7 @@ public interface MonthCardMapper {
     @Select("select recharge_give from config_pay where pay_type = '1' and status = '1' and tid = #{tid} limit 0,1")
     Integer getVipGive(@Param("tid") Integer tid);
 
-    @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel})")
+    @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel,create_time) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel},sysdate())")
     Integer saveExchange(@Param("channel") String channel,@Param("tid") Integer tid,@Param("uid") String uid,
                          @Param("type")String type, @Param("name")String name, @Param("account")String account, @Param("originBank")String originBank);
 
@@ -56,4 +56,7 @@ public interface MonthCardMapper {
 
     @Select("SELECT total_add pay_money,total_water person_water FROM data_register where uid = #{uid}")
     List<Map> getUserWater(@Param("uid") String uid);
+
+    @Select("select * from config_bank")
+    List<Map> getBankList();
 }

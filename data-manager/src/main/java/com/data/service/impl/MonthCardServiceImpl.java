@@ -122,6 +122,15 @@ public class MonthCardServiceImpl implements MonthCardService {
         return jsonObject;
     }
 
+    @Override
+    public JSONObject getBankList() {
+        JSONObject result = new JSONObject();
+        result.put("code",200);
+        result.put("msg","ok");
+        result.put("result",monthCardMapper.getBankList());
+        return null;
+    }
+
     private List<JSONObject> getBankInfo(List<Map> list){
         List<JSONObject> result = new ArrayList<>();
         list.forEach(m->{

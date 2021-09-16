@@ -20,4 +20,6 @@ public interface MonthCardService {
     Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw);
 
     JSONObject getExchangeConfig(String uid, String channelId);
+
+    JSONObject getBankList();
 }

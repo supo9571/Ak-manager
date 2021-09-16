@@ -59,6 +59,14 @@ public class MonthCardController extends BaseController {
         return monthCardService.getExchangeConfig(uid,channelId);
     }
 
+    /**
+     * 提现银行卡列表
+     */
+    @PostMapping("/onebyone/get_bank_list")
+    public JSONObject bankList(){
+        return monthCardService.getBankList();
+    }
+
 
     /**
      * vip充值 赠送比例
