@@ -107,7 +107,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         Integer tid = tenantMapper.getTidByCid(channelId);
         JSONObject jsonObject = new JSONObject();
         JSONObject result = new JSONObject();
-        result.put("code",200);
+        jsonObject.put("code",200);
         //查询玩家 绑定提现信息
         List<Map> bindInfo = monthCardMapper.getUserBind(uid,tid);
         result.put("bind_info",bindInfo);
