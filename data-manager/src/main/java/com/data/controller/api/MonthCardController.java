@@ -83,7 +83,16 @@ public class MonthCardController extends BaseController {
      * originBank	否	string	银行编码（绑银行卡必填）
      */
     @PostMapping("/onebyone/bingding")
-    public JSONObject bingding(String type,String name,String account,String originBank){
+    public JSONObject bingding(@RequestBody JSONObject param){
+        String type = param.getString("type");
+        String name = param.getString("name");
+        String account = param.getString("account");
+        String originBank = param.getString("originBank");
+        if("alipay".equals(type)){
+            type = "0";
+        }else{
+            type = "1";
+        }
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
         Integer i = monthCardService.saveExchange(channel,uid,type,name,account,originBank);
