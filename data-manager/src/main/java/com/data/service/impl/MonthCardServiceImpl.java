@@ -33,6 +33,8 @@ public class MonthCardServiceImpl implements MonthCardService {
 
     @Override
     public JSONObject getBookConfig(JSONObject param,String cid) {
+        JSONObject jsonObject = new JSONObject();
+        JSONObject result = new JSONObject();
         Integer tid = tenantMapper.getTidByCid(cid);
         String phoneType = param.getString("phone_type");
         if("ios".equals(phoneType)){
@@ -44,8 +46,6 @@ public class MonthCardServiceImpl implements MonthCardService {
         }
         Integer vip = param.getInteger("vip_level")==null?0:param.getInteger("vip_level");
         List<Map> list = monthCardMapper.selectConfigPay(tid);
-        JSONArray jsonArray = new JSONArray();
-        JSONObject result = new JSONObject();
         for (int i = 0; i < list.size(); i++) {
             JSONObject payInfo = new JSONObject(list.get(i));
             Integer payType = payInfo.getInteger("pay_type");
@@ -62,10 +62,12 @@ public class MonthCardServiceImpl implements MonthCardService {
                 payInfo.put("pay_list",payList);
             }
             payInfo.remove("pay_type");
-            jsonArray.add(payInfo);
+            result.put(payInfo.getString("pay_channel"),payInfo);
         }
-        result.put("onRspPayList",jsonArray);
-        return result;
+        jsonObject.put("code",200);
+        jsonObject.put("msg","ok");
+        jsonObject.put("result",result);
+        return jsonObject;
     }
 
     /**
