@@ -120,8 +120,8 @@ public class MonthCardServiceImpl implements MonthCardService {
         List<Map> moneyVal = monthCardMapper.getExchangeConfig(tid);
         result.put("money_val",moneyVal);
         //查询玩家 充值 流水
-        List<Map> waterInfo = monthCardMapper.getUserWater(uid);
-        result.put("water_info",waterInfo);
+//        List<Map> waterInfo = monthCardMapper.getUserWater(uid);
+//        result.put("water_info",waterInfo);
 
         jsonObject.put("result",result);
         return jsonObject;

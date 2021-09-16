@@ -119,9 +119,13 @@ public class MonthCardController extends BaseController {
      * type	是	string	银行卡/支付宝： bank/alipay
      * currentAmount	是	int	当前携带余额 1元 = 10000
      * withdrawAmount	是	int	提现金额 1元 = 10000
+     * {"type":"alipay","currentAmount":377137,"withdrawAmount":100000}
      */
     @PostMapping("/onebyone/withdraw")
-    public JSONObject withdraw(String type,Long currentAmount,Long withdrawAmount){
+    public JSONObject withdraw(@RequestBody JSONObject jsonParam){
+        String type = jsonParam.getString("0");
+        Long currentAmount = jsonParam.getLong("currentAmount");
+        Long withdrawAmount = jsonParam.getLong("withdrawAmount");
         JSONObject jsonObject = new JSONObject();
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
