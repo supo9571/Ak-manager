@@ -1,5 +1,9 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
 import com.data.mapper.UpdateMapper;
 import com.data.service.UpdateService;
 import com.manager.common.core.domain.model.Allupdate;
@@ -34,7 +38,22 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public List<Map> selectConsumer() {
-        return updateMapper.selectConsumer();
+        List<Map> list = updateMapper.selectConsumer();
+        list.forEach(m->{
+            try {
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject = JSONObject.parseObject((String) m.get("info"));
+                if(jsonObject!=null){
+                    jsonArray.add(jsonObject);
+                    m.put("info",jsonArray);
+                }else {
+                    m.remove("info");
+                }
+            }catch (Exception e){
+                m.remove("info");
+            }
+        });
+        return list;
     }
 
     /**

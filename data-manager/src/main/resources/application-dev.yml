@@ -51,9 +51,9 @@ global-config:
   #接口地址
   apiUrl: http://18.142.67.104:8030
   #错误日志上传地址
-  errUploadUrl: http://13.228.208.170:6661/starry/logs/upload
+  errUploadUrl: http://18.142.67.104:6661/starry/logs/upload
   #头像下载地址
-  headUrl: http://13.228.208.170:13003/upload
+  headUrl: http://18.142.67.104:13003/upload
   #更新包下载地址
   resourcesUrl: http://18.142.67.104:8030
   #游戏配置
@@ -70,7 +70,7 @@ global-config:
   gameSend: /upload
 
   #游戏服 通讯地址
-  reportDomain: http://10.39.1.88:8888
+  reportDomain: http://18.142.67.104:8888
   #操作金币
   changeCoins: /gm
   #发邮件
