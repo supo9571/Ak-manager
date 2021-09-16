@@ -51,7 +51,10 @@ public class MonthCardServiceImpl implements MonthCardService {
             Integer payType = payInfo.getInteger("pay_type");
             if(payType==1){//vip充值
                 List<Map> payList = monthCardMapper.selectVipconfig(payInfo.getInteger("id"),tid);
-                payList.forEach(map -> map.put("btn", Arrays.asList(String.valueOf(map.get("btn")).split(","))));
+                payList.forEach(map -> {
+                    map.put("recharge_type", Arrays.asList(String.valueOf(map.get("recharge_type")).split(",")));
+                    map.put("recharge_other_type", Arrays.asList(String.valueOf(map.get("recharge_other_type")).split(",")));
+                });
                 payInfo.put("pay_list",payList);
             }else if(payType==3){//银行卡充值
                 List<Map> payList = monthCardMapper.selectBankconfig(payInfo.getInteger("id"),vip,tid);
