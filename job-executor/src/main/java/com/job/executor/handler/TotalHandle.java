@@ -33,21 +33,26 @@ public class TotalHandle {
      * 在线玩家人数
      */
     @XxlJob("online_play")
+    @PostConstruct
     public void onlinePlay() {
         String domain = globaConfig.getDomain();
         String onlinePlay = globaConfig.getOnlinePlay();
         String result = HttpUtils.sendPost(domain + onlinePlay, null);
         JSONObject jsonObject = JSONObject.parseObject(result);
         if ("0".equals(jsonObject.getString("code"))) {
-            JSONArray jsonArray = jsonObject.getJSONArray("play_info_list");
-            //清空 data_online
-            totalMapper.cleanOnline();
-            List list = new ArrayList();
-            jsonArray.forEach(j->{
-                list.add(JSONObject.toJavaObject((JSON) j, OnlinePlayer.class));
-            });
-            totalMapper.insertOnline(list);
-            log.info("玩家在线人数更新--->{}", jsonArray.size());
+            try {
+                JSONArray jsonArray = jsonObject.getJSONArray("play_info_list");
+                //清空 data_online
+                totalMapper.cleanOnline();
+                List list = new ArrayList();
+                jsonArray.forEach(j->{
+                    list.add(JSONObject.toJavaObject((JSON) j, OnlinePlayer.class));
+                });
+                totalMapper.insertOnline(list);
+                log.info("玩家在线人数更新--->{}", jsonArray.size());
+            }catch (Exception e){
+                log.error("在线玩家人数出错：{}",e.getMessage());
+            }
         } else {
             log.error(result);
         }
