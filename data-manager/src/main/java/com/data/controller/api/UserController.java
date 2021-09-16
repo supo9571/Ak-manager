@@ -180,36 +180,37 @@ public class UserController extends BaseController {
             return relust;
         }
         String token = IdUtils.fastSimpleUUID();
-        if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getPackage_channel())){
+        if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getSeed_token())){
             relust.put("code",-1);
             relust.put("desc","参数错误");
-        }
-        relust.put("pkg_channel",dataUser.getPackage_channel());
-        relust.put("key_token",token);
-        //查询游客 之前是否登录过
-        DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
-        if(user!=null){
-            redisCache.setCacheObject(token,user.getAccountId(),10, TimeUnit.MINUTES);
-            relust.put("code",0);
-            relust.put("account_id",user.getAccountId());
-
         }else{
-            String pwd=DigestUtils.md5Hex("123456");
-            String phone=requestUtils.getRomodphone();
-            //DataUser d=new DataUser();
-            dataUser.setPhone(phone);
-            dataUser.setPassword(pwd);
-            int n=userService.insertToDataUser(dataUser);
-            if(n>0){
-//                String str=requestUtils.getMD5Str(dataUser);
-                redisCache.setCacheObject(token,dataUser.getAccountId(),10, TimeUnit.MINUTES);
+            relust.put("pkg_channel",dataUser.getPackage_channel());
+            relust.put("key_token",token);
+            //查询游客 之前是否登录过
+            DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
+            if(user!=null){
+                redisCache.setCacheObject(token,user.getAccountId(),10, TimeUnit.MINUTES);
                 relust.put("code",0);
-                relust.put("account_id",dataUser.getAccountId());
+                relust.put("account_id",user.getAccountId());
             }else{
-                relust.put("code",-1);
-                relust.put("desc","服务器出错");
+                String pwd=DigestUtils.md5Hex("123456");
+                String phone=requestUtils.getRomodphone();
+                //DataUser d=new DataUser();
+                dataUser.setPhone(phone);
+                dataUser.setPassword(pwd);
+                int n=userService.insertToDataUser(dataUser);
+                if(n>0){
+//                String str=requestUtils.getMD5Str(dataUser);
+                    redisCache.setCacheObject(token,dataUser.getAccountId(),10, TimeUnit.MINUTES);
+                    relust.put("code",0);
+                    relust.put("account_id",dataUser.getAccountId());
+                }else{
+                    relust.put("code",-1);
+                    relust.put("desc","服务器出错");
+                }
             }
         }
+
         return relust;
     }
 
