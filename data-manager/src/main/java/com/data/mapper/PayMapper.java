@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Param;
 public interface PayMapper {
 
     Integer saveBankReg(@Param("uid") String uid, @Param("name")String name, @Param("money")Integer money,
-                        @Param("channel") String channel,@Param("orderId") String orderId);
+                        @Param("channel") String channel,@Param("orderId") String orderId,@Param("tid") Integer tid);
 }

@@ -4,9 +4,9 @@
 <mapper namespace="com.data.mapper.PayMapper">
 
     <insert id="saveBankReg">
-        insert into config_recharge_order (order_number,uid,recharge_amount,recharge_type,payment_status,
+        insert into config_recharge_order (tid,order_number,uid,recharge_amount,recharge_type,payment_status,
                                            channel,reality_name,create_time,commodity_name)
-        values (#{orderId},#{uid},#{money},2,0,#{channel},#{name},sysdate(),#{money})
+        values (#{tid},#{orderId},#{uid},#{money},2,0,#{channel},#{name},sysdate(),#{money})
     </insert>
 
 </mapper>
