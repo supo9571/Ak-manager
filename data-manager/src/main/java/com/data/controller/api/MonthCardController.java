@@ -122,40 +122,24 @@ public class MonthCardController extends BaseController {
      * {"type":"alipay","currentAmount":377137,"withdrawAmount":100000}
      */
     @PostMapping("/onebyone/withdraw")
-    public JSONObject withdraw(@RequestBody JSONObject jsonParam){
-        String type = jsonParam.getString("0");
-        Long currentAmount = jsonParam.getLong("currentAmount");
-        Long withdrawAmount = jsonParam.getLong("withdrawAmount");
-        JSONObject jsonObject = new JSONObject();
+    public JSONObject withdraw(@RequestBody JSONObject param){
+        String type = param.getString("0");
+        Long currentAmount = param.getLong("currentAmount");
+        Long withdrawAmount = param.getLong("withdrawAmount");
+        JSONObject result = new JSONObject();
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
-        //扣除金币
-        JSONObject param = new JSONObject();
-        param.put("cmd","reducecoins");
-        param.put("reason",100040);
-        param.put("type",1);
-        param.put("value",withdrawAmount);
-        param.put("uid",uid);
-        //操作 用户金币
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
-                "data="+param.toJSONString());
-        JSONObject resultJson = JSONObject.parseObject(result);
-        if(resultJson!=null && resultJson.getInteger("code")==0){
-            //添加 提现记录
-            Integer i = monthCardService.saveWithdraw(channel,uid,type,new BigDecimal(currentAmount).divide(new BigDecimal(10000))
-                    ,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
-            if(i>0){
-                jsonObject.put("code","200");
-                jsonObject.put("msg","成功");
-            }else {
-                jsonObject.put("code","500");
-                jsonObject.put("code","扣钱成功，添加提现记录失败");
-                log.error("提现申请，扣钱成功，添加提现记录失败，参数：{}",param);
-            }
-        }else{
-            jsonObject.put("code","500");
-            jsonObject.put("code","请求游戏服扣钱失败");
+        //添加 提现记录
+        Integer i = monthCardService.saveWithdraw(channel, uid, type, new BigDecimal(currentAmount).divide(new BigDecimal(10000))
+                , new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
+        if (i > 0) {
+            result.put("code", "200");
+            result.put("msg", "成功");
+        } else {
+            result.put("code", "500");
+            result.put("msg", "添加提现记录失败");
+            log.error("添加提现记录失败，参数：{}", param);
         }
-        return jsonObject;
+        return result;
     }
 }
