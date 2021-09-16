@@ -128,7 +128,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         result.put("code",200);
         result.put("msg","ok");
         result.put("result",monthCardMapper.getBankList());
-        return null;
+        return result;
     }
 
     private List<JSONObject> getBankInfo(List<Map> list){
