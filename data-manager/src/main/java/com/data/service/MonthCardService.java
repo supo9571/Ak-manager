@@ -18,4 +18,6 @@ public interface MonthCardService {
     Integer saveExchange(String channel, String uid, String type, String name, String account, String originBank);
 
     Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw);
+
+    JSONObject getExchangeConfig(String uid, String channelId);
 }

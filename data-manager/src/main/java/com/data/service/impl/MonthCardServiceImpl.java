@@ -96,6 +96,32 @@ public class MonthCardServiceImpl implements MonthCardService {
         return monthCardMapper.saveWithdraw(channel,tenantMapper.getTidByCid(channel),uid,type,curr,withdraw);
     }
 
+    /**
+     * 获取提现配置
+     * @param uid
+     * @param channelId
+     * @return
+     */
+    @Override
+    public JSONObject getExchangeConfig(String uid, String channelId) {
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        JSONObject jsonObject = new JSONObject();
+        JSONObject result = new JSONObject();
+        result.put("code",200);
+        //查询玩家 绑定提现信息
+        List<Map> bindInfo = monthCardMapper.getUserBind(uid,tid);
+        result.put("bind_info",bindInfo);
+        //提现配置
+        List<Map> moneyVal = monthCardMapper.getExchangeConfig(tid);
+        result.put("money_val",moneyVal);
+        //查询玩家 充值 流水
+        List<Map> waterInfo = monthCardMapper.getUserWater(uid);
+        result.put("water_info",waterInfo);
+
+        jsonObject.put("result",result);
+        return jsonObject;
+    }
+
     private List<JSONObject> getBankInfo(List<Map> list){
         List<JSONObject> result = new ArrayList<>();
         list.forEach(m->{

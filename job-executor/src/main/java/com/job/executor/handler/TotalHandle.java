@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class TotalHandle {
      * 在线玩家人数
      */
     @XxlJob("online_play")
-    @PostConstruct
     public void onlinePlay() {
         String domain = globaConfig.getDomain();
         String onlinePlay = globaConfig.getOnlinePlay();

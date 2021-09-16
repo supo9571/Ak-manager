@@ -195,12 +195,10 @@ public class UserController extends BaseController {
             }else{
                 String pwd=DigestUtils.md5Hex("123456");
                 String phone=requestUtils.getRomodphone();
-                //DataUser d=new DataUser();
                 dataUser.setPhone(phone);
                 dataUser.setPassword(pwd);
                 int n=userService.insertToDataUser(dataUser);
                 if(n>0){
-//                String str=requestUtils.getMD5Str(dataUser);
                     redisCache.setCacheObject(token,dataUser.getAccountId(),10, TimeUnit.MINUTES);
                     relust.put("code",0);
                     relust.put("account_id",dataUser.getAccountId());

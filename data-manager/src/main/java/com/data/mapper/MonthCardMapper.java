@@ -45,4 +45,15 @@ public interface MonthCardMapper {
     @Insert("insert into config_exchange_order (uid,tid,type,curr_money,withdraw_money,channel) values(#{uid},#{tid},#{type},#{curr},#{withdraw},#{channel})")
     Integer saveWithdraw(@Param("channel") String channel, @Param("tid")Integer tid, @Param("uid")String uid,
                          @Param("type") String type,@Param("curr") BigDecimal curr,@Param("withdraw") BigDecimal withdraw);
+
+    @Select("select keep_money,max_money,min_money,num,poundage,add_mosaic_num recharge_times,method type from config_exchange where status = '1' and tid = #{tid}")
+    List<Map> getExchangeConfig(@Param("tid") Integer tid);
+
+    @Select("select u.name,u.account,u.type,u.origin_bank originBank,u.create_time CreateAt," +
+            "c.keep_money,c.max_money,c.min_money,c.num,c.poundage,c.add_mosaic_num recharge_times " +
+            "from user_exchange u left join config_exchange c on u.type = c.method and u.tid = c.tid where u.uid = #{uid} and u.tid=#{tid} ")
+    List<Map> getUserBind(@Param("uid")String uid,@Param("tid")Integer tid);
+
+    @Select("SELECT total_add pay_money,total_water person_water FROM data_register where uid = #{uid}")
+    List<Map> getUserWater(@Param("uid") String uid);
 }

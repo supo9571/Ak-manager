@@ -50,6 +50,17 @@ public class MonthCardController extends BaseController {
     }
 
     /**
+     * 提现 配置接口
+     */
+    @PostMapping("/pay/user_info")
+    public JSONObject exchange(){
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        String uid = getHeader("uid");//玩家id
+        return monthCardService.getExchangeConfig(uid,channelId);
+    }
+
+
+    /**
      * vip充值 赠送比例
      *
      */
