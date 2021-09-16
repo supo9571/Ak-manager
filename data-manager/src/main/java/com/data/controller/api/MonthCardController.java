@@ -9,6 +9,7 @@ import com.manager.common.utils.http.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,9 +44,9 @@ public class MonthCardController extends BaseController {
      * 充值 配置接口
      */
     @PostMapping("/pay/get_book_mark")
-    public JSONObject book(String data){
+    public JSONObject book(@RequestBody JSONObject param){
         String channelId = getHeader("Client-ChannelId");//渠道id
-        return monthCardService.getBookConfig(data,channelId);
+        return monthCardService.getBookConfig(param,channelId);
     }
 
     /**

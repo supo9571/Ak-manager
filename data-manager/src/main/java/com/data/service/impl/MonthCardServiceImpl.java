@@ -32,9 +32,9 @@ public class MonthCardServiceImpl implements MonthCardService {
     }
 
     @Override
-    public JSONObject getBookConfig(String data,String cid) {
+    public JSONObject getBookConfig(JSONObject param,String cid) {
         Integer tid = tenantMapper.getTidByCid(cid);
-        String phoneType = JSONObject.parseObject(data).getString("phone_type");
+        String phoneType = param.getString("phone_type");
         if("ios".equals(phoneType)){
             phoneType = "1";
         }else if("Android".equals(phoneType)){
@@ -42,7 +42,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         }else {
             phoneType = "3";
         }
-        Integer vip = JSONObject.parseObject(data).getInteger("vip_level");
+        Integer vip = param.getInteger("vip_level")==null?0:param.getInteger("vip_level");
         List<Map> list = monthCardMapper.selectConfigPay(tid);
         JSONArray jsonArray = new JSONArray();
         JSONObject result = new JSONObject();
