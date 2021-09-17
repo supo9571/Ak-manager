@@ -42,23 +42,22 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         Integer tid = tenantMapper.getTidByCid(channelId);
         Long time = configAgentMapper.selectAgent(tid,agentId);
         result.put("code",200);
+        Map map = new HashMap();
         if(time==null){
-            Map map = new HashMap();
             map.put("status",false);
             map.put("msg","请输入正确的推荐人ID!!!");
-            return result;
-        }
-        Integer i = configAgentMapper.setAgentId(agentId,uid,time);
-        if(i>0){
-            Map map = new HashMap();
-            map.put("status",true);
-            map.put("msg","绑定成功!!!");
-            return result;
         }else{
-            Map map = new HashMap();
-            map.put("status",false);
-            map.put("msg","推荐人注册时间必须早于自己!!!");
-            return result;
+            Integer i = configAgentMapper.setAgentId(agentId,uid,time);
+            if(i>0){
+                map.put("status",true);
+                map.put("msg","绑定成功!!!");
+            }else{
+
+                map.put("status",false);
+                map.put("msg","推荐人注册时间必须早于自己!!!");
+            }
         }
+        result.put("result",map);
+        return result;
     }
 }
