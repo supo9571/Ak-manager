@@ -1,5 +1,7 @@
 package com.data.service;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,4 +10,6 @@ import java.util.Map;
  */
 public interface ConfigAgenService {
     List<Map> getConfigAgentList(String cid);
+
+    JSONObject bindAgent(String channelId, String uid, String agentId);
 }

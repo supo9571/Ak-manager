@@ -51,6 +51,18 @@ public class InsertHandler {
         insertMapper.insertLogout(login);
     }
 
+
+    /**
+     * 修改 流水数据
+     * @param result
+     */
+    @Transactional
+    public void updateWater(JSONObject result) {
+        WaterHistory waterHistory = JSON.toJavaObject(result, WaterHistory.class);
+        insertMapper.insertWater(waterHistory);
+        insertMapper.updateUserWater(waterHistory.getUid(),waterHistory.getValue());
+    }
+
     //添加牌局记录
     @Transactional
     public void insertCard(JSONObject result) {

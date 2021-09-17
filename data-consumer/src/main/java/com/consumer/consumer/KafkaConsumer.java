@@ -68,6 +68,9 @@ public class KafkaConsumer {
                 case CARD_RECORD:
                     insertHandler.insertCard(jsonObject);
                     break;
+                case WATER_HISTORY:
+                    insertHandler.updateWater(jsonObject);
+                    break;
                 default:
                     break;
             }

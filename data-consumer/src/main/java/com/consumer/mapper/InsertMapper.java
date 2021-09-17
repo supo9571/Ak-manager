@@ -39,4 +39,14 @@ public interface InsertMapper {
     void insertCard(Card card);
 
     void insertCardUser(List<CardUser> list);
+
+    void insertWater(WaterHistory waterHistory);
+
+    /**
+     * 修改流水
+     * @param uid
+     * @param value
+     */
+    @Update("update data_register set today_water = #{value}+today_water,total_water = #{value}+total_water where uid = #{uid}")
+    void updateUserWater(@Param("uid") Long uid,@Param("value") Long value);
 }
