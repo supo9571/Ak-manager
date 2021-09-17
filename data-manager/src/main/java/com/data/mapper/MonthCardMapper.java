@@ -1,5 +1,6 @@
 package com.data.mapper;
 
+import com.manager.common.core.domain.model.ExchangeOrder;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,9 +43,7 @@ public interface MonthCardMapper {
     Integer saveExchange(@Param("channel") String channel,@Param("tid") Integer tid,@Param("uid") String uid,
                          @Param("type")String type, @Param("name")String name, @Param("account")String account, @Param("originBank")String originBank);
 
-    @Insert("insert into config_exchange_order (uid,tid,withdraw_type,curr_money,withdraw_money,channel) values(#{uid},#{tid},#{type},#{curr},#{withdraw},#{channel})")
-    Integer saveWithdraw(@Param("channel") String channel, @Param("tid")Integer tid, @Param("uid")String uid,
-                         @Param("type") String type,@Param("curr") BigDecimal curr,@Param("withdraw") BigDecimal withdraw);
+    Integer saveWithdraw(ExchangeOrder exchangeOrder);
 
     @Select("select keep_money,max_money,min_money,num,poundage,add_mosaic_num recharge_times,method type from config_exchange where status = '1' and tid = #{tid}")
     List<Map> getExchangeConfig(@Param("tid") Integer tid);
@@ -59,4 +58,13 @@ public interface MonthCardMapper {
 
     @Select("select * from config_bank")
     List<Map> getBankList();
+
+    @Select("select register_ip registerIp,total_add totalAdd,total_give totalGive,total_water totalWater,name from data_register where uid = #{uid} limit 0,1")
+    Map findUserByid(@Param("uid") String uid);
+
+    @Select("select count(1) from config_exchange_order where uid = #{uid}")
+    Integer getWithdrawNumber(String uid);
+
+    @Select("select poundage from config_exchange where tid = #{tid} and method = #{type} ")
+    Integer getPoundage(@Param("type") String type,@Param("tid") Integer tid);
 }

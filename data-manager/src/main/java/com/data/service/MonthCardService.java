@@ -1,6 +1,7 @@
 package com.data.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.manager.common.core.domain.model.ExchangeOrder;
 
 import java.math.BigDecimal;
 
@@ -17,7 +18,7 @@ public interface MonthCardService {
 
     Integer saveExchange(String channel, String uid, String type, String name, String account, String originBank);
 
-    Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw);
+    Integer saveWithdraw(ExchangeOrder exchangeOrder);
 
     JSONObject getExchangeConfig(String uid, String channelId);
 

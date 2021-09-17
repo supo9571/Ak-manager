@@ -5,6 +5,7 @@ import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
 import com.data.service.MonthCardService;
 import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.domain.model.ExchangeOrder;
 import com.manager.common.utils.http.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +120,6 @@ public class MonthCardController extends BaseController {
      * type	是	string	银行卡/支付宝： bank/alipay
      * currentAmount	是	int	当前携带余额 1元 = 10000
      * withdrawAmount	是	int	提现金额 1元 = 10000
-     * {"type":"alipay","currentAmount":377137,"withdrawAmount":100000}
      */
     @PostMapping("/onebyone/withdraw")
     public JSONObject withdraw(@RequestBody JSONObject param){
@@ -129,9 +129,11 @@ public class MonthCardController extends BaseController {
         JSONObject result = new JSONObject();
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
+        String ip = getHeader("HTTP-CLIENT-IP"); // 提现ip
         //添加 提现记录
-        Integer i = monthCardService.saveWithdraw(channel, uid, type, new BigDecimal(currentAmount).divide(new BigDecimal(10000))
-                , new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)));
+        ExchangeOrder exchangeOrder = new ExchangeOrder(uid,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)),
+                new BigDecimal(currentAmount).divide(new BigDecimal(10000)),channel,ip,type);
+        Integer i = monthCardService.saveWithdraw(exchangeOrder);
         if (i > 0) {
             result.put("code", "200");
             result.put("msg", "成功");

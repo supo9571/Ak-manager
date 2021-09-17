@@ -24,7 +24,7 @@ public class ActingController extends BaseController {
     private ConfigAgenService configAgenService;
 
     /**
-     * 基础信息接口
+     * 返佣金额表
      */
     @PostMapping("/rebate_form")
     public JSONObject rebate_form(){

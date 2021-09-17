@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.mapper.MonthCardMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MonthCardService;
+import com.manager.common.core.domain.model.ExchangeOrder;
+import com.manager.common.utils.StringUtils;
+import com.manager.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,13 +100,33 @@ public class MonthCardServiceImpl implements MonthCardService {
      * @return
      */
     @Override
-    public Integer saveWithdraw(String channel, String uid, String type, BigDecimal curr, BigDecimal withdraw) {
-        if("alipay".equals(type)){
-            type = "2";
+    public Integer saveWithdraw(ExchangeOrder exchangeOrder) {
+        Integer tid = tenantMapper.getTidByCid(exchangeOrder.getChannel());
+        exchangeOrder.setTid(tid);
+        if("alipay".equals(exchangeOrder.getWithdrawType())){
+            exchangeOrder.setWithdrawType("2");
         }else {
-            type = "1";
+            exchangeOrder.setWithdrawType("1");
         }
-        return monthCardMapper.saveWithdraw(channel,tenantMapper.getTidByCid(channel),uid,type,curr,withdraw);
+        Map map = monthCardMapper.findUserByid(exchangeOrder.getUid());
+        BigDecimal b = new BigDecimal(10000);
+        exchangeOrder.setAccumulateWater(new BigDecimal((Long) map.get("totalWater")).divide(b));//累计流水
+        exchangeOrder.setAccumulateRecharge(new BigDecimal((Long) map.get("totalAdd")).divide(b));//累计充值
+        exchangeOrder.setRechargeExcoins(new BigDecimal((Long) map.get("totalGive")).divide(b));//累计赠送
+        exchangeOrder.setRegisterIp((String) map.get("registerIp"));//注册ip
+        exchangeOrder.setUname((String) map.get("name"));//注册ip
+        exchangeOrder.setExaaStatus("1");//提现状态
+        exchangeOrder.setWithdrawOrderNumber(IdUtils.getExchangeOrderId());//提现订单号
+
+        //计算手续费
+        String type = "1";
+        if("2".equals(exchangeOrder.getWithdrawType())) type = "0";
+        Integer poundage = monthCardMapper.getPoundage(type,tid);
+        exchangeOrder.setPoundage(exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(poundage).divide(new BigDecimal(100))));
+        exchangeOrder.setTransferAmount(exchangeOrder.getWithdrawMoney().subtract(exchangeOrder.getPoundage()));
+
+        exchangeOrder.setWithdrawNumber(monthCardMapper.getWithdrawNumber(exchangeOrder.getUid()));//提现次数
+        return monthCardMapper.saveWithdraw(exchangeOrder);
     }
 
     /**

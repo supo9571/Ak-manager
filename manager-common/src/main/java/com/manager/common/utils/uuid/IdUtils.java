@@ -52,11 +52,23 @@ public class IdUtils
     }
 
     /**
-     * 生成订单号
+     * 生成 充值订单号
      * @return
      */
     public static String getOrderId() {
         int machineId = 2;
+        SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
+        String newDate=sdf.format(new Date());
+        Random random=new Random();
+        return  machineId+newDate+ String.format("%06d", random.nextInt(999999));
+    }
+
+    /**
+     * 生成 提现订单号
+     * @return
+     */
+    public static String getExchangeOrderId() {
+        int machineId = 1;
         SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
         String newDate=sdf.format(new Date());
         Random random=new Random();

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.MonthCardMapper">
+
+    <insert id="saveWithdraw" parameterType="com.manager.common.core.domain.model.ExchangeOrder">
+        insert into config_exchange_order(tid,uid,withdraw_money,curr_money,transfer_amount,poundage,withdraw_number,channel,withdraw_ip
+        ,withdraw_order_number,uname,accumulate_water,accumulate_recharge,accumulate_excoins,register_ip,withdraw_type,exaa_status,create_time)
+        values (#{tid},#{uid},#{withdrawMoney},#{currMoney},#{transferAmount},#{poundage},#{withdrawNumber},#{channel},#{withdrawIp},
+                #{withdrawOrderNumber},#{uname},#{accumulateWater},#{accumulateRecharge},#{accumulateExcoins},#{registerIp},#{withdrawType},#{exaaStatus},sysdate()
+        )
+    </insert>
+
+</mapper>
