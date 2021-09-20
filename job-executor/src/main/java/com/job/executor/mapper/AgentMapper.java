@@ -29,4 +29,6 @@ public interface AgentMapper {
 
     @Select("SELECT rebate FROM config_agent c LEFT JOIN sys_tenant t ON c.tid = t.tenant WHERE c.min <=#{value} AND c.max>#{value} AND t.t_id = #{channel} ")
     Integer selectRebate(@Param("value") long value,@Param("channel") String channel);
+
+    void saveAgentDayIncome(List<AgentCommission> agents);
 }

@@ -1,15 +1,18 @@
 package com.job.executor.handler;
 
 import com.job.core.handler.annotation.XxlJob;
+import com.job.core.util.DateUtil;
 import com.job.executor.domain.AgentCommission;
 import com.job.executor.mapper.AgentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,10 +29,24 @@ public class AgentHandle {
 
     /**
      * 计算 每日 代理分佣
-     * @param date
      */
     @XxlJob("agent_day_income")
-    public void dayIncome(String date) {
+    @PostConstruct
+    public void dayIncome() {
+        String date = DateUtil.formatDate(new Date());
+        Long endTime = System.currentTimeMillis();
+        //查询 今日登录 玩家id列表
+        List<AgentCommission> agentCommissions = agentMapper.selectUids();
+        List<AgentCommission> agents = new ArrayList<>();
+
+        agentCommissions.forEach(agentCommission->{
+            agentCommission.setDay(date);
+            agentCommission.setEndTime(DateUtil.getTodayTimes());
+            getAgentMoney(agentCommission,endTime);
+            agents.add(agentCommission);
+        });
+        if(agents.size()>0)
+            agentMapper.saveAgentDayIncome(agents);
 
     }
 
@@ -47,7 +64,7 @@ public class AgentHandle {
             agents.add(agentCommission);
         });
         if(agents.size()>0)
-        agentMapper.saveAgentIncome(agents);
+            agentMapper.saveAgentIncome(agents);
     }
 
     /**
@@ -70,7 +87,6 @@ public class AgentHandle {
         Integer rebate = agentMapper.selectRebate(totalRatio,channel);//佣金比例
         rebate = rebate==null?0:agentMapper.selectRebate(totalRatio,channel);
         BigDecimal subIncome = new BigDecimal(subRatio).divide(new BigDecimal(10000)).multiply(new BigDecimal(rebate));
-//        Long subIncome = subRatio/10000*rebate;//直属佣金 增量
         BigDecimal otherIncome = getOtherIncome(uid,beginTime,endTime,channel,rebate) ;//下属佣金 增量
 
         agentCommission.setTeamNum(teamNum);

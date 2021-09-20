@@ -30,4 +30,22 @@
         `time`=values(`time`);
     </insert>
 
+    <insert id="saveAgentDayIncome">
+        insert into agent_commission_day(day,uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.day},#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
+            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome})
+        </foreach>
+        ON DUPLICATE KEY
+        UPDATE agent_id=values(agent_id),
+        channel=values(channel),
+        team_num=values(team_num),
+        sub_num=values(sub_num),
+        sub_ratio=values(sub_ratio),
+        sub_income=values(sub_income),
+        other_num=values(other_num),
+        other_ratio=values(other_ratio),
+        other_income=values(other_income),
+        total_income=values(total_income);
+    </insert>
 </mapper>
