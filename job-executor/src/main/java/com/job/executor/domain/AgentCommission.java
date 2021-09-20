@@ -2,6 +2,8 @@ package com.job.executor.domain;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author marvin 2021/9/17
  */
@@ -45,7 +47,7 @@ public class AgentCommission {
     /**
      * 直属佣金
      */
-    private Long subIncome;
+    private BigDecimal subIncome;
 
     /**
      * 下属人数
@@ -60,27 +62,27 @@ public class AgentCommission {
     /**
      * 下属佣金
      */
-    private Long otherIncome;
+    private BigDecimal otherIncome;
 
     /**
      * 累计佣金
      */
-    private Long totalIncome;
+    private BigDecimal totalIncome;
 
     /**
      * 已提佣金
      */
-    private Long cashIncome;
+    private BigDecimal cashIncome;
 
     /**
      * 待提佣金
      */
-    private Long waitIncome;
+    private BigDecimal waitIncome;
 
     /**
      * 历史佣金
      */
-    private Long historyIncome;
+    private BigDecimal historyIncome;
 
     /**
      * 上次计算 截至时间

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -67,8 +69,9 @@ public class AgentHandle {
         Long totalRatio = subRatio+otherRatio;
         Integer rebate = agentMapper.selectRebate(totalRatio,channel);//佣金比例
         rebate = rebate==null?0:agentMapper.selectRebate(totalRatio,channel);
-        Long subIncome = subRatio/10000*rebate;//直属佣金 增量
-        Long otherIncome = getOtherIncome(uid,beginTime,endTime,channel,rebate) ;//下属佣金 增量
+        BigDecimal subIncome = new BigDecimal(subRatio).divide(new BigDecimal(10000)).multiply(new BigDecimal(rebate));
+//        Long subIncome = subRatio/10000*rebate;//直属佣金 增量
+        BigDecimal otherIncome = getOtherIncome(uid,beginTime,endTime,channel,rebate) ;//下属佣金 增量
 
         agentCommission.setTeamNum(teamNum);
         agentCommission.setSubNum(subNum);
@@ -77,7 +80,7 @@ public class AgentHandle {
         agentCommission.setSubIncome(subIncome);
         agentCommission.setOtherRatio(otherRatio);
         agentCommission.setOtherIncome(otherIncome);
-        agentCommission.setTotalIncome(subIncome+otherIncome);
+        agentCommission.setTotalIncome(subIncome.add(otherIncome));
         agentCommission.setEndTime(endTime);
     }
 
@@ -132,8 +135,8 @@ public class AgentHandle {
      * 计算 下属佣金
      * 下属佣金 = ∑直属玩家对应的下属玩家总流水*（此代理线的总流水对应的返佣比例-直属玩家对应的下属玩家总流水对应的返佣比例）
      */
-    private Long getOtherIncome(Long uid,Long beginTime,Long endTime,String channel,Integer rebate){
-        AtomicReference<Long> i = new AtomicReference<>(0l);
+    private BigDecimal getOtherIncome(Long uid,Long beginTime,Long endTime,String channel,Integer rebate){
+        AtomicReference<BigDecimal> i = new AtomicReference<>(new BigDecimal(0));
         List<Long> list = agentMapper.selectSubUid(uid);
         if(list!=null){
             list.forEach(id->{
@@ -144,9 +147,9 @@ public class AgentHandle {
                     Long totalRatio = subRatio+otherRatio;
                     Integer otherRebate = agentMapper.selectRebate(totalRatio,channel);//佣金比例
                     otherRebate = otherRebate==null?0:agentMapper.selectRebate(totalRatio,channel);
-                    Long subIncome = subRatio/10000*(rebate-otherRebate);//直属佣金
-                    Long otherIncome = getOtherIncome(id,beginTime,endTime,channel,otherRebate);//直属佣金
-                    i.updateAndGet(v -> v + subIncome+otherIncome);
+                    BigDecimal subIncome = new BigDecimal(subRatio).divide(new BigDecimal(10000)).multiply(new BigDecimal(rebate-otherRebate));
+                    BigDecimal otherIncome = getOtherIncome(id,beginTime,endTime,channel,otherRebate);//直属佣金
+                    i.updateAndGet(v -> v .add(subIncome).add(otherIncome));
                 }
             });
         }
