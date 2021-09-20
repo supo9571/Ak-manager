@@ -118,6 +118,23 @@ public class DateUtil {
         }
     }
 
+    /**
+     * 获取当天 0 点时间戳
+     * @return
+     */
+    public static Long getTodayTimes() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            Date zero = calendar.getTime();
+            return zero.getTime()/1000;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     // ---------------------- add date ----------------------
 

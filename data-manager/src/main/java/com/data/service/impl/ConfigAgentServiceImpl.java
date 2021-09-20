@@ -47,12 +47,11 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             map.put("status",false);
             map.put("msg","请输入正确的推荐人ID!!!");
         }else{
-            Integer i = configAgentMapper.setAgentId(agentId,uid,time);
+            Integer i = configAgentMapper.setAgentId(agentId,uid,time,System.currentTimeMillis());
             if(i>0){
                 map.put("status",true);
                 map.put("msg","绑定成功!!!");
             }else{
-
                 map.put("status",false);
                 map.put("msg","推荐人注册时间必须早于自己!!!");
             }

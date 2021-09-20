@@ -23,6 +23,6 @@ public interface ConfigAgentMapper {
     @Select("select time from data_register d left join sys_tenant t on d.channel = t.t_id where t.tenant = #{tid} and uid = #{agentId}")
     Long selectAgent(@Param("tid") Integer tid, @Param("agentId") String agentId);
 
-    @Update("update data_register set agent_id = #{agentId} where uid = #{uid} and time>#{time}")
-    Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time);
+    @Update("update data_register set agent_id = #{agentId},agent_time = #{agentTime} where uid = #{uid} and time>#{time}")
+    Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
 }

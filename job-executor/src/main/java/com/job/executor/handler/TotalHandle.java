@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.job.core.handler.annotation.XxlJob;
+import com.job.core.util.DateUtil;
 import com.job.core.util.HttpUtils;
 import com.job.executor.config.GlobalConfig;
 import com.job.executor.domain.OnlinePlayer;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +67,17 @@ public class TotalHandle {
         Long time = getTodayTime();
         int num = totalMapper.selectTodayLogins(time);
         totalMapper.saveTodayLogins(date,num);
+    }
+
+    /**
+     * 重置 今日数据
+     * 清理 流水表
+     */
+    @XxlJob("reset_today")
+    public void resetToday() {
+        Long time = DateUtil.getTodayTimes()-(60*60*24*3);//三天前时间戳
+        totalMapper.updateRegister();
+        totalMapper.deleteWater(time);
     }
 
     private Long getTodayTime(){
