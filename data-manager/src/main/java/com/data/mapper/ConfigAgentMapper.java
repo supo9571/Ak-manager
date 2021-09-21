@@ -29,7 +29,8 @@ public interface ConfigAgentMapper {
     @Select("")
     List<Map> selectSubinfo(@Param("beginNum") int beginNum,@Param("limit") Integer limit);
 
-    @Select("select case_income out_golds,create_time out_time from agent_case_income where uid = #{uid} order by create_time desc limit #{beginNum},#{limit}")
+    @Select("select case_income out_golds,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i::%s') out_time from agent_case_income " +
+            "where uid = #{uid} order by create_time desc limit #{beginNum},#{limit}")
     List<Map> getWithdrawHistory(@Param("beginNum") int beginNum,@Param("limit")int limit, @Param("uid") Long uid);
 
     @Select("select count(1) from agent_case_income where uid = #{uid}")
