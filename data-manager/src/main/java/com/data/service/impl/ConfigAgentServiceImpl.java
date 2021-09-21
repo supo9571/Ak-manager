@@ -59,4 +59,42 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         result.put("result",map);
         return result;
     }
+
+    /**
+     * 查询 直属下级列表信息 分页
+     */
+    @Override
+    public Map getSubInfo(String uid, String channelId, Integer limit, Integer index) {
+        List<Map> data = configAgentMapper.selectSubinfo((limit-1)*index,limit);
+        return null;
+    }
+
+    /**
+     * 查询 领取记录
+     * @param uid
+     * @param limit 每页条数
+     * @param page 当前页数
+     * @return
+     */
+    @Override
+    public JSONObject getWithdrawHistory(Long uid, int limit, int page) {
+        JSONObject result = new JSONObject();
+        Map map = new HashMap();
+        List<Map> data = configAgentMapper.getWithdrawHistory((page-1)*limit,limit,uid);
+        Integer limitCount = configAgentMapper.getWithdrawHistoryCount(uid);
+        Integer pageCount = 0;
+        if(limitCount%limit == 0){
+            pageCount = limitCount/limit;
+        }else{
+            pageCount = limitCount/limit+1;
+        }
+        map.put("page_count",pageCount);
+        map.put("limit_count",limitCount);
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("data",data);
+        result.put("code",200);
+        result.put("result",map);
+        return result;
+    }
 }

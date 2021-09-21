@@ -29,18 +29,11 @@ public class ActingController extends BaseController {
      */
     @PostMapping("/agentv2/rebate_form")
     public JSONObject rebate_form(){
-        String channelId = getHeader("Client-ChannelId");//渠道id
         JSONObject result = new JSONObject();
-        String uid = getHeader("uid"); // uid
-        String promotionDomain = "";
-
+        String channelId = getHeader("Client-ChannelId");//渠道id
         List<Map> list = configAgenService.getConfigAgentList(channelId);
-        if(CollectionUtils.isNotEmpty(list)){
-            promotionDomain = (String)list.get(0).get("promotionDomain");
-        }
+        result.put("code",0);
         result.put("reCommissionRuleList",list);
-        result.put("spread_url",promotionDomain);
-        result.put("uid",uid);
         return result;
     }
 
@@ -60,8 +53,14 @@ public class ActingController extends BaseController {
      */
     @PostMapping("/agentv2/subinfo")
     public JSONObject subinfo(@RequestBody JSONObject param){
-        String uid = param.getString("uid");//渠道id
+        String uid = getHeader("uid");//玩家id
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        Integer limit = param.getInteger("limit");//条数
+        Integer index = param.getInteger("index");//当前页数
         JSONObject result = new JSONObject();
+        Map map = configAgenService.getSubInfo(uid,channelId,limit,index);
+        result.put("code",200);
+        result.put("result",map);
         return result;
     }
 
@@ -74,5 +73,17 @@ public class ActingController extends BaseController {
         String uid = param.getString("uid");//玩家id
         String agentId = param.getString("agent_id");//代理id
         return configAgenService.bindAgent(channelId,uid,agentId);
+    }
+
+    /**
+     * 领取记录
+     * "{"page":1,"limit":10,"uid":100095}"
+     */
+    @PostMapping("/agentv2/withdrawhistory")
+    public JSONObject withdrawhistory(@RequestBody JSONObject param){
+        Long uid = param.getLong("uid");//玩家id
+        int limit = param.getInteger("limit");//玩家id
+        int page = param.getInteger("page");//玩家id
+        return configAgenService.getWithdrawHistory(uid,limit,page);
     }
 }

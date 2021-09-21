@@ -12,4 +12,8 @@ public interface ConfigAgenService {
     List<Map> getConfigAgentList(String cid);
 
     JSONObject bindAgent(String channelId, String uid, String agentId);
+
+    Map getSubInfo(String uid, String channelId, Integer limit, Integer index);
+
+    JSONObject getWithdrawHistory(Long uid, int limit, int page);
 }

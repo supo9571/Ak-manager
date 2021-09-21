@@ -214,7 +214,7 @@ public class UserController extends BaseController {
 
     private String setToken(Long accountId){
         String token = IdUtils.fastSimpleUUID();
-        redisCache.setCacheObject(token,accountId,10, TimeUnit.MINUTES);
+        redisCache.setCacheObject(token,accountId,15, TimeUnit.DAYS);
         return token;
     }
 }

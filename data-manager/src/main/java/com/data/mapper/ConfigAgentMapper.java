@@ -17,7 +17,7 @@ public interface ConfigAgentMapper {
     /**
      * 查询
      */
-    @Select("select a.id, a.lvl lvl,a.lvl_name lvlName,a.min,a.max,a.rebate rebate,a.promotion_domain promotionDomain from config_agent a where a.tid = #{tid} order by a.lvl asc")
+    @Select("select a.lvl lvl,a.lvl_name lvlname,a.min,a.max,a.rebate rata  from config_agent a where a.tid = #{tid} order by a.lvl asc")
     List<Map> getConfigAgentList(@Param("tid") Integer tid);
 
     @Select("select time from data_register d left join sys_tenant t on d.channel = t.t_id where t.tenant = #{tid} and uid = #{agentId}")
@@ -25,4 +25,13 @@ public interface ConfigAgentMapper {
 
     @Update("update data_register set agent_id = #{agentId},agent_time = #{agentTime} where uid = #{uid} and time>#{time}")
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
+
+    @Select("")
+    List<Map> selectSubinfo(@Param("beginNum") int beginNum,@Param("limit") Integer limit);
+
+    @Select("select case_income out_golds,create_time out_time from agent_case_income where uid = #{uid} order by create_time desc limit #{beginNum},#{limit}")
+    List<Map> getWithdrawHistory(@Param("beginNum") int beginNum,@Param("limit")int limit, @Param("uid") Long uid);
+
+    @Select("select count(1) from agent_case_income where uid = #{uid}")
+    Integer getWithdrawHistoryCount(@Param("uid") Long uid);
 }

@@ -24,7 +24,7 @@ public interface AgentMapper {
     void saveAgentIncome(List<AgentCommission> agents);
 
     @Select("SELECT SUM(VALUE) FROM data_water WHERE uid = #{uid} AND  mstime >= #{beginTime} AND mstime < #{endTime} " +
-            "AND time > (SELECT agent_time FROM data_register WHERE uid = #{uid}) ")
+            "AND mstime > (SELECT agent_time FROM data_register WHERE uid = #{uid}) ")
     Long selectSubRatio(@Param("uid") Long uid,@Param("beginTime") Long beginTime,@Param("endTime") Long endTime);
 
     @Select("SELECT rebate FROM config_agent c LEFT JOIN sys_tenant t ON c.tid = t.tenant WHERE c.min <=#{value} AND c.max>#{value} AND t.t_id = #{channel} ")
