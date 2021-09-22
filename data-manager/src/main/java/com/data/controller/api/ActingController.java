@@ -3,7 +3,6 @@ package com.data.controller.api;
 import com.alibaba.fastjson.JSONObject;
 import com.data.controller.BaseController;
 import com.data.service.ConfigAgenService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,18 +38,16 @@ public class ActingController extends BaseController {
 
     /**
      * 推广数据
-     * TODO
      */
     @PostMapping("/agentv2/info")
     public JSONObject info(@RequestBody JSONObject param){
+        String channelId = getHeader("Client-ChannelId");//渠道id
         String uid = param.getString("uid");//渠道id
-        JSONObject result = new JSONObject();
-        return result;
+        return configAgenService.getInfo(uid,channelId);
     }
 
     /**
      * 下级列表信息
-     * "{"page":1,"playerid":0,"limit":7,"index":1}"
      */
     @PostMapping("/agentv2/subinfo")
     public JSONObject subinfo(@RequestBody JSONObject param){
@@ -74,7 +71,6 @@ public class ActingController extends BaseController {
 
     /**
      * 领取记录
-     * "{"page":1,"limit":10,"uid":100095}"
      */
     @PostMapping("/agentv2/withdrawhistory")
     public JSONObject withdrawhistory(@RequestBody JSONObject param){

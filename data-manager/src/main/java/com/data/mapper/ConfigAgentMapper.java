@@ -27,9 +27,9 @@ public interface ConfigAgentMapper {
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
 
     @Select("SELECT d.uid," +
-            "ROUND(IF(c.sub_ratio IS NULL,d.sub_ratio,d.sub_ratio+c.sub_ratio),2)  sub_water," +
-            "ROUND(IF(c.other_ratio IS NULL,d.other_ratio,d.other_ratio+c.other_ratio),2)  water," +
-            "ROUND(IF(c.total_income IS NULL,d.total_income,d.total_income+c.total_income),2)  commission_all," +
+            "IF(c.sub_ratio IS NULL,d.sub_ratio,d.sub_ratio+c.sub_ratio) sub_water," +
+            "IF(c.other_ratio IS NULL,d.other_ratio,d.other_ratio+c.other_ratio) water," +
+            "IF(c.total_income IS NULL,d.total_income,d.total_income+c.total_income) commission_all," +
             "d.team_num teamNum " +
             "FROM agent_commission_day d " +
             "LEFT JOIN agent_commission c ON d.uid = c.uid " +
@@ -45,4 +45,17 @@ public interface ConfigAgentMapper {
 
     @Select("select count(1) from agent_case_income where uid = #{uid}")
     Integer getWithdrawHistoryCount(@Param("uid") Long uid);
+
+    @Select("SELECT d.uid,d.agent_id pid,d.team_num team_num_with_new,d.sub_num first_proxy_num_with_new," +
+            "IF(c.total_income IS NULL,d.total_income,d.total_income+c.total_income) commission_all," +
+            "IF(c.wait_income IS NULL,d.wait_income,d.wait_income+c.wait_income) commission_pre_all," +
+            "d.total_income todayRate " +
+            "FROM agent_commission_day d " +
+            "LEFT JOIN agent_commission c " +
+            "ON d.uid = c.uid " +
+            "WHERE d.uid = #{uid} AND d.day = #{day}")
+    Map getInfo(@Param("uid")String uid,@Param("day")String day);
+
+    @Select("select promotion_domain from config_agent where tid=#{tid} limit 0,1")
+    String getSpreatUrl(@Param("tid") Integer tid);
 }

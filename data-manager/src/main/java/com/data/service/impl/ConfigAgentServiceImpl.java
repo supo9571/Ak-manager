@@ -113,4 +113,15 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         result.put("result",map);
         return result;
     }
+
+    @Override
+    public JSONObject getInfo(String uid,String channelId) {
+        JSONObject result = new JSONObject();
+        result.put("code",200);
+        Map map = configAgentMapper.getInfo(uid,DateUtils.getDate());
+        String spreadUrl = configAgentMapper.getSpreatUrl(tenantMapper.getTidByCid(channelId));
+        map.put("spread_url",spreadUrl.concat("?ch="+channelId+"&uid"+uid));
+        result.put("result",map);
+        return result;
+    }
 }

@@ -16,4 +16,6 @@ public interface ConfigAgenService {
     JSONObject getSubInfo(String uid, Integer limit, Integer index);
 
     JSONObject getWithdrawHistory(Long uid, int limit, int page);
+
+    JSONObject getInfo(String uid,String channelId);
 }
