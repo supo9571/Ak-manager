@@ -23,7 +23,7 @@ public interface AgentMapper {
 
     void saveAgentIncome(List<AgentCommission> agents);
 
-    @Select("SELECT SUM(VALUE) FROM data_water WHERE uid = #{uid} AND  mstime >= #{beginTime} AND mstime < #{endTime} " +
+    @Select("SELECT SUM(VALUE) FROM data_water WHERE uid = #{uid} AND  time >= #{beginTime} AND time < #{endTime} " +
             "AND mstime > (SELECT agent_time FROM data_register WHERE uid = #{uid}) ")
     Long selectSubRatio(@Param("uid") Long uid,@Param("beginTime") Long beginTime,@Param("endTime") Long endTime);
 
@@ -31,4 +31,6 @@ public interface AgentMapper {
     Integer selectRebate(@Param("value") long value,@Param("channel") String channel);
 
     void saveAgentDayIncome(List<AgentCommission> agents);
+
+    List<AgentCommission> selectDayIncome(String date);
 }

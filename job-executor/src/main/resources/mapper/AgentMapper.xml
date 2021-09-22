@@ -4,17 +4,17 @@
 <mapper namespace="com.job.executor.mapper.AgentMapper">
 
     <select id="selectUids" resultType="com.job.executor.domain.AgentCommission">
-        select r.uid, r.agent_id agentId, r.channel , c.time endTime
+        select r.uid, r.agent_id agentId, r.channel
         from data_register r
         left join agent_commission c
         on r.uid = c.uid
     </select>
 
     <insert id="saveAgentIncome">
-        insert into agent_commission(uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,time) values
+        insert into agent_commission(uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income,history_income) values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
-            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},#{item.endTime})
+            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},#{item.cashIncome},#{item.waitIncome},#{item.totalIncome})
         </foreach>
         ON DUPLICATE KEY
         UPDATE agent_id=values(agent_id),
@@ -27,14 +27,16 @@
         other_ratio=other_ratio+values(other_ratio),
         other_income=other_income+values(other_income),
         total_income=total_income+values(total_income),
-        `time`=values(`time`);
+        cash_income=cash_income+values(cash_income),
+        wait_income=wait_income+values(wait_income),
+        history_income=history_income+values(history_income);
     </insert>
 
     <insert id="saveAgentDayIncome">
-        insert into agent_commission_day(day,uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income) values
+        insert into agent_commission_day(day,uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income) values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.day},#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
-            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome})
+            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},0,#{item.totalIncome})
         </foreach>
         ON DUPLICATE KEY
         UPDATE agent_id=values(agent_id),
@@ -46,6 +48,13 @@
         other_num=values(other_num),
         other_ratio=values(other_ratio),
         other_income=values(other_income),
-        total_income=values(total_income);
+        total_income=values(total_income),
+        wait_income=total_income-values(cash_income);
     </insert>
+
+    <select id="selectDayIncome" resultType="com.job.executor.domain.AgentCommission">
+        select uid,agent_id agentId,channel,team_num teamNum,sub_num subNum,sub_ratio subRatio,sub_income subIncome,other_num otherNum, other_ratio other_ratio,other_income otherIncome,total_income totalIncome,
+        cash_income cashIncome,wait_income waitIncome from agent_commission_day
+        where day = #{day}
+    </select>
 </mapper>

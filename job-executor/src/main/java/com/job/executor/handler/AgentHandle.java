@@ -7,9 +7,7 @@ import com.job.executor.mapper.AgentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,10 +29,9 @@ public class AgentHandle {
      * 计算 每日 代理分佣
      */
     @XxlJob("agent_day_income")
-    @PostConstruct
     public void dayIncome() {
         String date = DateUtil.formatDate(new Date());
-        Long endTime = System.currentTimeMillis();
+        Long endTime = System.currentTimeMillis()/1000;
         //查询 今日登录 玩家id列表
         List<AgentCommission> agentCommissions = agentMapper.selectUids();
         List<AgentCommission> agents = new ArrayList<>();
@@ -55,14 +52,8 @@ public class AgentHandle {
      */
     @XxlJob("agent_count_income")
     public void agentIncome() {
-        Long endTime = System.currentTimeMillis();
-        //查询 玩家id 列表
-        List<AgentCommission> agentCommissions = agentMapper.selectUids();
-        List<AgentCommission> agents = new ArrayList<>();
-//        agentCommissions.forEach(agentCommission->{
-//            getAgentMoney(agentCommission,endTime);
-//            agents.add(agentCommission);
-//        });
+        String date = DateUtil.formatDate(DateUtil.addDays(new Date(),-1));
+        List<AgentCommission> agents = agentMapper.selectDayIncome(date);
         if(agents.size()>0)
             agentMapper.saveAgentIncome(agents);
     }
