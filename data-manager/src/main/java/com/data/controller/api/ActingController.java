@@ -24,7 +24,7 @@ public class ActingController extends BaseController {
     private ConfigAgenService configAgenService;
 
     /**
-     * 返佣金额表
+     * 返佣比例
      */
     @PostMapping("/agentv2/rebate_form")
     public JSONObject rebate_form(){
@@ -37,7 +37,7 @@ public class ActingController extends BaseController {
     }
 
     /**
-     * 推广数据
+     * 我的业绩
      */
     @PostMapping("/agentv2/info")
     public JSONObject info(@RequestBody JSONObject param){
@@ -47,7 +47,7 @@ public class ActingController extends BaseController {
     }
 
     /**
-     * 下级列表信息
+     * 我的业绩 下级列表
      */
     @PostMapping("/agentv2/subinfo")
     public JSONObject subinfo(@RequestBody JSONObject param){
@@ -78,5 +78,16 @@ public class ActingController extends BaseController {
         int limit = param.getInteger("limit");//玩家id
         int page = param.getInteger("page");//玩家id
         return configAgenService.getWithdrawHistory(uid,limit,page);
+    }
+
+    /**
+     * 每日业绩
+     */
+    @PostMapping("/agentv2/income")
+    public JSONObject income(@RequestBody JSONObject param){
+        Long uid = param.getLong("uid");//玩家id
+        int limit = param.getInteger("limit");//玩家id
+        int page = param.getInteger("page");//玩家id
+        return configAgenService.getIncome(uid,limit,page);
     }
 }

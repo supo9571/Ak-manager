@@ -18,4 +18,6 @@ public interface ConfigAgenService {
     JSONObject getWithdrawHistory(Long uid, int limit, int page);
 
     JSONObject getInfo(String uid,String channelId);
+
+    JSONObject getIncome(Long uid, int limit, int page);
 }

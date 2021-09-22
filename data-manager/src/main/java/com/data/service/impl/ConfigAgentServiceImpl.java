@@ -124,4 +124,26 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         result.put("result",map);
         return result;
     }
+
+    @Override
+    public JSONObject getIncome(Long uid, int limit, int page) {
+        JSONObject result = new JSONObject();
+        Map map = new HashMap();
+        List<Map> data = configAgentMapper.getIncome((page-1)*limit,limit,uid);
+        Integer total = configAgentMapper.getIncomeCount(uid);
+        Integer totalPage = 0;
+        if(total%limit == 0){
+            totalPage = total/limit;
+        }else{
+            totalPage = total/limit+1;
+        }
+        map.put("page_count",totalPage);
+        map.put("total",total);
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("data",data);
+        result.put("code",200);
+        result.put("result",map);
+        return result;
+    }
 }

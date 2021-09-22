@@ -58,4 +58,12 @@ public interface ConfigAgentMapper {
 
     @Select("select promotion_domain from config_agent where tid=#{tid} limit 0,1")
     String getSpreatUrl(@Param("tid") Integer tid);
+
+    @Select("SELECT day date,sub_ratio+other_ratio teamwater," +
+            "sub_ratio subwater,other_ratio next_water,total_income count_rebate FROM agent_commission_day " +
+            "WHERE uid = #{uid} limit #{beginNum},#{limit}")
+    List<Map> getIncome(@Param("beginNum") int beginNum,@Param("limit") int limit,@Param("uid") Long uid);
+
+    @Select("select count(*) from agent_commission_day where uid = #{uid}")
+    Integer getIncomeCount(Long uid);
 }
