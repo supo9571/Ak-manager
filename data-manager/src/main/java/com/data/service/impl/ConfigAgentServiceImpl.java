@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.mapper.ConfigAgentMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.ConfigAgenService;
+import com.manager.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,8 +67,8 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     @Override
     public JSONObject getSubInfo(String uid, Integer limit, Integer index) {
         JSONObject result = new JSONObject();
-        List<Map> data = configAgentMapper.selectSubinfo((index-1)*limit,limit,uid);
-        Integer total = configAgentMapper.selectSubinfoCount(uid);
+        List<Map> data = configAgentMapper.selectSubinfo((index-1)*limit,limit,uid,DateUtils.getDate());
+        Integer total = configAgentMapper.selectSubinfoCount(uid,DateUtils.getDate());
         result.put("code",200);
         Map map = new HashMap();
         map.put("cur_page",index);

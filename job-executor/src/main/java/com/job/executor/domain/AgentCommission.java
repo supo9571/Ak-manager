@@ -42,7 +42,7 @@ public class AgentCommission {
     /**
      * 直属业绩
      */
-    private Long subRatio;
+    private BigDecimal subRatio;
 
     /**
      * 直属佣金
@@ -57,7 +57,7 @@ public class AgentCommission {
     /**
      * 下属业绩
      */
-    private Long otherRatio;
+    private BigDecimal otherRatio;
 
     /**
      * 下属佣金

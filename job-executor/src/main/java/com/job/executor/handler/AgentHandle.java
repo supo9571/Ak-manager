@@ -83,9 +83,9 @@ public class AgentHandle {
         agentCommission.setTeamNum(teamNum);
         agentCommission.setSubNum(subNum);
         agentCommission.setOtherNum(teamNum-subNum);
-        agentCommission.setSubRatio(subRatio);
+        agentCommission.setSubRatio(new BigDecimal(subRatio).divide(new BigDecimal(10000)));
         agentCommission.setSubIncome(subIncome);
-        agentCommission.setOtherRatio(otherRatio);
+        agentCommission.setOtherRatio(new BigDecimal(otherRatio).divide(new BigDecimal(10000)));
         agentCommission.setOtherIncome(otherIncome);
         agentCommission.setTotalIncome(subIncome.add(otherIncome));
         agentCommission.setEndTime(endTime);
