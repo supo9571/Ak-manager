@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public interface AgentMapper {
     Long selectSubRatio(@Param("uid") Long uid,@Param("beginTime") Long beginTime,@Param("endTime") Long endTime);
 
     @Select("SELECT rebate FROM config_agent c LEFT JOIN sys_tenant t ON c.tid = t.tenant WHERE c.min <=#{value} AND c.max>#{value} AND t.t_id = #{channel} ")
-    Integer selectRebate(@Param("value") long value,@Param("channel") String channel);
+    Integer selectRebate(@Param("value") BigDecimal value, @Param("channel") String channel);
 
     void saveAgentDayIncome(List<AgentCommission> agents);
 
