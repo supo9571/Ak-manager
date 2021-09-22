@@ -13,7 +13,7 @@ public interface ConfigAgenService {
 
     JSONObject bindAgent(String channelId, String uid, String agentId);
 
-    Map getSubInfo(String uid, String channelId, Integer limit, Integer index);
+    JSONObject getSubInfo(String uid, Integer limit, Integer index);
 
     JSONObject getWithdrawHistory(Long uid, int limit, int page);
 }

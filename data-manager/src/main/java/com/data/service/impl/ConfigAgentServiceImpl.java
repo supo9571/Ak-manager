@@ -64,9 +64,24 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
      * 查询 直属下级列表信息 分页
      */
     @Override
-    public Map getSubInfo(String uid, String channelId, Integer limit, Integer index) {
-        List<Map> data = configAgentMapper.selectSubinfo((limit-1)*index,limit);
-        return null;
+    public JSONObject getSubInfo(String uid, Integer limit, Integer index) {
+        JSONObject result = new JSONObject();
+        List<Map> data = configAgentMapper.selectSubinfo((index-1)*limit,limit,uid);
+        Integer total = configAgentMapper.selectSubinfoCount(uid);
+        result.put("code",200);
+        Map map = new HashMap();
+        map.put("cur_page",index);
+        map.put("total",total);
+        Integer allPage = 0;
+        if(total%limit == 0){
+            allPage = total/limit;
+        }else{
+            allPage = total/limit+1;
+        }
+        map.put("all_page",allPage);
+        map.put("data",data);
+        result.put("result",map);
+        return result;
     }
 
     /**

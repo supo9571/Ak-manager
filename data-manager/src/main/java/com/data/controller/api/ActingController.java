@@ -39,6 +39,7 @@ public class ActingController extends BaseController {
 
     /**
      * 推广数据
+     * TODO
      */
     @PostMapping("/agentv2/info")
     public JSONObject info(@RequestBody JSONObject param){
@@ -54,14 +55,10 @@ public class ActingController extends BaseController {
     @PostMapping("/agentv2/subinfo")
     public JSONObject subinfo(@RequestBody JSONObject param){
         String uid = getHeader("uid");//玩家id
-        String channelId = getHeader("Client-ChannelId");//渠道id
         Integer limit = param.getInteger("limit");//条数
         Integer index = param.getInteger("index");//当前页数
         JSONObject result = new JSONObject();
-        Map map = configAgenService.getSubInfo(uid,channelId,limit,index);
-        result.put("code",200);
-        result.put("result",map);
-        return result;
+        return configAgenService.getSubInfo(uid,limit,index);
     }
 
     /**

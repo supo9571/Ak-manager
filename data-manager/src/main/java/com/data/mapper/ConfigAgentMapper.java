@@ -26,8 +26,11 @@ public interface ConfigAgentMapper {
     @Update("update data_register set agent_id = #{agentId},agent_time = #{agentTime} where uid = #{uid} and time>#{time}")
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
 
-    @Select("")
-    List<Map> selectSubinfo(@Param("beginNum") int beginNum,@Param("limit") Integer limit);
+    @Select("SELECT uid,sub_ratio sub_water,other_ratio water,total_income commission_all,team_num teamNum FROM agent_commission WHERE agent_id = #{uid} limit #{beginNum},#{limit}")
+    List<Map> selectSubinfo(@Param("beginNum") int beginNum,@Param("limit") Integer limit,@Param("uid") String uid);
+
+    @Select("select count(1) from agent_commission where agent_id = #{uid}")
+    Integer selectSubinfoCount(@Param("uid") String uid);
 
     @Select("select case_income out_golds,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i::%s') out_time from agent_case_income " +
             "where uid = #{uid} order by create_time desc limit #{beginNum},#{limit}")
