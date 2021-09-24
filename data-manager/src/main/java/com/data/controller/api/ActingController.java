@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class ActingController extends BaseController {
         JSONObject result = new JSONObject();
         String channelId = getHeader("Client-ChannelId");//渠道id
         List<Map> list = configAgenService.getConfigAgentList(channelId);
-        result.put("code",0);
+        result.put("code",200);
         result.put("reCommissionRuleList",list);
         return result;
     }
@@ -96,7 +97,7 @@ public class ActingController extends BaseController {
     @PostMapping("/agentv2/withdraw")
     public JSONObject withdraw(@RequestBody JSONObject param){
         String uid = getHeader("uid");//玩家id
-        int cash = param.getInteger("cash");//领取金额
+        BigDecimal cash = param.getBigDecimal("cash");//领取金额
         return configAgenService.getWithdraw(uid,cash);
     }
 }

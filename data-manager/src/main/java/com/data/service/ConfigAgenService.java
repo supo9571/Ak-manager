@@ -2,6 +2,7 @@ package com.data.service;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -21,5 +22,5 @@ public interface ConfigAgenService {
 
     JSONObject getIncome(Long uid, int limit, int page);
 
-    JSONObject getWithdraw(String uid, int cash);
+    JSONObject getWithdraw(String uid, BigDecimal cash);
 }

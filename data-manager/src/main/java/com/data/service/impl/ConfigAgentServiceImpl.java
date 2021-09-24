@@ -161,17 +161,17 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
      */
     @Override
     @Transactional
-    public JSONObject getWithdraw(String uid, int cash) {
+    public JSONObject getWithdraw(String uid, BigDecimal cash) {
         JSONObject result = new JSONObject();
         Map map = new HashMap();
         //查询 可提余额
         BigDecimal decimal = configAgentMapper.getWaitIncom(uid);
-        if (decimal.compareTo(new BigDecimal(cash)) >= 0) {
+        if (decimal.compareTo(cash) >= 0) {
             JSONObject param = new JSONObject();
             param.put("cmd", "addcoins");
-            param.put("reason", 100004);// 100070=vip充值  100071=金卡月卡充值 100072=银卡月卡充值 100073=银行卡充值
-            param.put("type", 1);//1=加金币,2=加流水
-            param.put("value", cash * 10000);
+            param.put("reason", 100004);
+            param.put("type", 1);
+            param.put("value", cash);
             param.put("uid", uid);
             //操作 用户金币
             String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
@@ -179,10 +179,10 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             JSONObject resultJson = JSONObject.parseObject(resultStr);
             if (resultJson != null && resultJson.getInteger("code") == 0) {
                 //记录 领取记录
-                configAgentMapper.saveWithdarw(uid, cash);
-                configAgentMapper.updateWaitIncome(uid, cash);
+                configAgentMapper.saveWithdarw(uid,cash);
+                configAgentMapper.updateWaitIncome(uid,cash);
                 map.put("rebate", cash);
-                map.put("commission_pre_all", decimal.subtract(new BigDecimal(cash)));
+                map.put("commission_pre_all", decimal.subtract(cash));
                 result.put("code", 200);
                 result.put("result", map);
                 return result;

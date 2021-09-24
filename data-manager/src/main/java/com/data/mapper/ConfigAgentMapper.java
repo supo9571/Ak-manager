@@ -70,8 +70,8 @@ public interface ConfigAgentMapper {
     BigDecimal getWaitIncom(@Param("uid") String uid);
 
     @Insert("insert into agent_case_income (uid,case_income,create_time) values (#{uid},#{cash},sysdate())")
-    void saveWithdarw(@Param("uid") String uid, @Param("cash") int cash);
+    void saveWithdarw(@Param("uid") String uid, @Param("cash") BigDecimal cash);
 
     @Update("update agent_commission set cash_income = cash_income+#{cash},wait_income = wait_income-#{cash} where uid = #{uid} ")
-    void updateWaitIncome(@Param("uid") String uid, @Param("cash") int cash);
+    void updateWaitIncome(@Param("uid") String uid, @Param("cash") BigDecimal cash);
 }
