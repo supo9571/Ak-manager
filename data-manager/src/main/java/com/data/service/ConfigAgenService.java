@@ -20,4 +20,6 @@ public interface ConfigAgenService {
     JSONObject getInfo(String uid,String channelId);
 
     JSONObject getIncome(Long uid, int limit, int page);
+
+    JSONObject getWithdraw(String uid, int cash);
 }

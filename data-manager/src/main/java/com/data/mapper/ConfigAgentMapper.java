@@ -1,10 +1,8 @@
 package com.data.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -66,4 +64,13 @@ public interface ConfigAgentMapper {
 
     @Select("select count(*) from agent_commission_day where uid = #{uid}")
     Integer getIncomeCount(Long uid);
+
+    @Select("select wait_income from agent_commission where uid = #{uid}")
+    BigDecimal getWaitIncom(@Param("uid") String uid);
+
+    @Insert("insert into agent_case_income (uid,case_income,create_time) values (#{uid},#{cash},sysdate())")
+    void saveWithdarw(@Param("uid") String uid, @Param("cash") int cash);
+
+    @Update("update agent_commission set cash_income = cash_income+#{cash},wait_income = wait_income-#{cash} where uid = #{uid} ")
+    void updateWaitIncome(@Param("uid") String uid, @Param("cash") int cash);
 }

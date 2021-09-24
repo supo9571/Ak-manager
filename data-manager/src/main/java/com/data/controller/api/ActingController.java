@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author sieGuang 2021/9/9
+ * @author marvin 2021/9/11
  * 推广链接 接口
  */
 @RestController
@@ -89,5 +89,15 @@ public class ActingController extends BaseController {
         int limit = param.getInteger("limit");//玩家id
         int page = param.getInteger("page");//玩家id
         return configAgenService.getIncome(uid,limit,page);
+    }
+
+    /**
+     * 领取佣金
+     */
+    @PostMapping("/agentv2/withdraw")
+    public JSONObject withdraw(@RequestBody JSONObject param){
+        String uid = getHeader("uid");//玩家id
+        int cash = param.getInteger("cash");//领取金额
+        return configAgenService.getWithdraw(uid,cash);
     }
 }
