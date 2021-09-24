@@ -15,7 +15,7 @@ public interface ConfigAgentMapper {
     /**
      * 查询
      */
-    @Select("select a.lvl lvl,a.lvl_name lvlname,a.min,a.max,a.rebate rata  from config_agent a where a.tid = #{tid} order by a.lvl asc")
+    @Select("select a.lvl lv,a.lvl_name lvname,a.min,a.max,a.rebate rata  from config_agent a where a.tid = #{tid} order by a.lvl asc")
     List<Map> getConfigAgentList(@Param("tid") Integer tid);
 
     @Select("select time from data_register d left join sys_tenant t on d.channel = t.t_id where t.tenant = #{tid} and uid = #{agentId}")

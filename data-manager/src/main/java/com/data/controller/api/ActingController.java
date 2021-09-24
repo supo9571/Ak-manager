@@ -1,8 +1,10 @@
 package com.data.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.redis.RedisCache;
 import com.data.controller.BaseController;
 import com.data.service.ConfigAgenService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,16 +26,25 @@ public class ActingController extends BaseController {
     @Autowired
     private ConfigAgenService configAgenService;
 
+    @Autowired
+    private RedisCache redisCache;
+
     /**
      * 返佣比例
      */
     @PostMapping("/agentv2/rebate_form")
     public JSONObject rebate_form(){
-        JSONObject result = new JSONObject();
-        String channelId = getHeader("Client-ChannelId");//渠道id
-        List<Map> list = configAgenService.getConfigAgentList(channelId);
-        result.put("code",200);
-        result.put("reCommissionRuleList",list);
+        String resultStr = redisCache.getCacheObject("rebate_form");
+        if(StringUtils.isBlank(resultStr)){
+            JSONObject result = new JSONObject();
+            String channelId = getHeader("Client-ChannelId");//渠道id
+            List<Map> list = configAgenService.getConfigAgentList(channelId);
+            result.put("code",200);
+            result.put("reCommissionRuleList",list);
+            redisCache.setCacheObject("rebate_form",result.toJSONString());
+            return result;
+        }
+        JSONObject result = JSONObject.parseObject(resultStr);
         return result;
     }
 

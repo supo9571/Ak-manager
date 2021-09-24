@@ -171,7 +171,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             param.put("cmd", "addcoins");
             param.put("reason", 100004);
             param.put("type", 1);
-            param.put("value", cash);
+            param.put("value", cash.multiply(new BigDecimal(10000)));
             param.put("uid", uid);
             //操作 用户金币
             String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
