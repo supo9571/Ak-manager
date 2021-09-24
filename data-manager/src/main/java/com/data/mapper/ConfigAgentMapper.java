@@ -46,8 +46,8 @@ public interface ConfigAgentMapper {
     Integer getWithdrawHistoryCount(@Param("uid") Long uid);
 
     @Select("SELECT d.uid,d.agent_id pid,d.team_num team_num_with_new,d.sub_num first_proxy_num_with_new," +
-            "IF(c.total_income IS NULL,d.total_income,d.total_income+c.total_income) commission_all," +
-            "IF(c.wait_income IS NULL,d.wait_income,d.wait_income+c.wait_income) commission_pre_all," +
+            "d.total_income+c.total_income commission_all," +
+            "d.wait_income+c.wait_income commission_pre_all," +
             "d.total_income todayRate " +
             "FROM agent_commission_day d " +
             "LEFT JOIN agent_commission c " +

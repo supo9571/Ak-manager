@@ -143,7 +143,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         } else {
             totalPage = total / limit + 1;
         }
-        map.put("page_count", totalPage);
+        map.put("total_page", totalPage);
         map.put("total", total);
         map.put("page", page);
         map.put("limit", limit);
