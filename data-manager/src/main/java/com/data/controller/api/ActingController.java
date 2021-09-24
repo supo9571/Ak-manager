@@ -54,7 +54,6 @@ public class ActingController extends BaseController {
         String uid = getHeader("uid");//玩家id
         Integer limit = param.getInteger("limit");//条数
         Integer index = param.getInteger("index");//当前页数
-        JSONObject result = new JSONObject();
         return configAgenService.getSubInfo(uid,limit,index);
     }
 

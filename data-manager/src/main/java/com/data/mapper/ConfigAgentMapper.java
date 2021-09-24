@@ -25,9 +25,10 @@ public interface ConfigAgentMapper {
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
 
     @Select("SELECT d.uid," +
-            "IF(c.sub_ratio IS NULL,d.sub_ratio,d.sub_ratio+c.sub_ratio) sub_water," +
-            "IF(c.other_ratio IS NULL,d.other_ratio,d.other_ratio+c.other_ratio) water," +
-            "IF(c.total_income IS NULL,d.total_income,d.total_income+c.total_income) commission_all," +
+            "d.sub_ratio+c.sub_ratio sub_water," +
+            "d.other_ratio+c.other_ratio team_water," +
+            "d.total_income+c.total_income commission_all," +
+            "d.total_income today_income," +
             "d.team_num teamNum " +
             "FROM agent_commission_day d " +
             "LEFT JOIN agent_commission c ON d.uid = c.uid " +
