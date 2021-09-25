@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.MailMapper">
+
+    <select id="getTips" resultType="java.util.Map">
+        select id,notice_content Description,notice_content ImageUrl,notice_title Title,'1' Type
+        from sys_system_notice
+        where (state = '2' or (state = '1' and  sysdate()>=send_out_time ))
+        and (addressee like concat('%',#{channel},'%') or addressee is null)
+    </select>
+
+
+</mapper>

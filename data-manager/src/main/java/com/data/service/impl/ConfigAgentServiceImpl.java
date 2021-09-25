@@ -169,7 +169,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         if (decimal.compareTo(cash) >= 0) {
             JSONObject param = new JSONObject();
             param.put("cmd", "addcoins");
-            param.put("reason", 100004);
+            param.put("reason", 100038);
             param.put("type", 1);
             param.put("value", cash.multiply(new BigDecimal(10000)));
             param.put("uid", uid);
