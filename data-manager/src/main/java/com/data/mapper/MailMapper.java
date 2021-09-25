@@ -10,5 +10,11 @@ import java.util.List;
  */
 @Mapper
 public interface MailMapper {
-    List getTips(@Param("channel") String channelId);
+    List getTips(@Param("channel") String channelId,@Param("uid")String uid,@Param("tid") int tid);
+
+    List getMailList(@Param("uid")String uid,@Param("tid") int tid);
+
+    List getMailConfig(@Param("channel") String channelId,@Param("uid")String uid,@Param("tid") int tid);
+
+    void saveMailRecord(List list, @Param("uid")String uid);
 }

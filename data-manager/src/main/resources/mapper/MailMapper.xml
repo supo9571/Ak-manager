@@ -4,11 +4,62 @@
 <mapper namespace="com.data.mapper.MailMapper">
 
     <select id="getTips" resultType="java.util.Map">
-        select id,notice_content Description,notice_content ImageUrl,notice_title Title,'1' Type
+        select id,notice_content description,notice_content imageUrl,notice_title title,push Type
         from sys_system_notice
         where (state = '2' or (state = '1' and  sysdate()>=send_out_time ))
-        and (addressee like concat('%',#{channel},'%') or addressee is null)
+              and (
+                    addressee_type = '1'
+                  or
+                    (addressee like concat('%',#{channel},'%') and addressee_type ='2')
+                  or
+                    (addressee like concat('%',#{uid},'%') and addressee_type ='3' )
+                )
+              and tid = #{tid}
+    </select>
+
+    <select id="getMailConfig" resultType="java.util.Map">
+        select id,tid,notice_title,notice_content,notice_signature,send_out_gold
+        from sys_personal_mail
+        where (state = '2' or (state = '1' and  sysdate()>=send_out_time ))
+              and (
+                        addressee_type = '1'
+                    or
+                        (addressee like concat('%',#{channel},'%') and addressee_type ='2')
+                    or
+                        (addressee like concat('%',#{uid},'%') and addressee_type ='3' )
+                )
+              and id not in (select personal_mail_id from sys_mail_record where addressee = #{uid} and and tid = #{tid} )
+              and tid = #{tid}
     </select>
 
 
+    <select id="getMailList" resultType="java.util.Map">
+        select id,mail_prop coins,personal_mail_id config_id,mail_content content,
+               mail_title content_title,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i::%s') create_at,
+               2 mail_type,signature op_user,mail_title title,
+               if(mail_state=2,1,0) read_state,mail_state receive_state
+        from sys_mail_record
+        where addressee = #{uid}
+          and mail_state in (1,2,3,4,5)
+          and tid = #{tid}
+    </select>
+
+    <insert id="saveMailRecord">
+        insert into sys_mail_record(tid,signature,addressee,mail_title,mail_prop,mail_content,mail_state,personal_mail_id,create_time,update_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.tid},
+                #{item.notice_signature},
+                #{uid},
+                #{item.notice_title},
+                #{item.send_out_gold},
+                #{item.notice_content},
+                #{item.notice_title},
+                #{item.id},
+                sysdate(),
+                sysdate()
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -28,13 +28,29 @@ public class MailController extends BaseController {
      */
     @PostMapping("/app/tips")
     public JSONObject tips(){
-        String channelId = getHeader("Client-ChannelId");//渠道id
+        String channelId = getHeader("Client-ChannelId");
+        String uid = getHeader("uid");
         JSONObject result = new JSONObject();
-        List list = mailService.getTips(channelId);
+        List list = mailService.getTips(channelId,uid);
         Map map = new HashMap<>();
         map.put("tips",list);
         result.put("data",map);
         result.put("code",200);
+        return result;
+    }
+
+    /**
+     *  邮件列表
+     */
+    @PostMapping("/app/get_mail_list")
+    public JSONObject getMailList(){
+        String channelId = getHeader("Client-ChannelId");
+        String uid = getHeader("uid");
+        JSONObject result = new JSONObject();
+        List list = mailService.getMailList(channelId,uid);
+        result.put("result",list);
+        result.put("code",200);
+        result.put("msg","OK");
         return result;
     }
 }
