@@ -5,6 +5,7 @@ import com.data.controller.BaseController;
 import com.data.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,20 @@ public class MailController extends BaseController {
         result.put("result",list);
         result.put("code",200);
         result.put("msg","OK");
+        return result;
+    }
+    /**
+     * 邮件已读
+     */
+    @PostMapping("/server_api/req_read_mail")
+    public JSONObject readMail(@RequestBody JSONObject param){
+        String ids = param.getString("ids");
+        JSONObject result = new JSONObject();
+        mailService.readMail(ids);
+        result.put("code",200);
+        result.put("msg","OK");
+        result.put("type",ids);
+        result.put("read_id",ids);
         return result;
     }
 }

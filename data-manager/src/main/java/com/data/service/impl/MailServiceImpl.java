@@ -32,12 +32,18 @@ public class MailServiceImpl implements MailService {
         return mailMapper.getMailList(uid,tid);
     }
 
+    @Override
+    public void readMail(String ids) {
+        mailMapper.readMail(ids);
+    }
+
     /**
      * 生成邮件记录
      */
     private void saveMailRecord(String channelId, String uid,Integer tid){
         List list = mailMapper.getMailConfig(channelId,uid,tid);
-        mailMapper.saveMailRecord(list,uid);
-
+        if(list!=null && list.size()>0){
+            mailMapper.saveMailRecord(list,uid);
+        }
     }
 }

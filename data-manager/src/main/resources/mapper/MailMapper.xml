@@ -28,7 +28,7 @@
                     or
                         (addressee like concat('%',#{uid},'%') and addressee_type ='3' )
                 )
-              and id not in (select personal_mail_id from sys_mail_record where addressee = #{uid} and and tid = #{tid} )
+              and id not in (select personal_mail_id from sys_mail_record where addressee = #{uid} and tid = #{tid} )
               and tid = #{tid}
     </select>
 
@@ -55,7 +55,7 @@
                 #{item.notice_title},
                 #{item.send_out_gold},
                 #{item.notice_content},
-                #{item.notice_title},
+                2,
                 #{item.id},
                 sysdate(),
                 sysdate()

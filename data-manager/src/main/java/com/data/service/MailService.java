@@ -9,4 +9,6 @@ public interface MailService {
     List getTips(String channelId,String uid);
 
     List getMailList(String channelId, String uid);
+
+    void readMail(String ids);
 }
