@@ -1,14 +1,17 @@
 package com.data.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
 import com.data.service.MailService;
+import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +44,7 @@ public class MailController extends BaseController {
     }
 
     /**
-     *  邮件列表
+     * 邮件列表
      */
     @PostMapping("/app/get_mail_list")
     public JSONObject getMailList(){
@@ -54,6 +57,7 @@ public class MailController extends BaseController {
         result.put("msg","OK");
         return result;
     }
+
     /**
      * 邮件已读
      */
@@ -67,5 +71,15 @@ public class MailController extends BaseController {
         result.put("type",ids);
         result.put("read_id",ids);
         return result;
+    }
+
+    /**
+     * 领取邮件附件
+     */
+    @PostMapping("/server_api/receive_mail")
+    public JSONObject receiveMail(@RequestBody JSONObject param){
+        String id = param.getString("ids");
+        return mailService.receiveMail(id);
+
     }
 }

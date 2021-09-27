@@ -37,7 +37,7 @@
         select id,mail_prop coins,personal_mail_id config_id,mail_content content,
                mail_title content_title,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i::%s') create_at,
                2 mail_type,signature op_user,mail_title title,
-               if(mail_state=2,1,0) read_state,mail_state receive_state
+               if(mail_state=2,0,1) read_state,mail_state receive_state
         from sys_mail_record
         where addressee = #{uid}
           and mail_state in (1,2,3,4,5)

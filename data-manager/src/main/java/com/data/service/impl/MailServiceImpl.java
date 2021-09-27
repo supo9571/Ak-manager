@@ -1,12 +1,19 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.mapper.MailMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MailService;
+import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/9/25
@@ -19,6 +26,9 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private TenantMapper tenantMapper;
+
+    @Autowired
+    private GlobalConfig globalConfig;
 
     @Override
     public List getTips(String channelId,String uid) {
@@ -35,6 +45,42 @@ public class MailServiceImpl implements MailService {
     @Override
     public void readMail(String ids) {
         mailMapper.readMail(ids);
+    }
+
+    @Override
+    @Transactional
+    public JSONObject receiveMail(String id) {
+        JSONObject result = new JSONObject();
+        Map map = mailMapper.receiveMail(id);
+        BigDecimal coins = new BigDecimal((String) map.get("coins"));
+        String uid = (String) map.get("uid");
+        if (coins.compareTo(new BigDecimal(0)) >= 0) {
+            JSONObject paramJson = new JSONObject();
+            paramJson.put("cmd", "addcoins");
+            paramJson.put("reason", 100022);
+            paramJson.put("type", 1);
+            paramJson.put("value", coins.multiply(new BigDecimal(10000)));
+            paramJson.put("uid", uid);
+            //操作 用户金币
+            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                    "data=" + paramJson.toJSONString());
+            JSONObject resultJson = JSONObject.parseObject(resultStr);
+            if (resultJson != null && resultJson.getInteger("code") == 0) {
+                //修改状态 已领取
+                mailMapper.updateMailState(id);
+                result.put("code",200);
+                result.put("msg","OK");
+                result.put("read_id",id);
+                Map resultMap = new HashMap();
+                resultMap.put("coins",coins);
+                resultMap.put("reason",0);
+                result.put("result",resultMap);
+                return result;
+            }
+        }
+        result.put("code",500);
+        result.put("msg","领取失败");
+        return result;
     }
 
     /**
