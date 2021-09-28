@@ -1,9 +1,8 @@
 package com.data.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
+import com.data.mapper.TenantMapper;
 import com.data.mapper.UpdateMapper;
 import com.data.service.UpdateService;
 import com.manager.common.core.domain.model.Allupdate;
@@ -23,6 +22,9 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Autowired
     private UpdateMapper updateMapper;
+
+    @Autowired
+    private TenantMapper tenantMapper;
 
     @Override
     public List<Map> selectPackage(String ip, String channelId, String versionId, String platform) {
@@ -124,6 +126,12 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public List findHotupdateById(Integer id) {
         return updateMapper.findHotupdateById(id);
+    }
+
+    @Override
+    public Map selectStopNotice(String channelId) {
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        return  updateMapper.selectStopNotice(tid);
     }
 
     private Integer verInt(String version){

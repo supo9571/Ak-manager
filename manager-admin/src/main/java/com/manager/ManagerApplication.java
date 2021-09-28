@@ -10,12 +10,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  *
  * @author marvin
  */
-@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableFeignClients
-public class ManagerApplication
-{
-    public static void main(String[] args)
-    {
+public class ManagerApplication {
+    public static void main(String[] args) {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(ManagerApplication.class, args);
         System.out.println("(♥◠‿◠)ﾉﾞ  后台管理系统启动成功!!!   ლ(´ڡ`ლ)ﾞ");

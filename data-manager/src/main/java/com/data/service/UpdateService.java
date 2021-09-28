@@ -36,4 +36,6 @@ public interface UpdateService {
     List findHotupdate();
 
     List findHotupdateById(Integer id);
+
+    Map selectStopNotice(String channelId);
 }

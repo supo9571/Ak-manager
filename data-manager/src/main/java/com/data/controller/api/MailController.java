@@ -80,6 +80,13 @@ public class MailController extends BaseController {
     public JSONObject receiveMail(@RequestBody JSONObject param){
         String id = param.getString("ids");
         return mailService.receiveMail(id);
+    }
 
+    /**
+     * 轮播图配置
+     */
+    @PostMapping("/app/advert")
+    public JSONObject advert(){
+        return null;
     }
 }

@@ -30,7 +30,7 @@ public class AgentHandle {
      * 计算 每日 代理分佣
      */
     @XxlJob("agent_day_income")
-    @PostConstruct
+//    @PostConstruct
     public void dayIncome() {
         String date = DateUtil.formatDate(new Date());
         Long endTime = System.currentTimeMillis()/1000;

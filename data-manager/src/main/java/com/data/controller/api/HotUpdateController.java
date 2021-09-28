@@ -48,6 +48,8 @@ public class HotUpdateController extends BaseController {
         data.put("headUrl",globalConfig.getHeadUrl());
         //添加 客服信息
         data.put("customer",updateService.selectConsumer());
+        //添加 停服公告
+        data.put("stop_notice",updateService.selectStopNotice(channelId));
         //添加 整包更新信息
         String updateUrl = updateService.selectAllupdate(channelId,versionId);
         if(StringUtils.isNotBlank(updateUrl)){
