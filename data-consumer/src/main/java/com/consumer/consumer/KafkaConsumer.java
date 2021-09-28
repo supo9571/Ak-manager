@@ -46,33 +46,22 @@ public class KafkaConsumer {
             //设置偏移量
             currentOffset.put(new TopicPartition(record.topic(), record.partition()),
                     new OffsetAndMetadata(record.offset() - 10));
-//            log.info("offset:{}",record.offset());
-            //存库
+            //数据存库
             String op = jsonObject.getString("op");
-            switch (OpEnum.getByValue(op)){
-                case REGISTER:
-                    insertHandler.insertRegister(jsonObject);
-                    break;
-                case ADDCOINS:
-                    insertHandler.insertAddcoins(jsonObject);
-                    break;
-                case REDUCECOINS:
-                    insertHandler.insertReducecoins(jsonObject);
-                    break;
-                case LOGIN:
-                    insertHandler.insertLogin(jsonObject);
-                    break;
-                case LOGOUT:
-                    insertHandler.insertLogout(jsonObject);
-                    break;
-                case CARD_RECORD:
-                    insertHandler.insertCard(jsonObject);
-                    break;
-                case WATER_HISTORY:
-                    insertHandler.updateWater(jsonObject);
-                    break;
-                default:
-                    break;
+            if(op.equals(OpEnum.REDUCECOINS.getOpName())){
+                insertHandler.insertRegister(jsonObject);
+            }else if(op.equals(OpEnum.ADDCOINS.getOpName())){
+                insertHandler.insertAddcoins(jsonObject);
+            }else if(op.equals(OpEnum.REDUCECOINS.getOpName())){
+                insertHandler.insertReducecoins(jsonObject);
+            }else if(op.equals(OpEnum.LOGIN.getOpName())){
+                insertHandler.insertLogin(jsonObject);
+            }else if(op.equals(OpEnum.LOGOUT.getOpName())){
+                insertHandler.insertLogout(jsonObject);
+            }else if(op.equals(OpEnum.CARD_RECORD.getOpName())){
+                insertHandler.insertCard(jsonObject);
+            }else if(op.equals(OpEnum.WATER_HISTORY.getOpName())){
+                insertHandler.updateWater(jsonObject);
             }
         }catch (Exception e){
             if(e instanceof DuplicateKeyException){
