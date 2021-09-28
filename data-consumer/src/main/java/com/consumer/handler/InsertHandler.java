@@ -98,7 +98,7 @@ public class InsertHandler {
     }
 
     private void setCardUser(Card card,List<CardUser> list){
-        int aiNum = 0;
+        int aiNum = card.getTotalNum();
         Long addScore = 0l;
         Long payFee = 0l;
         Long betCoins = 0l;
@@ -110,10 +110,9 @@ public class InsertHandler {
                 CardUser cardUser = jsonObject.toJavaObject(CardUser.class);
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
-                if("true".equals(cardUser.getIsRobot())){
-                    aiNum+=1;
-                }else {
+                if(!"true".equals(cardUser.getIsRobot())) {
                     cardUser.setIsRobot("false");
+                    aiNum -= 1;
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
@@ -135,10 +134,9 @@ public class InsertHandler {
                 CardUser cardUser = jsonObject.toJavaObject(CardUser.class);
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
-                if("true".equals(cardUser.getIsRobot())){
-                    aiNum+=1;
-                }else {
+                if(!"true".equals(cardUser.getIsRobot())) {
                     cardUser.setIsRobot("false");
+                    aiNum -= 1;
                 }
                 addScore+=cardUser.getAddScore();
                 payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
