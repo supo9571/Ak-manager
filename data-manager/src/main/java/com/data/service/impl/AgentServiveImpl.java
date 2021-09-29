@@ -17,8 +17,18 @@ public class AgentServiveImpl implements AgentServive {
     private AgentMapper agentMapper;
 
     @Override
-    public List getCommissionList(Integer tid, String uid) {
+    public List getCommissionList(Integer tid, String uid, String agentId) {
         String date = DateUtils.getDate();
-        return agentMapper.getCommissionList(tid,uid,date);
+        return agentMapper.getCommissionList(tid,uid,agentId,date);
+    }
+
+    @Override
+    public List getCommissionDays(String uid) {
+        return agentMapper.getCommissionDays(uid);
+    }
+
+    @Override
+    public List getCashs(String uid) {
+        return agentMapper.getCashs(uid);
     }
 }

@@ -24,9 +24,29 @@ public class AgentController extends BaseController{
      * 代理查询
      */
     @PostMapping("/list")
-    public AjaxResult list(Integer tid,String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
+    public AjaxResult list(Integer tid,String uid,String agentId,Integer page,Integer size,String orderByColumn,String isAsc) {
         startPage(page,size,orderByColumn,isAsc);
-        List list = agentServive.getCommissionList(tid,uid);
+        List list = agentServive.getCommissionList(tid,uid,agentId);
+        return AjaxResult.success("查询成功",getDataTable(list));
+    }
+
+    /**
+     * 每日收益
+     */
+    @PostMapping("/day")
+    public AjaxResult day(String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
+        startPage(page,size,orderByColumn,isAsc);
+        List list = agentServive.getCommissionDays(uid);
+        return AjaxResult.success("查询成功",getDataTable(list));
+    }
+
+    /**
+     * 领取记录
+     */
+    @PostMapping("/cash")
+    public AjaxResult cash(String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
+        startPage(page,size,orderByColumn,isAsc);
+        List list = agentServive.getCashs(uid);
         return AjaxResult.success("查询成功",getDataTable(list));
     }
 }

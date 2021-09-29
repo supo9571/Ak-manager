@@ -26,7 +26,7 @@ public class AgentController {
     @PreAuthorize("@ss.hasPermi('data:agent:list')")
     @ApiOperation(value = "查询牌局记录列表")
     @GetMapping("/list")
-    public AjaxResult list(Integer tid,String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
-        return agentService.getAgents(tid, uid, page, size, orderByColumn, isAsc);
+    public AjaxResult list(Integer tid,String uid,String agentId,Integer page,Integer size,String orderByColumn,String isAsc) {
+        return agentService.getAgents(tid, uid, agentId, page, size, orderByColumn, isAsc);
     }
 }

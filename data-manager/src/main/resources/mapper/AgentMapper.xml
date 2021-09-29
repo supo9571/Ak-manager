@@ -27,8 +27,27 @@
             and d.channel in (select t_id from sys_tenant where tenant = #{tid} and t_type ='2')
         </if>
         <if test="uid!=null and uid !=''">
-            and d.agent_id = #{uid}
+            and d.uid = #{uid}
+        </if>
+        <if test="agentId!=null and agentId !=''">
+            and d.agent_id = #{agentId}
         </if>
     </select>
 
+    <select id="getCommissionDays" resultType="java.util.Map">
+        select uid,agent_id agentId,channel,
+               team_num,sub_num,sub_ratio,
+               sub_income,other_num,other_ratio,other_income,
+               total_income,cash_income,wait_income,
+               day,
+            (SELECT create_time FROM agent_case_income WHERE uid = uid ORDER BY create_time DESC LIMIT 0,1) caseTime
+        from agent_commission_day
+        where d.uid = #{uid}
+    </select>
+
+    <select id="getCashs" resultType="java.util.Map">
+        select uid,case_income caseIncome,create_time caseTime
+        from agent_case_income
+        where d.uid = #{uid}
+    </select>
 </mapper>
