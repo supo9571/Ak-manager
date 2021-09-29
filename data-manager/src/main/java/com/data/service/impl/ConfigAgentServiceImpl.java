@@ -180,7 +180,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             if (resultJson != null && resultJson.getInteger("code") == 0) {
                 //记录 领取记录
                 configAgentMapper.saveWithdarw(uid,cash);
-                configAgentMapper.updateWaitIncome(uid,cash);
+                configAgentMapper.updateWaitIncome(uid,cash,DateUtils.getDate());
                 map.put("rebate", cash);
                 map.put("commission_pre_all", decimal.subtract(cash));
                 result.put("code", 200);

@@ -22,6 +22,6 @@ public interface TotalMapper {
 	@Update("update data_register set today_add = '0',today_red = '0',today_give = '0',today_water = '0',today_win = '0'")
     void updateRegister();
 
-	@Delete("delete from data_water where time = #{time} ")
+	@Delete("delete from data_water where time <= #{time} ")
 	void deleteWater(@Param("time") Long time);
 }

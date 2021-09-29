@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.AgentMapper">
+
+    <select id="getCommissionList" resultType="java.util.Map">
+        SELECT d.uid,d.agent_id agentId,d.channel,
+        d.team_num teamNum,
+        d.sub_num subNum,
+        d.sub_ratio+c.sub_ratio subRatio,
+        d.sub_income+c.sub_income subIncome,
+        d.other_num otherNum,
+        d.other_ratio+c.other_ratio otherRatio,
+        d.other_income+c.other_income otherIncome,
+        d.total_income+c.total_income totalIncome,
+        d.cash_income+c.cash_income cashIncom,
+        d.wait_income+c.wait_income waitIncome,
+        c.history_income historyIncome,
+        from_unixtime(r.time) registerTime,
+        from_unixtime(r.login_time) loginTime,
+        (SELECT create_time FROM agent_case_income WHERE uid = d.uid ORDER BY create_time DESC LIMIT 0,1) caseTime
+        FROM agent_commission_day d
+        LEFT JOIN agent_commission c ON d.uid = c.uid
+        LEFT JOIN data_register r ON d.uid = r.uid
+        WHERE d.day=#{date}
+        <if test="tid!=null and tid !=''">
+            and d.channel in (select t_id from sys_tenant where tenant = #{tid} and t_type ='2')
+        </if>
+        <if test="uid!=null and uid !=''">
+            and d.agent_id = #{uid}
+        </if>
+    </select>
+
+</mapper>

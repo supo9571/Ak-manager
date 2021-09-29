@@ -82,7 +82,7 @@
 	</insert>
 
 	<insert id="insertWater" parameterType="com.consumer.domain.WaterHistory">
-		insert into data_water (`key`,`op`,`time`,`mstime`,`uid`,`r`,`value`,`reward`)
-		values (#{key},#{op},#{time},#{mstime},#{uid},#{r},#{value},#{reward})
+		insert into data_water (`key`,`op`,`time`,`mstime`,`uid`,`r`,`value`,`reward`,`table_type`,`table_gid`)
+		values (#{key},#{op},#{time},#{mstime},#{uid},#{r},#{value},#{reward},#{tableType},#{tableGid})
 	</insert>
 </mapper>

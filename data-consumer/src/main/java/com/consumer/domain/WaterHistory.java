@@ -24,4 +24,8 @@ public class WaterHistory {
 
     private Long reward;// 返奖流水
 
+    private Long tableType;// 房间id
+
+    private String tableGid;// 牌局id
+
 }
