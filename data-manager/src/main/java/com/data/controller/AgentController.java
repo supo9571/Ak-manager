@@ -24,7 +24,7 @@ public class AgentController extends BaseController{
      * 代理查询
      */
     @PostMapping("/list")
-    public AjaxResult info(Integer tid,String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
+    public AjaxResult list(Integer tid,String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
         startPage(page,size,orderByColumn,isAsc);
         List list = agentServive.getCommissionList(tid,uid);
         return AjaxResult.success("查询成功",getDataTable(list));
