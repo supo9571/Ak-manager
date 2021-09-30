@@ -28,7 +28,7 @@ public interface UserMapper {
     DataUser findByPhone(@Param("phoneNumber") String phoneNumber);
 
     @Update("update data_user set password = #{password} where phone = #{phone}")
-    void updatePassword(@Param("phone") String phone,@Param("password")  String password);
+    void updatePassword(@Param("phone") String phone, @Param("password") String password);
 
     int updateDataUser(DataUser dataUser);
 }

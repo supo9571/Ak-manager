@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @MapperScan("com.consumer.mapper")
 public class ConsumerApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
-		System.out.println("(♥◠‿◠)ﾉﾞ  kafka消费者启动成功!!!   ლ(´ڡ`ლ)ﾞ");
-	}
+        System.out.println("(♥◠‿◠)ﾉﾞ  kafka消费者启动成功!!!   ლ(´ڡ`ლ)ﾞ");
+    }
 
 }

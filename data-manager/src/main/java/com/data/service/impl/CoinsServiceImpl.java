@@ -16,6 +16,7 @@ public class CoinsServiceImpl implements CoinsService {
 
     @Autowired
     private CoinsMapper coinsMapper;
+
     @Override
     public List selectCoins(Coins coins) {
         return coinsMapper.selectCoins(coins);

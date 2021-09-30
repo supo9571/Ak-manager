@@ -33,15 +33,15 @@ public class ActingController extends BaseController {
      * 返佣比例
      */
     @PostMapping("/agentv2/rebate_form")
-    public JSONObject rebate_form(){
+    public JSONObject rebate_form() {
         String resultStr = redisCache.getCacheObject("rebate_form");
-        if(StringUtils.isBlank(resultStr)){
+        if (StringUtils.isBlank(resultStr)) {
             JSONObject result = new JSONObject();
             String channelId = getHeader("Client-ChannelId");//渠道id
             List<Map> list = configAgenService.getConfigAgentList(channelId);
-            result.put("code",200);
-            result.put("reCommissionRuleList",list);
-            redisCache.setCacheObject("rebate_form",result.toJSONString());
+            result.put("code", 200);
+            result.put("reCommissionRuleList", list);
+            redisCache.setCacheObject("rebate_form", result.toJSONString());
             return result;
         }
         JSONObject result = JSONObject.parseObject(resultStr);
@@ -52,63 +52,63 @@ public class ActingController extends BaseController {
      * 我的业绩
      */
     @PostMapping("/agentv2/info")
-    public JSONObject info(@RequestBody JSONObject param){
+    public JSONObject info(@RequestBody JSONObject param) {
         String channelId = getHeader("Client-ChannelId");//渠道id
         String uid = param.getString("uid");//渠道id
-        return configAgenService.getInfo(uid,channelId);
+        return configAgenService.getInfo(uid, channelId);
     }
 
     /**
      * 我的业绩 下级列表
      */
     @PostMapping("/agentv2/subinfo")
-    public JSONObject subinfo(@RequestBody JSONObject param){
+    public JSONObject subinfo(@RequestBody JSONObject param) {
         String uid = getHeader("uid");//玩家id
         Integer limit = param.getInteger("limit");//条数
         Integer index = param.getInteger("index");//当前页数
-        return configAgenService.getSubInfo(uid,limit,index);
+        return configAgenService.getSubInfo(uid, limit, index);
     }
 
     /**
      * 绑定代理
      */
     @PostMapping("/agentv2/bind")
-    public JSONObject bind(@RequestBody JSONObject param){
+    public JSONObject bind(@RequestBody JSONObject param) {
         String channelId = getHeader("Client-ChannelId");//渠道id
         String uid = param.getString("uid");//玩家id
         String agentId = param.getString("agent_id");//代理id
-        return configAgenService.bindAgent(channelId,uid,agentId);
+        return configAgenService.bindAgent(channelId, uid, agentId);
     }
 
     /**
      * 领取记录
      */
     @PostMapping("/agentv2/withdrawhistory")
-    public JSONObject withdrawhistory(@RequestBody JSONObject param){
+    public JSONObject withdrawhistory(@RequestBody JSONObject param) {
         Long uid = param.getLong("uid");//玩家id
         int limit = param.getInteger("limit");//玩家id
         int page = param.getInteger("page");//玩家id
-        return configAgenService.getWithdrawHistory(uid,limit,page);
+        return configAgenService.getWithdrawHistory(uid, limit, page);
     }
 
     /**
      * 每日业绩
      */
     @PostMapping("/agentv2/income")
-    public JSONObject income(@RequestBody JSONObject param){
+    public JSONObject income(@RequestBody JSONObject param) {
         Long uid = param.getLong("uid");//玩家id
         int limit = param.getInteger("limit");//玩家id
         int page = param.getInteger("page");//玩家id
-        return configAgenService.getIncome(uid,limit,page);
+        return configAgenService.getIncome(uid, limit, page);
     }
 
     /**
      * 领取佣金
      */
     @PostMapping("/agentv2/withdraw")
-    public JSONObject withdraw(@RequestBody JSONObject param){
+    public JSONObject withdraw(@RequestBody JSONObject param) {
         String uid = getHeader("uid");//玩家id
         BigDecimal cash = param.getBigDecimal("cash");//领取金额
-        return configAgenService.getWithdraw(uid,cash);
+        return configAgenService.getWithdraw(uid, cash);
     }
 }

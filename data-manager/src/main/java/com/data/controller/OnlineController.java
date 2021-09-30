@@ -20,13 +20,14 @@ public class OnlineController extends BaseController {
 
     @Autowired
     private OnlineService onlineService;
+
     /**
      * 获取在线玩家列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody OnlinePlayer onlinePlayer) {
-        startPage(onlinePlayer.getPage(),onlinePlayer.getSize(),onlinePlayer.getOrderByColumn(),onlinePlayer.getIsAsc());
-        List list =onlineService.selectOnline(onlinePlayer);
+        startPage(onlinePlayer.getPage(), onlinePlayer.getSize(), onlinePlayer.getOrderByColumn(), onlinePlayer.getIsAsc());
+        List list = onlineService.selectOnline(onlinePlayer);
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 }

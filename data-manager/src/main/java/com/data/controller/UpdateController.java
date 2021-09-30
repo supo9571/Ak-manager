@@ -29,7 +29,7 @@ public class UpdateController extends BaseController {
     @PostMapping("/allupdate/add")
     public AjaxResult addAllUpdate(@RequestBody Allupdate allupdate) {
         int i = updateService.addAllUpdate(allupdate);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -37,7 +37,7 @@ public class UpdateController extends BaseController {
      */
     @PostMapping("/allupdate/list")
     public AjaxResult list(@RequestBody Allupdate allupdate) {
-        startPage(allupdate.getPage(),allupdate.getSize(),allupdate.getOrderByColumn(),allupdate.getIsAsc());
+        startPage(allupdate.getPage(), allupdate.getSize(), allupdate.getOrderByColumn(), allupdate.getIsAsc());
         return AjaxResult.success(getDataTable(updateService.findAllUpdate()));
     }
 
@@ -55,7 +55,7 @@ public class UpdateController extends BaseController {
     @PostMapping("/allupdate/edit")
     public AjaxResult editAllupdate(@RequestBody Allupdate allupdate) {
         Integer i = updateService.editAllUpdate(allupdate);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -64,7 +64,7 @@ public class UpdateController extends BaseController {
     @PostMapping("/allupdate/del")
     public AjaxResult delAllupdate(String id) {
         Integer i = updateService.deleteAllupdate(id);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -72,7 +72,7 @@ public class UpdateController extends BaseController {
      */
     @PostMapping("/hotupdate/list")
     public AjaxResult hotUpdateList(@RequestBody Hotupdate hotupdate) {
-        startPage(hotupdate.getPage(),hotupdate.getSize(),hotupdate.getOrderByColumn(),hotupdate.getIsAsc());
+        startPage(hotupdate.getPage(), hotupdate.getSize(), hotupdate.getOrderByColumn(), hotupdate.getIsAsc());
         return AjaxResult.success(getDataTable(updateService.findHotupdate()));
     }
 
@@ -83,13 +83,14 @@ public class UpdateController extends BaseController {
     public AjaxResult findHotUpdate(Integer id) {
         return AjaxResult.success(updateService.findHotupdateById(id));
     }
+
     /**
      * 添加 热更新
      */
     @PostMapping("/hotupdate/add")
     public AjaxResult addHotUpdate(@RequestBody Hotupdate hotUpdate) {
         int i = updateService.addHotUpdate(hotUpdate);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -98,7 +99,7 @@ public class UpdateController extends BaseController {
     @PostMapping("/hotupdate/edit")
     public AjaxResult editHotUpdate(@RequestBody Hotupdate hotUpdate) {
         int i = updateService.editHotUpdate(hotUpdate);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -107,6 +108,6 @@ public class UpdateController extends BaseController {
     @PostMapping("/hotupdate/del")
     public AjaxResult delHotupdate(String id) {
         Integer i = updateService.delHotupdate(id);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 }

@@ -28,30 +28,30 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public List<Map> selectPackage(String ip, String channelId, String versionId, String platform) {
-        if("android".equals(platform)){
+        if ("android".equals(platform)) {
             platform = "1";
-        }else if("ios".equals(platform)){
+        } else if ("ios".equals(platform)) {
             platform = "2";
-        }else {
+        } else {
             platform = "3";
         }
-        return updateMapper.selectPackage(ip,channelId,versionId,platform);
+        return updateMapper.selectPackage(ip, channelId, versionId, platform);
     }
 
     @Override
     public List<Map> selectConsumer() {
         List<Map> list = updateMapper.selectConsumer();
-        list.forEach(m->{
+        list.forEach(m -> {
             try {
                 JSONArray jsonArray = new JSONArray();
                 JSONObject jsonObject = JSONObject.parseObject((String) m.get("info"));
-                if(jsonObject!=null){
+                if (jsonObject != null) {
                     jsonArray.add(jsonObject);
-                    m.put("info",jsonArray);
-                }else {
+                    m.put("info", jsonArray);
+                } else {
                     m.remove("info");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 m.remove("info");
             }
         });
@@ -92,7 +92,7 @@ public class UpdateServiceImpl implements UpdateService {
     public String selectAllupdate(String channelId, String versionId) {
         //查询该平台 最新版本更新地址
         Map map = updateMapper.selectAllupdate(channelId);
-        if(map==null || versionId.equals(map.get("version"))){
+        if (map == null || versionId.equals(map.get("version"))) {
             return null;
         }
         return (String) map.get("apkUpdateUrl");
@@ -131,13 +131,13 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public Map selectStopNotice(String channelId) {
         Integer tid = tenantMapper.getTidByCid(channelId);
-        return  updateMapper.selectStopNotice(tid);
+        return updateMapper.selectStopNotice(tid);
     }
 
-    private Integer verInt(String version){
+    private Integer verInt(String version) {
         //计算版本号
         String[] vers = version.split("\\.");
-        int verInt = Integer.valueOf(vers[0])*10000+Integer.valueOf(vers[1])*100+Integer.valueOf(vers[2]);
+        int verInt = Integer.valueOf(vers[0]) * 10000 + Integer.valueOf(vers[1]) * 100 + Integer.valueOf(vers[2]);
         return verInt;
     }
 }

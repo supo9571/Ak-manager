@@ -55,6 +55,7 @@ public class DataSourceConfig {
     private String cardUserNodes;
     @Value("${spring.datasource.sqlShow}")
     private String sqlShow;
+
     // 配置sharding-jdbc的DataSource，给上层应用使用，这个DataSource包含所有的逻辑库和逻辑表，应用增删改查时，修改对应sql
     // 然后选择合适的数据库继续操作。因此这个DataSource创建很重要。
     @Bean
@@ -69,14 +70,14 @@ public class DataSourceConfig {
         // 打印SQL
         Properties props = new Properties();
         props.put("sql.show", sqlShow);
-        DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(),shardingRuleConfig,props);
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig, props);
         return dataSource;
     }
 
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins",coinsNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins", coinsNodes);
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -85,7 +86,7 @@ public class DataSourceConfig {
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card",cardNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card", cardNodes);
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -94,7 +95,7 @@ public class DataSourceConfig {
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user",cardUserNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user", cardUserNodes);
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -103,7 +104,7 @@ public class DataSourceConfig {
     // 下面函数是获取数据源，即包含有多少个数据库，读入到系统中存放于map中
     private Map<String, DataSource> createDataSourceMap() {
         Map<String, DataSource> result = new HashMap<>();
-        result.put("sys-data",createDataSource(jdbcUrl));
+        result.put("sys-data", createDataSource(jdbcUrl));
         return result;
     }
 

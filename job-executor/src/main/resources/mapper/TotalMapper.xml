@@ -11,9 +11,8 @@
     </insert>
 
     <insert id="saveTodayLogins">
-        insert into data_login_count(`date`,`num`)
-        values (#{date},#{num})
-        ON DUPLICATE KEY
+        insert into data_login_count(`date`, `num`)
+        values (#{date}, #{num}) ON DUPLICATE KEY
         UPDATE num=#{num};
     </insert>
 </mapper>

@@ -22,17 +22,17 @@ public interface InsertMapper {
     void insertReduceCoins(Coins reduceCoins);
 
     @Update("update data_register set curr =#{curr} where uid = #{uid}")
-    void updateCurrByAdd(@Param("uid") Long uid,@Param("curr") Long curr);
+    void updateCurrByAdd(@Param("uid") Long uid, @Param("curr") Long curr);
 
     @Update("update data_register set curr =#{curr},safe_box = #{safeBox} where uid = #{uid}")
-    void updateCurrByRed(@Param("uid") Long uid,@Param("curr") Long curr,@Param("safeBox") Long safeBox);
+    void updateCurrByRed(@Param("uid") Long uid, @Param("curr") Long curr, @Param("safeBox") Long safeBox);
 
     void insertLogin(Login login);
 
     @Update("update data_register set login_ip = #{ip},login_device_id = #{deviceId},login_device_brand = #{deviceBrand}," +
             "vip_level = #{vipLevel},login_time = #{time},phone = #{phone} where uid = #{uid}")
     void updateUser(@Param("uid") Long uid, @Param("ip") String ip,
-                    @Param("deviceId") String deviceId, @Param("deviceBrand")String deviceBrand,@Param("vipLevel") int vipLevel,@Param("time") Long time,@Param("phone") String phone);
+                    @Param("deviceId") String deviceId, @Param("deviceBrand") String deviceBrand, @Param("vipLevel") int vipLevel, @Param("time") Long time, @Param("phone") String phone);
 
     void insertLogout(Login login);
 
@@ -44,9 +44,10 @@ public interface InsertMapper {
 
     /**
      * 修改流水
+     *
      * @param uid
      * @param value
      */
     @Update("update data_register set today_water = #{value}+today_water,total_water = #{value}+total_water where uid = #{uid}")
-    void updateUserWater(@Param("uid") Long uid,@Param("value") Long value);
+    void updateUserWater(@Param("uid") Long uid, @Param("value") Long value);
 }

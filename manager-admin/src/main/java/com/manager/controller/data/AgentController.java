@@ -20,13 +20,14 @@ public class AgentController {
 
     @Autowired
     private AgentService agentService;
+
     /**
      * 获取牌局记录 列表
      */
     @PreAuthorize("@ss.hasPermi('data:agent:list')")
     @ApiOperation(value = "查询牌局记录列表")
     @GetMapping("/list")
-    public AjaxResult list(Integer tid,String uid,String agentId,Integer page,Integer size,String orderByColumn,String isAsc) {
+    public AjaxResult list(Integer tid, String uid, String agentId, Integer page, Integer size, String orderByColumn, String isAsc) {
         return agentService.getAgents(tid, uid, agentId, page, size, orderByColumn, isAsc);
     }
 }

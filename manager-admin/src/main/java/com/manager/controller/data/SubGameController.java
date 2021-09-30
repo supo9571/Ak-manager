@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 子游戏管理
+ *
  * @author sieGuang 2021/09/03
  */
 @RestController
@@ -25,6 +26,7 @@ public class SubGameController {
 
     /**
      * 查询
+     *
      * @param game 过滤条件
      */
     @PreAuthorize("@ss.hasPermi('data:game:list')")
@@ -36,6 +38,7 @@ public class SubGameController {
 
     /**
      * 编辑
+     *
      * @param game 需要修改的内容
      */
     @PreAuthorize("@ss.hasPermi('data:game:edit')")

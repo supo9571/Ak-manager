@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public Integer findByphone(String phone) {
         return userMapper.findByphone(phone);
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String phoneNumber, String password) {
-        userMapper.updatePassword(phoneNumber,password);
+        userMapper.updatePassword(phoneNumber, password);
     }
 
     @Override

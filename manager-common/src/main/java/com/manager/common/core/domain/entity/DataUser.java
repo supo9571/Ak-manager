@@ -8,7 +8,7 @@ import lombok.Data;
  * @return
  **/
 @Data
-public class DataUser{
+public class DataUser {
     private Long accountId;
     private String phone;
     private String password;

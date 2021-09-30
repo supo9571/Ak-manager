@@ -32,7 +32,7 @@ public enum OpEnum {
 
     public static OpEnum getByValue(String opName) {
         for (OpEnum opEnum : values()) {
-            if (opEnum.getOpName() .equalsIgnoreCase(opName)) {
+            if (opEnum.getOpName().equalsIgnoreCase(opName)) {
                 return opEnum;
             }
         }

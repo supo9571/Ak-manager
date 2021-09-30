@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * 子游戏管理
+ *
  * @author sieGuang 2021/09/03
  */
 @RestController
@@ -27,25 +28,27 @@ public class SubGameController extends BaseController {
 
     /**
      * 查询
+     *
      * @param game 过滤条件
      */
     @PostMapping("/list")
     public AjaxResult getSubGameList(@RequestBody Game game) {
-        startOrder(game.getOrderByColumn(),game.getIsAsc());
+        startOrder(game.getOrderByColumn(), game.getIsAsc());
         Map result = new HashMap();
-        result.put("list",subgameService.getSubGameList(game));
-        result.put("count",subgameService.getIpCount());
+        result.put("list", subgameService.getSubGameList(game));
+        result.put("count", subgameService.getIpCount());
         return AjaxResult.success("查询成功", result);
     }
 
     /**
      * 编辑
+     *
      * @param game 需要修改的内容
      */
     @PostMapping("/edit")
     public AjaxResult editSubGame(@RequestBody Game game) {
         int i = subgameService.editSubGame(game);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
 }

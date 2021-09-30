@@ -18,22 +18,22 @@
                 </foreach>
             </if>
             <if test="channel!=null and channel!=''">
-                and  channel = #{channel}
+                and channel = #{channel}
             </if>
             <if test="ip!=null and ip!=''">
-                and  ip_address = #{ip}
+                and ip_address = #{ip}
             </if>
             <if test="deviceBrand!=null and deviceBrand!=''">
-                and  device_brand = #{deviceBrand}
+                and device_brand = #{deviceBrand}
             </if>
             <if test="deviceId!=null and deviceId!=''">
-                and  device_id = #{deviceId}
+                and device_id = #{deviceId}
             </if>
             <if test="beginTime!=null and beginTime!=''">
-                and  time >= UNIX_TIMESTAMP(#{beginTime})
+                and time >= UNIX_TIMESTAMP(#{beginTime})
             </if>
             <if test="endTime!=null and endTime!=''">
-                and  UNIX_TIMESTAMP(#{endTime}) >= time
+                and UNIX_TIMESTAMP(#{endTime}) >= time
             </if>
         </where>
     </select>

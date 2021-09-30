@@ -11,7 +11,7 @@ import java.util.Date;
  * config_exchange_order
  */
 @Data
-public class ExchangeOrder{
+public class ExchangeOrder {
     private int id;
 
     private int tid;
@@ -62,7 +62,7 @@ public class ExchangeOrder{
     public ExchangeOrder() {
     }
 
-    public ExchangeOrder(String uid, BigDecimal withdrawMoney, BigDecimal currMoney, String channel, String withdrawIp,String withdrawType) {
+    public ExchangeOrder(String uid, BigDecimal withdrawMoney, BigDecimal currMoney, String channel, String withdrawIp, String withdrawType) {
         this.uid = uid;
         this.withdrawMoney = withdrawMoney;
         this.currMoney = currMoney;

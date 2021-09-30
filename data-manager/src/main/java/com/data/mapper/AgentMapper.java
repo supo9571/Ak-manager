@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper
 public interface AgentMapper {
 
-    List getCommissionList(@Param("tid") Integer tid,@Param("uid") String uid,@Param("agentId") String agentId,@Param("date")String date);
+    List getCommissionList(@Param("tid") Integer tid, @Param("uid") String uid, @Param("agentId") String agentId, @Param("date") String date);
 
     List getCommissionDays(@Param("uid") String uid);
 
-    List getCashs(@Param("uid")String uid);
+    List getCashs(@Param("uid") String uid);
 
-    List getPopularizes(@Param("uid")String uid);
+    List getPopularizes(@Param("uid") String uid);
 }

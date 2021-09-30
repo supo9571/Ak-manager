@@ -27,21 +27,21 @@ public interface MonthCardMapper {
 
     @Select("SELECT open_type,recharge_other_type,recharge_type,IF(open_type = '1',live_addr,url)url,img_type vip_img,vip_name,QQ,wechat FROM config_vip_recharge " +
             " WHERE pay_id = #{id} AND status = '1' and tid = #{tid} ")
-    List<Map> selectVipconfig(@Param("id") Integer id,@Param("tid") Integer tid);
+    List<Map> selectVipconfig(@Param("id") Integer id, @Param("tid") Integer tid);
 
     @Select("SELECT open_type jump_type,btn,live_addr url,bank_value FROM config_bank_recharge where pay_id = #{id} AND status = '1' and vip_list like concat('%',#{vip},'%') and tid = #{tid} ")
-    List<Map> selectBankconfig(@Param("id") Integer id,@Param("vip") int vip,@Param("tid") Integer tid);
+    List<Map> selectBankconfig(@Param("id") Integer id, @Param("vip") int vip, @Param("tid") Integer tid);
 
     @Select("SELECT btn,diy_max,diy_min,is_diy,msg,other_name,online_config_id,pay_type pay_channel,pay_channel_code FROM config_online_recharge where pay_id = #{id} " +
             "AND status = '1' and vip_list like concat('%',#{vip},'%') and (use_mobile='3' or use_mobile=#{phoneType}) and tid = #{tid} ")
-    List<Map> selectOnlineconfig(@Param("id") Integer id,@Param("vip") Integer vip, @Param("phoneType") String phoneType,@Param("tid") Integer tid);
+    List<Map> selectOnlineconfig(@Param("id") Integer id, @Param("vip") Integer vip, @Param("phoneType") String phoneType, @Param("tid") Integer tid);
 
     @Select("select recharge_give from config_pay where pay_type = '1' and status = '1' and tid = #{tid} limit 0,1")
     Integer getVipGive(@Param("tid") Integer tid);
 
     @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel,create_time) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel},sysdate())")
-    Integer saveExchange(@Param("channel") String channel,@Param("tid") Integer tid,@Param("uid") String uid,
-                         @Param("type")String type, @Param("name")String name, @Param("account")String account, @Param("originBank")String originBank);
+    Integer saveExchange(@Param("channel") String channel, @Param("tid") Integer tid, @Param("uid") String uid,
+                         @Param("type") String type, @Param("name") String name, @Param("account") String account, @Param("originBank") String originBank);
 
     Integer saveWithdraw(ExchangeOrder exchangeOrder);
 
@@ -51,7 +51,7 @@ public interface MonthCardMapper {
     @Select("select u.name,u.account,u.type,u.origin_bank originBank,u.create_time CreateAt," +
             "c.keep_money,c.max_money,c.min_money,c.num,c.poundage,c.add_mosaic_num recharge_times " +
             "from user_exchange u left join config_exchange c on u.type = c.method and u.tid = c.tid where u.uid = #{uid} and u.tid=#{tid} ")
-    List<Map> getUserBind(@Param("uid")String uid,@Param("tid")Integer tid);
+    List<Map> getUserBind(@Param("uid") String uid, @Param("tid") Integer tid);
 
     @Select("SELECT total_add pay_money,total_water person_water FROM data_register where uid = #{uid}")
     List<Map> getUserWater(@Param("uid") String uid);
@@ -66,5 +66,5 @@ public interface MonthCardMapper {
     Integer getWithdrawNumber(String uid);
 
     @Select("select poundage from config_exchange where tid = #{tid} and method = #{type} ")
-    Integer getPoundage(@Param("type") String type,@Param("tid") Integer tid);
+    Integer getPoundage(@Param("type") String type, @Param("tid") Integer tid);
 }

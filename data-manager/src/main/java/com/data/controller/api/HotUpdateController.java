@@ -43,66 +43,66 @@ public class HotUpdateController extends BaseController {
 
         JSONObject result = new JSONObject();
         JSONObject data = new JSONObject();
-        data.put("apiUrl",new String[] {globalConfig.getApiUrl()});
-        data.put("errUploadUrl",globalConfig.getErrUploadUrl());
-        data.put("headUrl",globalConfig.getHeadUrl());
+        data.put("apiUrl", new String[]{globalConfig.getApiUrl()});
+        data.put("errUploadUrl", globalConfig.getErrUploadUrl());
+        data.put("headUrl", globalConfig.getHeadUrl());
         //添加 客服信息
-        data.put("customer",updateService.selectConsumer());
+        data.put("customer", updateService.selectConsumer());
         //添加 停服公告
-        data.put("stop_notice",updateService.selectStopNotice(channelId));
+        data.put("stop_notice", updateService.selectStopNotice(channelId));
         //添加 整包更新信息
-        String updateUrl = updateService.selectAllupdate(channelId,versionId);
-        if(StringUtils.isNotBlank(updateUrl)){
+        String updateUrl = updateService.selectAllupdate(channelId, versionId);
+        if (StringUtils.isNotBlank(updateUrl)) {
             JSONObject appupdate = new JSONObject();
-            appupdate.put("update_url",globalConfig.getResourcesUrl()+updateUrl);
-            data.put("appupdate",appupdate);
+            appupdate.put("update_url", globalConfig.getResourcesUrl() + updateUrl);
+            data.put("appupdate", appupdate);
         }
         //添加 热更信息
-        List<Map> list = updateService.selectPackage(ip,hotChannel,hotVersion,platform);
-        if(!list.isEmpty()){
+        List<Map> list = updateService.selectPackage(ip, hotChannel, hotVersion, platform);
+        if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 Map map = list.get(i);
                 JSONObject gameInfo = JSONObject.parseObject((String) map.get("game_info"));
-                Map<String,Object> platMap;
-                platMap = gameInfo.getObject(platform,Map.class);
+                Map<String, Object> platMap;
+                platMap = gameInfo.getObject(platform, Map.class);
                 JSONArray jsonArray = new JSONArray();
-                for (String key:platMap.keySet()){
+                for (String key : platMap.keySet()) {
                     JSONObject value = (JSONObject) platMap.get(key);
-                    if("lobby".equals(key)){//大厅
+                    if ("lobby".equals(key)) {//大厅
                         JSONObject lobbyhotfix = new JSONObject();
-                        lobbyhotfix.put("game_code",key);
-                        lobbyhotfix.put("game_id",globalConfig.getGameConfig().get(key));
-                        lobbyhotfix.put("manifest_res",value.get("manifest_res"));
-                        lobbyhotfix.put("release_time",map.get("release_time"));
-                        lobbyhotfix.put("resources_url",globalConfig.getResourcesUrl()+value.get("resources_url"));
-                        lobbyhotfix.put("version",map.get("version"));
-                        data.put("lobbyhotfix",lobbyhotfix);
+                        lobbyhotfix.put("game_code", key);
+                        lobbyhotfix.put("game_id", globalConfig.getGameConfig().get(key));
+                        lobbyhotfix.put("manifest_res", value.get("manifest_res"));
+                        lobbyhotfix.put("release_time", map.get("release_time"));
+                        lobbyhotfix.put("resources_url", globalConfig.getResourcesUrl() + value.get("resources_url"));
+                        lobbyhotfix.put("version", map.get("version"));
+                        data.put("lobbyhotfix", lobbyhotfix);
                     }
-                    if("update".equals(key)){//热更新模块数据
+                    if ("update".equals(key)) {//热更新模块数据
                         JSONObject updatehotfix = new JSONObject();
-                        updatehotfix.put("game_code",key);
-                        updatehotfix.put("game_id",globalConfig.getGameConfig().get(key));
-                        updatehotfix.put("manifest_res",value.get("manifest_res"));
-                        updatehotfix.put("release_time",map.get("release_time"));
-                        updatehotfix.put("resources_url",globalConfig.getResourcesUrl()+value.get("resources_url"));
-                        updatehotfix.put("version",map.get("version"));
-                        data.put("updatehotfix",updatehotfix);
+                        updatehotfix.put("game_code", key);
+                        updatehotfix.put("game_id", globalConfig.getGameConfig().get(key));
+                        updatehotfix.put("manifest_res", value.get("manifest_res"));
+                        updatehotfix.put("release_time", map.get("release_time"));
+                        updatehotfix.put("resources_url", globalConfig.getResourcesUrl() + value.get("resources_url"));
+                        updatehotfix.put("version", map.get("version"));
+                        data.put("updatehotfix", updatehotfix);
                     }
                     JSONObject hotfix = new JSONObject();
-                    hotfix.put("game_code",key);
-                    hotfix.put("game_id",globalConfig.getGameConfig().get(key));
-                    hotfix.put("manifest_res",value.get("manifest_res"));
-                    hotfix.put("release_time",map.get("release_time"));
-                    hotfix.put("resources_url",globalConfig.getResourcesUrl()+value.get("resources_url"));
-                    hotfix.put("version",map.get("version"));
+                    hotfix.put("game_code", key);
+                    hotfix.put("game_id", globalConfig.getGameConfig().get(key));
+                    hotfix.put("manifest_res", value.get("manifest_res"));
+                    hotfix.put("release_time", map.get("release_time"));
+                    hotfix.put("resources_url", globalConfig.getResourcesUrl() + value.get("resources_url"));
+                    hotfix.put("version", map.get("version"));
                     jsonArray.add(hotfix);
                 }
-                data.put("hotfix",jsonArray);
+                data.put("hotfix", jsonArray);
             }
         }
-        result.put("data",data);
-        result.put("msg","ok");
-        result.put("status",200);
+        result.put("data", data);
+        result.put("msg", "ok");
+        result.put("status", 200);
 
         return result;
     }

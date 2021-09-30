@@ -22,7 +22,7 @@ public interface ConfigAgentMapper {
     Long selectAgent(@Param("tid") Integer tid, @Param("agentId") String agentId);
 
     @Update("update data_register set agent_id = #{agentId},agent_time = #{agentTime} where uid = #{uid} and time>#{time}")
-    Integer setAgentId(@Param("agentId") String agentId, @Param("uid")String uid, @Param("time")Long time,@Param("agentTime") Long agentTime);
+    Integer setAgentId(@Param("agentId") String agentId, @Param("uid") String uid, @Param("time") Long time, @Param("agentTime") Long agentTime);
 
     @Select("SELECT d.uid," +
             "d.sub_ratio+c.sub_ratio sub_water," +
@@ -33,14 +33,14 @@ public interface ConfigAgentMapper {
             "FROM agent_commission_day d " +
             "LEFT JOIN agent_commission c ON d.uid = c.uid " +
             "WHERE d.agent_id = #{uid} and d.day=#{day} limit #{beginNum},#{limit}")
-    List<Map> selectSubinfo(@Param("beginNum") int beginNum,@Param("limit") Integer limit,@Param("uid") String uid,@Param("day") String day);
+    List<Map> selectSubinfo(@Param("beginNum") int beginNum, @Param("limit") Integer limit, @Param("uid") String uid, @Param("day") String day);
 
     @Select("select count(1) from agent_commission_day where agent_id = #{uid} and day=#{day}")
-    Integer selectSubinfoCount(@Param("uid") String uid,@Param("day") String day);
+    Integer selectSubinfoCount(@Param("uid") String uid, @Param("day") String day);
 
     @Select("select case_income out_golds,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i::%s') out_time from agent_case_income " +
             "where uid = #{uid} order by create_time desc limit #{beginNum},#{limit}")
-    List<Map> getWithdrawHistory(@Param("beginNum") int beginNum,@Param("limit")int limit, @Param("uid") Long uid);
+    List<Map> getWithdrawHistory(@Param("beginNum") int beginNum, @Param("limit") int limit, @Param("uid") Long uid);
 
     @Select("select count(1) from agent_case_income where uid = #{uid}")
     Integer getWithdrawHistoryCount(@Param("uid") Long uid);
@@ -53,7 +53,7 @@ public interface ConfigAgentMapper {
             "LEFT JOIN agent_commission c " +
             "ON d.uid = c.uid " +
             "WHERE d.uid = #{uid} AND d.day = #{day}")
-    Map getInfo(@Param("uid")String uid,@Param("day")String day);
+    Map getInfo(@Param("uid") String uid, @Param("day") String day);
 
     @Select("select promotion_domain from config_agent where tid=#{tid} limit 0,1")
     String getSpreatUrl(@Param("tid") Integer tid);
@@ -61,7 +61,7 @@ public interface ConfigAgentMapper {
     @Select("SELECT day date,sub_ratio+other_ratio teamwater," +
             "sub_ratio subwater,other_ratio next_water,total_income count_rebate FROM agent_commission_day " +
             "WHERE uid = #{uid} limit #{beginNum},#{limit}")
-    List<Map> getIncome(@Param("beginNum") int beginNum,@Param("limit") int limit,@Param("uid") Long uid);
+    List<Map> getIncome(@Param("beginNum") int beginNum, @Param("limit") int limit, @Param("uid") Long uid);
 
     @Select("select count(*) from agent_commission_day where uid = #{uid}")
     Integer getIncomeCount(Long uid);
@@ -73,5 +73,5 @@ public interface ConfigAgentMapper {
     void saveWithdarw(@Param("uid") String uid, @Param("cash") BigDecimal cash);
 
     @Update("update agent_commission_day set cash_income = cash_income+#{cash},wait_income = wait_income-#{cash} where uid = #{uid} and day = #{day} ")
-    void updateWaitIncome(@Param("uid") String uid, @Param("cash") BigDecimal cash,@Param("day") String day);
+    void updateWaitIncome(@Param("uid") String uid, @Param("cash") BigDecimal cash, @Param("day") String day);
 }

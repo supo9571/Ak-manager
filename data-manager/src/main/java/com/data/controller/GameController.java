@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/game")
 @Slf4j
-public class GameController extends BaseController{
+public class GameController extends BaseController {
 
     @Autowired
     private GlobalConfig globalConfig;
@@ -41,7 +41,7 @@ public class GameController extends BaseController{
         String gameSend = globalConfig.getGameSend();
         //查询 游戏配置
         String param = gameService.getGameConfig();
-        String result = HttpUtils.sendPost(domain + gameSend, "data="+param);
+        String result = HttpUtils.sendPost(domain + gameSend, "data=" + param);
         if (!"scuess".equals(result)) {
             log.error(result);
             return AjaxResult.error(result);
@@ -53,8 +53,8 @@ public class GameController extends BaseController{
      * 添加 测试ip
      */
     @PostMapping("/addIp")
-    public AjaxResult addIp(String ip,String createBy) {
-        gameService.saveIp(ip,createBy);
+    public AjaxResult addIp(String ip, String createBy) {
+        gameService.saveIp(ip, createBy);
         return AjaxResult.success();
     }
 
@@ -62,10 +62,10 @@ public class GameController extends BaseController{
      * 查询 测试ip
      */
     @PostMapping("/findIp")
-    public AjaxResult findIp(String ip,String createBy,String beginTime,
-                             String endTime,String orderByColumn,String isAsc) {
-        startOrder(orderByColumn,isAsc);
-        return AjaxResult.success(gameService.findIp(ip,createBy,beginTime,endTime));
+    public AjaxResult findIp(String ip, String createBy, String beginTime,
+                             String endTime, String orderByColumn, String isAsc) {
+        startOrder(orderByColumn, isAsc);
+        return AjaxResult.success(gameService.findIp(ip, createBy, beginTime, endTime));
     }
 
     /**

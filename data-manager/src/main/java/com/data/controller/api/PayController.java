@@ -34,24 +34,24 @@ public class PayController extends BaseController {
      * bank_account	是	string	收款银行卡号
      * bank_user_name	是	string	收款持卡人姓名
      */
-    @PostMapping(value = "/onebyone/submitUnionCard",produces = "application/json;charset=UTF-8")
-    public JSONObject bankReg(@RequestBody JSONObject param){
+    @PostMapping(value = "/onebyone/submitUnionCard", produces = "application/json;charset=UTF-8")
+    public JSONObject bankReg(@RequestBody JSONObject param) {
         String uid = param.getString("uid");
         String name = param.getString("name");
         Integer money = param.getInteger("money");
         String channel = param.getString("channel");
         JSONObject result = new JSONObject();
-        Integer i = payService.saveBankReg(uid,name,money,channel);
-        if(i>0){
+        Integer i = payService.saveBankReg(uid, name, money, channel);
+        if (i > 0) {
             Map map = new HashMap();
-            map.put("code",200);
-            map.put("msg","提交成功");
-            result.put("data",map);
-        }else {
+            map.put("code", 200);
+            map.put("msg", "提交成功");
+            result.put("data", map);
+        } else {
             Map map = new HashMap();
-            map.put("code",500);
-            map.put("msg","提交失败");
-            result.put("data",map);
+            map.put("code", 500);
+            map.put("msg", "提交失败");
+            result.put("data", map);
         }
         return result;
     }

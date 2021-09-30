@@ -12,7 +12,7 @@ public interface MonthCardService {
 
     JSONObject getMonthConfig(String cid);
 
-    JSONObject getBookConfig(JSONObject param,String cid);
+    JSONObject getBookConfig(JSONObject param, String cid);
 
     Integer getVipGive(String channelId);
 

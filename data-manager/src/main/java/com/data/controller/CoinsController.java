@@ -23,18 +23,19 @@ public class CoinsController extends BaseController {
 
     @Autowired
     private CoinsService coinsService;
+
     /**
      * 获取账变记录列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Coins coins) {
-        startPage(coins.getPage(),coins.getSize(),coins.getOrderByColumn(),coins.getIsAsc());
+        startPage(coins.getPage(), coins.getSize(), coins.getOrderByColumn(), coins.getIsAsc());
         List list = coinsService.selectCoins(coins);
         //计算总计
         Long count = coinsService.selectCoinsCount(coins);
         Map result = new HashMap();
-        result.put("list",getDataTable(list));
-        result.put("count",count);
+        result.put("list", getDataTable(list));
+        result.put("count", count);
         return AjaxResult.success("查询成功", result);
     }
 }

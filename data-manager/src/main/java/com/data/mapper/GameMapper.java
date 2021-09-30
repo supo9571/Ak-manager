@@ -15,7 +15,7 @@ public interface GameMapper {
     List<Map> getGames();
 
     @Insert("insert into config_ip(ip,create_by,create_time) values (#{ip},#{createBy},sysdate())")
-    void saveIp(@Param("ip") String ip,@Param("createBy") String createBy);
+    void saveIp(@Param("ip") String ip, @Param("createBy") String createBy);
 
     List<Map> findIp(@Param("ip") String ip, @Param("createBy") String createBy, @Param("beginTime") String beginTime, @Param("endTime") String endTime);
 

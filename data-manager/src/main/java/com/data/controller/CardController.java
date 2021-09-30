@@ -24,25 +24,26 @@ public class CardController extends BaseController {
 
     @Autowired
     private CardService cardService;
+
     /**
      * 获取牌局记录列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Card card) {
-        startPage(card.getPage(),card.getSize(),card.getOrderByColumn(),card.getIsAsc());
+        startPage(card.getPage(), card.getSize(), card.getOrderByColumn(), card.getIsAsc());
         List list;
         Map map;
-        if(StringUtils.isBlank(card.getUid())){
+        if (StringUtils.isBlank(card.getUid())) {
             list = cardService.selectCard(card);
             map = cardService.selectCardCount(card);
-        }else{
+        } else {
             list = cardService.selectCardUser(card);
             map = cardService.selectCardUserCount(card);
         }
         Map result = new HashMap();
-        result.put("list",getDataTable(list));
-        result.put("count",map);
-        return AjaxResult.success("查询成功",result);
+        result.put("list", getDataTable(list));
+        result.put("count", map);
+        return AjaxResult.success("查询成功", result);
     }
 
     /**
@@ -50,6 +51,6 @@ public class CardController extends BaseController {
      */
     @PostMapping("/info")
     public AjaxResult info(String tableGid) {
-        return AjaxResult.success("查询成功",cardService.findCardInfo(tableGid));
+        return AjaxResult.success("查询成功", cardService.findCardInfo(tableGid));
     }
 }

@@ -32,11 +32,12 @@ public class MonthCardController extends BaseController {
 
     @Autowired
     private GlobalConfig globalConfig;
+
     /**
      * 月卡接口
      */
     @PostMapping("/pay/get_month_mark")
-    public JSONObject month(){
+    public JSONObject month() {
         String channelId = getHeader("Client-ChannelId");//渠道id
         return monthCardService.getMonthConfig(channelId);
     }
@@ -45,42 +46,41 @@ public class MonthCardController extends BaseController {
      * 充值 配置接口
      */
     @PostMapping("/pay/get_book_mark")
-    public JSONObject book(@RequestBody JSONObject param){
+    public JSONObject book(@RequestBody JSONObject param) {
         String channelId = getHeader("Client-ChannelId");//渠道id
-        return monthCardService.getBookConfig(param,channelId);
+        return monthCardService.getBookConfig(param, channelId);
     }
 
     /**
      * 提现 配置接口
      */
     @PostMapping("/onebyone/user_info")
-    public JSONObject exchange(){
+    public JSONObject exchange() {
         String channelId = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid");//玩家id
-        return monthCardService.getExchangeConfig(uid,channelId);
+        return monthCardService.getExchangeConfig(uid, channelId);
     }
 
     /**
      * 提现银行卡列表
      */
     @PostMapping("/onebyone/get_bank_list")
-    public JSONObject bankList(){
+    public JSONObject bankList() {
         return monthCardService.getBankList();
     }
 
 
     /**
      * vip充值 赠送比例
-     *
      */
     @PostMapping("/pay/get_recharge_give")
-    public JSONObject rechargeGive(){
+    public JSONObject rechargeGive() {
         String channelId = getHeader("Client-ChannelId");//渠道id
         JSONObject jsonObject = new JSONObject();
         Integer give = monthCardService.getVipGive(channelId);
         Map map = new HashMap();
-        map.put("vip",give);
-        jsonObject.put("result",map);
+        map.put("vip", give);
+        jsonObject.put("result", map);
         return jsonObject;
     }
 
@@ -92,25 +92,25 @@ public class MonthCardController extends BaseController {
      * originBank	否	string	银行编码（绑银行卡必填）
      */
     @PostMapping("/onebyone/bingding")
-    public JSONObject bingding(@RequestBody JSONObject param){
+    public JSONObject bingding(@RequestBody JSONObject param) {
         String type = param.getString("type");
         String name = param.getString("name");
         String account = param.getString("account");
         String originBank = param.getString("originBank");
-        if("alipay".equals(type)){
+        if ("alipay".equals(type)) {
             type = "0";
-        }else{
+        } else {
             type = "1";
         }
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
-        Integer i = monthCardService.saveExchange(channel,uid,type,name,account,originBank);
+        Integer i = monthCardService.saveExchange(channel, uid, type, name, account, originBank);
         JSONObject jsonObject = new JSONObject();
-        if(i>0){
-            jsonObject.put("code","200");
-            jsonObject.put("msg","绑定成功");
-        }else {
-            jsonObject.put("code","500");
+        if (i > 0) {
+            jsonObject.put("code", "200");
+            jsonObject.put("msg", "绑定成功");
+        } else {
+            jsonObject.put("code", "500");
         }
         return jsonObject;
     }
@@ -122,7 +122,7 @@ public class MonthCardController extends BaseController {
      * withdrawAmount	是	int	提现金额 1元 = 10000
      */
     @PostMapping("/onebyone/withdraw")
-    public JSONObject withdraw(@RequestBody JSONObject param){
+    public JSONObject withdraw(@RequestBody JSONObject param) {
         String type = param.getString("type");
         Long currentAmount = param.getLong("currentAmount");
         Long withdrawAmount = param.getLong("withdrawAmount");
@@ -131,8 +131,8 @@ public class MonthCardController extends BaseController {
         String uid = getHeader("uid"); // uid
         String ip = getHeader("HTTP-CLIENT-IP"); // 提现ip
         //添加 提现记录
-        ExchangeOrder exchangeOrder = new ExchangeOrder(uid,new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)),
-                new BigDecimal(currentAmount).divide(new BigDecimal(10000)),channel,ip,type);
+        ExchangeOrder exchangeOrder = new ExchangeOrder(uid, new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)),
+                new BigDecimal(currentAmount).divide(new BigDecimal(10000)), channel, ip, type);
         Integer i = monthCardService.saveWithdraw(exchangeOrder);
         if (i > 0) {
             result.put("code", "200");

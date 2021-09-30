@@ -9,9 +9,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class DataApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(DataApplication.class, args);
-		System.out.println("(♥◠‿◠)ﾉﾞ  数据统计系统启动成功!!!   ლ(´ڡ`ლ)ﾞ");
-	}
+        System.out.println("(♥◠‿◠)ﾉﾞ  数据统计系统启动成功!!!   ლ(´ڡ`ლ)ﾞ");
+    }
 
 }

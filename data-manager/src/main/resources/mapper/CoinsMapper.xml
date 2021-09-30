@@ -1,79 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.data.mapper.CoinsMapper">
 
-	<select id="selectCoins" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
-		select c.uid,
-			substring(replace(c.`key`,'_',''),8) `key`,
-		       c.curr,
-			   FROM_UNIXTIME(c.`time`) `time`,
-		       c.`value`,
-		       c.`before`,c.channel,
-		       c.table_type tableType,
-		       c.device_brand deviceBrand,
-		       c.game_type gameType,
-		       c.r
-		from data_coins c
-		<where>
-			<if test="uid!=null and uid !=''">
-				and c.uid in
-				<foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
-					'${item}'
-				</foreach>
-			</if>
-			<if test="channel!=null and channel !=''">
-				and c.channel = #{channel}
-			</if>
-			<if test="beginTime!=null and beginTime !=''">
-				and c.mstime between #{beginms} and #{endms}
-			</if>
-			<if test="key!=null and key !=''">
-				and  substring(replace(c.key,'_',''),8) = #{key}
-			</if>
-			<if test="gameType!=null and gameType !=''">
-				and c.game_type in
-				<foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-					'${item}'
-				</foreach>
-			</if>
-			<if test="r!=null and r !=''">
-				and c.r in
-				<foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
-					'${item}'
-				</foreach>
-			</if>
-		</where>
-	</select>
+    <select id="selectCoins" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
+        select c.uid,
+        substring(replace(c.`key`,'_',''),8) `key`,
+        c.curr,
+        FROM_UNIXTIME(c.`time`) `time`,
+        c.`value`,
+        c.`before`,c.channel,
+        c.table_type tableType,
+        c.device_brand deviceBrand,
+        c.game_type gameType,
+        c.r
+        from data_coins c
+        <where>
+            <if test="uid!=null and uid !=''">
+                and c.uid in
+                <foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+            <if test="channel!=null and channel !=''">
+                and c.channel = #{channel}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and c.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="key!=null and key !=''">
+                and substring(replace(c.key,'_',''),8) = #{key}
+            </if>
+            <if test="gameType!=null and gameType !=''">
+                and c.game_type in
+                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+            <if test="r!=null and r !=''">
+                and c.r in
+                <foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+        </where>
+    </select>
 
-	<select id="selectCoinsCount" resultType="java.lang.Long" parameterType="com.manager.common.core.domain.model.Coins">
-		select sum(c.curr) countCurr
-		from data_coins c
-		left join config_game g on c.game_type = g.game_id
-		<where>
-			<if test="uid!=null and uid !=''">
-				and c.uid in
-				<foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
-					'${item}'
-				</foreach>
-			</if>
-			<if test="gameType!=null and gameType !=''">
-				and c.game_type = #{gameType}
-			</if>
-			<if test="channel!=null and channel !=''">
-				and c.channel = #{channel}
-			</if>
-			<if test="beginTime!=null and beginTime !=''">
-				and c.mstime between #{beginms} and #{endms}
-			</if>
-			<if test="r!=null and r !=''">
-				and  c.r = #{r}
-			</if>
-			<if test="key!=null and key !=''">
-				and  substring(replace(c.key,'_',''),8) = #{key}
-			</if>
+    <select id="selectCoinsCount" resultType="java.lang.Long"
+            parameterType="com.manager.common.core.domain.model.Coins">
+        select sum(c.curr) countCurr
+        from data_coins c
+        left join config_game g on c.game_type = g.game_id
+        <where>
+            <if test="uid!=null and uid !=''">
+                and c.uid in
+                <foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+            <if test="gameType!=null and gameType !=''">
+                and c.game_type = #{gameType}
+            </if>
+            <if test="channel!=null and channel !=''">
+                and c.channel = #{channel}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and c.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="r!=null and r !=''">
+                and c.r = #{r}
+            </if>
+            <if test="key!=null and key !=''">
+                and substring(replace(c.key,'_',''),8) = #{key}
+            </if>
 
-		</where>
+        </where>
 
-	</select>
+    </select>
 </mapper>

@@ -13,6 +13,7 @@ public interface TenantMapper {
 
     /**
      * 根据 渠道id 获取 平台id
+     *
      * @param cid
      * @return
      */

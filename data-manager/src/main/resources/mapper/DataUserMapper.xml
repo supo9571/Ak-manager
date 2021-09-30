@@ -3,17 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.data.mapper.UserMapper">
 
-    <insert id="insertToDataUser" parameterType="com.manager.common.core.domain.entity.DataUser" useGeneratedKeys="true" keyProperty="accountId"  keyColumn="account_id">
-        insert into data_user (phone,password,client_ip,seed_token,package_channel,create_time) values (#{phone},#{password},#{client_ip},#{seed_token},#{package_channel},sysdate())
+    <insert id="insertToDataUser" parameterType="com.manager.common.core.domain.entity.DataUser" useGeneratedKeys="true"
+            keyProperty="accountId" keyColumn="account_id">
+        insert into data_user (phone, password, client_ip, seed_token, package_channel, create_time)
+        values (#{phone}, #{password}, #{client_ip}, #{seed_token}, #{package_channel}, sysdate())
     </insert>
 
     <select id="loadDataUserName" parameterType="com.manager.common.core.domain.entity.DataUser" resultType="Integer">
-        select count(phone) from data_user where phone=#{phone} and password = #{password}
+        select count(phone)
+        from data_user
+        where phone = #{phone}
+          and password = #{password}
     </select>
 
     <update id="updateDataUser" parameterType="com.manager.common.core.domain.entity.DataUser">
         update data_user
-        set phone = #{phone},
+        set phone    = #{phone},
             password = #{password}
         where account_id = #{accountId}
     </update>

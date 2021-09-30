@@ -9,7 +9,9 @@
     </select>
 
     <insert id="saveAgentIncome">
-        insert into agent_commission(uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income,history_income) values
+        insert into
+        agent_commission(uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income,history_income)
+        values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
             ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},#{item.cashIncome},#{item.waitIncome},#{item.totalIncome})
@@ -31,7 +33,9 @@
     </insert>
 
     <insert id="saveAgentDayIncome">
-        insert into agent_commission_day(day,uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income) values
+        insert into
+        agent_commission_day(day,uid,agent_id,channel,team_num,sub_num,sub_ratio,sub_income,other_num,other_ratio,other_income,total_income,cash_income,wait_income)
+        values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.day},#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
             ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},0,#{item.totalIncome})
@@ -51,8 +55,20 @@
     </insert>
 
     <select id="selectDayIncome" resultType="com.job.executor.domain.AgentCommission">
-        select uid,agent_id agentId,channel,team_num teamNum,sub_num subNum,sub_ratio subRatio,sub_income subIncome,other_num otherNum, other_ratio other_ratio,other_income otherIncome,total_income totalIncome,
-        cash_income cashIncome,wait_income waitIncome from agent_commission_day
+        select uid,
+               agent_id     agentId,
+               channel,
+               team_num     teamNum,
+               sub_num      subNum,
+               sub_ratio    subRatio,
+               sub_income   subIncome,
+               other_num    otherNum,
+               other_ratio  other_ratio,
+               other_income otherIncome,
+               total_income totalIncome,
+               cash_income  cashIncome,
+               wait_income  waitIncome
+        from agent_commission_day
         where day = #{day}
     </select>
 

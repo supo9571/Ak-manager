@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LoginserviceImpl implements Loginservice {
     @Autowired
     private LoginMapper loginMapper;
+
     @Override
     public List selectLogin(Login login) {
         return loginMapper.selectLogin(login);
@@ -38,12 +39,12 @@ public class LoginserviceImpl implements Loginservice {
      */
     public List selectLoginCounts(String type) {
         List list = new ArrayList();
-        if("w".equals(type)){
-            list = loginMapper.selectLoginCounts(DateUtils.getWeek(),DateUtils.datePath());
-        }else if("m".equals(type)){
-            list = loginMapper.selectLoginCounts(DateUtils.getMonth(),DateUtils.datePath());
-        }else if("y".equals(type)){
-            list = loginMapper.selectLoginCounts(DateUtils.getYear(),DateUtils.datePath());
+        if ("w".equals(type)) {
+            list = loginMapper.selectLoginCounts(DateUtils.getWeek(), DateUtils.datePath());
+        } else if ("m".equals(type)) {
+            list = loginMapper.selectLoginCounts(DateUtils.getMonth(), DateUtils.datePath());
+        } else if ("y".equals(type)) {
+            list = loginMapper.selectLoginCounts(DateUtils.getYear(), DateUtils.datePath());
         }
         return list;
     }

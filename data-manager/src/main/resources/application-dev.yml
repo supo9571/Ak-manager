@@ -58,14 +58,14 @@ global-config:
   resourcesUrl: http://18.142.67.104:8030
   #游戏配置
   gameConfig: { "lobby": -1,"update": -1,"psz": 1,"kpqz": 2,"ddz": 3,"ddz_laizi": 4,"hjk": 5,"fish": 6,"jzhw": 7,"ermj": 8,"shjx": 9,
-               "hhdz": 2000,"brnn": 2001,"brnn_ten": 2002,"lhdz": 2003,"sgj": 2004,"bbd": 2005,"bjl": 2006,"ebg": 2007,"hbsl": 2008,"dzpk": 2009,
-               "rummy": 2010,"teen_patti": 2011,"ghz": 2012,"wrzjh": 2014,"tb": 2015,"mssj": 2016,"jxqy": 2017,"jdqs": 2018,"hlxd": 2019,"bxjg": 2020,
-               "pdsgj": 2021,"wzry": 2022,'csd': 2023 }
-#  profile: D:/package/apk
+                "hhdz": 2000,"brnn": 2001,"brnn_ten": 2002,"lhdz": 2003,"sgj": 2004,"bbd": 2005,"bjl": 2006,"ebg": 2007,"hbsl": 2008,"dzpk": 2009,
+                "rummy": 2010,"teen_patti": 2011,"ghz": 2012,"wrzjh": 2014,"tb": 2015,"mssj": 2016,"jxqy": 2017,"jdqs": 2018,"hlxd": 2019,"bxjg": 2020,
+                "pdsgj": 2021,"wzry": 2022,'csd': 2023 }
+  #  profile: D:/package/apk
   profile: /home/manager/package/apk
   #游戏服 地址
   domain: http://18.142.67.104:6661
-#  domain: http://10.39.1.88:6661
+  #  domain: http://10.39.1.88:6661
   #发送游戏配置
   gameSend: /upload
 

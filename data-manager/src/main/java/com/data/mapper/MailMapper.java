@@ -13,13 +13,13 @@ import java.util.Map;
  */
 @Mapper
 public interface MailMapper {
-    List getTips(@Param("channel") String channelId,@Param("uid")String uid,@Param("tid") int tid);
+    List getTips(@Param("channel") String channelId, @Param("uid") String uid, @Param("tid") int tid);
 
-    List getMailList(@Param("uid")String uid,@Param("tid") int tid);
+    List getMailList(@Param("uid") String uid, @Param("tid") int tid);
 
-    List getMailConfig(@Param("channel") String channelId,@Param("uid")String uid,@Param("tid") int tid);
+    List getMailConfig(@Param("channel") String channelId, @Param("uid") String uid, @Param("tid") int tid);
 
-    void saveMailRecord(@Param("list")List list, @Param("uid")String uid);
+    void saveMailRecord(@Param("list") List list, @Param("uid") String uid);
 
     @Update("update sys_mail_record set mail_state='1',update_time = sysdate() where id = #{id} ")
     void readMail(@Param("id") String id);
@@ -28,5 +28,5 @@ public interface MailMapper {
     Map receiveMail(@Param("id") String id);
 
     @Update("update sys_mail_record set mail_state='3',update_time = sysdate() where id = #{id} ")
-    void updateMailState(@Param("id")String id);
+    void updateMailState(@Param("id") String id);
 }

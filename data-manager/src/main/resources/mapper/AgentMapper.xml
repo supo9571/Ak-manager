@@ -35,24 +35,33 @@
     </select>
 
     <select id="getCommissionDays" resultType="java.util.Map">
-        select uid,agent_id agentId,channel,
-               team_num,sub_num,sub_ratio,
-               sub_income,other_num,other_ratio,other_income,
-               total_income,cash_income,wait_income,
-               day,
-            (SELECT create_time FROM agent_case_income WHERE uid = uid ORDER BY create_time DESC LIMIT 0,1) caseTime
+        select uid,
+               agent_id agentId,
+               channel,
+               team_num,
+               sub_num,
+               sub_ratio,
+               sub_income,
+               other_num,
+               other_ratio,
+               other_income,
+               total_income,
+               cash_income,
+               wait_income,
+            day,
+            (SELECT create_time FROM agent_case_income WHERE uid = uid ORDER BY create_time DESC LIMIT 0, 1) caseTime
         from agent_commission_day
         where uid = #{uid}
     </select>
 
     <select id="getCashs" resultType="java.util.Map">
-        select uid,case_income caseIncome,create_time caseTime
+        select uid, case_income caseIncome, create_time caseTime
         from agent_case_income
         where uid = #{uid}
     </select>
 
     <select id="getPopularizes" resultType="java.util.Map">
-        select uid,`day`,team_num teamNum,sub_num subNum,other_num otherNum
+        select uid, `day`, team_num teamNum, sub_num subNum, other_num otherNum
         from agent_popularize_day
         where uid = #{uid}
     </select>

@@ -42,21 +42,22 @@ public class UserController extends BaseController {
 
     /**
      * 短信验证码发送
+     *
      * @return
      */
     @GetMapping("/onebyone/sendsms")
-    public Map sendCode(String phone_number){
+    public Map sendCode(String phone_number) {
         return RequestUtils.sandTosms(phone_number);
     }
 
 
-
     /**
      * 注册
+     *
      * @return
      */
     @PostMapping("/user/verify_register_invitation_code")
-    public JSONObject register(@RequestBody JSONObject param){
+    public JSONObject register(@RequestBody JSONObject param) {
         JSONObject result = new JSONObject();
         String matchineToken = param.getString("matchine_token");
         String phoneNumber = param.getString("phone_number");
@@ -64,64 +65,64 @@ public class UserController extends BaseController {
         Integer checkWay = param.getInteger("check_way");
         String password = param.getString("password");
         String requestId = param.getString("requestId");
-        String pkgChannel = getHeader("Client-ChannelId")==null?"":getHeader("Client-ChannelId");
+        String pkgChannel = getHeader("Client-ChannelId") == null ? "" : getHeader("Client-ChannelId");
 
-        if(checkWay==6){ //登录
-            DataUser dataUser = userService.findByPassword(phoneNumber,DigestUtils.md5Hex(password));
-            if(dataUser==null){
-                result.put("code",-1);
-                result.put("desc","用户名密码错误");
-            }else{
-                result.put("code",0);
-                result.put("account_id",dataUser.getAccountId());
-                result.put("pkg_channel",pkgChannel);
-                result.put("key_token",setToken(dataUser.getAccountId()));
+        if (checkWay == 6) { //登录
+            DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password));
+            if (dataUser == null) {
+                result.put("code", -1);
+                result.put("desc", "用户名密码错误");
+            } else {
+                result.put("code", 0);
+                result.put("account_id", dataUser.getAccountId());
+                result.put("pkg_channel", pkgChannel);
+                result.put("key_token", setToken(dataUser.getAccountId()));
             }
-        }else {
-            ResponeSms sms=RequestUtils.verifyTosms(requestId,code);
+        } else {
+            ResponeSms sms = RequestUtils.verifyTosms(requestId, code);
             if (!globalConfig.isVerSwitch() || sms.getData().isMatch()) {
-                if(checkWay==7){//修改密码
+                if (checkWay == 7) {//修改密码
                     DataUser dataUser = userService.findByPhone(phoneNumber);
-                    if(dataUser==null){
-                        result.put("code",-1);
-                        result.put("desc","手机号未注册");
-                    }else {
-                        userService.updatePassword(phoneNumber,DigestUtils.md5Hex(password));
-                        result.put("code",0);
-                        result.put("account_id",dataUser.getAccountId());
-                        result.put("pkg_channel",pkgChannel);
-                        result.put("key_token",setToken(dataUser.getAccountId()));
+                    if (dataUser == null) {
+                        result.put("code", -1);
+                        result.put("desc", "手机号未注册");
+                    } else {
+                        userService.updatePassword(phoneNumber, DigestUtils.md5Hex(password));
+                        result.put("code", 0);
+                        result.put("account_id", dataUser.getAccountId());
+                        result.put("pkg_channel", pkgChannel);
+                        result.put("key_token", setToken(dataUser.getAccountId()));
                     }
-                }else if(checkWay==8){//密码注册
+                } else if (checkWay == 8) {//密码注册
                     String ip = getHeader("HTTP-CLIENT-IP");
-                    DataUser dataUser = new DataUser(phoneNumber,DigestUtils.md5Hex(password),ip,matchineToken,pkgChannel);
+                    DataUser dataUser = new DataUser(phoneNumber, DigestUtils.md5Hex(password), ip, matchineToken, pkgChannel);
                     int n = userService.insertToDataUser(dataUser);
-                    if(n>0){
+                    if (n > 0) {
                         result.put("code", 0);
                         result.put("account_id", dataUser.getAccountId());
                         result.put("pkg_channel", pkgChannel);
                         result.put("key_token", setToken(dataUser.getAccountId()));
-                    }else{
-                        result.put("code",-1);
-                        result.put("desc","服务器出错");
+                    } else {
+                        result.put("code", -1);
+                        result.put("desc", "服务器出错");
                     }
-                }else if(checkWay==9){//游客绑定手机
+                } else if (checkWay == 9) {//游客绑定手机
                     String accountId = getHeader("account-id");
-                    DataUser dataUser = new DataUser(Long.valueOf(accountId),phoneNumber,DigestUtils.md5Hex(password));
+                    DataUser dataUser = new DataUser(Long.valueOf(accountId), phoneNumber, DigestUtils.md5Hex(password));
                     int n = userService.updateDataUser(dataUser);
-                    if(n>0){
+                    if (n > 0) {
                         result.put("code", 0);
                         result.put("account_id", dataUser.getAccountId());
                         result.put("pkg_channel", pkgChannel);
                         result.put("key_token", setToken(dataUser.getAccountId()));
-                    }else{
-                        result.put("code",-1);
-                        result.put("desc","服务器出错");
+                    } else {
+                        result.put("code", -1);
+                        result.put("desc", "服务器出错");
                     }
                 }
-            }else {
-                result.put("code",-1);
-                result.put("desc","验证码错误");
+            } else {
+                result.put("code", -1);
+                result.put("desc", "验证码错误");
             }
         }
         return result;
@@ -129,18 +130,19 @@ public class UserController extends BaseController {
 
     /**
      * 登录接口
+     *
      * @param dataUser
      * @return
      */
     @PostMapping("/user/login")
     public AjaxResult login(DataUser dataUser) {
-        String pwd=DigestUtils.md5Hex(dataUser.getPassword());
+        String pwd = DigestUtils.md5Hex(dataUser.getPassword());
         dataUser.setPassword(pwd);
         int n = userService.loadDataUserName(dataUser);
-        if(n>0){
-            String str=requestUtils.getMD5Str(dataUser);
+        if (n > 0) {
+            String str = requestUtils.getMD5Str(dataUser);
             Map map = new HashMap();
-            map.put("token",str);
+            map.put("token", str);
             return AjaxResult.success(map);
         }
         return AjaxResult.error("登录失败");
@@ -148,63 +150,65 @@ public class UserController extends BaseController {
 
     /**
      * 权限校验
+     *
      * @return
      */
     @PostMapping("/user/check_token")
     public JSONObject verify(@RequestBody JSONObject param) {
         String key_token = param.getString("key_token");
         JSONObject relust = new JSONObject();
-        Integer accountId= redisCache.getCacheObject(key_token);
-        if(accountId!=null && accountId >0){
-            relust.put("account_id",accountId);
-            relust.put("code",0);
-            relust.put("key_token",key_token);
-        }else {
-            relust.put("desc","token不合法");
-            relust.put("code",-1);
+        Integer accountId = redisCache.getCacheObject(key_token);
+        if (accountId != null && accountId > 0) {
+            relust.put("account_id", accountId);
+            relust.put("code", 0);
+            relust.put("key_token", key_token);
+        } else {
+            relust.put("desc", "token不合法");
+            relust.put("code", -1);
         }
         return relust;
     }
 
     /**
      * 游客 登录
+     *
      * @param dataUser
      * @return
      */
     @PostMapping("/user/register_tourist")
-    public JSONObject tourist(@RequestBody DataUser dataUser){
+    public JSONObject tourist(@RequestBody DataUser dataUser) {
         JSONObject relust = new JSONObject();
-        if(globalConfig.isVerSwitch() && Verification.checkHeader()){
-            relust.put("code",-1);
-            relust.put("desc","签名不合法");
+        if (globalConfig.isVerSwitch() && Verification.checkHeader()) {
+            relust.put("code", -1);
+            relust.put("desc", "签名不合法");
             return relust;
         }
         String token = IdUtils.fastSimpleUUID();
-        if(StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getSeed_token())){
-            relust.put("code",-1);
-            relust.put("desc","参数错误");
-        }else{
-            relust.put("pkg_channel",dataUser.getPackage_channel());
-            relust.put("key_token",token);
+        if (StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getSeed_token())) {
+            relust.put("code", -1);
+            relust.put("desc", "参数错误");
+        } else {
+            relust.put("pkg_channel", dataUser.getPackage_channel());
+            relust.put("key_token", token);
             //查询游客 之前是否登录过
             DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
-            if(user!=null){
-                redisCache.setCacheObject(token,user.getAccountId(),10, TimeUnit.MINUTES);
-                relust.put("code",0);
-                relust.put("account_id",user.getAccountId());
-            }else{
-                String pwd=DigestUtils.md5Hex("123456");
-                String phone=requestUtils.getRomodphone();
+            if (user != null) {
+                redisCache.setCacheObject(token, user.getAccountId(), 10, TimeUnit.MINUTES);
+                relust.put("code", 0);
+                relust.put("account_id", user.getAccountId());
+            } else {
+                String pwd = DigestUtils.md5Hex("123456");
+                String phone = requestUtils.getRomodphone();
                 dataUser.setPhone(phone);
                 dataUser.setPassword(pwd);
-                int n=userService.insertToDataUser(dataUser);
-                if(n>0){
-                    redisCache.setCacheObject(token,dataUser.getAccountId(),10, TimeUnit.MINUTES);
-                    relust.put("code",0);
-                    relust.put("account_id",dataUser.getAccountId());
-                }else{
-                    relust.put("code",-1);
-                    relust.put("desc","服务器出错");
+                int n = userService.insertToDataUser(dataUser);
+                if (n > 0) {
+                    redisCache.setCacheObject(token, dataUser.getAccountId(), 10, TimeUnit.MINUTES);
+                    relust.put("code", 0);
+                    relust.put("account_id", dataUser.getAccountId());
+                } else {
+                    relust.put("code", -1);
+                    relust.put("desc", "服务器出错");
                 }
             }
         }
@@ -212,9 +216,9 @@ public class UserController extends BaseController {
         return relust;
     }
 
-    private String setToken(Long accountId){
+    private String setToken(Long accountId) {
         String token = IdUtils.fastSimpleUUID();
-        redisCache.setCacheObject(token,accountId,15, TimeUnit.DAYS);
+        redisCache.setCacheObject(token, accountId, 15, TimeUnit.DAYS);
         return token;
     }
 }

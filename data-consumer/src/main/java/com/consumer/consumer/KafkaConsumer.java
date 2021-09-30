@@ -48,35 +48,35 @@ public class KafkaConsumer {
                     new OffsetAndMetadata(record.offset() - 10));
             //数据存库
             String op = jsonObject.getString("op");
-            if(op.equals(OpEnum.REGISTER.getOpName())){
+            if (op.equals(OpEnum.REGISTER.getOpName())) {
                 insertHandler.insertRegister(jsonObject);
-            }else if(op.equals(OpEnum.ADDCOINS.getOpName())){
+            } else if (op.equals(OpEnum.ADDCOINS.getOpName())) {
                 insertHandler.insertAddcoins(jsonObject);
-            }else if(op.equals(OpEnum.REDUCECOINS.getOpName())){
+            } else if (op.equals(OpEnum.REDUCECOINS.getOpName())) {
                 insertHandler.insertReducecoins(jsonObject);
-            }else if(op.equals(OpEnum.LOGIN.getOpName())){
+            } else if (op.equals(OpEnum.LOGIN.getOpName())) {
                 insertHandler.insertLogin(jsonObject);
-            }else if(op.equals(OpEnum.LOGOUT.getOpName())){
+            } else if (op.equals(OpEnum.LOGOUT.getOpName())) {
                 insertHandler.insertLogout(jsonObject);
-            }else if(op.equals(OpEnum.CARD_RECORD.getOpName())){
+            } else if (op.equals(OpEnum.CARD_RECORD.getOpName())) {
                 insertHandler.insertCard(jsonObject);
-            }else if(op.equals(OpEnum.WATER_HISTORY.getOpName())){
+            } else if (op.equals(OpEnum.WATER_HISTORY.getOpName())) {
                 insertHandler.updateWater(jsonObject);
             }
-        }catch (Exception e){
-            if(e instanceof DuplicateKeyException){
-                log.error(e.getMessage()+"||||value-->"+record.value());
-            }else{
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                log.error(e.getMessage() + "||||value-->" + record.value());
+            } else {
                 //记录失败信息
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("offset",record.offset());
-                jsonObject.put("errMsg",e.getMessage());
-                jsonObject.put("value",record.value());
+                jsonObject.put("offset", record.offset());
+                jsonObject.put("errMsg", e.getMessage());
+                jsonObject.put("value", record.value());
                 List errMsgs = new ArrayList();
                 errMsgs.add(jsonObject.toJSONString());
                 redisCache.setCacheList("KAFKA_ERROR", errMsgs);
             }
-        }finally {
+        } finally {
             // 手工签收机制
             consumer.commitSync(currentOffset);
         }

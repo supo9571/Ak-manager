@@ -179,8 +179,8 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             JSONObject resultJson = JSONObject.parseObject(resultStr);
             if (resultJson != null && resultJson.getInteger("code") == 0) {
                 //记录 领取记录
-                configAgentMapper.saveWithdarw(uid,cash);
-                configAgentMapper.updateWaitIncome(uid,cash,DateUtils.getDate());
+                configAgentMapper.saveWithdarw(uid, cash);
+                configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());
                 map.put("rebate", cash);
                 map.put("commission_pre_all", decimal.subtract(cash));
                 result.put("code", 200);

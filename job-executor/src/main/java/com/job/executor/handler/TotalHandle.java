@@ -30,6 +30,7 @@ public class TotalHandle {
 
     @Autowired
     private TotalMapper totalMapper;
+
     /**
      * 在线玩家人数
      */
@@ -45,13 +46,13 @@ public class TotalHandle {
                 //清空 data_online
                 totalMapper.cleanOnline();
                 List list = new ArrayList();
-                jsonArray.forEach(j->{
+                jsonArray.forEach(j -> {
                     list.add(JSONObject.toJavaObject((JSON) j, OnlinePlayer.class));
                 });
                 totalMapper.insertOnline(list);
                 log.info("玩家在线人数更新--->{}", jsonArray.size());
-            }catch (Exception e){
-                log.error("在线玩家人数出错：{}",e.getMessage());
+            } catch (Exception e) {
+                log.error("在线玩家人数出错：{}", e.getMessage());
             }
         } else {
             log.error(result);
@@ -66,7 +67,7 @@ public class TotalHandle {
         String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
         Long time = getTodayTime();
         int num = totalMapper.selectTodayLogins(time);
-        totalMapper.saveTodayLogins(date,num);
+        totalMapper.saveTodayLogins(date, num);
     }
 
     /**
@@ -75,19 +76,19 @@ public class TotalHandle {
      */
     @XxlJob("reset_today")
     public void resetToday() {
-        Long time = DateUtil.getTodayTimes()-(60*60*24*3);//三天前时间戳
+        Long time = DateUtil.getTodayTimes() - (60 * 60 * 24 * 3);//三天前时间戳
         totalMapper.updateRegister();
         totalMapper.deleteWater(time);
     }
 
-    private Long getTodayTime(){
+    private Long getTodayTime() {
         Long time = 0l;
         try {
             time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+" 00:00:00")
+                    .parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 00:00:00")
                     .getTime();
         } catch (ParseException e) {
-            log.error("getTodayTime方法出错：{}",e.getMessage());
+            log.error("getTodayTime方法出错：{}", e.getMessage());
         }
         return time;
     }

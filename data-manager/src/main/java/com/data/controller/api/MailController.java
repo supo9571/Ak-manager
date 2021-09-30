@@ -31,15 +31,15 @@ public class MailController extends BaseController {
      * 公告列表接口
      */
     @PostMapping("/app/tips")
-    public JSONObject tips(){
+    public JSONObject tips() {
         String channelId = getHeader("Client-ChannelId");
         String uid = getHeader("uid");
         JSONObject result = new JSONObject();
-        List list = mailService.getTips(channelId,uid);
+        List list = mailService.getTips(channelId, uid);
         Map map = new HashMap<>();
-        map.put("tips",list);
-        result.put("data",map);
-        result.put("code",200);
+        map.put("tips", list);
+        result.put("data", map);
+        result.put("code", 200);
         return result;
     }
 
@@ -47,14 +47,14 @@ public class MailController extends BaseController {
      * 邮件列表
      */
     @PostMapping("/app/get_mail_list")
-    public JSONObject getMailList(){
+    public JSONObject getMailList() {
         String channelId = getHeader("Client-ChannelId");
         String uid = getHeader("uid");
         JSONObject result = new JSONObject();
-        List list = mailService.getMailList(channelId,uid);
-        result.put("result",list);
-        result.put("code",200);
-        result.put("msg","OK");
+        List list = mailService.getMailList(channelId, uid);
+        result.put("result", list);
+        result.put("code", 200);
+        result.put("msg", "OK");
         return result;
     }
 
@@ -62,14 +62,14 @@ public class MailController extends BaseController {
      * 邮件已读
      */
     @PostMapping("/server_api/req_read_mail")
-    public JSONObject readMail(@RequestBody JSONObject param){
+    public JSONObject readMail(@RequestBody JSONObject param) {
         String ids = param.getString("ids");
         JSONObject result = new JSONObject();
         mailService.readMail(ids);
-        result.put("code",200);
-        result.put("msg","OK");
-        result.put("type",ids);
-        result.put("read_id",ids);
+        result.put("code", 200);
+        result.put("msg", "OK");
+        result.put("type", ids);
+        result.put("read_id", ids);
         return result;
     }
 
@@ -77,7 +77,7 @@ public class MailController extends BaseController {
      * 领取邮件附件
      */
     @PostMapping("/server_api/receive_mail")
-    public JSONObject receiveMail(@RequestBody JSONObject param){
+    public JSONObject receiveMail(@RequestBody JSONObject param) {
         String id = param.getString("ids");
         return mailService.receiveMail(id);
     }
@@ -86,7 +86,7 @@ public class MailController extends BaseController {
      * 轮播图配置
      */
     @PostMapping("/app/advert")
-    public JSONObject advert(){
+    public JSONObject advert() {
         return null;
     }
 }

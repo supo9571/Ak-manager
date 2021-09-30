@@ -19,7 +19,7 @@ public class InsertHandler {
     @Autowired
     private InsertMapper insertMapper;
 
-    public void insertRegister(JSONObject result){
+    public void insertRegister(JSONObject result) {
         Register register = JSON.toJavaObject(result, Register.class);
         insertMapper.insertReg(register);
     }
@@ -28,14 +28,14 @@ public class InsertHandler {
     public void insertAddcoins(JSONObject result) {
         Coins addCoins = JSON.toJavaObject(result, Coins.class);
         insertMapper.insertAddcoins(addCoins);
-        insertMapper.updateCurrByAdd(addCoins.getUid(),addCoins.getCurr());
+        insertMapper.updateCurrByAdd(addCoins.getUid(), addCoins.getCurr());
     }
 
     @Transactional
     public void insertReducecoins(JSONObject result) {
         Coins reduceCoins = JSON.toJavaObject(result, Coins.class);
         insertMapper.insertReduceCoins(reduceCoins);
-        insertMapper.updateCurrByRed(reduceCoins.getUid(),reduceCoins.getCurr(),reduceCoins.getSafeBox());
+        insertMapper.updateCurrByRed(reduceCoins.getUid(), reduceCoins.getCurr(), reduceCoins.getSafeBox());
     }
 
     @Transactional
@@ -43,7 +43,7 @@ public class InsertHandler {
         Login login = JSON.toJavaObject(result, Login.class);
         login.setIpAddress(longIp(login.getIp()));
         insertMapper.insertLogin(login);
-        insertMapper.updateUser(login.getUid(),longIp(login.getIp()),login.getDeviceId(),login.getDeviceBrand(),login.getVipLevel(),login.getTime(),login.getPhone());
+        insertMapper.updateUser(login.getUid(), longIp(login.getIp()), login.getDeviceId(), login.getDeviceBrand(), login.getVipLevel(), login.getTime(), login.getPhone());
     }
 
     public void insertLogout(JSONObject result) {
@@ -54,23 +54,24 @@ public class InsertHandler {
 
     /**
      * 修改 流水数据
+     *
      * @param result
      */
     @Transactional
     public void updateWater(JSONObject result) {
         WaterHistory waterHistory = JSON.toJavaObject(result, WaterHistory.class);
         insertMapper.insertWater(waterHistory);
-        insertMapper.updateUserWater(waterHistory.getUid(),waterHistory.getValue());
+        insertMapper.updateUserWater(waterHistory.getUid(), waterHistory.getValue());
     }
 
     //添加牌局记录
     @Transactional
     public void insertCard(JSONObject result) {
         Card card = JSON.toJavaObject(result, Card.class);
-        if("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList()))return;
-        if(card.getLoserList()==null && card.getWinnerList()==null)return;
+        if ("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList())) return;
+        if (card.getLoserList() == null && card.getWinnerList() == null) return;
         List<CardUser> list = new ArrayList<>();
-        setCardUser(card,list);
+        setCardUser(card, list);
         insertMapper.insertCard(card);
         insertMapper.insertCardUser(list);
     }
@@ -84,9 +85,8 @@ public class InsertHandler {
 //    }
 
 
-
     private String longIp(final long ip) {
-        final long[] mask = { 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000 };
+        final long[] mask = {0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000};
         final StringBuilder ipAddress = new StringBuilder();
         for (int i = 0; i < mask.length; i++) {
             ipAddress.insert(0, (ip & mask[i]) >> (i * 8));
@@ -97,65 +97,65 @@ public class InsertHandler {
         return ipAddress.toString();
     }
 
-    private void setCardUser(Card card,List<CardUser> list){
+    private void setCardUser(Card card, List<CardUser> list) {
         int aiNum = card.getTotalNum();
         Long addScore = 0l;
         Long payFee = 0l;
         Long betCoins = 0l;
         StringBuilder uid = new StringBuilder();
-        if(!"{}".equals(card.getLoserList())){
+        if (!"{}".equals(card.getLoserList())) {
             JSONArray lose = JSONArray.parseArray(card.getLoserList());
             for (Object l : lose) {
                 JSONObject jsonObject = (JSONObject) l;
                 CardUser cardUser = jsonObject.toJavaObject(CardUser.class);
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
-                if(!"true".equals(cardUser.getIsRobot())) {
+                if (!"true".equals(cardUser.getIsRobot())) {
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
                 }
-                addScore+=cardUser.getAddScore();
-                payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
-                if(cardUser.getBetCoins() == null){
-                    if(cardUser.getWaterCoins() == null){
+                addScore += cardUser.getAddScore();
+                payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
+                if (cardUser.getBetCoins() == null) {
+                    if (cardUser.getWaterCoins() == null) {
                         cardUser.setBetCoins(cardUser.getAddScore());
-                    }else {
+                    } else {
                         cardUser.setBetCoins(cardUser.getWaterCoins());
                     }
                 }
-                betCoins+=cardUser.getBetCoins();
-                uid.append(cardUser.getUid()+",");
+                betCoins += cardUser.getBetCoins();
+                uid.append(cardUser.getUid() + ",");
             }
         }
-        if(!"{}".equals(card.getWinnerList())){
+        if (!"{}".equals(card.getWinnerList())) {
             JSONArray win = JSONArray.parseArray(card.getWinnerList());
             for (Object l : win) {
                 JSONObject jsonObject = (JSONObject) l;
                 CardUser cardUser = jsonObject.toJavaObject(CardUser.class);
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
-                if(!"true".equals(cardUser.getIsRobot())) {
+                if (!"true".equals(cardUser.getIsRobot())) {
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
                 }
-                addScore+=cardUser.getAddScore();
-                payFee+=cardUser.getPayFee()==null?0:cardUser.getPayFee();
-                if(cardUser.getBetCoins() == null){
-                    if(cardUser.getWaterCoins() == null){
+                addScore += cardUser.getAddScore();
+                payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
+                if (cardUser.getBetCoins() == null) {
+                    if (cardUser.getWaterCoins() == null) {
                         cardUser.setBetCoins(cardUser.getAddScore());
-                    }else {
+                    } else {
                         cardUser.setBetCoins(cardUser.getWaterCoins());
                     }
                 }
-                betCoins+=cardUser.getBetCoins();
-                uid.append(cardUser.getUid()+",");
+                betCoins += cardUser.getBetCoins();
+                uid.append(cardUser.getUid() + ",");
             }
         }
         card.setAiNum(aiNum);
         card.setAddScore(addScore);
         card.setPayFee(payFee);
         card.setBetCoins(betCoins);
-        card.setUid(uid.substring(0,uid.length()-1));
+        card.setUid(uid.substring(0, uid.length() - 1));
 
     }
 }

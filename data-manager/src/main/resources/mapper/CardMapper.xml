@@ -5,8 +5,8 @@
 
     <select id="selectCard" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
         select c.table_gid tableGid,
-               c.game_type gameType,
-               c.table_type tableType,
+        c.game_type gameType,
+        c.table_type tableType,
         FROM_UNIXTIME(c.begin_time) beginTime,
         FROM_UNIXTIME(c.end_time) endTime,
         c.side_list sideList,c.uid,
@@ -28,8 +28,8 @@
 
     <select id="selectCardUser" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
         select u.table_gid tableGid,
-               u.game_type gameType,
-               u.table_type tableType,
+        u.game_type gameType,
+        u.table_type tableType,
         FROM_UNIXTIME(u.begin_time) beginTime,
         FROM_UNIXTIME(u.end_time) endTime,
         c.total_num totalNum,u.add_score addScore,u.pay_fee payFee,u.bet_coins betCoins,
@@ -65,7 +65,8 @@
         </where>
     </select>
 
-    <select id="selectCardUserCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
+    <select id="selectCardUserCount" resultType="java.util.Map"
+            parameterType="com.manager.common.core.domain.model.Card">
         select sum(u.add_score) countScore,sum(u.pay_fee) countPayfee,sum(u.bet_coins) countBetCoins
         from data_card_user u
         <where>
@@ -82,14 +83,18 @@
     </select>
 
     <select id="findList" resultType="java.util.Map">
-        select side_list sideList,exinfo,game_type gameType,table_type tableType from data_card
+        select side_list sideList, exinfo, game_type gameType, table_type tableType
+        from data_card
         where table_gid = #{tableGid}
     </select>
 
     <select id="findUserInfo" resultType="java.util.Map">
-        select add_score addScore,pay_fee payFee,bet_coins betCoins,
-                left_score leftScore,is_robot isRobot
-               from data_card_user
+        select add_score  addScore,
+               pay_fee    payFee,
+               bet_coins  betCoins,
+               left_score leftScore,
+               is_robot   isRobot
+        from data_card_user
         where table_gid = #{tableGid}
     </select>
 </mapper>

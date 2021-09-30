@@ -29,16 +29,16 @@
                 and name = #{name}
             </if>
             <if test="registerIp!=null and registerIp !=''">
-                and  register_ip = #{registerIp}
+                and register_ip = #{registerIp}
             </if>
             <if test="registerMachine!=null and registerMachine !=''">
-                and  register_machine = #{registerMachine}
+                and register_machine = #{registerMachine}
             </if>
             <if test="beginTime!=null and beginTime !=''">
                 and time >= UNIX_TIMESTAMP(#{beginTime})
             </if>
             <if test="endTime!=null and endTime !=''">
-                and  UNIX_TIMESTAMP(#{endTime}) >= time
+                and UNIX_TIMESTAMP(#{endTime}) >= time
             </if>
         </where>
     </select>

@@ -27,23 +27,24 @@ public class Verification {
 
     /**
      * 请求 签名验证 true 不通过  false 通过
+     *
      * @return
      */
-    public static boolean checkHeader(){
+    public static boolean checkHeader() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String time = request.getHeader(TIME);
         String uid = request.getHeader(UID);
         String sign = request.getHeader(SIGN);
-        if(time==null || uid ==null || StringUtils.isBlank(sign)){
+        if (time == null || uid == null || StringUtils.isBlank(sign)) {
             return true;
         }
-        Long nowTimems = new Date().getTime()/1000;
-        if(nowTimems - Long.valueOf(time) > EXPIRETIME){
+        Long nowTimems = new Date().getTime() / 1000;
+        if (nowTimems - Long.valueOf(time) > EXPIRETIME) {
             return true;
         }
-        String md5Str = DigestUtils.md5DigestAsHex((uid+""+time+key).getBytes(StandardCharsets.UTF_8));
-        if (!sign.equals(md5Str)){
+        String md5Str = DigestUtils.md5DigestAsHex((uid + "" + time + key).getBytes(StandardCharsets.UTF_8));
+        if (!sign.equals(md5Str)) {
             return true;
         }
         return false;

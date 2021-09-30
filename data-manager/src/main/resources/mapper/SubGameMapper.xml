@@ -5,16 +5,16 @@
 
     <select id="getSubGameList" parameterType="com.manager.common.core.domain.model.Game" resultType="java.util.Map">
         SELECT
-            tid as tId,
-            game_id AS gameId,
-            parent_id AS parentId,
-            game_name AS gameName,
-            game_type AS gameType,
-            status AS status,
-            game_bs AS gameBs,
-            user_sort AS userSort
+        tid as tId,
+        game_id AS gameId,
+        parent_id AS parentId,
+        game_name AS gameName,
+        game_type AS gameType,
+        status AS status,
+        game_bs AS gameBs,
+        user_sort AS userSort
         FROM
-            config_game
+        config_game
         where parent_id = "0"
         <if test="gameId!=null and gameId!=''">
             and game_id = #{gameId}
@@ -30,10 +30,10 @@
     <update id="editSubGame" parameterType="com.manager.common.core.domain.model.Game">
         update config_game
         <set>
-            <if test="status!=null and status!=''"> status = #{status},</if>
-            <if test="gameType!=null and gameType!=''"> game_type = #{gameType},</if>
-            <if test="gameBs!=null and gameBs!=''"> game_bs = #{gameBs},</if>
-            <if test="userSort!=null and userSort!=''"> user_sort = #{userSort},</if>
+            <if test="status!=null and status!=''">status = #{status},</if>
+            <if test="gameType!=null and gameType!=''">game_type = #{gameType},</if>
+            <if test="gameBs!=null and gameBs!=''">game_bs = #{gameBs},</if>
+            <if test="userSort!=null and userSort!=''">user_sort = #{userSort},</if>
             updated_time = sysdate()
         </set>
         where game_id = #{gameId}

@@ -20,5 +20,5 @@ public interface LoginMapper {
 
     @Select("select date,num,( select sum(num)/count(*) from data_login_count c where date >=#{beginDate} AND #{endDate}>= date) average " +
             " from data_login_count where date >=#{beginDate} AND #{endDate}>= date order by date desc")
-    List<Map> selectLoginCounts(@Param("beginDate") String beginDate, @Param("endDate")String endDate);
+    List<Map> selectLoginCounts(@Param("beginDate") String beginDate, @Param("endDate") String endDate);
 }

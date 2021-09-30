@@ -4,11 +4,14 @@
 <mapper namespace="com.data.mapper.MonthCardMapper">
 
     <insert id="saveWithdraw" parameterType="com.manager.common.core.domain.model.ExchangeOrder">
-        insert into config_exchange_order(tid,uid,withdraw_money,curr_money,transfer_amount,poundage,withdraw_number,channel,withdraw_ip
-        ,withdraw_order_number,uname,accumulate_water,accumulate_recharge,accumulate_excoins,register_ip,withdraw_type,exaa_status,create_time)
-        values (#{tid},#{uid},#{withdrawMoney},#{currMoney},#{transferAmount},#{poundage},#{withdrawNumber},#{channel},#{withdrawIp},
-                #{withdrawOrderNumber},#{uname},#{accumulateWater},#{accumulateRecharge},#{accumulateExcoins},#{registerIp},#{withdrawType},#{exaaStatus},sysdate()
-        )
+        insert into config_exchange_order( tid, uid, withdraw_money, curr_money, transfer_amount, poundage
+                                         , withdraw_number, channel, withdraw_ip
+                                         , withdraw_order_number, uname, accumulate_water, accumulate_recharge
+                                         , accumulate_excoins, register_ip, withdraw_type, exaa_status, create_time)
+        values (#{tid}, #{uid}, #{withdrawMoney}, #{currMoney}, #{transferAmount}, #{poundage}, #{withdrawNumber},
+                #{channel}, #{withdrawIp},
+                #{withdrawOrderNumber}, #{uname}, #{accumulateWater}, #{accumulateRecharge}, #{accumulateExcoins},
+                #{registerIp}, #{withdrawType}, #{exaaStatus}, sysdate())
     </insert>
 
 </mapper>

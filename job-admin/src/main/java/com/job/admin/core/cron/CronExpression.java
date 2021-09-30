@@ -191,13 +191,11 @@ import java.util.TreeSet;
  * </ul>
  * </p>
  *
- *
  * @author Sharada Jambula, James House
  * @author Contributions from Mads Henderson
  * @author Refactoring from CronTrigger to CronExpression by Aaron Craven
- *
+ * <p>
  * Borrowed from quartz v2.3.1
- *
  */
 public final class CronExpression implements Serializable, Cloneable {
 
@@ -217,6 +215,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
     protected static final Map<String, Integer> monthMap = new HashMap<String, Integer>(20);
     protected static final Map<String, Integer> dayMap = new HashMap<String, Integer>(60);
+
     static {
         monthMap.put("JAN", 0);
         monthMap.put("FEB", 1);
@@ -265,9 +264,8 @@ public final class CronExpression implements Serializable, Cloneable {
      *
      * @param cronExpression String representation of the cron expression the
      *                       new object should represent
-     * @throws ParseException
-     *         if the string expression cannot be parsed into a valid
-     *         <CODE>CronExpression</CODE>
+     * @throws ParseException if the string expression cannot be parsed into a valid
+     *                        <CODE>CronExpression</CODE>
      */
     public CronExpression(String cronExpression) throws ParseException {
         if (cronExpression == null) {
@@ -283,8 +281,7 @@ public final class CronExpression implements Serializable, Cloneable {
      * Constructs a new {@code CronExpression} as a copy of an existing
      * instance.
      *
-     * @param expression
-     *            The existing cron expression to be copied
+     * @param expression The existing cron expression to be copied
      */
     public CronExpression(CronExpression expression) {
         /*
@@ -310,7 +307,7 @@ public final class CronExpression implements Serializable, Cloneable {
      *
      * @param date the date to evaluate
      * @return a boolean indicating whether the given date satisfies the cron
-     *         expression
+     * expression
      */
     public boolean isSatisfiedBy(Date date) {
         Calendar testDateCal = Calendar.getInstance(getTimeZone());
@@ -363,7 +360,7 @@ public final class CronExpression implements Serializable, Cloneable {
         // the second immediately following it.
         while (difference == 1000) {
             newDate = getTimeAfter(lastDate);
-            if(newDate == null)
+            if (newDate == null)
                 break;
 
             difference = newDate.getTime() - lastDate.getTime();
@@ -412,7 +409,7 @@ public final class CronExpression implements Serializable, Cloneable {
      *
      * @param cronExpression the expression to evaluate
      * @return a boolean indicating whether the given expression is a valid cron
-     *         expression
+     * expression
      */
     public static boolean isValidExpression(String cronExpression) {
 
@@ -473,14 +470,14 @@ public final class CronExpression implements Serializable, Cloneable {
                 String expr = exprsTok.nextToken().trim();
 
                 // throw an exception if L is used with other days of the month
-                if(exprOn == DAY_OF_MONTH && expr.indexOf('L') != -1 && expr.length() > 1 && expr.contains(",")) {
+                if (exprOn == DAY_OF_MONTH && expr.indexOf('L') != -1 && expr.length() > 1 && expr.contains(",")) {
                     throw new ParseException("Support for specifying 'L' and 'LW' with other days of the month is not implemented", -1);
                 }
                 // throw an exception if L is used with other days of the week
-                if(exprOn == DAY_OF_WEEK && expr.indexOf('L') != -1 && expr.length() > 1  && expr.contains(",")) {
+                if (exprOn == DAY_OF_WEEK && expr.indexOf('L') != -1 && expr.length() > 1 && expr.contains(",")) {
                     throw new ParseException("Support for specifying 'L' with other days of the week is not implemented", -1);
                 }
-                if(exprOn == DAY_OF_WEEK && expr.indexOf('#') != -1 && expr.indexOf('#', expr.indexOf('#') +1) != -1) {
+                if (exprOn == DAY_OF_WEEK && expr.indexOf('#') != -1 && expr.indexOf('#', expr.indexOf('#') + 1) != -1) {
                     throw new ParseException("Support for specifying multiple \"nth\" days is not implemented.", -1);
                 }
 
@@ -495,7 +492,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
             if (exprOn <= DAY_OF_WEEK) {
                 throw new ParseException("Unexpected end of expression.",
-                            expression.length());
+                        expression.length());
             }
 
             if (exprOn <= YEAR) {
@@ -524,7 +521,7 @@ public final class CronExpression implements Serializable, Cloneable {
     }
 
     protected int storeExpressionVals(int pos, String s, int type)
-        throws ParseException {
+            throws ParseException {
 
         int incr = 0;
         int i = skipWhiteSpace(pos, s);
@@ -556,7 +553,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 sval = getDayOfWeekNumber(sub);
                 if (sval < 0) {
                     throw new ParseException("Invalid Day-of-Week value: '"
-                                + sub + "'", i);
+                            + sub + "'", i);
                 }
                 if (s.length() > i + 3) {
                     c = s.charAt(i + 3);
@@ -567,7 +564,7 @@ public final class CronExpression implements Serializable, Cloneable {
                         if (eval < 0) {
                             throw new ParseException(
                                     "Invalid Day-of-Week value: '" + sub
-                                        + "'", i);
+                                            + "'", i);
                         }
                     } else if (c == '#') {
                         try {
@@ -604,19 +601,19 @@ public final class CronExpression implements Serializable, Cloneable {
             if ((i + 1) < s.length()
                     && (s.charAt(i) != ' ' && s.charAt(i + 1) != '\t')) {
                 throw new ParseException("Illegal character after '?': "
-                            + s.charAt(i), i);
+                        + s.charAt(i), i);
             }
             if (type != DAY_OF_WEEK && type != DAY_OF_MONTH) {
                 throw new ParseException(
-                            "'?' can only be specified for Day-of-Month or Day-of-Week.",
-                            i);
+                        "'?' can only be specified for Day-of-Month or Day-of-Week.",
+                        i);
             }
             if (type == DAY_OF_WEEK && !lastdayOfMonth) {
                 int val = daysOfMonth.last();
                 if (val == NO_SPEC_INT) {
                     throw new ParseException(
-                                "'?' can only be specified for Day-of-Month -OR- Day-of-Week.",
-                                i);
+                            "'?' can only be specified for Day-of-Month -OR- Day-of-Week.",
+                            i);
                 }
             }
 
@@ -630,7 +627,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 return i + 1;
             } else if (c == '/'
                     && ((i + 1) >= s.length() || s.charAt(i + 1) == ' ' || s
-                            .charAt(i + 1) == '\t')) {
+                    .charAt(i + 1) == '\t')) {
                 throw new ParseException("'/' must be followed by an integer.", i);
             } else if (c == '*') {
                 i++;
@@ -663,18 +660,18 @@ public final class CronExpression implements Serializable, Cloneable {
             if (type == DAY_OF_WEEK) {
                 addToSet(7, 7, 0, type);
             }
-            if(type == DAY_OF_MONTH && s.length() > i) {
+            if (type == DAY_OF_MONTH && s.length() > i) {
                 c = s.charAt(i);
-                if(c == '-') {
-                    ValueSet vs = getValue(0, s, i+1);
+                if (c == '-') {
+                    ValueSet vs = getValue(0, s, i + 1);
                     lastdayOffset = vs.value;
-                    if(lastdayOffset > 30)
-                        throw new ParseException("Offset from last day must be <= 30", i+1);
+                    if (lastdayOffset > 30)
+                        throw new ParseException("Offset from last day must be <= 30", i + 1);
                     i = vs.pos;
                 }
-                if(s.length() > i) {
+                if (s.length() > i) {
                     c = s.charAt(i);
-                    if(c == 'W') {
+                    if (c == 'W') {
                         nearestWeekday = true;
                         i++;
                     }
@@ -718,7 +715,7 @@ public final class CronExpression implements Serializable, Cloneable {
     }
 
     protected int checkNext(int pos, String s, int val, int type)
-        throws ParseException {
+            throws ParseException {
 
         int end = -1;
         int i = pos;
@@ -732,7 +729,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
         if (c == 'L') {
             if (type == DAY_OF_WEEK) {
-                if(val < 1 || val > 7)
+                if (val < 1 || val > 7)
                     throw new ParseException("Day-of-Week values must be between 1 and 7", -1);
                 lastdayOfWeek = true;
             } else {
@@ -750,7 +747,7 @@ public final class CronExpression implements Serializable, Cloneable {
             } else {
                 throw new ParseException("'W' option is not valid here. (pos=" + i + ")", i);
             }
-            if(val > 31)
+            if (val > 31)
                 throw new ParseException("The 'W' option does not make sense with values larger than 31 (max number of days in a month)", i);
             TreeSet<Integer> set = getSet(type);
             set.add(val);
@@ -965,7 +962,7 @@ public final class CronExpression implements Serializable, Cloneable {
     }
 
     protected void addToSet(int val, int end, int incr, int type)
-        throws ParseException {
+            throws ParseException {
 
         TreeSet<Integer> set = getSet(type);
 
@@ -1067,14 +1064,28 @@ public final class CronExpression implements Serializable, Cloneable {
         int max = -1;
         if (stopAt < startAt) {
             switch (type) {
-              case       SECOND : max = 60; break;
-              case       MINUTE : max = 60; break;
-              case         HOUR : max = 24; break;
-              case        MONTH : max = 12; break;
-              case  DAY_OF_WEEK : max = 7;  break;
-              case DAY_OF_MONTH : max = 31; break;
-              case         YEAR : throw new IllegalArgumentException("Start year must be less than stop year");
-              default           : throw new IllegalArgumentException("Unexpected type encountered");
+                case SECOND:
+                    max = 60;
+                    break;
+                case MINUTE:
+                    max = 60;
+                    break;
+                case HOUR:
+                    max = 24;
+                    break;
+                case MONTH:
+                    max = 12;
+                    break;
+                case DAY_OF_WEEK:
+                    max = 7;
+                    break;
+                case DAY_OF_MONTH:
+                    max = 31;
+                    break;
+                case YEAR:
+                    throw new IllegalArgumentException("Start year must be less than stop year");
+                default:
+                    throw new IllegalArgumentException("Unexpected type encountered");
             }
             stopAt += max;
         }
@@ -1088,7 +1099,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 int i2 = i % max;
 
                 // 1-indexed ranges should not include 0, and should include their max
-                if (i2 == 0 && (type == MONTH || type == DAY_OF_WEEK || type == DAY_OF_MONTH) ) {
+                if (i2 == 0 && (type == MONTH || type == DAY_OF_WEEK || type == DAY_OF_MONTH)) {
                     i2 = max;
                 }
 
@@ -1185,7 +1196,7 @@ public final class CronExpression implements Serializable, Cloneable {
         while (!gotOne) {
 
             //if (endTime != null && cl.getTime().after(endTime)) return null;
-            if(cl.get(Calendar.YEAR) > 2999) { // prevent endless loop...
+            if (cl.get(Calendar.YEAR) > 2999) { // prevent endless loop...
                 return null;
             }
 
@@ -1262,13 +1273,13 @@ public final class CronExpression implements Serializable, Cloneable {
             if (dayOfMSpec && !dayOfWSpec) { // get day by day of month rule
                 st = daysOfMonth.tailSet(day);
                 if (lastdayOfMonth) {
-                    if(!nearestWeekday) {
+                    if (!nearestWeekday) {
                         t = day;
                         day = getLastDayOfMonth(mon, cl.get(Calendar.YEAR));
                         day -= lastdayOffset;
-                        if(t > day) {
+                        if (t > day) {
                             mon++;
-                            if(mon > 12) {
+                            if (mon > 12) {
                                 mon = 1;
                                 tmon = 3333; // ensure test of mon != tmon further below fails
                                 cl.add(Calendar.YEAR, 1);
@@ -1291,13 +1302,13 @@ public final class CronExpression implements Serializable, Cloneable {
                         int ldom = getLastDayOfMonth(mon, cl.get(Calendar.YEAR));
                         int dow = tcal.get(Calendar.DAY_OF_WEEK);
 
-                        if(dow == Calendar.SATURDAY && day == 1) {
+                        if (dow == Calendar.SATURDAY && day == 1) {
                             day += 2;
-                        } else if(dow == Calendar.SATURDAY) {
+                        } else if (dow == Calendar.SATURDAY) {
                             day -= 1;
-                        } else if(dow == Calendar.SUNDAY && day == ldom) {
+                        } else if (dow == Calendar.SUNDAY && day == ldom) {
                             day -= 2;
-                        } else if(dow == Calendar.SUNDAY) {
+                        } else if (dow == Calendar.SUNDAY) {
                             day += 1;
                         }
 
@@ -1307,12 +1318,12 @@ public final class CronExpression implements Serializable, Cloneable {
                         tcal.set(Calendar.DAY_OF_MONTH, day);
                         tcal.set(Calendar.MONTH, mon - 1);
                         Date nTime = tcal.getTime();
-                        if(nTime.before(afterTime)) {
+                        if (nTime.before(afterTime)) {
                             day = 1;
                             mon++;
                         }
                     }
-                } else if(nearestWeekday) {
+                } else if (nearestWeekday) {
                     t = day;
                     day = daysOfMonth.first();
 
@@ -1327,13 +1338,13 @@ public final class CronExpression implements Serializable, Cloneable {
                     int ldom = getLastDayOfMonth(mon, cl.get(Calendar.YEAR));
                     int dow = tcal.get(Calendar.DAY_OF_WEEK);
 
-                    if(dow == Calendar.SATURDAY && day == 1) {
+                    if (dow == Calendar.SATURDAY && day == 1) {
                         day += 2;
-                    } else if(dow == Calendar.SATURDAY) {
+                    } else if (dow == Calendar.SATURDAY) {
                         day -= 1;
-                    } else if(dow == Calendar.SUNDAY && day == ldom) {
+                    } else if (dow == Calendar.SUNDAY && day == ldom) {
                         day -= 2;
-                    } else if(dow == Calendar.SUNDAY) {
+                    } else if (dow == Calendar.SUNDAY) {
                         day += 1;
                     }
 
@@ -1344,7 +1355,7 @@ public final class CronExpression implements Serializable, Cloneable {
                     tcal.set(Calendar.DAY_OF_MONTH, day);
                     tcal.set(Calendar.MONTH, mon - 1);
                     Date nTime = tcal.getTime();
-                    if(nTime.before(afterTime)) {
+                    if (nTime.before(afterTime)) {
                         day = daysOfMonth.first();
                         mon++;
                     }
@@ -1443,7 +1454,7 @@ public final class CronExpression implements Serializable, Cloneable {
                     day += daysToAdd;
                     if (daysToAdd < 0
                             || day > getLastDayOfMonth(mon, cl
-                                    .get(Calendar.YEAR))) {
+                            .get(Calendar.YEAR))) {
                         cl.set(Calendar.SECOND, 0);
                         cl.set(Calendar.MINUTE, 0);
                         cl.set(Calendar.HOUR_OF_DAY, 0);
@@ -1576,7 +1587,7 @@ public final class CronExpression implements Serializable, Cloneable {
      * Advance the calendar to the particular hour paying particular attention
      * to daylight saving problems.
      *
-     * @param cal the calendar to operate on
+     * @param cal  the calendar to operate on
      * @param hour the hour to set
      */
     protected void setCalendarHour(Calendar cal, int hour) {
@@ -1643,7 +1654,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
 
     private void readObject(java.io.ObjectInputStream stream)
-        throws java.io.IOException, ClassNotFoundException {
+            throws java.io.IOException, ClassNotFoundException {
 
         stream.defaultReadObject();
         try {

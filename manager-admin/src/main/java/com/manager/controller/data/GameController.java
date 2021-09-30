@@ -40,11 +40,11 @@ public class GameController {
      * 添加 测试ip
      */
     @ApiOperation(value = "添加测试ip")
-    @Log(title = "添加测试ip",businessType = BusinessType.INSERT)
+    @Log(title = "添加测试ip", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('data:game:add')")
     @GetMapping("/addIp")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="ip",value = "测试ip")
+            @ApiImplicitParam(name = "ip", value = "测试ip")
     })
     public AjaxResult addIp(String ip) {
         return dataService.addIp(ip, SecurityUtils.getUsername());
@@ -57,13 +57,13 @@ public class GameController {
     @PreAuthorize("@ss.hasPermi('data:game:list')")
     @GetMapping("/findIp")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="ip",value = "测试ip"),
-            @ApiImplicitParam(name="createBy",value = "操作人"),
-            @ApiImplicitParam(name="beginTime",value = "开始时间"),
-            @ApiImplicitParam(name="endTime",value = "结束时间")
+            @ApiImplicitParam(name = "ip", value = "测试ip"),
+            @ApiImplicitParam(name = "createBy", value = "操作人"),
+            @ApiImplicitParam(name = "beginTime", value = "开始时间"),
+            @ApiImplicitParam(name = "endTime", value = "结束时间")
     })
-    public AjaxResult findIp(String ip,String createBy,String beginTime,String endTime) {
-        return dataService.findIp(ip,createBy,beginTime,endTime);
+    public AjaxResult findIp(String ip, String createBy, String beginTime, String endTime) {
+        return dataService.findIp(ip, createBy, beginTime, endTime);
     }
 
     /**
@@ -71,10 +71,10 @@ public class GameController {
      */
     @ApiOperation(value = "删除测试ip")
     @PreAuthorize("@ss.hasPermi('data:game:delete')")
-    @Log(title = "删除测试ip",businessType = BusinessType.DELETE)
+    @Log(title = "删除测试ip", businessType = BusinessType.DELETE)
     @GetMapping("/delIp")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value = "id")
+            @ApiImplicitParam(name = "id", value = "id")
     })
     public AjaxResult delIp(Integer id) {
         return dataService.delIp(id);
@@ -85,7 +85,7 @@ public class GameController {
      */
     @ApiOperation(value = "发送配置")
     @PreAuthorize("@ss.hasPermi('data:game:send')")
-    @Log(title = "发送配置",businessType = BusinessType.OTHER)
+    @Log(title = "发送配置", businessType = BusinessType.OTHER)
     @GetMapping("/send")
     public AjaxResult send() {
         return dataService.send();

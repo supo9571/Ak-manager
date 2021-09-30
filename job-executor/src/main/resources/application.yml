@@ -9,7 +9,7 @@ xxl:
   job:
     accessToken:
     admin:
-#      addresses: http://54.151.183.63:8050/job-admin
+      #      addresses: http://54.151.183.63:8050/job-admin
       addresses: http://127.0.0.1:8050/job-admin
     executor:
       address:

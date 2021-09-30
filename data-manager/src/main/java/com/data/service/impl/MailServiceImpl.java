@@ -31,15 +31,15 @@ public class MailServiceImpl implements MailService {
     private GlobalConfig globalConfig;
 
     @Override
-    public List getTips(String channelId,String uid) {
-        return mailMapper.getTips(channelId,uid,tenantMapper.getTidByCid(channelId));
+    public List getTips(String channelId, String uid) {
+        return mailMapper.getTips(channelId, uid, tenantMapper.getTidByCid(channelId));
     }
 
     @Override
     public List getMailList(String channelId, String uid) {
         Integer tid = tenantMapper.getTidByCid(channelId);
-        saveMailRecord(channelId,uid,tid);
-        return mailMapper.getMailList(uid,tid);
+        saveMailRecord(channelId, uid, tid);
+        return mailMapper.getMailList(uid, tid);
     }
 
     @Override
@@ -68,28 +68,28 @@ public class MailServiceImpl implements MailService {
             if (resultJson != null && resultJson.getInteger("code") == 0) {
                 //修改状态 已领取
                 mailMapper.updateMailState(id);
-                result.put("code",200);
-                result.put("msg","OK");
-                result.put("read_id",id);
+                result.put("code", 200);
+                result.put("msg", "OK");
+                result.put("read_id", id);
                 Map resultMap = new HashMap();
-                resultMap.put("coins",coins);
-                resultMap.put("reason",0);
-                result.put("result",resultMap);
+                resultMap.put("coins", coins);
+                resultMap.put("reason", 0);
+                result.put("result", resultMap);
                 return result;
             }
         }
-        result.put("code",500);
-        result.put("msg","领取失败");
+        result.put("code", 500);
+        result.put("msg", "领取失败");
         return result;
     }
 
     /**
      * 生成邮件记录
      */
-    private void saveMailRecord(String channelId, String uid,Integer tid){
-        List list = mailMapper.getMailConfig(channelId,uid,tid);
-        if(list!=null && list.size()>0){
-            mailMapper.saveMailRecord(list,uid);
+    private void saveMailRecord(String channelId, String uid, Integer tid) {
+        List list = mailMapper.getMailConfig(channelId, uid, tid);
+        if (list != null && list.size() > 0) {
+            mailMapper.saveMailRecord(list, uid);
         }
     }
 }

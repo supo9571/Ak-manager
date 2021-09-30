@@ -17,6 +17,7 @@ public class CardServiceImpl implements CardService {
 
     @Autowired
     private CardMapper cardMapper;
+
     @Override
     public List selectCard(Card card) {
         return cardMapper.selectCard(card);
@@ -40,7 +41,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public Map findCardInfo(String tableGid) {
         Map map = cardMapper.findList(tableGid);
-        map.put("userList",cardMapper.findUserInfo(tableGid));
+        map.put("userList", cardMapper.findUserInfo(tableGid));
         return map;
     }
 }

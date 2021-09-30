@@ -17,16 +17,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/data/login")
-public class LoginController extends BaseController{
+public class LoginController extends BaseController {
     @Autowired
     private Loginservice loginservice;
+
     /**
      * 获取在线玩家列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Login login) {
-        startPage(login.getPage(),login.getSize(),login.getOrderByColumn(),login.getIsAsc());
-        List list =loginservice.selectLogin(login);
+        startPage(login.getPage(), login.getSize(), login.getOrderByColumn(), login.getIsAsc());
+        List list = loginservice.selectLogin(login);
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 
@@ -35,7 +36,7 @@ public class LoginController extends BaseController{
      */
     @PostMapping("/today")
     public AjaxResult today() {
-        Integer todayLogins =loginservice.selectTodayLogins();
+        Integer todayLogins = loginservice.selectTodayLogins();
         return AjaxResult.success("查询成功", todayLogins);
     }
 

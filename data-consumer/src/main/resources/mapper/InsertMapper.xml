@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.consumer.mapper.InsertMapper">
 
-	<insert id="insertReg" parameterType="com.consumer.domain.Register">
-		insert into data_register (`key`,`op`,`uid`,
-							 `ip`,`name`,`time`,
-							 `mstime`,`channel`,`agent_id`,
-							 `device_id`,`cur_channel`,`register_ip`,
-							 `device_brand`,`client_version`,`register_machine`,`account_id`,`agent_time`)
-		values (#{key},#{op},#{uid},
-		        #{ip},#{name},#{time},
-		        #{mstime},#{channel},#{agentId},
-		        #{deviceId},#{curChannel},#{registerIp},
-		        #{deviceBrand},#{clientVersion},#{registerMachine},#{accountId},#{mstime})
-	</insert>
+    <insert id="insertReg" parameterType="com.consumer.domain.Register">
+        insert into data_register (`key`, `op`, `uid`,
+                                   `ip`, `name`, `time`,
+                                   `mstime`, `channel`, `agent_id`,
+                                   `device_id`, `cur_channel`, `register_ip`,
+                                   `device_brand`, `client_version`, `register_machine`, `account_id`, `agent_time`)
+        values (#{key}, #{op}, #{uid},
+                #{ip}, #{name}, #{time},
+                #{mstime}, #{channel}, #{agentId},
+                #{deviceId}, #{curChannel}, #{registerIp},
+                #{deviceBrand}, #{clientVersion}, #{registerMachine}, #{accountId}, #{mstime})
+    </insert>
 
-	<insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">
-		insert into data_coins (`key`,`op`,`r`,
-		                           `uid`,`curr`,`time`,
-		                           `mstime`,`value`,`before`,
-		                           `channel`,`device_id`,`game_type`,
-		                           `table_type`,`cur_channel`,`device_brand`,
-		                           `client_version`)
-		values (#{key},#{op},#{r},
-		        #{uid},#{curr},#{time},
-		        #{mstime},#{value},#{before},
-		        #{channel},#{deviceId},#{gameType},
-		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion})
-	</insert>
+    <insert id="insertAddcoins" parameterType="com.consumer.domain.Coins">
+        insert into data_coins (`key`, `op`, `r`,
+                                `uid`, `curr`, `time`,
+                                `mstime`, `value`, `before`,
+                                `channel`, `device_id`, `game_type`,
+                                `table_type`, `cur_channel`, `device_brand`,
+                                `client_version`)
+        values (#{key}, #{op}, #{r},
+                #{uid}, #{curr}, #{time},
+                #{mstime}, #{value}, #{before},
+                #{channel}, #{deviceId}, #{gameType},
+                #{tableType}, #{curChannel}, #{deviceBrand}, #{clientVersion})
+    </insert>
 
-	<insert id="insertReduceCoins" parameterType="com.consumer.domain.Coins">
-		insert into data_coins (`key`,`op`,`r`,
-		                           `uid`,`curr`,`time`,
-		                           `mstime`,`value`,`before`,
-		                           `channel`,`device_id`,`game_type`,
-		                           `table_type`,`cur_channel`,`device_brand`,
-		                           `client_version`,`safe_box`)
-		values (#{key},#{op},#{r},
-		        #{uid},#{curr},#{time},
-		        #{mstime},0-${value},#{before},
-		        #{channel},#{deviceId},#{gameType},
-		        #{tableType},#{curChannel},#{deviceBrand},#{clientVersion},#{safeBox})
-	</insert>
+    <insert id="insertReduceCoins" parameterType="com.consumer.domain.Coins">
+        insert into data_coins (`key`, `op`, `r`,
+                                `uid`, `curr`, `time`,
+                                `mstime`, `value`, `before`,
+                                `channel`, `device_id`, `game_type`,
+                                `table_type`, `cur_channel`, `device_brand`,
+                                `client_version`, `safe_box`)
+        values (#{key}, #{op}, #{r},
+                #{uid}, #{curr}, #{time},
+                #{mstime}, 0 - ${value}, #{before},
+                #{channel}, #{deviceId}, #{gameType},
+                #{tableType}, #{curChannel}, #{deviceBrand}, #{clientVersion}, #{safeBox})
+    </insert>
 
-	<insert id="insertLogin" parameterType="com.consumer.domain.Login">
-		insert into data_login (`key`,`op`,`uid`,`name`,`sex`,`phone`,
-		                           `r`,`ip`,`time`,`mstime`,`level`,`channel`,
-		                           `device_id`,`vip_level`,`cur_channel`,
-		                           `register_ip`,`device_brand`,`client_version`,`ip_address`)
-		values (#{key},#{op},#{uid},#{nickName},#{sex},#{phone},
-		        #{r},#{ip},#{time},
-		        #{mstime},#{level},#{channel},
-		        #{deviceId},#{vipLevel},#{curChannel},#{registerIp},#{deviceBrand},#{clientVersion},#{ipAddress})
-	</insert>
+    <insert id="insertLogin" parameterType="com.consumer.domain.Login">
+        insert into data_login (`key`, `op`, `uid`, `name`, `sex`, `phone`,
+                                `r`, `ip`, `time`, `mstime`, `level`, `channel`,
+                                `device_id`, `vip_level`, `cur_channel`,
+                                `register_ip`, `device_brand`, `client_version`, `ip_address`)
+        values (#{key}, #{op}, #{uid}, #{nickName}, #{sex}, #{phone},
+                #{r}, #{ip}, #{time},
+                #{mstime}, #{level}, #{channel},
+                #{deviceId}, #{vipLevel}, #{curChannel}, #{registerIp}, #{deviceBrand}, #{clientVersion}, #{ipAddress})
+    </insert>
 
-	<insert id="insertLogout" parameterType="com.consumer.domain.Login">
-		insert into data_logout (`key`,`op`,`uid`,`r`,`ip`,`time`,`mstime`,`channel`,
-								`device_id`,`cur_channel`,`device_brand`,`client_version`)
-		values (#{key},#{op},#{uid},#{r},#{ip},#{time},
-				#{mstime},#{channel},#{deviceId},#{curChannel},#{deviceBrand},#{clientVersion})
-	</insert>
+    <insert id="insertLogout" parameterType="com.consumer.domain.Login">
+        insert into data_logout (`key`, `op`, `uid`, `r`, `ip`, `time`, `mstime`, `channel`,
+                                 `device_id`, `cur_channel`, `device_brand`, `client_version`)
+        values (#{key}, #{op}, #{uid}, #{r}, #{ip}, #{time},
+                #{mstime}, #{channel}, #{deviceId}, #{curChannel}, #{deviceBrand}, #{clientVersion})
+    </insert>
 
-	<insert id="insertCard" parameterType="com.consumer.domain.Card">
-		insert into data_card (`key`,`op`,`time`,`mstime`,`address`,
-								`begin_time`,`end_time`,`game_type`,`table_gid`,`table_type`,`side_list`,`exinfo`,`total_num`,`system_win`,
-							   `add_score`,`pay_fee`,`bet_coins`,`uid`,`ai_num`)
-		values (#{key},#{op},#{time},#{mstime},#{address},
-				#{beginTime},#{endTime},#{gameType},#{tableGid},#{tableType},#{sideList},#{exinfo},#{totalNum},#{systemWin},
-				#{addScore},#{payFee},#{betCoins},#{uid},#{aiNum})
-	</insert>
+    <insert id="insertCard" parameterType="com.consumer.domain.Card">
+        insert into data_card (`key`, `op`, `time`, `mstime`, `address`,
+                               `begin_time`, `end_time`, `game_type`, `table_gid`, `table_type`, `side_list`, `exinfo`,
+                               `total_num`, `system_win`,
+                               `add_score`, `pay_fee`, `bet_coins`, `uid`, `ai_num`)
+        values (#{key}, #{op}, #{time}, #{mstime}, #{address},
+                #{beginTime}, #{endTime}, #{gameType}, #{tableGid}, #{tableType}, #{sideList}, #{exinfo}, #{totalNum},
+                #{systemWin},
+                #{addScore}, #{payFee}, #{betCoins}, #{uid}, #{aiNum})
+    </insert>
 
-	<insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
-		insert into data_card_user (`table_gid`,`uid`,`mstime`,`begin_time`,`end_time`,
-							   `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`)
-		values
-		<foreach item="item" index="index" collection="list" separator=",">
-		       (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
-				#{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.betCoins},#{item.leftScore},#{item.isRobot})
-		</foreach>
-	</insert>
+    <insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
+        insert into data_card_user (`table_gid`,`uid`,`mstime`,`begin_time`,`end_time`,
+        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
+            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.betCoins},#{item.leftScore},#{item.isRobot})
+        </foreach>
+    </insert>
 
-	<insert id="insertWater" parameterType="com.consumer.domain.WaterHistory">
-		insert into data_water (`key`,`op`,`time`,`mstime`,`uid`,`r`,`value`,`reward`,`table_type`,`table_gid`)
-		values (#{key},#{op},#{time},#{mstime},#{uid},#{r},#{value},#{reward},#{tableType},#{tableGid})
-	</insert>
+    <insert id="insertWater" parameterType="com.consumer.domain.WaterHistory">
+        insert into data_water (`key`, `op`, `time`, `mstime`, `uid`, `r`, `value`, `reward`, `table_type`, `table_gid`)
+        values (#{key}, #{op}, #{time}, #{mstime}, #{uid}, #{r}, #{value}, #{reward}, #{tableType}, #{tableGid})
+    </insert>
 </mapper>

@@ -10,7 +10,9 @@ import java.util.Map;
  */
 public interface UserService {
     Integer findByphone(String phone);
+
     Integer insertToDataUser(DataUser dataUser);
+
     Integer loadDataUserName(DataUser dataUser);
 
     DataUser findUserBySeedToken(String seedToken);

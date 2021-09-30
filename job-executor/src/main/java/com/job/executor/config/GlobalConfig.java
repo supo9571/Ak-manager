@@ -13,5 +13,5 @@ public class GlobalConfig {
     private String domain;
 
     private String onlinePlay;
-    
+
 }

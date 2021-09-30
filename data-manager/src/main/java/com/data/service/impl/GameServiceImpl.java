@@ -21,6 +21,7 @@ import java.util.Map;
 public class GameServiceImpl implements GameService {
     @Autowired
     private GameMapper gameMapper;
+
     @Override
     public List getGames() {
         return buildTree(gameMapper.getGames());
@@ -28,12 +29,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void saveIp(String ip, String createBy) {
-        gameMapper.saveIp(ip,createBy);
+        gameMapper.saveIp(ip, createBy);
     }
 
     @Override
     public List findIp(String ip, String createBy, String beginTime, String endTime) {
-        return  gameMapper.findIp(ip,createBy,beginTime,endTime);
+        return gameMapper.findIp(ip, createBy, beginTime, endTime);
     }
 
     @Override
@@ -49,20 +50,20 @@ public class GameServiceImpl implements GameService {
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < gameList.size(); i++) {
             Map map = gameList.get(i);
-            if(game.getString(String.valueOf(map.get("tid")))==null){
+            if (game.getString(String.valueOf(map.get("tid"))) == null) {
                 jsonArray = new JSONArray();
-                game.put(String.valueOf(map.get("tid")),jsonArray);
+                game.put(String.valueOf(map.get("tid")), jsonArray);
             }
             JSONObject gameJson = new JSONObject();
-            gameJson.put("position",map.get("position"));
-            gameJson.put("game_type",map.get("game_type"));
-            gameJson.put("shown_type",map.get("shown_type"));
-            gameJson.put("notice_type",map.get("notice_type"));
-            gameJson.put("status",map.get("status"));
+            gameJson.put("position", map.get("position"));
+            gameJson.put("game_type", map.get("game_type"));
+            gameJson.put("shown_type", map.get("shown_type"));
+            gameJson.put("notice_type", map.get("notice_type"));
+            gameJson.put("status", map.get("status"));
             jsonArray.add(gameJson);
         }
         String resultStr = StringUtils.jsonToLua(game);
-        result.put("game_list.lua","return {"+resultStr+"}");
+        result.put("game_list.lua", "return {" + resultStr + "}");
         return result.toJSONString();
     }
 
@@ -105,7 +106,7 @@ public class GameServiceImpl implements GameService {
         Iterator it = list.iterator();
         while (it.hasNext()) {
             Map n = (Map) it.next();
-            if (StringUtils.isNotNull(n.get("parentId")) &&  n.get("parentId") ==  t.get("gameType")) {
+            if (StringUtils.isNotNull(n.get("parentId")) && n.get("parentId") == t.get("gameType")) {
                 tlist.add(n);
             }
         }

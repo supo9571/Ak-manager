@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JobAdminApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(JobAdminApplication.class, args);
-		System.out.println("(♥◠‿◠)ﾉﾞ  任务管理系统启动成功!!!   ლ(´ڡ`ლ)ﾞ");
-	}
+        System.out.println("(♥◠‿◠)ﾉﾞ  任务管理系统启动成功!!!   ლ(´ڡ`ლ)ﾞ");
+    }
 
 }

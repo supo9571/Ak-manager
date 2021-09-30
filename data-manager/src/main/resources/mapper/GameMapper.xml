@@ -4,7 +4,7 @@
 <mapper namespace="com.data.mapper.GameMapper">
 
     <select id="findIp" resultType="java.util.Map">
-          select id,ip,create_time createTime,create_by createBy from config_ip
+        select id,ip,create_time createTime,create_by createBy from config_ip
         <where>
             <if test="ip != null and ip != ''">
                 and ip = #{ip}

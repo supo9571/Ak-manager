@@ -23,7 +23,7 @@ public class TableRuleConfig implements PreciseShardingAlgorithm<String>, RangeS
         String tableName = preciseShardingValue.getLogicTableName() + "_";
         try {
             Long time = Long.valueOf(preciseShardingValue.getValue());
-            Date date  = new Date(time);
+            Date date = new Date(time);
             String year = String.format("%ty", date);
             String mon = String.format("%tm", date);
             tableName = tableName + year + mon;
@@ -49,10 +49,10 @@ public class TableRuleConfig implements PreciseShardingAlgorithm<String>, RangeS
         Long lower = Long.valueOf(range.lowerEndpoint());
         Long upper = Long.valueOf(range.upperEndpoint());
 
-        Date lowDate  = new Date(lower);
+        Date lowDate = new Date(lower);
         String lowMon = String.format("%tm", lowDate);
 
-        Date upDate  = new Date(upper);
+        Date upDate = new Date(upper);
         String upMon = String.format("%tm", upDate);
 
         for (int i = Integer.valueOf(lowMon); i <= Integer.valueOf(upMon); i++) {

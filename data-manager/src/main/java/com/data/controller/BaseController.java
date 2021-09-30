@@ -21,7 +21,7 @@ public class BaseController {
     /**
      * 设置请求分页数据
      */
-    protected void startPage(Integer page,Integer size,String orderByColumn,String isAsc) {
+    protected void startPage(Integer page, Integer size, String orderByColumn, String isAsc) {
         page = (page == null) ? 1 : page;
         size = (size == null) ? 10 : size;
         PageDomain pageDomain = new PageDomain();
@@ -29,9 +29,9 @@ public class BaseController {
         pageDomain.setPageSize(size);
         pageDomain.setOrderByColumn(orderByColumn);
         pageDomain.setIsAsc(isAsc);
-        if(StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)){
-            PageHelper.startPage(page, size, orderByColumn+" "+isAsc);
-        }else {
+        if (StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)) {
+            PageHelper.startPage(page, size, orderByColumn + " " + isAsc);
+        } else {
             PageHelper.startPage(page, size);
         }
 
@@ -40,9 +40,9 @@ public class BaseController {
     /**
      * 设置排序
      */
-    protected void startOrder(String orderByColumn,String isAsc) {
-        if(StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)){
-            PageHelper.orderBy(orderByColumn+" "+isAsc);
+    protected void startOrder(String orderByColumn, String isAsc) {
+        if (StringUtils.isNotBlank(orderByColumn) && StringUtils.isNotBlank(isAsc)) {
+            PageHelper.orderBy(orderByColumn + " " + isAsc);
         }
     }
 
@@ -104,17 +104,17 @@ public class BaseController {
         return AjaxResult.error(message);
     }
 
-    protected HttpServletRequest getReuest(){
+    protected HttpServletRequest getReuest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         return request;
     }
 
-    protected String getHeader(String name){
+    protected String getHeader(String name) {
         return getReuest().getHeader(name);
     }
 
-    protected String getIp(){
+    protected String getIp() {
         String ip = IpUtils.getIpAddr(getReuest());
         return ip;
     }

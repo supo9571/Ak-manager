@@ -25,25 +25,25 @@ public class PlayerController extends BaseController {
     private PlayerService playerService;
 
     @PostMapping("/list")
-    public AjaxResult list(@RequestBody PlayUser playUser){
-        startPage(playUser.getPage(),playUser.getSize(),playUser.getOrderByColumn(),playUser.getIsAsc());
+    public AjaxResult list(@RequestBody PlayUser playUser) {
+        startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
         List list = playerService.selectPlayer(playUser);
         return AjaxResult.success(getDataTable(list));
     }
 
     @PostMapping("/curr")
-    public AjaxResult curr(Long uid){
+    public AjaxResult curr(Long uid) {
         List list = playerService.selectPlayerCurr(uid);
         return AjaxResult.success(list);
     }
 
     @PostMapping("/edit")
-    public AjaxResult update(@RequestBody PlayUser playUser){
-        if(StringUtils.isNotBlank(playUser.getPassword())){
+    public AjaxResult update(@RequestBody PlayUser playUser) {
+        if (StringUtils.isNotBlank(playUser.getPassword())) {
             String password = DigestUtils.md5DigestAsHex(playUser.getPassword().getBytes(StandardCharsets.UTF_8));
             playUser.setPassword(password);
         }
         Integer i = playerService.updatePlayer(playUser);
-        return i>0?AjaxResult.success():AjaxResult.error();
+        return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 }

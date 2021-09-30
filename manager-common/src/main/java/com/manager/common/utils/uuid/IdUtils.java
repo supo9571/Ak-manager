@@ -9,15 +9,13 @@ import java.util.Random;
  *
  * @author marvin
  */
-public class IdUtils
-{
+public class IdUtils {
     /**
      * 获取随机UUID
      *
      * @return 随机UUID
      */
-    public static String randomUUID()
-    {
+    public static String randomUUID() {
         return UUID.randomUUID().toString();
     }
 
@@ -26,8 +24,7 @@ public class IdUtils
      *
      * @return 简化的UUID，去掉了横线
      */
-    public static String simpleUUID()
-    {
+    public static String simpleUUID() {
         return UUID.randomUUID().toString(true);
     }
 
@@ -36,8 +33,7 @@ public class IdUtils
      *
      * @return 随机UUID
      */
-    public static String fastUUID()
-    {
+    public static String fastUUID() {
         return UUID.fastUUID().toString();
     }
 
@@ -46,32 +42,33 @@ public class IdUtils
      *
      * @return 简化的UUID，去掉了横线
      */
-    public static String fastSimpleUUID()
-    {
+    public static String fastSimpleUUID() {
         return UUID.fastUUID().toString(true);
     }
 
     /**
      * 生成 充值订单号
+     *
      * @return
      */
     public static String getOrderId() {
         int machineId = 2;
-        SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
-        String newDate=sdf.format(new Date());
-        Random random=new Random();
-        return  machineId+newDate+ String.format("%06d", random.nextInt(999999));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        String newDate = sdf.format(new Date());
+        Random random = new Random();
+        return machineId + newDate + String.format("%06d", random.nextInt(999999));
     }
 
     /**
      * 生成 提现订单号
+     *
      * @return
      */
     public static String getExchangeOrderId() {
         int machineId = 1;
-        SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
-        String newDate=sdf.format(new Date());
-        Random random=new Random();
-        return  machineId+newDate+ String.format("%06d", random.nextInt(999999));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        String newDate = sdf.format(new Date());
+        Random random = new Random();
+        return machineId + newDate + String.format("%06d", random.nextInt(999999));
     }
 }

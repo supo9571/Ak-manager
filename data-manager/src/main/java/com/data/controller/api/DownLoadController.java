@@ -31,7 +31,7 @@ public class DownLoadController {
         try {
             String filePath = globalConfig.getProfile() + "/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            response.setHeader("Content-Length", new File(filePath).length()+"");
+            response.setHeader("Content-Length", new File(filePath).length() + "");
             FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class DownLoadController {
     @GetMapping("/profile/hotpackage/**")
     public void hotDownLoad(HttpServletResponse response, HttpServletRequest request) {
         try {
-            String url = request.getRequestURI().replaceAll("/profile/hotpackage/","");
+            String url = request.getRequestURI().replaceAll("/profile/hotpackage/", "");
             String filePath = globalConfig.getProfile() + "/hotpackage/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, url);

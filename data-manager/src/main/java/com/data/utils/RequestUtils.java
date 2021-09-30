@@ -27,20 +27,28 @@ import java.util.concurrent.TimeUnit;
  **/
 @Component
 public class RequestUtils {
-    /** 产品密钥ID，产品标识 */
+    /**
+     * 产品密钥ID，产品标识
+     */
     private final static String SECRETID = "720006eac787e84733be0568c6e64a1e";
-    /** 产品私有密钥，服务端生成签名信息使用，请严格保管，避免泄露 */
+    /**
+     * 产品私有密钥，服务端生成签名信息使用，请严格保管，避免泄露
+     */
     private final static String SECRETKEY = "6101056b6b3ea783b805d03d4e01a9f4";
-    /** 业务ID，易盾根据产品业务特点分配 */
+    /**
+     * 业务ID，易盾根据产品业务特点分配
+     */
     private final static String BUSINESSID = "898b960212514c0984cf27f97567e74c";
-    /** 本机认证服务身份证实人认证在线检测接口地址 */
+    /**
+     * 本机认证服务身份证实人认证在线检测接口地址
+     */
     private static final String URI_SEND_SMS = "https://sms.dun.163.com/v2/sendsms";
     private static final String URI_VERIFY_OTP = "https://sms.dun.163.com/v2/verifysms";
 
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public static Map sandTosms(String phone){
+    public static Map sandTosms(String phone) {
         Map<String, String> params = createToParams(phone);
         return postForEntity(URI_SEND_SMS, params, Map.class);
     }
@@ -51,16 +59,16 @@ public class RequestUtils {
         return sms;
     }
 
-    public static Map<String, String> createToParams(String phone){
+    public static Map<String, String> createToParams(String phone) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("secretId", SECRETID);
         params.put("businessId", BUSINESSID);
-        params.put("version","v2");
-        params.put("timestamp",String.valueOf(System.currentTimeMillis()));
-        String nonce = "duanxinfasong"+String.valueOf(System.currentTimeMillis());
-        params.put("nonce",nonce);
+        params.put("version", "v2");
+        params.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        String nonce = "duanxinfasong" + String.valueOf(System.currentTimeMillis());
+        params.put("nonce", nonce);
         params.put("templateId", "14414");
-        params.put("mobile",phone);
+        params.put("mobile", phone);
         params.put("paramType", "json");
         Map<String, String> variables = Collections.emptyMap();
         params.put("codeName", "code");
@@ -72,23 +80,24 @@ public class RequestUtils {
         return params;
     }
 
-    public static Map<String, String> verifyToParams(String requestId,String code){
+    public static Map<String, String> verifyToParams(String requestId, String code) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("secretId", SECRETID);
         params.put("businessId", BUSINESSID);
-        params.put("version","v2");
-        params.put("timestamp",String.valueOf(System.currentTimeMillis()));
-        String nonce = "duanxinfasong"+String.valueOf(System.currentTimeMillis());
-        params.put("nonce",nonce);
+        params.put("version", "v2");
+        params.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        String nonce = "duanxinfasong" + String.valueOf(System.currentTimeMillis());
+        params.put("nonce", nonce);
 
-        params.put("requestId",requestId);
-        params.put("code",code);
+        params.put("requestId", requestId);
+        params.put("code", code);
 
 
         String sign = genSignature(SECRETKEY, params);
         params.put("signature", sign);
         return params;
     }
+
     public static <R> R postForEntity(String uri, Map<String, String> params, Class<R> responseType) {
         try {
             String strResponse = Request.Post(uri)
@@ -150,24 +159,25 @@ public class RequestUtils {
         return DigestUtils.md5Hex(sb.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String getMD5Str(DataUser dataUser){
+    public String getMD5Str(DataUser dataUser) {
         StringBuilder sb = new StringBuilder();
         sb.append(dataUser.getPhone()).append(dataUser.getPassword());
-        String md5str=DigestUtils.md5Hex(sb.toString());
-        redisTemplate.opsForValue().set(md5str, dataUser.getAccountId(),1, TimeUnit.DAYS);
+        String md5str = DigestUtils.md5Hex(sb.toString());
+        redisTemplate.opsForValue().set(md5str, dataUser.getAccountId(), 1, TimeUnit.DAYS);
         return md5str;
     }
 
-    public String getRomodphone(){
-        String[] telFirst="134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153".split(",");
-        int index=getNum(0,telFirst.length-1);
-        String first=telFirst[index];
-        String second=String.valueOf(getNum(1,888)+10000).substring(1);
-        String third=String.valueOf(getNum(1,9100)+10000).substring(1);
-        return first+second+third;
+    public String getRomodphone() {
+        String[] telFirst = "134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153".split(",");
+        int index = getNum(0, telFirst.length - 1);
+        String first = telFirst[index];
+        String second = String.valueOf(getNum(1, 888) + 10000).substring(1);
+        String third = String.valueOf(getNum(1, 9100) + 10000).substring(1);
+        return first + second + third;
 
     }
-    public int getNum(int start,int end) {
-        return (int)(Math.random()*(end-start+1)+start);
+
+    public int getNum(int start, int end) {
+        return (int) (Math.random() * (end - start + 1) + start);
     }
 }
