@@ -48,7 +48,7 @@ public class KafkaConsumer {
                     new OffsetAndMetadata(record.offset() - 10));
             //数据存库
             String op = jsonObject.getString("op");
-            if(op.equals(OpEnum.REDUCECOINS.getOpName())){
+            if(op.equals(OpEnum.REGISTER.getOpName())){
                 insertHandler.insertRegister(jsonObject);
             }else if(op.equals(OpEnum.ADDCOINS.getOpName())){
                 insertHandler.insertAddcoins(jsonObject);

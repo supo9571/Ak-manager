@@ -34,7 +34,7 @@ public class AgentHandle {
     public void dayIncome() {
         String date = DateUtil.formatDate(new Date());
         Long endTime = System.currentTimeMillis()/1000;
-        //查询 今日登录 玩家id列表
+        //查询 玩家id列表
         List<AgentCommission> agentCommissions = agentMapper.selectUids();
         List<AgentCommission> agents = new ArrayList<>();
 
@@ -58,6 +58,50 @@ public class AgentHandle {
         List<AgentCommission> agents = agentMapper.selectDayIncome(date);
         if(agents.size()>0)
             agentMapper.saveAgentIncome(agents);
+    }
+
+    /**
+     * 计算 推广记录
+     */
+    @XxlJob("agent_popularize")
+    public void popularize() {
+        String date = DateUtil.formatDate(new Date());
+        Long beginTime = DateUtil.getTodayTimes()*1000;
+        Long endTime = System.currentTimeMillis();
+        //查询 玩家id列表
+        List<AgentCommission> agentCommissions = agentMapper.selectUids();
+        List<AgentCommission> agents = new ArrayList<>();
+
+        agentCommissions.forEach(agentCommission->{
+            Long uid = agentCommission.getUid();
+            Integer subNum = agentMapper.getTodaySubnum(uid,beginTime,endTime);//当天新增 直属人数
+            Integer teamNum = getTodayTeamnum(uid,beginTime,endTime);//当天新增 下属人数
+            if(subNum>0 || teamNum>0){
+                agentCommission.setSubNum(subNum);
+                agentCommission.setTeamNum(teamNum);
+                agentCommission.setOtherNum(teamNum-subNum);
+                agentCommission.setDay(date);
+                agents.add(agentCommission);
+            }
+        });
+        if(agents.size()>0)
+            agentMapper.saveAgentPopularize(agents);
+
+    }
+
+    /**
+     * 计算 团队人数
+     */
+    private Integer getTodayTeamnum(Long uid,Long beginTime,Long endTime) {
+        AtomicReference<Integer> i = new AtomicReference<>(0);
+        List<Long> list = agentMapper.selectTodaySubUid(uid,beginTime,endTime);
+        if(list!=null){
+            list.forEach(id->{
+                i.updateAndGet(v -> v + getTodayTeamnum(id,beginTime,endTime));
+            });
+            i.updateAndGet(v -> v + list.size());
+        }
+        return i.get();
     }
 
     /**

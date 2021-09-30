@@ -15,5 +15,7 @@ public interface AgentMapper {
 
     List getCommissionDays(@Param("uid") String uid);
 
-    List getCashs(String uid);
+    List getCashs(@Param("uid")String uid);
+
+    List getPopularizes(@Param("uid")String uid);
 }

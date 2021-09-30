@@ -11,4 +11,6 @@ public interface AgentServive {
     List getCommissionDays(String uid);
 
     List getCashs(String uid);
+
+    List getPopularizes(String uid);
 }

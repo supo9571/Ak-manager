@@ -34,4 +34,12 @@ public interface AgentMapper {
     void saveAgentDayIncome(List<AgentCommission> agents);
 
     List<AgentCommission> selectDayIncome(String date);
+
+    @Select("select count(1) from data_register where agent_id = #{uid} and agent_time>=#{beginTime} and agent_time<=#{endTime}")
+    Integer getTodaySubnum(@Param("uid") Long uid, @Param("beginTime") Long beginTime,@Param("endTime") Long endTime);
+
+    @Select("select uid from data_register where agent_id = #{uid} and agent_time>=#{beginTime} and agent_time<=#{endTime}")
+    List<Long> selectTodaySubUid(@Param("uid") Long uid, @Param("beginTime") Long beginTime,@Param("endTime") Long endTime);
+
+    void saveAgentPopularize(List<AgentCommission> agents);
 }

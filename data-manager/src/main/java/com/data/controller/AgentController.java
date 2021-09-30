@@ -49,4 +49,14 @@ public class AgentController extends BaseController{
         List list = agentServive.getCashs(uid);
         return AjaxResult.success("查询成功",getDataTable(list));
     }
+
+    /**
+     * 领取记录
+     */
+    @PostMapping("/popularize")
+    public AjaxResult popularize(String uid,Integer page,Integer size,String orderByColumn,String isAsc) {
+        startPage(page,size,orderByColumn,isAsc);
+        List list = agentServive.getPopularizes(uid);
+        return AjaxResult.success("查询成功",getDataTable(list));
+    }
 }

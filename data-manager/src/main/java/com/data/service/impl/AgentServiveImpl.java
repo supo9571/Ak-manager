@@ -31,4 +31,9 @@ public class AgentServiveImpl implements AgentServive {
     public List getCashs(String uid) {
         return agentMapper.getCashs(uid);
     }
+
+    @Override
+    public List getPopularizes(String uid) {
+        return agentMapper.getPopularizes(uid);
+    }
 }
