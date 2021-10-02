@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.SubGameActualDataMapper">
+
+    <select id="getSubGameActualDataList" resultType="com.manager.common.core.domain.model.SubGameActualData">
+        SELECT
+            cg.game_id as gameId,
+            sum(dw.value) as betRecharge,
+            sum(dw.reward) as rewardRecharge,
+            sum(dc.pay_fee) as taxRevenue,
+            sum(dw.value) - sum(dw.reward) as profitAndLoss,
+            (sum(dw.value) - sum(dw.reward)) / sum(dw.value) as profitAndLoss,
+            COUNT(dw.uid) as uidCount,
+            COUNT(1) as counts
+        from
+            config_game cg
+        left join data_card_2109 dc on (cg.game_id = dc.game_type)
+        left join data_water dw on (cg.game_id = dw.table_type)
+        where 1 = 1
+        <if test="tid!=null and tid!=''">
+            and cg.tid = #{tid}
+        </if>
+        <if test="gameId!=null and gameId!=''">
+            and cg.game_id = #{gameId}
+        </if>
+        <if test="createTime1 !=null and createTime1 !=''">
+            and date_format(cg.created_time,'%Y-%m-%d') >= #{createTime1}hu
+        </if>
+        <if test="createTime2 !=null and createTime2 !=''">
+            and date_format(cg.created_time,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
+        </if>
+    </select>
+
+</mapper>
