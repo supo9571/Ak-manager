@@ -86,13 +86,12 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     @Transactional
-    public int insertUser(SysUser user, long userId) {
+    public int insertUser(SysUser user) {
         // 新增用户信息
         int rows = userMapper.insertUser(user);
         // 新增ip白名单
         if (StringUtils.isNotEmpty(user.getIps())) {
-            sysIpWhiteService.addIpWhite(Long.valueOf(user.getTid()),
-                    Long.valueOf(user.getUserId()), user.getIps(), userId, user.getUserName());
+            sysIpWhiteService.addIpWhite(user.getUserId(), user.getUserName(), user.getIps());
         }
         // 新增用户与角色关联
         userMapper.insertUserRole(user.getUserId(), user.getRoleId());

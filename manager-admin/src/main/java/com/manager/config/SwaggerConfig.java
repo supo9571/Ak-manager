@@ -53,8 +53,9 @@ public class SwaggerConfig {
                 //为当前包下controller生成API文档
 //                .apis(RequestHandlerSelectors.basePackage("com.manager.web.controller"))
                 .apis(Predicates.or(
-                        RequestHandlerSelectors.basePackage("com.manager.controller.system"),
-                        RequestHandlerSelectors.basePackage("com.manager.controller.data")
+                        RequestHandlerSelectors.basePackage("com.manager.controller.system")
+//                        ,
+//                        RequestHandlerSelectors.basePackage("com.manager.controller.data")
 //                        RequestHandlerSelectors.basePackage("com.manager.web.controller.common")
                 ))
                 .paths(PathSelectors.any())
@@ -111,7 +112,7 @@ public class SwaggerConfig {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("Swagger_接口文档")
+                .title("管理后台Swagger_接口文档")
                 // 描述
                 .description("描述：方便开发人员测试对接接口......")
                 // 作者信息

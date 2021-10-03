@@ -1,7 +1,9 @@
 package com.manager.system.service.impl;
 
+import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.domain.entity.SysIpWhite;
 import com.manager.common.exception.CustomException;
+import com.manager.common.utils.SecurityUtils;
 import com.manager.system.mapper.SysIpWhiteMapper;
 import com.manager.system.mapper.SysUserMapper;
 import com.manager.system.service.SysIpWhiteService;
@@ -23,7 +25,7 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public void addIpWhite(long tid, Long userId, String ips, long createUserId, String userName) {
+    public void addIpWhite(Long userId, String userName, String ips) {
         if (userId == null || userId == 0) {
             //根据userName 查询id
             userId = sysUserMapper.selectUserIdByUserName(userName);
@@ -31,10 +33,14 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
         }
         List<SysIpWhite> list = new ArrayList<>();
         List<String> ipList = Arrays.asList(ips.split(","));
-        Long finalUserId = userId;
-        ipList.forEach(ip -> {
-            list.add(new SysIpWhite(tid, finalUserId, createUserId, ip));
-        });
+
+        for (int i = 0; i < ipList.size(); i++) {
+            SysIpWhite sysIpWhite = new SysIpWhite();
+            sysIpWhite.setUserId(userId);
+            sysIpWhite.setCreateBy(SecurityUtils.getUsername());
+            sysIpWhite.setIp(ipList.get(i));
+            list.add(sysIpWhite);
+        }
         sysIpWhiteMapper.insertIpWhite(list);
     }
 
@@ -44,8 +50,8 @@ public class SysIpWhiteServiceImpl implements SysIpWhiteService {
     }
 
     @Override
-    public List selectIpWhiteList(String tid, String userId, String ip, String userName) {
-        return sysIpWhiteMapper.selectIpWhiteList(tid, userId, ip, userName);
+    public List selectIpWhiteList(String userId, String ip, String userName) {
+        return sysIpWhiteMapper.selectIpWhiteList(userId, ip, userName);
     }
 
     @Override
