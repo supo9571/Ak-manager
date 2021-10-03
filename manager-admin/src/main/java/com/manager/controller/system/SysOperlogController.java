@@ -37,31 +37,4 @@ public class SysOperlogController extends BaseController {
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
         return AjaxResult.success(getDataTable(list));
     }
-
-    @Log(title = "操作日志", businessType = BusinessType.EXPORT)
-    @ApiIgnore
-    @PreAuthorize("@ss.hasPermi('system:operlog:export')")
-    @GetMapping("/export")
-    public AjaxResult export(SysOperLog operLog) {
-        List<SysOperLog> list = operLogService.selectOperLogList(operLog);
-        ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
-        return util.exportExcel(list, "操作日志");
-    }
-
-    @Log(title = "操作日志", businessType = BusinessType.DELETE)
-    @ApiIgnore
-    @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
-    @DeleteMapping("/{operIds}")
-    public AjaxResult remove(@PathVariable Long[] operIds) {
-        return toAjax(operLogService.deleteOperLogByIds(operIds));
-    }
-
-    @Log(title = "操作日志", businessType = BusinessType.CLEAN)
-    @ApiIgnore
-    @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
-    @DeleteMapping("/clean")
-    public AjaxResult clean() {
-        operLogService.cleanOperLog();
-        return AjaxResult.success();
-    }
 }

@@ -31,10 +31,8 @@
         left join sys_user u
         on w.user_id = u.user_id
         <where>
-               and tenant = '0'
-            <if test="type != null and type != ''">
-                and w.type = #{type}
-            </if>
+               and w.tenant = '0'
+               and w.type = '0'
             <if test="userId != null and userId != ''">
                 and w.user_id = #{userId}
             </if>
