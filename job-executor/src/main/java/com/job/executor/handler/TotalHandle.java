@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.text.ParseException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,6 +87,13 @@ public class TotalHandle {
     public void summarize() {
         String date = DateUtil.formatDate(new Date());//当天日期
         Long time = DateUtil.getTodayTimes();//当天零点 时间戳
-        //游戏盈亏
+        //查询 渠道列表
+        List<String> channelList = totalMapper.getChannelList();
+        channelList.forEach(channel->{
+            //游戏盈亏
+            BigDecimal systemWin = new BigDecimal(totalMapper.getSystemWin(channel,time));
+        });
+
+
     }
 }

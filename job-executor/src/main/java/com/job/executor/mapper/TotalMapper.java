@@ -2,9 +2,7 @@ package com.job.executor.mapper;
 
 import org.apache.ibatis.annotations.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface TotalMapper {
@@ -24,4 +22,10 @@ public interface TotalMapper {
 
     @Delete("delete from data_water where time <= #{time} ")
     void deleteWater(@Param("time") Long time);
+
+    @Select("SELECT SUM(system_win) FROM data_card WHERE channel = #{channel} and time >=#{time}")
+    Long getSystemWin(@Param("channel") String channel,@Param("time") Long time);
+
+    @Select("select t_id from sys_tenant where t_type = '2' ")
+    List<String> getChannelList();
 }
