@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +28,11 @@ public class CountSubGameHandle {
      * 5分钟统计一次数据
      */
     @XxlJob("init_sub_game")
-    @PostConstruct
+    // @PostConstruct
     public void initSubGame() {
+        // 获取当前时间 做初始化时间
+        String date = DateUtil.formatDateTime(new Date());
+
         String initTime;// 初始化时间
         String endTime; // 后5分钟时间
 
@@ -50,29 +52,31 @@ public class CountSubGameHandle {
             parentList = countSubGameMapper.selectSubGameActualData("0",initTime,endTime);
 
             if(parentList != null && !parentList.isEmpty()){
-
                 // 循环父节点，通过父id找到对应的游戏房间
                 for (CountSubGame countSubGame : parentList) {
                     countSubGame.setParentId("0");
                     countSubGame.setInitTime(endTime);
 
-                    subList  = new ArrayList<>();
                     // 获取对应的游戏房间
+                    subList  = new ArrayList<>();
                     subList = countSubGameMapper.selectSubGameActualData(countSubGame.getGameId(),initTime,endTime);
 
-                    for (CountSubGame game : subList) {
-                        game.setParentId(countSubGame.getGameId());
-                        game.setInitTime(endTime);
+                    if(subList != null && !subList.isEmpty()){
+                        for (CountSubGame game : subList) {
+                            game.setParentId(countSubGame.getGameId());
+                            game.setInitTime(endTime);
+                        }
+                        // 游戏对应的房间数据插入到表
+                        countSubGameMapper.initSubGameActualData(subList);
                     }
-                    countSubGameMapper.initSubGameActualData(subList);
                 }
-
+                // 游戏数据插入到表
                 countSubGameMapper.initSubGameActualData(parentList);
+            }else{
+                // 查不到数据就更新全表的初始化时间
+                countSubGameMapper.editInitTime();
             }
         }else{
-            // 获取当前时间 做初始化时间
-            String date = DateUtil.formatDateTime(new Date());
-
             // 初始化第一版数据
             parentList = countSubGameMapper.selectSubGameActualData("0",null,null);
             if(parentList != null && !parentList.isEmpty()){
@@ -84,16 +88,16 @@ public class CountSubGameHandle {
                     subList  = new ArrayList<>();
                     subList = countSubGameMapper.selectSubGameActualData(countSubGame.getGameId(),null,null);
 
-                    for (CountSubGame game : subList) {
-                        game.setParentId(countSubGame.getGameId());
-                        game.setInitTime(date);
+                    if(subList != null && !subList.isEmpty()){
+                        for (CountSubGame game : subList) {
+                            game.setParentId(countSubGame.getGameId());
+                            game.setInitTime(date);
+                        }
+                        countSubGameMapper.initSubGameActualData(subList);
                     }
-                    countSubGameMapper.initSubGameActualData(subList);
                 }
-
                 countSubGameMapper.initSubGameActualData(parentList);
             }
         }
     }
-
 }

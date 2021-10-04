@@ -2,6 +2,7 @@ package com.data.service.impl;
 
 import com.data.mapper.SubGameActualDataMapper;
 import com.data.service.SubGameActualDataService;
+import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.domain.model.SubGameActualData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,20 +24,14 @@ public class SubGameActualDataServiceImpl implements SubGameActualDataService {
 
     @Override
     public List<SubGameActualData> getSubGameActualDataList(SubGameActualData subGameActualData) {
-
         List<SubGameActualData> list = subGameActualDataMapper.getSubGameActualDataList(subGameActualData);
-
-        Map<String, List<SubGameActualData>> collect2 = list.stream()
-                .filter(f -> (!"-1".equals(f.getParentId()) && !"0".equals(f.getParentId())))
-                .collect(groupingBy(SubGameActualData::getParentId));
-
-        for(List<SubGameActualData> m : collect2.values()){
-
-        }
-
-        return null;
+        return list;
     }
 
-
+    @Override
+    public List export(SubGameActualData subGameActualData) {
+        List<SubGameActualData> list = subGameActualDataMapper.getSubGameActualDataList(subGameActualData);
+        return list;
+    }
 
 }
