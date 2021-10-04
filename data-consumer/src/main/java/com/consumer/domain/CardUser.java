@@ -33,6 +33,5 @@ public class CardUser {
         this.endTime = card.getEndTime();
         this.gameType = card.getGameType();
         this.tableType = card.getTableType();
-        this.channel = card.getChannel();
     }
 }

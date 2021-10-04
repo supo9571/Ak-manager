@@ -146,16 +146,18 @@ public class DataSourceConfig {
      * 格式化 分表节点
      */
     private String formatNodes(String nodes){
-        String mon = String.format("%tm", new Date());
-        String beforMon = String.format("%tm", addMonths( -1));
-        String afterMon = String.format("%tm", addMonths( 1));
-        nodes = String.format(nodes,beforMon,mon,afterMon);
+        Date date = new Date();
+        String year = String.format("%ty", date);
+        String mon = String.format("%tm", date);
+        String beforMon = String.format("%tm", addMonths( date,-1));
+        String afterMon = String.format("%tm", addMonths( date,1));
+        nodes = String.format(nodes,year+beforMon,year+mon,year+afterMon);
         return nodes;
     }
 
-    private Date addMonths(int amount) {
+    private Date addMonths(Date date,int amount) {
         Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
+        c.setTime(date);
         c.add(Calendar.MONTH, amount);
         return c.getTime();
     }
