@@ -96,7 +96,6 @@ public class LogAspect {
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (loginUser != null) {
                 operLog.setOperName(loginUser.getUsername());
-                operLog.setTid(loginUser.getUser().getTid());
             }
 
             if (e != null) {

@@ -24,6 +24,8 @@ public class CardUser {
     private Long leftScore;
     private String isRobot;
 
+    private String channel;
+
     public void setCardInfo(Card card) {
         this.tableGid = card.getTableGid();
         this.mstime = card.getMstime();

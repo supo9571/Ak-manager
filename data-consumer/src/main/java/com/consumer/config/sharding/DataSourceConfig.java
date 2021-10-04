@@ -6,7 +6,6 @@ import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
-import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.ShardingDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +18,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * @author marvin 2021/8/18
@@ -77,7 +73,7 @@ public class DataSourceConfig {
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins", coinsNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins", formatNodes(coinsNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -86,7 +82,7 @@ public class DataSourceConfig {
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card", cardNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card", formatNodes(cardNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -95,7 +91,7 @@ public class DataSourceConfig {
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user", cardUserNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user", formatNodes(cardUserNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -143,5 +139,25 @@ public class DataSourceConfig {
     public SqlSessionTemplate sqlSessionTmplate(SqlSessionFactory sqlSessionFactory) {
         SqlSessionTemplate sqlSessionTmplate = new SqlSessionTemplate(sqlSessionFactory);
         return sqlSessionTmplate;
+    }
+
+    /**
+     * 格式化 分表节点
+     */
+    private String formatNodes(String nodes){
+        Date date = new Date();
+        String year = String.format("%ty", date);
+        String mon = String.format("%tm", date);
+        String beforMon = String.format("%tm", addMonths( date,-1));
+        String afterMon = String.format("%tm", addMonths( date,1));
+        nodes = String.format(nodes,year+beforMon,year+mon,year+afterMon);
+        return nodes;
+    }
+
+    private Date addMonths(Date date,int amount) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.MONTH, amount);
+        return c.getTime();
     }
 }

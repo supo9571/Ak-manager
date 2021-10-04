@@ -37,10 +37,8 @@ public class SysIpController extends BaseController {
     @ApiOperation(value = "添加白名单")
     @Log(title = "添加白名单", businessType = BusinessType.INSERT)
     @GetMapping("/white/add")
-    public AjaxResult add(Long tid, Long userId, String ips, String userName) {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        SysUser user = loginUser.getUser();
-        sysIpWhiteService.addIpWhite(tid, userId, ips, user.getUserId(), userName);
+    public AjaxResult add(Long userId,String userName, String ips) {
+        sysIpWhiteService.addIpWhite(userId, userName, ips);
         return success();
     }
 
@@ -64,7 +62,7 @@ public class SysIpController extends BaseController {
     @GetMapping("/white/list")
     public AjaxResult list(String tid, String userId, String ip, String userName) {
         startPage();
-        List list = sysIpWhiteService.selectIpWhiteList(tid, userId, ip, userName);
+        List list = sysIpWhiteService.selectIpWhiteList(userId, ip, userName);
         return AjaxResult.success("查询白名单成功", getDataTable(list));
     }
 

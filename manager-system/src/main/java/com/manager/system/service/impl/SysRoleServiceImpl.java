@@ -1,28 +1,24 @@
 package com.manager.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.manager.system.domain.SysRoleDept;
-import com.manager.system.domain.SysRoleMenu;
-import com.manager.system.domain.SysUserRole;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.manager.common.annotation.DataScope;
 import com.manager.common.constant.UserConstants;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.exception.CustomException;
 import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.spring.SpringUtils;
+import com.manager.system.domain.SysRoleDept;
+import com.manager.system.domain.SysRoleMenu;
+import com.manager.system.domain.SysUserRole;
 import com.manager.system.mapper.SysRoleDeptMapper;
 import com.manager.system.mapper.SysRoleMapper;
 import com.manager.system.mapper.SysRoleMenuMapper;
 import com.manager.system.mapper.SysUserRoleMapper;
 import com.manager.system.service.ISysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * 角色 业务层处理
@@ -50,7 +46,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 角色数据集合信息
      */
     @Override
-    @DataScope(deptAlias = "d")
     public List<SysRole> selectRoleList(SysRole role) {
         return roleMapper.selectRoleList(role);
     }
@@ -68,7 +63,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
         for (SysRole role : roles) {
             for (SysRole userRole : userRoles) {
                 if (role.getRoleId().longValue() == userRole.getRoleId().longValue()) {
-                    role.setFlag(true);
                     break;
                 }
             }
@@ -88,7 +82,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         Set<String> permsSet = new HashSet<>();
         for (SysRole perm : perms) {
             if (StringUtils.isNotNull(perm)) {
-                permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
+                permsSet.addAll(Collections.singleton(perm.getRoleId()+""));
             }
         }
         return permsSet;
@@ -151,7 +145,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     public String checkRoleKeyUnique(SysRole role) {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey());
+        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleName());
         if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }

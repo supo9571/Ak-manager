@@ -1,4 +1,4 @@
-package com.data.config.sharding;
+package com.job.executor.config.sharding;
 
 
 import org.apache.commons.dbcp2.BasicDataSource;

@@ -39,7 +39,6 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门信息集合
      */
     @Override
-    @DataScope(deptAlias = "d")
     public List<SysDept> selectDeptList(SysDept dept) {
         return deptMapper.selectDeptList(dept);
     }
@@ -92,7 +91,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     @Override
     public List<Integer> selectDeptListByRoleId(Long roleId) {
         SysRole role = roleMapper.selectRoleById(roleId);
-        return deptMapper.selectDeptListByRoleId(roleId, role.isDeptCheckStrictly());
+        return deptMapper.selectDeptListByRoleId(roleId, false);
     }
 
     /**

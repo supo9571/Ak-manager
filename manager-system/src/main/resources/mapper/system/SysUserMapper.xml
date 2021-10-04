@@ -50,9 +50,6 @@
                u.google_switch,
                r.role_id,
                r.role_name,
-               r.role_key,
-               r.role_sort,
-               r.data_scope,
                r.status as role_status
         from sys_user u
                  left join sys_user_role ur on u.user_id = ur.user_id
@@ -69,8 +66,6 @@
         <if test="userName != null and userName != ''">
             AND u.user_name like concat('%', #{userName}, '%')
         </if>
-        <!-- 数据范围过滤 -->
-        ${params.dataScope}
     </select>
 
     <select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
@@ -88,13 +83,11 @@
         <if test="phonenumber != null and phonenumber != ''">
             AND u.phonenumber like concat('%', #{phonenumber}, '%')
         </if>
-        <!-- 数据范围过滤 -->
-        ${params.dataScope}
     </select>
 
     <select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
-        where u.user_name = #{userName}
+        where u.user_name = #{userName} and u.tenant = '0'
     </select>
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
@@ -105,7 +98,7 @@
     <select id="checkUserNameUnique" parameterType="String" resultType="int">
         select count(1)
         from sys_user
-        where user_name = #{userName} limit 1
+        where user_name = #{userName} and tenant = '0' limit 1
     </select>
 
     <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
@@ -203,10 +196,9 @@
             <if test="isLoginAdmin == null or isLoginAdmin!='admin' ">
                 and u.user_id !=1
             </if>
+            and u.tenant = '0'
         </where>
         order by u.create_time desc
-        <!-- 数据范围过滤 -->
-        ${params.dataScope}
     </select>
 
     <!--新增用户 -->
@@ -220,7 +212,8 @@
         <if test="createBy != null and createBy != ''">create_by,</if>
         <if test="googleSwitch != null and googleSwitch != ''">google_switch,</if>
         <if test="googleKey != null and googleKey != ''">google_key,</if>
-        create_time
+        create_time,
+        tenant
         )values(
         <if test="tid != null and tid != ''">#{tid},</if>
         <if test="userName != null and userName != ''">#{userName},</if>
@@ -230,7 +223,8 @@
         <if test="createBy != null and createBy != ''">#{createBy},</if>
         <if test="googleSwitch != null and googleSwitch != ''">#{googleSwitch},</if>
         <if test="googleKey != null and googleKey != ''">#{googleKey},</if>
-        sysdate()
+        sysdate(),
+        '0'
         )
     </insert>
 
@@ -248,6 +242,6 @@
     <select id="selectUserIdByUserName" resultType="java.lang.Long">
         select user_id
         from sys_user
-        where user_name = #{userName} limit 0,1
+        where user_name = #{userName} and tenant = '0' limit 0,1
     </select>
 </mapper>
