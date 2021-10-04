@@ -1,4 +1,5 @@
-package com.consumer.config.sharding;
+package com.job.executor.config.sharding;
+
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;

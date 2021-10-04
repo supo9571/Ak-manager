@@ -14,7 +14,7 @@ public interface TotalMapper {
 
     void insertOnline(List list);
 
-    @Select("select COUNT(DISTINCT(uid)) from data_login where mstime >= #{time}")
+    @Select("select COUNT(DISTINCT(uid)) from data_login where time >= #{time}")
     int selectTodayLogins(Long time);
 
     void saveTodayLogins(@Param("date") String date, @Param("num") int num);

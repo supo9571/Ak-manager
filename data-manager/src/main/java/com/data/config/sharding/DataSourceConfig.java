@@ -19,9 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author marvin 2021/8/18
@@ -76,7 +74,7 @@ public class DataSourceConfig {
     // 创建data_coins 表规则
     @Bean
     TableRuleConfiguration getCoinsTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins", coinsNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_coins", formatNodes(coinsNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -85,7 +83,7 @@ public class DataSourceConfig {
     // 创建data_card 表规则
     @Bean
     TableRuleConfiguration getCardTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card", cardNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card", formatNodes(cardNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -94,7 +92,7 @@ public class DataSourceConfig {
     // 创建data_card_user 表规则
     @Bean
     TableRuleConfiguration getCardUserTableRuleConfiguration() {
-        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user", cardUserNodes);
+        TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration("data_card_user", formatNodes(cardUserNodes));
         tableRuleConfig.setTableShardingStrategyConfig(
                 new StandardShardingStrategyConfiguration("mstime", new TableRuleConfig(), new TableRuleConfig()));
         return tableRuleConfig;
@@ -142,5 +140,23 @@ public class DataSourceConfig {
     public SqlSessionTemplate sqlSessionTmplate(SqlSessionFactory sqlSessionFactory) {
         SqlSessionTemplate sqlSessionTmplate = new SqlSessionTemplate(sqlSessionFactory);
         return sqlSessionTmplate;
+    }
+
+    /**
+     * 格式化 分表节点
+     */
+    private String formatNodes(String nodes){
+        String mon = String.format("%tm", new Date());
+        String beforMon = String.format("%tm", addMonths( -1));
+        String afterMon = String.format("%tm", addMonths( 1));
+        nodes = String.format(nodes,beforMon,mon,afterMon);
+        return nodes;
+    }
+
+    private Date addMonths(int amount) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, amount);
+        return c.getTime();
     }
 }

@@ -65,7 +65,7 @@ public class TotalHandle {
     @XxlJob("login_count")
     public void login() {
         String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-        Long time = getTodayTime();
+        Long time = DateUtil.getTodayTimes();
         int num = totalMapper.selectTodayLogins(time);
         totalMapper.saveTodayLogins(date, num);
     }
@@ -81,15 +81,13 @@ public class TotalHandle {
         totalMapper.deleteWater(time);
     }
 
-    private Long getTodayTime() {
-        Long time = 0l;
-        try {
-            time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 00:00:00")
-                    .getTime();
-        } catch (ParseException e) {
-            log.error("getTodayTime方法出错：{}", e.getMessage());
-        }
-        return time;
+    /**
+     * 计算 总览
+     */
+    @XxlJob("summarize_today")
+    public void summarize() {
+        String date = DateUtil.formatDate(new Date());//当天日期
+        Long time = DateUtil.getTodayTimes();//当天零点 时间戳
+        //游戏盈亏
     }
 }
