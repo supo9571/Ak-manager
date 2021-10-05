@@ -21,4 +21,9 @@ public interface SubGameActualDataMapper {
      */
     List<SubGameActualData> getSubGameActualDataList(SubGameActualData subGameActualData);
 
+    /**
+     * 获取人局数
+     */
+    List<SubGameActualData> getHumBurCount(SubGameActualData subGameActualData);
+
 }

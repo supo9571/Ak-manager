@@ -21,12 +21,15 @@ public class SubGameActualDataServiceImpl implements SubGameActualDataService {
     @Override
     public List<SubGameActualData> getSubGameActualDataList(SubGameActualData subGameActualData) {
         List<SubGameActualData> list = subGameActualDataMapper.getSubGameActualDataList(subGameActualData);
-        return list;
-    }
+        // 获取humBurCount
+        List<SubGameActualData> humBurCountList = subGameActualDataMapper.getHumBurCount(subGameActualData);
 
-    @Override
-    public List export(SubGameActualData subGameActualData) {
-        List<SubGameActualData> list = subGameActualDataMapper.getSubGameActualDataList(subGameActualData);
+        for (int i = 0; i < list.size(); i++) {
+            // 防止异常数据，导致null指针
+            if(list.size() == humBurCountList.size()){
+                list.get(i).setHumBurCount(humBurCountList.get(i).getHumBurCount());
+            }
+        }
         return list;
     }
 

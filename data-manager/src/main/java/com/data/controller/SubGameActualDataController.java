@@ -48,7 +48,7 @@ public class SubGameActualDataController extends BaseController {
     @PostMapping("/export")
     public void export(@RequestBody SubGameActualData subGameActualData, HttpServletResponse response) throws IOException {
         startOrder(subGameActualData.getOrderByColumn(),subGameActualData.getIsAsc());
-        List<SubGameActualData> list = subGameActualDataService.export(subGameActualData);
+        List<SubGameActualData> list = subGameActualDataService.getSubGameActualDataList(subGameActualData);
 
         ExcelUtil util = new ExcelUtil<SubGameActualData>(SubGameActualData.class);
         String fileName = "子游戏实时数据导出";

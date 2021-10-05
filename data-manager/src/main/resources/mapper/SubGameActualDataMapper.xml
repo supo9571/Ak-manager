@@ -14,27 +14,57 @@
             csgad.tax_revenue as taxRevenue,
             csgad.profit_and_loss as profitAndLoss,
             csgad.profit_and_loss_ratio as profitAndLossRatio,
-            (SELECT COUNT(distinct dcu.uid) from
-                data_card_user dcu
-                where
-                FROM_UNIXTIME(dcu.begin_time, '%Y-%m-%d') >= #{createTime1}
-                and FROM_UNIXTIME(dcu.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
-            ) as parCount,
-            (SELECT COUNT(dc.uid) from
-                data_card dc
-                where
-                FROM_UNIXTIME(dc.begin_time, '%Y-%m-%d') >= #{createTime1}
-                and FROM_UNIXTIME(dc.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
-            ) as humBurCount,
+            COUNT(dcu.uid) as parCount,
             csgad.init_time as initTime
         from
             config_sub_game_actual_data csgad
+        left join data_card dcu on csgad.game_id = dcu.table_type
+        and FROM_UNIXTIME(dcu.begin_time, '%Y-%m-%d') >= #{createTime1}
+        and FROM_UNIXTIME(dcu.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
         where 1 = 1
         <if test="gameId!=null and gameId!=''">
             and csgad.game_id = #{gameId}
         </if>
         and date_format(csgad.day,'%Y-%m-%d') >= #{createTime1}
         and date_format(csgad.day,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
+        group by
+            day,
+            parent_id,
+            game_id,
+            game_name,
+            bet_recharge,
+            reward_recharge,
+            tax_revenue,
+            profit_and_loss,
+            profit_and_loss_ratio,
+            init_time
+    </select>
+
+    <select id="getHumBurCount" resultType="com.manager.common.core.domain.model.SubGameActualData">
+        SELECT
+            COUNT(dc.uid) as humBurCount
+        from
+            config_sub_game_actual_data csgad
+        left join data_card dc on csgad.game_id = dc.table_type
+            and FROM_UNIXTIME(dc.begin_time, '%Y-%m-%d') >= #{createTime1}
+            and FROM_UNIXTIME(dc.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
+        where 1 =1
+            <if test="gameId!=null and gameId!=''">
+                and csgad.game_id = #{gameId}
+            </if>
+            and date_format(csgad.day,'%Y-%m-%d') >= #{createTime1}
+            and date_format(csgad.day,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
+        group by
+            day,
+            parent_id,
+            game_id,
+            game_name,
+            bet_recharge,
+            reward_recharge,
+            tax_revenue,
+            profit_and_loss,
+            profit_and_loss_ratio,
+            init_time
     </select>
 
 </mapper>

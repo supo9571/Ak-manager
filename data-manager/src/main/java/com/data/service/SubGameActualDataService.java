@@ -17,9 +17,4 @@ public interface SubGameActualDataService {
      */
     List<SubGameActualData> getSubGameActualDataList(SubGameActualData subGameActualData);
 
-    /**
-     * 导出
-     */
-    List<SubGameActualData> export(SubGameActualData subGameActualData);
-
 }
