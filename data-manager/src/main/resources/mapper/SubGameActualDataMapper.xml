@@ -5,6 +5,7 @@
 
     <select id="getSubGameActualDataList" resultType="com.manager.common.core.domain.model.SubGameActualData">
         SELECT
+            csgad.day as day,
             csgad.parent_id as parentId,
             csgad.game_id as gameId,
             csgad.game_name as gameName,
@@ -13,8 +14,18 @@
             csgad.tax_revenue as taxRevenue,
             csgad.profit_and_loss as profitAndLoss,
             csgad.profit_and_loss_ratio as profitAndLossRatio,
-            csgad.par_count as parCount,
-            csgad.hum_bur_count as humBurCount,
+            (SELECT COUNT(distinct dcu.uid) from
+                data_card_user dcu
+                where
+                FROM_UNIXTIME(dcu.begin_time, '%Y-%m-%d') >= #{createTime1}
+                and FROM_UNIXTIME(dcu.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
+            ) as parCount,
+            (SELECT COUNT(dc.uid) from
+                data_card dc
+                where
+                FROM_UNIXTIME(dc.begin_time, '%Y-%m-%d') >= #{createTime1}
+                and FROM_UNIXTIME(dc.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
+            ) as humBurCount,
             csgad.init_time as initTime
         from
             config_sub_game_actual_data csgad
@@ -22,6 +33,8 @@
         <if test="gameId!=null and gameId!=''">
             and csgad.game_id = #{gameId}
         </if>
+        and date_format(csgad.day,'%Y-%m-%d') >= #{createTime1}
+        and date_format(csgad.day,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
     </select>
 
 </mapper>

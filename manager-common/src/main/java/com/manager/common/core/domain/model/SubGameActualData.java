@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 @Data
 public class SubGameActualData extends BaseEntity {
 
-    @ApiModelProperty("平台id")
-    private String tid;
+    @ApiModelProperty("日期")
+    private String day;
 
     @ApiModelProperty("父id")
     private String parentId;
@@ -28,6 +28,14 @@ public class SubGameActualData extends BaseEntity {
     @Excel(name = "游戏名", cellType = ColumnType.STRING)
     @ApiModelProperty("游戏名")
     private String gameName;
+
+    @Excel(name = "参与人数", cellType = ColumnType.STRING)
+    @ApiModelProperty("参与人数")
+    private int parCount;
+
+    @Excel(name = "人局数", cellType = ColumnType.STRING)
+    @ApiModelProperty("人局数")
+    private int humBurCount;
 
     @Excel(name = "投注金额")
     @ApiModelProperty("投注金额")

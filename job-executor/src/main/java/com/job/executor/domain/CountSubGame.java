@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 public class CountSubGame {
 
     /**
-     * 平台id
+     * 日期
      */
-    private String tid;
+    private String day;
 
     /**
      * 父id

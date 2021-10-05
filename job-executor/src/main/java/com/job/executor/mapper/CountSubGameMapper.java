@@ -39,8 +39,8 @@ public interface CountSubGameMapper {
     /**
      * 更新全表 初始化时间
      */
-    @Update("update config_sub_game_actual_data set init_time = sysdate() where 1 = 1")
-    void editInitTime();
+    @Update("update config_sub_game_actual_data set init_time = sysdate() where day = #{day}")
+    void editInitTime(@Param("day") String day);
 
 
 }

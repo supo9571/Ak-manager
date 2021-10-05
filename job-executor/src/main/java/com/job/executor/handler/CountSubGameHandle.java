@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,8 @@ public class CountSubGameHandle {
     public void initSubGame() {
         // 获取当前时间 做初始化时间
         String date = DateUtil.formatDateTime(new Date());
+        // 当天日期
+        String day = DateUtil.formatDate(new Date());
 
         String initTime;// 初始化时间
         String endTime; // 后5分钟时间
@@ -56,6 +59,7 @@ public class CountSubGameHandle {
                 for (CountSubGame countSubGame : parentList) {
                     countSubGame.setParentId("0");
                     countSubGame.setInitTime(endTime);
+                    countSubGame.setDay(day);
 
                     // 获取对应的游戏房间
                     subList  = new ArrayList<>();
@@ -65,6 +69,7 @@ public class CountSubGameHandle {
                         for (CountSubGame game : subList) {
                             game.setParentId(countSubGame.getGameId());
                             game.setInitTime(endTime);
+                            game.setDay(day);
                         }
                         // 游戏对应的房间数据插入到表
                         countSubGameMapper.initSubGameActualData(subList);
@@ -74,7 +79,7 @@ public class CountSubGameHandle {
                 countSubGameMapper.initSubGameActualData(parentList);
             }else{
                 // 查不到数据就更新全表的初始化时间
-                countSubGameMapper.editInitTime();
+                countSubGameMapper.editInitTime(day);
             }
         }else{
             // 初始化第一版数据
@@ -84,6 +89,7 @@ public class CountSubGameHandle {
                 for (CountSubGame countSubGame : parentList) {
                     countSubGame.setParentId("0");
                     countSubGame.setInitTime(date);
+                    countSubGame.setDay(day);
 
                     subList  = new ArrayList<>();
                     subList = countSubGameMapper.selectSubGameActualData(countSubGame.getGameId(),null,null);
@@ -92,6 +98,7 @@ public class CountSubGameHandle {
                         for (CountSubGame game : subList) {
                             game.setParentId(countSubGame.getGameId());
                             game.setInitTime(date);
+                            game.setDay(day);
                         }
                         countSubGameMapper.initSubGameActualData(subList);
                     }

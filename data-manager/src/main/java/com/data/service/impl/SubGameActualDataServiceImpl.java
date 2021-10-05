@@ -2,15 +2,11 @@ package com.data.service.impl;
 
 import com.data.mapper.SubGameActualDataMapper;
 import com.data.service.SubGameActualDataService;
-import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.domain.model.SubGameActualData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import static java.util.stream.Collectors.groupingBy;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 子游戏实时数据
