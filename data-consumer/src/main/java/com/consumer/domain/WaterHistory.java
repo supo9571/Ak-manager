@@ -28,4 +28,6 @@ public class WaterHistory {
 
     private String tableGid;// 牌局id
 
+    private String channel;// 渠道
+
 }

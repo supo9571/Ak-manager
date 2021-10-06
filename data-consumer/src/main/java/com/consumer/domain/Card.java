@@ -34,4 +34,6 @@ public class Card {
     private String uid;
     private int aiNum;
 
+    private String channel;
+
 }

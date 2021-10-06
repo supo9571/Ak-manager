@@ -15,4 +15,98 @@
         values (#{date}, #{num}) ON DUPLICATE KEY
         UPDATE num=#{num};
     </insert>
+
+    <select id="getRechargeInfo" resultType="java.util.Map">
+        SELECT a.rechargeNum, b.rechargeCount, c.newRechargeNum, d.newRechargeCount, e.rechargeGiveCount ,f.offlineGiveCount ,g.successNum ,h.successCount
+        FROM (SELECT count(DISTINCT uid) rechargeNum FROM config_recharge_order WHERE channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) a
+        LEFT JOIN (SELECT SUM(recharge_amount) rechargeCount FROM config_recharge_order WHERE channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) b
+        ON 1 = 1 LEFT JOIN (SELECT COUNT(1) newRechargeNum FROM (SELECT MIN(id) id, MIN(finish_time) finish_time, uid FROM config_recharge_order
+            WHERE payment_status = '1' AND channel = #{channel} GROUP BY uid HAVING UNIX_TIMESTAMP(finish_time) >= #{time}) t) c
+        ON 1 = 1 LEFT JOIN (SELECT sum(recharge_amount) newRechargeCount FROM config_recharge_order
+            where id in (select id from (SELECT MIN(id) id, min(finish_time) finish_time, uid FROM config_recharge_order WHERE payment_status = '1' and channel = #{channel} GROUP BY uid having UNIX_TIMESTAMP(finish_time) >= #{time}) t)) d
+        ON 1 = 1 LEFT JOIN (SELECT sum(ex_coins) rechargeGiveCount FROM config_recharge_order
+              where payment_status = '1' AND channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) e
+        ON 1 = 1 LEFT JOIN (SELECT sum(recharge_amount) offlineGiveCount FROM config_recharge_order
+              where payment_status = '1' and recharge_type = '5' AND channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) f
+        ON 1 = 1 LEFT JOIN (SELECT count(1) successNum FROM config_recharge_order
+              where payment_status = '1' AND channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) g
+        ON 1 = 1 LEFT JOIN (SELECT sum(recharge_amount) successCount FROM config_recharge_order
+              where payment_status = '1' AND channel = #{channel} AND UNIX_TIMESTAMP(finish_time) >= #{time}) h
+        ON 1 = 1
+    </select>
+
+    <select id="getExchangeInfo" resultType="java.util.Map">
+        SELECT a.exchangeNum, b.exchangeCount, c.actualExchangeCount, d.confiscateCount, e.newExchangeCount
+        FROM (SELECT COUNT(DISTINCT uid) exchangeNum FROM config_exchange_order WHERE channel = #{channel} AND UNIX_TIMESTAMP(update_time) >= #{time}) a
+        LEFT JOIN (SELECT SUM(withdraw_money) exchangeCount FROM config_exchange_order WHERE channel = #{channel} AND UNIX_TIMESTAMP(update_time) >= #{time}) b
+        ON 1 = 1 LEFT JOIN (SELECT SUM(transfer_amount) actualExchangeCount FROM config_exchange_order WHERE exaa_status = '5' AND channel = #{channel} AND UNIX_TIMESTAMP(update_time) >= #{time}) c
+        ON 1 = 1 LEFT JOIN (SELECT SUM(withdraw_money) confiscateCount FROM config_exchange_order WHERE exaa_status = '7' and channel = #{channel} AND UNIX_TIMESTAMP(update_time) >= #{time}) d
+        ON 1 = 1 LEFT JOIN (SELECT SUM(withdraw_money) newExchangeCount FROM config_exchange_order WHERE channel = #{channel} AND UNIX_TIMESTAMP(update_time) >= #{time}
+                and uid in (SELECT uid FROM (SELECT MIN(id) id, MIN(finish_time) finish_time, uid FROM config_recharge_order WHERE payment_status = '1' AND channel = #{channel} GROUP BY uid HAVING UNIX_TIMESTAMP(finish_time) >= #{time}) t )) e
+        ON 1 = 1
+    </select>
+
+    <select id="getWaterInfo" resultType="java.util.Map">
+        SELECT a.newWater, b.rewardCount, c.performanceCount
+        FROM (SELECT SUM(value) newWater FROM data_water WHERE channel = #{channel} AND time >= #{time}
+                and uid in (SELECT uid FROM (SELECT MIN(id) id, MIN(finish_time) finish_time, uid FROM config_recharge_order WHERE payment_status = '1' AND channel = #{channel} GROUP BY uid HAVING UNIX_TIMESTAMP(finish_time) >= #{time}) t )) a
+        LEFT JOIN (SELECT SUM(reward) rewardCount FROM data_water WHERE channel = #{channel} AND time >= #{time}) b
+        ON 1 = 1 LEFT JOIN (SELECT SUM(value) performanceCount FROM data_water WHERE channel = #{channel} AND time >= #{time}) c
+        ON 1 = 1
+    </select>
+
+    <insert id="saveSummarize">
+        insert into
+        data_total_day(day,channel,
+        recharge_num,recharge_count,new_recharge_num,new_recharge_count,recharge_give_count,offline_give_count,online_pay_rate,offline_pay_rate,
+        exchange_num,exchange_count,actual_exchange_count,confiscate_count,new_exchange_count,
+        new_num,balance_count,active_num,
+        new_water,reward_count,performance_count,
+        commission_sub_count,commission_team_count,
+        bet_count,fee_count,win_rate,
+        activity_count,bind_give_count,vip_level_count,vip_count,alms_count,give_num,give_count,system_win)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.day},#{item.channel},
+            #{item.rechargeNum},#{item.rechargeCount},#{item.newRechargeNum},#{item.newRechargeCount},#{item.rechargeGiveCount},#{item.offlineGiveCount},#{item.onlinePayRate},#{item.offlinePayRate},
+            #{item.exchangeNum},#{item.exchangeCount},#{item.actualExchangeCount},#{item.confiscateCount},#{item.newExchangeCount},
+            #{item.newNum},#{item.balanceCount},#{item.activeNum},
+            #{item.newWater},#{item.rewardCount},#{item.performanceCount},
+            #{item.commissionSubCount},#{item.commissionTeamCount},
+            #{item.betCount},#{item.feeCount},#{item.winRate},
+            #{item.activityCount},#{item.bindGiveCount},#{item.vipLevelCount},#{item.vipCount},#{item.almsCount},#{item.giveNum},#{item.giveCount},#{item.systemWin})
+        </foreach>
+        ON DUPLICATE KEY
+        UPDATE recharge_num=values(recharge_num),
+        recharge_count=values(recharge_count),
+        new_recharge_num=values(new_recharge_num),
+        new_recharge_count=values(new_recharge_count),
+        recharge_give_count=values(recharge_give_count),
+        offline_give_count=values(offline_give_count),
+        offline_pay_rate=values(offline_pay_rate),
+        online_pay_rate=values(online_pay_rate),
+        exchange_num=values(exchange_num),
+        exchange_count=values(exchange_count),
+        actual_exchange_count=values(actual_exchange_count),
+        confiscate_count=values(confiscate_count),
+        new_exchange_count=values(new_exchange_count),
+        new_num=values(new_num),
+        balance_count=values(balance_count),
+        active_num=values(active_num),
+        new_water=values(new_water),
+        reward_count=values(reward_count),
+        performance_count=values(performance_count),
+        commission_sub_count=values(commission_sub_count),
+        commission_team_count=values(commission_team_count),
+        bet_count=values(bet_count),
+        fee_count=values(fee_count),
+        activity_count=values(activity_count),
+        bind_give_count=values(bind_give_count),
+        vip_level_count=values(vip_level_count),
+        vip_count=values(vip_count),
+        alms_count=values(alms_count),
+        give_num=values(give_num),
+        give_count=values(give_count),
+        system_win=values(system_win);
+    </insert>
 </mapper>

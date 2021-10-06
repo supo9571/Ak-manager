@@ -10,7 +10,7 @@ spring:
     coinsNodes: sys-data.data_coins_%s,sys-data.data_coins_%s,sys-data.data_coins_%s
     cardUserNodes: sys-data.data_card_user_%s,sys-data.data_card_user_%s,sys-data.data_card_user_%s
 
-    sqlShow: true
+    sqlShow: false
 #mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml

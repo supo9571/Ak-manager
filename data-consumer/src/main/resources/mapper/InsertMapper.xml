@@ -66,11 +66,11 @@
         insert into data_card (`key`, `op`, `time`, `mstime`, `address`,
                                `begin_time`, `end_time`, `game_type`, `table_gid`, `table_type`, `side_list`, `exinfo`,
                                `total_num`, `system_win`,
-                               `add_score`, `pay_fee`, `bet_coins`, `uid`, `ai_num`)
+                               `add_score`, `pay_fee`, `bet_coins`, `uid`, `ai_num`, `channel`)
         values (#{key}, #{op}, #{time}, #{mstime}, #{address},
                 #{beginTime}, #{endTime}, #{gameType}, #{tableGid}, #{tableType}, #{sideList}, #{exinfo}, #{totalNum},
                 #{systemWin},
-                #{addScore}, #{payFee}, #{betCoins}, #{uid}, #{aiNum})
+                #{addScore}, #{payFee}, #{betCoins}, #{uid}, #{aiNum}, #{channel})
     </insert>
 
     <insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
@@ -84,7 +84,7 @@
     </insert>
 
     <insert id="insertWater" parameterType="com.consumer.domain.WaterHistory">
-        insert into data_water (`key`, `op`, `time`, `mstime`, `uid`, `r`, `value`, `reward`, `table_type`, `table_gid`)
-        values (#{key}, #{op}, #{time}, #{mstime}, #{uid}, #{r}, #{value}, #{reward}, #{tableType}, #{tableGid})
+        insert into data_water (`key`, `op`, `time`, `mstime`, `uid`, `r`, `value`, `reward`, `table_type`, `table_gid`, `channel`)
+        values (#{key}, #{op}, #{time}, #{mstime}, #{uid}, #{r}, #{value}, #{reward}, #{tableType}, #{tableGid}, #{channel})
     </insert>
 </mapper>

@@ -66,6 +66,7 @@ public class DataSourceConfig {
         // 打印SQL
         Properties props = new Properties();
         props.put("sql.show", sqlShow);
+        props.setProperty("max.connections.size.per.query", "50");
         DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig, props);
         return dataSource;
     }

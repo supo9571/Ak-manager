@@ -14,22 +14,22 @@ public class Summarize {
     private BigDecimal systemWin;
 
     //新增玩家
-    private Integer newNum;
+    private Long newNum;
 
     //活跃玩家
     private Integer activeNum;
 
     //充值人数
-    private Integer rechargeNum;
+    private Long rechargeNum;
 
     //充值金额
     private BigDecimal rechargeCount;
 
     //新增充值玩家
-    private Integer newRechargeNum;
+    private Long newRechargeNum;
 
     //提现人数
-    private Integer exchangeNum;
+    private Long exchangeNum;
 
     //提现金额
     private BigDecimal exchangeCount;
@@ -38,7 +38,7 @@ public class Summarize {
     private BigDecimal actualExchangeCount;
 
     //赠送人数
-    private Integer giveNum;
+    private Long giveNum;
 
     //赠送金额
     private BigDecimal giveCount;
@@ -108,5 +108,11 @@ public class Summarize {
 
     //流水倍数
     private double waterRate;
+
+    //日期
+    private String day;
+
+    //渠道
+    private String channel;
 
 }
