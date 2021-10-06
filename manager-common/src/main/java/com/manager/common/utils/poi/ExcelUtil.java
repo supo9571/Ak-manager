@@ -59,6 +59,8 @@ import com.manager.common.utils.DateUtils;
 import com.manager.common.utils.DictUtils;
 import com.manager.common.utils.StringUtils;
 
+import javax.servlet.ServletOutputStream;
+
 /**
  * Excel相关处理
  *
@@ -912,5 +914,48 @@ public class ExcelUtil<T> {
             return val;
         }
         return val;
+    }
+
+    public void downloadExcel(List<T> list, String sheetName, ServletOutputStream out) {
+        this.init(list, sheetName, Type.EXPORT);
+        try {
+            // 取出一共有多少个sheet.
+            double sheetNo = Math.ceil(list.size() / sheetSize);
+            for (int index = 0; index <= sheetNo; index++) {
+                createSheet(sheetNo, index);
+
+                // 产生一行
+                Row row = sheet.createRow(0);
+                int column = 0;
+                // 写入各个字段的列头名称
+                for (Object[] os : fields) {
+                    Excel excel = (Excel) os[1];
+                    this.createCell(excel, row, column++);
+                }
+                if (Type.EXPORT.equals(type)) {
+                    fillExcelData(index, row);
+                    addStatisticsRow();
+                }
+            }
+            wb.write(out);
+        } catch (Exception e) {
+            log.error("导出Excel异常{}", e.getMessage());
+            throw new CustomException("导出Excel失败，请联系网站管理员！");
+        } finally {
+            if (wb != null) {
+                try {
+                    wb.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 }

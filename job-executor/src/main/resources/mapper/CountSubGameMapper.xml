@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.executor.mapper.CountSubGameMapper">
+
+    <select id="getInitTime" resultType="com.job.executor.domain.CountSubGame">
+        SELECT
+            csgad.init_time as initTime,
+            date_add(csgad.init_time, interval 5 minute) as endTime
+        from
+            config_sub_game_actual_data csgad
+        order by
+            csgad.init_time DESC LIMIT 1
+    </select>
+
+    <select id="selectSubGameActualData" resultType="com.job.executor.domain.CountSubGame">
+        SELECT
+            cg.game_id as gameId,
+            cg.game_name as gameName,
+            sum(dw.value) as betRecharge,
+            sum(dw.reward) as rewardRecharge,
+            sum(dc.pay_fee) as taxRevenue,
+            sum(dw.value) - sum(dw.reward) as profitAndLoss,
+            (sum(dw.value) - sum(dw.reward)) / sum(dw.value) as profitAndLoss
+        from
+            config_game cg
+                left join data_card dc on (cg.game_id = dc.game_type)
+                left join data_water dw on (cg.game_id = dw.table_type)
+        where cg.parent_id = #{parentId}
+        <if test="initTime !=null and initTime !=''">
+            and cg.created_time >= #{initTime}
+        </if>
+        <if test="endTime !=null and endTime !=''">
+            and cg.created_time <![CDATA[<=]]>  #{endTime}
+        </if>
+        group by cg.game_id,cg.game_name
+    </select>
+
+    <insert id="initSubGameActualData">
+        insert into config_sub_game_actual_data (day,parent_id,game_id,game_name,bet_recharge,reward_recharge,tax_revenue,
+            profit_and_loss,profit_and_loss_ratio,init_time)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.day},#{item.parentId},#{item.gameId},#{item.gameName},#{item.betRecharge},#{item.rewardRecharge},#{item.taxRevenue},
+            #{item.profitAndLoss},#{item.profitAndLossRatio},#{item.initTime})
+        </foreach>
+        ON DUPLICATE KEY
+        UPDATE parent_id=values(parent_id),
+        game_id=values(game_id),
+        game_name=values(game_name),
+        bet_recharge=bet_recharge+values(bet_recharge),
+        reward_recharge=reward_recharge+values(reward_recharge),
+        tax_revenue=tax_revenue+values(tax_revenue),
+        profit_and_loss=profit_and_loss+values(profit_and_loss),
+        profit_and_loss_ratio=profit_and_loss_ratio+values(profit_and_loss_ratio),
+        init_time=values(init_time);
+    </insert>
+
+</mapper>
