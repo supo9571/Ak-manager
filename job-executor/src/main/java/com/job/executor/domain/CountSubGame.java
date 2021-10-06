@@ -12,6 +12,11 @@ import java.math.BigDecimal;
 public class CountSubGame {
 
     /**
+     * 平台id
+     */
+    private String tid;
+
+    /**
      * 日期
      */
     private String day;

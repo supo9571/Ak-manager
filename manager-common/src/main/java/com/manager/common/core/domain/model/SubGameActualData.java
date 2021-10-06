@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 @Data
 public class SubGameActualData extends BaseEntity {
 
+    @ApiModelProperty("平台id")
+    private String tid;
+
     @ApiModelProperty("日期")
     private String day;
 

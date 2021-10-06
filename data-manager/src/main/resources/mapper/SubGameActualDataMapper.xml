@@ -5,6 +5,7 @@
 
     <select id="getSubGameActualDataList" resultType="com.manager.common.core.domain.model.SubGameActualData">
         SELECT
+            csgad.tid as tid,
             csgad.day as day,
             csgad.parent_id as parentId,
             csgad.game_id as gameId,
@@ -22,12 +23,19 @@
         and FROM_UNIXTIME(dcu.begin_time, '%Y-%m-%d') >= #{createTime1}
         and FROM_UNIXTIME(dcu.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
         where 1 = 1
+        <if test="parentId!=null and parentId!=''">
+            and csgad.parent_id = #{parentId}
+        </if>
         <if test="gameId!=null and gameId!=''">
             and csgad.game_id = #{gameId}
+        </if>
+        <if test="tid!=null and tid!=''">
+            and csgad.tid = #{tid}
         </if>
         and date_format(csgad.day,'%Y-%m-%d') >= #{createTime1}
         and date_format(csgad.day,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
         group by
+            tid,
             day,
             parent_id,
             game_id,
@@ -49,12 +57,19 @@
             and FROM_UNIXTIME(dc.begin_time, '%Y-%m-%d') >= #{createTime1}
             and FROM_UNIXTIME(dc.end_time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
         where 1 =1
+            <if test="parentId!=null and parentId!=''">
+                and csgad.parent_id = #{parentId}
+            </if>
             <if test="gameId!=null and gameId!=''">
                 and csgad.game_id = #{gameId}
+            </if>
+            <if test="tid!=null and tid!=''">
+                and csgad.tid = #{tid}
             </if>
             and date_format(csgad.day,'%Y-%m-%d') >= #{createTime1}
             and date_format(csgad.day,'%Y-%m-%d') <![CDATA[<=]]>  #{createTime2}
         group by
+            tid,
             day,
             parent_id,
             game_id,

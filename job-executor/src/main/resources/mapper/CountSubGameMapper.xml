@@ -15,6 +15,7 @@
 
     <select id="selectSubGameActualData" resultType="com.job.executor.domain.CountSubGame">
         SELECT
+            cg.tid as tid,
             cg.game_id as gameId,
             cg.game_name as gameName,
             sum(dw.value) as betRecharge,
@@ -33,19 +34,20 @@
         <if test="endTime !=null and endTime !=''">
             and cg.created_time <![CDATA[<=]]>  #{endTime}
         </if>
-        group by cg.game_id,cg.game_name
+        group by cg.game_id
     </select>
 
     <insert id="initSubGameActualData">
-        insert into config_sub_game_actual_data (day,parent_id,game_id,game_name,bet_recharge,reward_recharge,tax_revenue,
+        insert into config_sub_game_actual_data (day,parent_id,tid,game_id,game_name,bet_recharge,reward_recharge,tax_revenue,
             profit_and_loss,profit_and_loss_ratio,init_time)
         values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.day},#{item.parentId},#{item.gameId},#{item.gameName},#{item.betRecharge},#{item.rewardRecharge},#{item.taxRevenue},
+            (#{item.day},#{item.parentId},#{item.tid},#{item.gameId},#{item.gameName},#{item.betRecharge},#{item.rewardRecharge},#{item.taxRevenue},
             #{item.profitAndLoss},#{item.profitAndLossRatio},#{item.initTime})
         </foreach>
         ON DUPLICATE KEY
         UPDATE parent_id=values(parent_id),
+        tid=values(tid),
         game_id=values(game_id),
         game_name=values(game_name),
         bet_recharge=bet_recharge+values(bet_recharge),
