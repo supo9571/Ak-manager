@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -19,13 +20,14 @@ import org.apache.commons.lang3.StringUtils;
  * @author marvin
  */
 @Data
+@Slf4j
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 搜索值
      */
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String searchValue;
 
     /**
@@ -71,7 +73,7 @@ public class BaseEntity implements Serializable {
     /**
      * 备注
      */
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String remark;
 
     @ApiModelProperty("页码")
@@ -89,13 +91,13 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private Map<String, Object> params;
 
     /**
      * 开始时间 ms
      */
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String beginms;
 
     /**
@@ -110,7 +112,7 @@ public class BaseEntity implements Serializable {
             try {
                 return sdf.parse(this.beginTime).getTime() + "";
             } catch (ParseException e) {
-                e.printStackTrace();
+                log.error("时间转换失败，{}",beginTime);
             }
         }
         return beginms;
@@ -122,7 +124,7 @@ public class BaseEntity implements Serializable {
             try {
                 return sdf.parse(this.endTime).getTime() + "";
             } catch (ParseException e) {
-                e.printStackTrace();
+                log.error("时间转换失败，{}",endTime);
             }
         }
         return endms;
