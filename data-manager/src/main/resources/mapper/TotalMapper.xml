@@ -8,4 +8,45 @@
         where day >= #{beginTime} and #{endTime} >= day
         and channel = #{channel}
     </select>
+
+    <select id="getLeft" resultType="java.util.Map">
+        select sum(new_num) newNum,SUM(new_recharge_num) newRechargeNum,sum(balance_count) balanceCount
+        from data_total_day
+        where day = #{date}
+        <if test="tid!=null and tid!=0">
+            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+        </if>
+    </select>
+
+    <select id="getYesterdayBalance" resultType="java.math.BigDecimal">
+        select sum(balance_count) balanceCount
+        from data_total_day
+        where day = #{date}
+        <if test="tid!=null and tid!=0">
+            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+        </if>
+    </select>
+
+    <select id="getOnlinePlayer" resultType="java.lang.Integer">
+        select count(1) from
+        data_online
+        <if test="tid!=null and tid!=0">
+            where channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+        </if>
+    </select>
+
+    <select id="getRight" resultType="java.util.Map">
+        SELECT SUM(recharge_count) rechargeCount,
+               SUM(exchange_count) exchangeCount,
+               SUM(give_count) giveCount,
+               SUM(fee_count) feeCount,
+               SUM(performance_count) performanceCount,
+               SUM(commission_sub_count) commissionSubCount,
+               SUM(commission_team_count) commissionTeamCount,
+               SUM(bet_count-reward_count+fee_count) winCount
+        FROM data_total_day
+        WHERE DAY >= #{beginTime}
+        AND #{endTime}>=DAY
+        AND channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+    </select>
 </mapper>

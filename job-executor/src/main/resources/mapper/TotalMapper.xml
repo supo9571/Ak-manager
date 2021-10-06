@@ -13,7 +13,7 @@
     <insert id="saveTodayLogins">
         insert into data_login_count(`date`, `num`)
         values (#{date}, #{num}) ON DUPLICATE KEY
-        UPDATE num=#{num};
+        UPDATE num=values(num);
     </insert>
 
     <select id="getRechargeInfo" resultType="java.util.Map">

@@ -86,7 +86,6 @@ public class TotalHandle {
     /**
      * 计算 总览
      */
-    @PostConstruct
     @XxlJob("summarize_today")
     public void summarize() {
         String date = DateUtil.formatDate(new Date());//当天日期
@@ -133,20 +132,16 @@ public class TotalHandle {
             Long rechargeNum = (Long)rechargeMap.get("rechargeNum");
             double onlinePayRate = sucessNum==0?1:rechargeNum/sucessNum;
             summarize.setOnlinePayRate(onlinePayRate);
-
             BigDecimal successCount = (BigDecimal) rechargeMap.get("successCount");
             BigDecimal rechargeCount = (BigDecimal) rechargeMap.get("rechargeCount");
             double offlinePayRate = successCount==null?1:successCount.divide(rechargeCount).doubleValue();
             summarize.setOfflinePayRate(offlinePayRate);
-
             summarize.setRechargeNum(rechargeNum);
             summarize.setRechargeCount(rechargeCount);
             summarize.setNewRechargeNum((Long) rechargeMap.get("newRechargeNum"));
             summarize.setNewRechargeCount((BigDecimal) rechargeMap.get("newRechargeCount"));
             summarize.setRechargeGiveCount((BigDecimal) rechargeMap.get("rechargeGiveCount"));
             summarize.setOfflineGiveCount((BigDecimal) rechargeMap.get("offlineGiveCount"));
-
-
         }
     }
 
@@ -227,9 +222,8 @@ public class TotalHandle {
      * 总览 投注金额 游戏税收 赢家人数占比
      */
     private void setGiveInfo(Summarize summarize, String channel, Long time) {
-        Long endtime = DateUtil.getTodayTimes() + (60 * 60 * 24);
         String beginTime = time + "000";
-        String endTime = endtime + "000";
+        String endTime = System.currentTimeMillis() + "";
         BigDecimal b = new BigDecimal(10000);
 
         BigDecimal activityCount = checkDecimal(totalMapper.getActivityCount(channel, beginTime, endTime));
@@ -253,12 +247,12 @@ public class TotalHandle {
         }
 
         //昨日账户余额
-        String yertoday = DateUtil.formatDate(DateUtil.addDays(new Date(),1));//当天日期
-        BigDecimal yertodayBalance = checkDecimal(totalMapper.getYertodayBalance(channel, yertoday));
+        String yesterday = DateUtil.formatDate(DateUtil.addDays(new Date(),1));//当天日期
+        BigDecimal yesterdayBalance = checkDecimal(totalMapper.getYertodayBalance(channel, yesterday));
         BigDecimal rechargeCount = checkDecimal(summarize.getRechargeCount());
         BigDecimal exchangeCount = checkDecimal(summarize.getExchangeCount());
         BigDecimal balanceCount = checkDecimal(summarize.getBalanceCount());
-        BigDecimal systemWin = rechargeCount.subtract(exchangeCount).add(yertodayBalance).subtract(balanceCount);
+        BigDecimal systemWin = rechargeCount.subtract(exchangeCount).add(yesterdayBalance).subtract(balanceCount);
         summarize.setSystemWin(systemWin);
     }
 

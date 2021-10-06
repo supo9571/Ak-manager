@@ -17,7 +17,33 @@ public interface AgentService {
     AjaxResult getAgents(@RequestParam("tid") Integer tid, @RequestParam("uid") String uid, @RequestParam("agentId") String agentId, @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size, @RequestParam("orderByColumn") String orderByColumn, @RequestParam("isAsc") String isAsc);
 
+    @PostMapping(value = "/data/agent/day")
+    AjaxResult getCommissionDays(@RequestParam("uid") String uid,
+                                 @RequestParam("page") Integer page,
+                                 @RequestParam("size") Integer size,
+                                 @RequestParam("orderByColumn") String orderByColumn,
+                                 @RequestParam("isAsc") String isAsc);
+
+    @PostMapping(value = "/data/agent/cash")
+    AjaxResult getCashs(@RequestParam("uid") String uid,
+                        @RequestParam("page") Integer page,
+                        @RequestParam("size") Integer size,
+                        @RequestParam("orderByColumn") String orderByColumn,
+                        @RequestParam("isAsc") String isAsc);
+
+    @PostMapping(value = "/data/agent/popularize")
+    AjaxResult getPopularizes(@RequestParam("uid") String uid,
+                              @RequestParam("page") Integer page,
+                              @RequestParam("size") Integer size,
+                              @RequestParam("orderByColumn") String orderByColumn,
+                              @RequestParam("isAsc") String isAsc);
 
     @PostMapping(value = "/data/total/list", consumes = "application/json")
     AjaxResult getTotals(@RequestBody Summarize summarize);
+
+    @PostMapping(value = "/data/total/left")
+    AjaxResult getLeft(@RequestParam("tid")int tid);
+
+    @PostMapping(value = "/data/total/right")
+    AjaxResult getRight(@RequestParam("tid")int tid,@RequestParam("beginTime") String beginTime,@RequestParam("endTime") String endTime);
 }

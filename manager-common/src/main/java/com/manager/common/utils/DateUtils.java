@@ -169,4 +169,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         String day = DateFormatUtils.format(d, "yyyy/MM/dd");
         return day;
     }
+
+    /**
+     * 获取昨天日期
+     */
+    public static String getYesterday() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, -1);
+        Date d = c.getTime();
+        String day = DateFormatUtils.format(d, YYYY_MM_DD);
+        return day;
+    }
 }
