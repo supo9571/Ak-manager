@@ -20,7 +20,9 @@ public class DateUtil {
     private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT_HOUR = "yyyy-MM-dd HH";
+    public static final String DATE_FORMAT_HOUR_MINUTE = "yyyy-MM-dd HH:mm";
+    public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static final ThreadLocal<Map<String, DateFormat>> dateFormatThreadLocal = new ThreadLocal<Map<String, DateFormat>>();
 
@@ -55,6 +57,19 @@ public class DateUtil {
     public static String formatDate(Date date) {
         return format(date, DATE_FORMAT);
     }
+
+    /**
+     * format datetime.
+     *
+     * @param date
+     * @param patten
+     * @return
+     * @throws ParseException
+     */
+    public static String formatDateHour(Date date, String patten) {
+        return format(date, patten);
+    }
+
 
     /**
      * format date. like "yyyy-MM-dd HH:mm:ss"
@@ -136,6 +151,35 @@ public class DateUtil {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * 获取当天时间 "yyyy-MM-dd 00:00:00"
+     *
+     * @return
+     */
+    public static Date getStartTime() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        calendar.set(year, month, day, 0, 0, 0);
+        return calendar.getTime();
+    }
+
+
+    /**
+     * 获取当天时间 "yyyy-MM-dd 23:59:59"
+     *
+     * @return
+     */
+    public static Date getEndTime() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        calendar.set(year, month, day, 23, 59, 59);
+        return calendar.getTime();
     }
 
     // ---------------------- add date ----------------------

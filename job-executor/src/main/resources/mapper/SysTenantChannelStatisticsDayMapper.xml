@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.job.executor.mapper.SysTenantChannelStatisticsDayMapper" >
+  <resultMap id="BaseResultMap" type="com.job.executor.domain.SysTenantChannelStatisticsDay" >
+    <id column="day" property="day" jdbcType="VARCHAR" />
+    <id column="t_id" property="tId" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="VARCHAR" />
+    <result column="recharge_num" property="rechargeNum" jdbcType="BIGINT" />
+    <result column="recharge_amount" property="rechargeAmount" jdbcType="DECIMAL" />
+    <result column="withdraw_num" property="withdrawNum" jdbcType="BIGINT" />
+    <result column="withdraw_amount" property="withdrawAmount" jdbcType="DECIMAL" />
+    <result column="up_award_amount" property="upAwardAmount" jdbcType="DECIMAL" />
+    <result column="lower_award_amount" property="lowerAwardAmount" jdbcType="DECIMAL" />
+    <result column="under_commission" property="underCommission" jdbcType="DECIMAL" />
+    <result column="agent_commission" property="agentCommission" jdbcType="DECIMAL" />
+    <result column="install_num" property="installNum" jdbcType="BIGINT" />
+    <result column="increased_binding" property="increasedBinding" jdbcType="BIGINT" />
+    <result column="active_num" property="activeNum" jdbcType="BIGINT" />
+    <result column="increased_num" property="increasedNum" jdbcType="BIGINT" />
+    <result column="recharge_first" property="rechargeFirst" jdbcType="BIGINT" />
+    <result column="recharge_amount_first" property="rechargeAmountFirst" jdbcType="BIGINT" />
+    <result column="recharge_increased_num" property="rechargeIncreasedNum" jdbcType="BIGINT" />
+    <result column="recharge_increased_amount" property="rechargeIncreasedAmount" jdbcType="BIGINT" />
+    <result column="top_up_withdrawal" property="topUpWithdrawal" jdbcType="BIGINT" />
+    <result column="appu" property="appu" jdbcType="DECIMAL" />
+    <result column="arpu" property="arpu" jdbcType="DECIMAL" />
+    <result column="bet_amount" property="betAmount" jdbcType="DECIMAL" />
+    <result column="rebate" property="rebate" jdbcType="DECIMAL" />
+    <result column="performance" property="performance" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <insert id="saveChannelStatisticsDay" parameterType="com.job.executor.domain.SysTenantChannelStatisticsDay" >
+    insert into sys_tenant_channel_statistics_day (day, t_id, total_amount, 
+      recharge_num, recharge_amount, withdraw_num, 
+      withdraw_amount, up_award_amount, lower_award_amount, 
+      under_commission, agent_commission, install_num, 
+      increased_binding, active_num, increased_num, 
+      recharge_first, recharge_amount_first, recharge_increased_num, 
+      recharge_increased_amount, top_up_withdrawal, 
+      appu, arpu, bet_amount,
+      rebate, performance, create_time, 
+      update_time)
+    values
+    <foreach item="item" index="index" collection="list" separator=",">
+    (#{item.day},#{item.tId},#{totalAmount},#{item.rechargeNum},#{item.rechargeAmount},#{item.withdrawNum},#{item.withdrawAmount},#{item.upAwardAmount}
+    ,#{item.lowerAwardAmount},#{item.{underCommission},#{item.agentCommission},#{installNum},#{increasedBinding},#{activeNum}
+    ,#{increasedNum},#{rechargeIncreasedAmount},#{topUpWithdrawal}, #{appu},#{arpu}, #{betAmount},#{rebate},#{performance}
+    ,#{createTime},#{updateTime})
+    </foreach>
+      ON DUPLICATE KEY UPDATE
+     recharge_num = recharge_num + values(recharge_num),
+     recharge_amount = recharge_amount + values(recharge_amount),
+     withdraw_num = withdraw_num + values(withdraw_num),
+     withdraw_amount = withdraw_amount + values(withdraw_amount),
+     up_award_amount = up_award_amount + values(up_award_amount),
+     lower_award_amount = lower_award_amount + values(lower_award_amount),
+     under_commission = under_commission + values(under_commission),
+     agent_commission = agent_commission + values(agent_commission),
+     register_num = register_num + values(register_num)
+  </insert>
+
+</mapper>

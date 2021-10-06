@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.job.executor.mapper.SysTenantStatisticsMapper">
+    <resultMap id="BaseResultMap" type="com.job.executor.domain.SysTenantStatistics">
+        <id column="t_id" property="tId" jdbcType="VARCHAR" />
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+        <result column="recharge_num" property="rechargeNum" jdbcType="BIGINT" />
+        <result column="recharge_amount" property="rechargeAmount" jdbcType="DECIMAL" />
+        <result column="withdraw_num" property="withdrawNum" jdbcType="BIGINT" />
+        <result column="withdraw_amount" property="withdrawAmount" jdbcType="DECIMAL" />
+        <result column="up_award_amount" property="upAwardAmount" jdbcType="DECIMAL" />
+        <result column="lower_award_amount" property="lowerAwardAmount" jdbcType="DECIMAL" />
+        <result column="under_commission" property="underCommission" jdbcType="DECIMAL" />
+        <result column="agent_commission" property="agentCommission" jdbcType="DECIMAL" />
+        <result column="register_num" property="registerNum" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        t_id
+        , parent_id, total_amount, recharge_num, recharge_amount, withdraw_num, withdraw_amount,
+    up_award_amount, lower_award_amount, under_commission, agent_commission, install_num
+    </sql>
+
+    <insert id="saveSysTenantStatistics" parameterType="com.job.executor.domain.SysTenantStatistics" >
+        insert into sys_tenant_statistics (t_id, total_amount, recharge_num,
+                                           recharge_amount, withdraw_num, withdraw_amount,
+                                           up_award_amount, lower_award_amount, under_commission,
+                                           agent_commission, register_num)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.tId},#{item.totalAmount},#{item.rechargeNum},#{item.rechargeAmount},#{item.withdrawNum},#{item.withdrawAmount},#{item.upAwardAmount}
+            ,#{item.lowerAwardAmount},#{item.{underCommission},#{item.agentCommission},#{item.registerNum})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        recharge_num = recharge_num + values(recharge_num),
+        recharge_amount = recharge_amount + values(recharge_amount),
+        withdraw_num = withdraw_num + values(withdraw_num),
+        withdraw_amount = withdraw_amount + values(withdraw_amount),
+        up_award_amount = up_award_amount + values(up_award_amount),
+        lower_award_amount = lower_award_amount + values(lower_award_amount),
+        under_commission = under_commission + values(under_commission),
+        agent_commission = agent_commission + values(agent_commission),
+        register_num = register_num + values(register_num)
+    </insert>
+
+
+    <select id="getSysTenantList" resultType="java.util.Map">
+        SELECT t_id as tid, t_name as tName, t_type as tType
+        from sys_tenant
+        WHERE status = 0
+          and del_flag = 0
+          and t_type in (1, 2)
+        ORDER BY t_type
+    </select>
+
+    <!--玩家充值金额-->
+    <select id="getRechargeAmount" resultType="java.util.Map">
+        SELECT count(1) count,
+            IFNULL(sum(recharge_amount),0) amount
+        FROM
+            config_recharge_order
+        WHERE
+            payment_status = 1
+          AND recharge_type IN (1 , 2  , 3 , 4)
+          AND tid = #{tid}
+          AND create_time>= #{beginTime}
+          AND create_time <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+    <!--线上赠送金额-->
+    <select id="getUpAwardAmount" resultType="java.util.Map">
+
+    </select>
+
+    <!--线下赠送金额-->
+    <select id="getLowerAwardAmount" resultType="java.util.Map">
+        SELECT IFNULL(sum(recharge_amount), 0) amount
+        FROM config_recharge_order
+        WHERE payment_status = 1
+          AND recharge_type = 5
+          AND tid = #{tid}
+          AND create_time >= #{beginTime}
+          AND create_time <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+    <!--收藏充值金额-->
+    <select id="getFirstRechargeAmount" resultType="java.util.Map">
+        SELECT count(1),IFNULL(sum(recharge_amount), 0) amount from config_recharge_order WHERE uid in(
+            SELECT uid from config_recharge_order WHERE payment_status=1 and  tid = #{tid}
+            AND create_time >= #{beginTime}
+            AND create_time <![CDATA[ <= ]]> #{endTime}
+            GROUP BY uid HAVING count(uid) = 1
+        )
+    </select>
+
+
+
+    <!--玩家提现金额-->
+    <select id="geWithdrawAmount" resultType="java.util.Map">
+        SELECT count(1) count,
+            IFNULL(sum(withdraw_money),0) amount
+        FROM config_exchange_order
+        WHERE
+            withdraw_type = 5
+          AND tid = #{tid}
+          AND create_time>=#{beginTime}
+          AND create_time <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+    <select id="getUserLoginCount" resultType="Integer">
+        SELECT DISTINCT(count(uid)) FROM data_login WHERE
+        <where>
+            <if test="uidList!=null and uidList.length > 0 ">
+                AND c.uid in
+                <foreach collection="uidList" item="uid" open="(" separator="," close=")">
+                    #{uid}
+                </foreach>
+            </if>
+            AND create_time>=#{beginTime}
+            AND create_time <![CDATA[ <= ]]> #{endTime}
+        </where>
+    </select>
+
+
+</mapper>

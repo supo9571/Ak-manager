@@ -73,6 +73,13 @@
             <version>${dbcp.version}</version>
         </dependency>
 
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.ak</groupId>
+            <artifactId>manager-common</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
