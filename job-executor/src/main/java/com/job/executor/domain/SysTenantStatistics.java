@@ -1,4 +1,4 @@
-//package com.job.executor.domain;
+package com.job.executor.domain;
 //
 //import io.swagger.annotations.ApiModelProperty;
 //import lombok.Data;
@@ -9,7 +9,7 @@
 // * 总代渠道
 // */
 //@Data
-//public class SysTenantStatistics {
+public class SysTenantStatistics {
 //
 //    private static final long serialVersionUID = 1L;
 //
@@ -46,4 +46,4 @@
 //    @ApiModelProperty("总安装量")
 //    private int registerNum;
 //
-//}
+}

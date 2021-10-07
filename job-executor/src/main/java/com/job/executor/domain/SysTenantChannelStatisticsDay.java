@@ -1,4 +1,4 @@
-//package com.job.executor.domain;
+package com.job.executor.domain;
 //
 //import io.swagger.annotations.ApiModelProperty;
 //import lombok.Data;
@@ -13,7 +13,7 @@
 // * @date 2021-10-03
 // */
 //@Data
-//public class SysTenantChannelStatisticsDay {
+public class SysTenantChannelStatisticsDay {
 //
 //    @ApiModelProperty("日期(yyyy-MM-dd)")
 //    private String day;
@@ -96,4 +96,4 @@
 //    @ApiModelProperty("更新时间")
 //    private Date updateTime;
 //
-//}
+}

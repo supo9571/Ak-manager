@@ -1,4 +1,4 @@
-//package com.job.executor.domain;
+package com.job.executor.domain;
 //
 //import io.swagger.annotations.ApiModelProperty;
 //import lombok.Data;
@@ -12,7 +12,7 @@
 // * @date 2021-09-30
 // */
 //@Data
-//public class SysTenantChannelStatistics {
+public class SysTenantChannelStatistics {
 //
 //    private static final long serialVersionUID = 1L;
 //
@@ -97,4 +97,4 @@
 //    @ApiModelProperty("更新时间")
 //    private Date updateTime;
 //
-//}
+}
