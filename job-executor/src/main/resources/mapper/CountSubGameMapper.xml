@@ -3,59 +3,58 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.executor.mapper.CountSubGameMapper">
 
-    <select id="getInitTime" resultType="com.job.executor.domain.CountSubGame">
-        SELECT
-            csgad.init_time as initTime,
-            date_add(csgad.init_time, interval 5 minute) as endTime
-        from
-            config_sub_game_actual_data csgad
-        order by
-            csgad.init_time DESC LIMIT 1
+    <select id="getGameCardInfo" resultType="java.util.Map">
+        select u.table_type tableId,
+               g.game_name tableName,
+               u.channel,
+               sum(u.bet_coins)/10000 betCount,
+               sum(u.pay_fee)/10000 feeCount,
+               g2.game_id gameId,
+               g2.game_name gameName
+        from data_card_user u
+                 left join config_game g
+                           on u.table_type = g.game_id
+                 left join config_game g2
+                           on g.parent_id = g2.game_id
+        where u.mstime between #{beginTime} and #{endTime}
+        group by u.table_type, u.channel
     </select>
 
-    <select id="selectSubGameActualData" resultType="com.job.executor.domain.CountSubGame">
-        SELECT
-            cg.tid as tid,
-            cg.game_id as gameId,
-            cg.game_name as gameName,
-            sum(dw.value) as betRecharge,
-            sum(dw.reward) as rewardRecharge,
-            sum(dc.pay_fee) as taxRevenue,
-            sum(dw.value) - sum(dw.reward) as profitAndLoss,
-            (sum(dw.value) - sum(dw.reward)) / sum(dw.value) as profitAndLoss
-        from
-            config_game cg
-                left join data_card dc on (cg.game_id = dc.game_type)
-                left join data_water dw on (cg.game_id = dw.table_type)
-        where cg.parent_id = #{parentId}
-        <if test="initTime !=null and initTime !=''">
-            and cg.created_time >= #{initTime}
-        </if>
-        <if test="endTime !=null and endTime !=''">
-            and cg.created_time <![CDATA[<=]]>  #{endTime}
-        </if>
-        group by cg.game_id
+    <insert id="saveGameCardInfo">
+            insert into
+            data_game_day(day,channel,table_id,table_name,game_id,game_name,bet_count,fee_count)
+            values
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{date},#{item.channel},#{item.tableId},#{item.tableName},#{item.gameId},#{item.gameName},#{item.betCount},#{item.feeCount})
+            </foreach>
+            ON DUPLICATE KEY
+            UPDATE bet_count=values(bet_count),
+            fee_count=values(fee_count);
+    </insert>
+    <select id="getGameWaterInfo" resultType="java.util.Map">
+        SELECT w.table_type tableId,
+               g.game_name tableName,
+               w.channel,
+               SUM(w.reward)/10000 rewardCount,
+               g2.game_id gameId,
+               g2.game_name gameName
+        FROM data_water w
+                 LEFT JOIN config_game g
+                           ON w.table_type = g.game_id
+                 LEFT JOIN config_game g2
+                           ON g.parent_id = g2.game_id
+        where w.mstime between #{beginTime} and #{endTime}
+        GROUP BY table_type, channel
     </select>
 
-    <insert id="initSubGameActualData">
-        insert into config_sub_game_actual_data (day,parent_id,tid,game_id,game_name,bet_recharge,reward_recharge,tax_revenue,
-            profit_and_loss,profit_and_loss_ratio,init_time)
+    <insert id="saveGameWaterInfo">
+        insert into
+        data_game_day(day,channel,table_id,table_name,game_id,game_name,reward_count)
         values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.day},#{item.parentId},#{item.tid},#{item.gameId},#{item.gameName},#{item.betRecharge},#{item.rewardRecharge},#{item.taxRevenue},
-            #{item.profitAndLoss},#{item.profitAndLossRatio},#{item.initTime})
+            (#{date},#{item.channel},#{item.tableId},#{item.tableName},#{item.gameId},#{item.gameName},#{item.rewardCount})
         </foreach>
         ON DUPLICATE KEY
-        UPDATE parent_id=values(parent_id),
-        tid=values(tid),
-        game_id=values(game_id),
-        game_name=values(game_name),
-        bet_recharge=bet_recharge+values(bet_recharge),
-        reward_recharge=reward_recharge+values(reward_recharge),
-        tax_revenue=tax_revenue+values(tax_revenue),
-        profit_and_loss=profit_and_loss+values(profit_and_loss),
-        profit_and_loss_ratio=profit_and_loss_ratio+values(profit_and_loss_ratio),
-        init_time=values(init_time);
+        UPDATE reward_count=values(reward_count);
     </insert>
-
 </mapper>

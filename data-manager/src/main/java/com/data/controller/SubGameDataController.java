@@ -1,9 +1,9 @@
 package com.data.controller;
 
-import com.data.service.SubGameActualDataService;
+import com.data.service.SubGameDataService;
 import com.manager.common.annotation.Log;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.SubGameActualData;
+import com.manager.common.core.domain.model.SubGameData;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
@@ -25,38 +25,36 @@ import java.util.List;
  * @author sieGuang 2021/09/30
  */
 @RestController
-@RequestMapping("/data/subGameActualData")
+@RequestMapping("/data/subgame")
 @Slf4j
-public class SubGameActualDataController extends BaseController {
+public class SubGameDataController extends BaseController {
 
     @Autowired
-    private SubGameActualDataService subGameActualDataService;
+    private SubGameDataService subGameDataService;
 
     /**
      * 查询
-     * @param subGameActualData 过滤条件
      */
     @ApiOperation(value = "查询子游戏实时数据列表")
     @PostMapping("/list")
-    public AjaxResult getSubGameActualDataList(@RequestBody SubGameActualData subGameActualData) {
-        startOrder(subGameActualData.getOrderByColumn(),subGameActualData.getIsAsc());
-        return AjaxResult.success("查询成功", subGameActualDataService.getSubGameActualDataList(subGameActualData));
+    public AjaxResult list(@RequestBody SubGameData subGameData) {
+        startOrder("betCount","desc");
+        return AjaxResult.success("查询成功", subGameDataService.getSubGameDataList(subGameData));
     }
 
     @ApiOperation(value = "子游戏实时数据导出")
     @Log(title = "子游戏实时数据导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(@RequestBody SubGameActualData subGameActualData, HttpServletResponse response) throws IOException {
-        startOrder(subGameActualData.getOrderByColumn(),subGameActualData.getIsAsc());
-        List<SubGameActualData> list = subGameActualDataService.getSubGameActualDataList(subGameActualData);
+    public void export(@RequestBody SubGameData subGameData, HttpServletResponse response) throws IOException {
 
-        ExcelUtil util = new ExcelUtil<SubGameActualData>(SubGameActualData.class);
+        List<SubGameData> list = subGameDataService.getSubGameDataList(subGameData);
+
+        ExcelUtil util = new ExcelUtil<SubGameData>(SubGameData.class);
         String fileName = "子游戏实时数据导出";
 
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName+".xlsx");
         util.downloadExcel(list, fileName,response.getOutputStream());
     }
-
 
 }

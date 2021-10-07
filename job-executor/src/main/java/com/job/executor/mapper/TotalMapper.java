@@ -70,7 +70,7 @@ public interface TotalMapper {
     @Select("select sum(value) from data_coins where r = '100000' and channel = #{channel} and mstime >=#{time} and mstime<#{endtime}")
     BigDecimal getAlmsCount(@Param("channel") String channel,@Param("time") String time,@Param("endtime") String endtime);
 
-    @Select("select SUM(VALUE) giveNum,COUNT(DISTINCT uid) giveCount from data_coins where r IN (100001,100041,100075) and channel = #{channel} and mstime >=#{time} and mstime<#{endtime}")
+    @Select("select SUM(VALUE) giveCount,COUNT(DISTINCT uid) giveNum from data_coins where r IN (100001,100041,100075) and channel = #{channel} and mstime >=#{time} and mstime<#{endtime}")
     Map getGiveCount(@Param("channel") String channel,@Param("time") String time,@Param("endtime") String endtime);
 
     @Select("select balance_count from data_total_day where channel=#{channel} and day = #{date}")

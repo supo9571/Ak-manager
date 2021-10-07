@@ -14,4 +14,6 @@ public class OnlinePlayer {
     private int tableType;
     private Long coins;
 
+    private String channel;
+
 }

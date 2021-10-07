@@ -53,25 +53,25 @@ public class Summarize {
     private BigDecimal newExchangeCount;
 
     //新增充值玩家 流水
-    private BigDecimal newWater;
+    private BigDecimal newWater = new BigDecimal(0);
 
     //投注金额
-    private BigDecimal betCount;
+    private BigDecimal betCount = new BigDecimal(0);
 
     //返奖金额
-    private BigDecimal rewardCount;
+    private BigDecimal rewardCount = new BigDecimal(0);
 
     //游戏税收
-    private BigDecimal feeCount;
+    private BigDecimal feeCount = new BigDecimal(0);
 
     //游戏业绩
-    private BigDecimal performanceCount;
+    private BigDecimal performanceCount = new BigDecimal(0);
 
     //代理直属返佣
-    private BigDecimal commissionSubCount;
+    private BigDecimal commissionSubCount = new BigDecimal(0);
 
     //代理团队返佣
-    private BigDecimal commissionTeamCount;
+    private BigDecimal commissionTeamCount = new BigDecimal(0);
 
     //当日余额
     private BigDecimal balanceCount;

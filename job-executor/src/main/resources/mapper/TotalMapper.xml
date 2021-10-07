@@ -4,9 +4,9 @@
 <mapper namespace="com.job.executor.mapper.TotalMapper">
 
     <insert id="insertOnline">
-        insert into data_online(uid, name,game_type,table_type,coins) values
+        insert into data_online(uid, name,game_type,table_type,coins,channel) values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.uid},#{item.name},#{item.gameType},#{item.tableType},#{item.coins})
+            (#{item.uid},#{item.name},#{item.gameType},#{item.tableType},#{item.coins},#{item.channel})
         </foreach>
     </insert>
 

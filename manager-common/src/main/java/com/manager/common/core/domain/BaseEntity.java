@@ -103,7 +103,7 @@ public class BaseEntity implements Serializable {
     /**
      * 结束时间 ms
      */
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String endms;
 
     public String getBeginms() {
@@ -112,7 +112,12 @@ public class BaseEntity implements Serializable {
             try {
                 return sdf.parse(this.beginTime).getTime() + "";
             } catch (ParseException e) {
-                log.error("时间转换失败，{}",beginTime);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    return sdf2.parse(this.beginTime).getTime() + "";
+                } catch (ParseException e1) {
+                    log.error("时间转换失败，{}",beginTime);
+                }
             }
         }
         return beginms;
@@ -124,7 +129,12 @@ public class BaseEntity implements Serializable {
             try {
                 return sdf.parse(this.endTime).getTime() + "";
             } catch (ParseException e) {
-                log.error("时间转换失败，{}",endTime);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    return sdf2.parse(this.endTime).getTime() + "";
+                } catch (ParseException e1) {
+                    log.error("时间转换失败，{}",endTime);
+                }
             }
         }
         return endms;

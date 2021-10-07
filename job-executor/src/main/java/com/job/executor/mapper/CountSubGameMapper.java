@@ -1,13 +1,8 @@
 package com.job.executor.mapper;
 
-import com.job.executor.domain.AgentCommission;
-import com.job.executor.domain.CountSubGame;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,30 +12,11 @@ import java.util.List;
 @Mapper
 public interface CountSubGameMapper {
 
-    CountSubGame getInitTime();
+    List getGameCardInfo(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 
-    /**
-     * 子游戏实时汇总数据
-     * @param parentId 通过父id找到对应的，游戏id数据
-     * @param initTime 筛选时间
-     * @param endTime 筛选时间
-     * @return
-     */
-    List<CountSubGame> selectSubGameActualData(@Param("parentId") String parentId,
-                                               @Param("initTime") String initTime,
-                                               @Param("endTime") String endTime);
+    void saveGameCardInfo(@Param("date")String date,@Param("list") List list);
 
-    /**
-     * 插入对应的数据到子游戏实时表
-     * @param list
-     */
-    void initSubGameActualData(List<CountSubGame> list);
+    List getGameWaterInfo(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 
-    /**
-     * 更新全表 初始化时间
-     */
-    @Update("update config_sub_game_actual_data set init_time = sysdate() where day = #{day}")
-    void editInitTime(@Param("day") String day);
-
-
+    void saveGameWaterInfo(@Param("date")String date,@Param("list") List list);
 }

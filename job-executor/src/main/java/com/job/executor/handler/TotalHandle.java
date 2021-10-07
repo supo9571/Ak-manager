@@ -64,6 +64,7 @@ public class TotalHandle {
     /**
      * 今日登录统计
      */
+//    @PostConstruct
     @XxlJob("login_count")
     public void login() {
         String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
@@ -94,7 +95,7 @@ public class TotalHandle {
         //查询 渠道列表
         List<String> channelList = totalMapper.getChannelList();
         channelList.forEach(channel->{
-//            try {
+            try {
                 Summarize summarize = new Summarize();
                 summarize.setDay(date);
                 summarize.setChannel(channel);
@@ -113,9 +114,9 @@ public class TotalHandle {
                 //设置 赠送 奖励 游戏输赢
                 setGiveInfo(summarize,channel,time);
                 summarizeList.add(summarize);
-//            }catch (Exception e){
-//                log.error("计算总览出错，channel：{},msg:{}",channel,e.getMessage());
-//            }
+            }catch (Exception e){
+                log.error("计算总览出错，channel：{},msg:{}",channel,e.getMessage());
+            }
 
         });
         if (summarizeList.size() > 0)
@@ -126,37 +127,33 @@ public class TotalHandle {
      * 总览 充值相关数据
      */
     private void setRechargeInfo(Summarize summarize,String channel,Long time){
-        Map rechargeMap = totalMapper.getRechargeInfo(channel,time);
-        if(rechargeMap!=null){
-            Long sucessNum = (Long) rechargeMap.get("successNum");
-            Long rechargeNum = (Long)rechargeMap.get("rechargeNum");
-            double onlinePayRate = sucessNum==0?1:rechargeNum/sucessNum;
-            summarize.setOnlinePayRate(onlinePayRate);
-            BigDecimal successCount = (BigDecimal) rechargeMap.get("successCount");
-            BigDecimal rechargeCount = (BigDecimal) rechargeMap.get("rechargeCount");
-            double offlinePayRate = successCount==null?1:successCount.divide(rechargeCount).doubleValue();
-            summarize.setOfflinePayRate(offlinePayRate);
-            summarize.setRechargeNum(rechargeNum);
-            summarize.setRechargeCount(rechargeCount);
-            summarize.setNewRechargeNum((Long) rechargeMap.get("newRechargeNum"));
-            summarize.setNewRechargeCount((BigDecimal) rechargeMap.get("newRechargeCount"));
-            summarize.setRechargeGiveCount((BigDecimal) rechargeMap.get("rechargeGiveCount"));
-            summarize.setOfflineGiveCount((BigDecimal) rechargeMap.get("offlineGiveCount"));
-        }
+        Map rechargeMap = totalMapper.getRechargeInfo(channel, time);
+        Long sucessNum = (Long) rechargeMap.get("successNum");
+        Long rechargeNum = (Long) rechargeMap.get("rechargeNum");
+        double onlinePayRate = sucessNum == 0 ? 0 : rechargeNum / sucessNum;
+        summarize.setOnlinePayRate(onlinePayRate);
+        BigDecimal successCount = checkDecimal((BigDecimal) rechargeMap.get("successCount"));
+        BigDecimal rechargeCount = (BigDecimal) rechargeMap.get("rechargeCount");
+        double offlinePayRate = rechargeCount == null ? 0 : successCount.divide(rechargeCount).doubleValue();
+        summarize.setOfflinePayRate(offlinePayRate);
+        summarize.setRechargeNum(rechargeNum);
+        summarize.setRechargeCount(checkDecimal(rechargeCount));
+        summarize.setNewRechargeNum((Long) rechargeMap.get("newRechargeNum"));
+        summarize.setNewRechargeCount(checkDecimal((BigDecimal) rechargeMap.get("newRechargeCount")));
+        summarize.setRechargeGiveCount(checkDecimal((BigDecimal) rechargeMap.get("rechargeGiveCount")));
+        summarize.setOfflineGiveCount(checkDecimal((BigDecimal) rechargeMap.get("offlineGiveCount")));
     }
 
     /**
      * 总览 提现相关数据
      */
     private void setExchangeInfo(Summarize summarize,String channel,Long time){
-        Map exchangeMap = totalMapper.getExchangeInfo(channel,time);
-        if(exchangeMap!=null){
-            summarize.setExchangeNum((Long) exchangeMap.get("exchangeNum"));
-            summarize.setExchangeCount((BigDecimal) exchangeMap.get("exchangeCount"));
-            summarize.setActualExchangeCount((BigDecimal) exchangeMap.get("actualExchangeCount"));
-            summarize.setConfiscateCount((BigDecimal) exchangeMap.get("confiscateCount"));
-            summarize.setNewExchangeCount((BigDecimal) exchangeMap.get("newExchangeCount"));
-        }
+        Map exchangeMap = totalMapper.getExchangeInfo(channel, time);
+        summarize.setExchangeNum((Long) exchangeMap.get("exchangeNum"));
+        summarize.setExchangeCount(checkDecimal((BigDecimal) exchangeMap.get("exchangeCount")));
+        summarize.setActualExchangeCount(checkDecimal((BigDecimal) exchangeMap.get("actualExchangeCount")));
+        summarize.setConfiscateCount(checkDecimal((BigDecimal) exchangeMap.get("confiscateCount")));
+        summarize.setNewExchangeCount(checkDecimal((BigDecimal) exchangeMap.get("newExchangeCount")));
     }
 
     /**
@@ -164,12 +161,9 @@ public class TotalHandle {
      */
     private void setNewPlayerInfo(Summarize summarize,String channel,Long time){
         Map newPlayerInfoMap = totalMapper.getNewPlayerInfo(channel,time);
-        if(newPlayerInfoMap!=null){
-            summarize.setNewNum((Long) newPlayerInfoMap.get("newNum"));
-            BigDecimal balanceCount = (BigDecimal) newPlayerInfoMap.get("balanceCount");
-            balanceCount = balanceCount==null?new BigDecimal(0):balanceCount;
-            summarize.setBalanceCount(balanceCount.divide(new BigDecimal(10000)));
-        }
+        summarize.setNewNum((Long) newPlayerInfoMap.get("newNum"));
+        BigDecimal balanceCount = checkDecimal((BigDecimal) newPlayerInfoMap.get("balanceCount"));
+        summarize.setBalanceCount(balanceCount.divide(new BigDecimal(10000)));
         summarize.setActiveNum(totalMapper.getActiveNum(channel,time));
     }
 
@@ -180,9 +174,9 @@ public class TotalHandle {
         Map waterInfoMap = totalMapper.getWaterInfo(channel,time);
         if(waterInfoMap!=null){
             BigDecimal b = new BigDecimal(10000);
-            BigDecimal newWater = (BigDecimal) waterInfoMap.get("newWater");
-            BigDecimal rewardCount = (BigDecimal) waterInfoMap.get("rewardCount");
-            BigDecimal performanceCount = (BigDecimal) waterInfoMap.get("performanceCount");
+            BigDecimal newWater = checkDecimal((BigDecimal) waterInfoMap.get("newWater"));
+            BigDecimal rewardCount = checkDecimal((BigDecimal) waterInfoMap.get("rewardCount"));
+            BigDecimal performanceCount = checkDecimal((BigDecimal) waterInfoMap.get("performanceCount"));
             summarize.setNewWater(newWater.divide(b));
             summarize.setRewardCount(rewardCount.divide(b));
             summarize.setPerformanceCount(performanceCount.divide(b));
@@ -195,8 +189,8 @@ public class TotalHandle {
     private void setCommissionInfo(Summarize summarize, String channel, String date) {
         Map CommissionInfoMap = totalMapper.getCommissionInfo(channel,date);
         if(CommissionInfoMap!=null){
-            summarize.setCommissionSubCount((BigDecimal) CommissionInfoMap.get("commissionSubCount"));
-            summarize.setCommissionTeamCount((BigDecimal) CommissionInfoMap.get("commissionTeamCount"));
+            summarize.setCommissionSubCount(checkDecimal((BigDecimal) CommissionInfoMap.get("commissionSubCount")));
+            summarize.setCommissionTeamCount(checkDecimal((BigDecimal) CommissionInfoMap.get("commissionTeamCount")));
         }
     }
     /**
@@ -207,8 +201,8 @@ public class TotalHandle {
         Map betInfoMap = totalMapper.getBetInfo(channel,time+"000",endtime+"000");
         if(betInfoMap!=null){
             BigDecimal b = new BigDecimal(10000);
-            BigDecimal betCount = (BigDecimal) betInfoMap.get("betCount");
-            BigDecimal feeCount = (BigDecimal) betInfoMap.get("feeCount");
+            BigDecimal betCount = checkDecimal((BigDecimal) betInfoMap.get("betCount"));
+            BigDecimal feeCount = checkDecimal((BigDecimal) betInfoMap.get("feeCount"));
             summarize.setBetCount(betCount.divide(b));
             summarize.setFeeCount(feeCount.divide(b));
         }
@@ -239,12 +233,10 @@ public class TotalHandle {
         summarize.setAlmsCount(almsCount.divide(b));
 
         Map map = totalMapper.getGiveCount(channel, beginTime, endTime);
-        if(map!=null){
-            Long giveNum = (Long) map.get("giveNum");
-            BigDecimal giveCount = checkDecimal((BigDecimal) map.get("giveNum"));
-            summarize.setGiveNum(giveNum);
-            summarize.setGiveCount(giveCount.divide(b));
-        }
+        Long giveNum = (Long) map.get("giveNum");
+        BigDecimal giveCount = checkDecimal((BigDecimal) map.get("giveCount"));
+        summarize.setGiveNum(giveNum);
+        summarize.setGiveCount(giveCount.divide(b));
 
         //昨日账户余额
         String yesterday = DateUtil.formatDate(DateUtil.addDays(new Date(),1));//当天日期
