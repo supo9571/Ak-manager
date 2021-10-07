@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.data.mapper.SubGameDataMapper">
 
-    <select id="getSubGameDataList" resultType="com.manager.common.core.domain.model.SubGameData">
+    <select id="getSubGameDataList" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
         SELECT g.game_id gameId,
                g.game_name gameName,
                IF(d.bet_count IS NULL, 0, d.bet_count) betCount,
@@ -25,7 +25,7 @@
         </if>
     </select>
 
-    <select id="getHumBurCount" resultType="com.manager.common.core.domain.model.SubGameData">
+    <select id="getHumBurCount" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
         SELECT g.game_id gameId, g.game_name gameName, any_value(COUNT(DISTINCT uid)) parCount, COUNT(1) humBurCount
         FROM data_card_user c
         LEFT JOIN config_game g
@@ -39,4 +39,33 @@
         GROUP BY g.game_id
     </select>
 
+    <select id="getTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
+        SELECT g.game_id gameId,
+        g.game_name gameName,
+        IF(d.bet_count IS NULL, 0, d.bet_count) betCount,
+        IF(d.reward_count IS NULL, 0, d.reward_count) rewardCount,
+        IF(d.fee_count IS NULL, 0, d.fee_count) feeCount
+        FROM config_game g
+        LEFT JOIN (SELECT table_id,SUM(bet_count) bet_count,
+        SUM(reward_count) reward_count,
+        SUM(fee_count) fee_count
+        FROM data_game_day
+        WHERE channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        AND DAY >= #{beginTime}
+        AND #{endTime} >= DAY
+        GROUP BY table_id) d
+        ON g.game_id = d.table_id
+        WHERE g.parent_id = #{gameId}
+    </select>
+
+    <select id="getHumBurTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
+        SELECT g.game_id gameId, g.game_name gameName, any_value(COUNT(DISTINCT uid)) parCount, COUNT(1) humBurCount
+        FROM data_card_user c
+        LEFT JOIN config_game g
+        ON c.table_type = g.game_id
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        AND c.mstime BETWEEN #{beginms} AND #{endms}
+        AND g.parent_id = #{gameId}
+        GROUP BY g.game_id
+    </select>
 </mapper>

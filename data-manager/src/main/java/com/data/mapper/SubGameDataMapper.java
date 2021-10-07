@@ -1,6 +1,7 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.SubGameData;
+import com.manager.common.core.domain.model.SubGameDataExcel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,11 +18,14 @@ public interface SubGameDataMapper {
      * 查询
      * @param subGameActualData 过滤条件
      */
-    List<SubGameData> getSubGameDataList(SubGameData subGameActualData);
+    List<SubGameDataExcel> getSubGameDataList(SubGameData subGameActualData);
 
     /**
      * 获取人局数
      */
-    List<SubGameData> getHumBurCount(SubGameData subGameActualData);
+    List<SubGameDataExcel> getHumBurCount(SubGameData subGameActualData);
 
+    List<SubGameDataExcel> getTableDate(SubGameData subGameData);
+
+    List<SubGameDataExcel> getHumBurTableDate(SubGameData subGameData);
 }

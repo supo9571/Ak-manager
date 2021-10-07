@@ -770,7 +770,13 @@ public class ExcelUtil<T> {
      * @throws Exception
      */
     private Object getTargetValue(T vo, Field field, Excel excel) throws Exception {
-        Object o = field.get(vo);
+        Object o;
+        if(vo instanceof Map){
+            Map map = (Map) vo;
+            o = map.get(field.getName());
+        }else {
+            o = field.get(vo);
+        }
         if (StringUtils.isNotEmpty(excel.targetAttr())) {
             String target = excel.targetAttr();
             if (target.indexOf(".") > -1) {

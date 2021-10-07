@@ -15,4 +15,5 @@ public interface SubGameDataService {
      */
     List<SubGameData> getSubGameDataList(SubGameData subGameData);
 
+    List<SubGameData> getTableDate(SubGameData subGameData);
 }
