@@ -12,7 +12,7 @@ import lombok.Data;
 public class SubGameData extends BaseEntity {
 
     @ApiModelProperty("平台id")
-    private String tid;
+    private Integer tid;
 
     @ApiModelProperty("游戏id")
     private String gameId;

@@ -51,7 +51,7 @@ public class SubGameDataController {
         ExcelUtil<SubGameDataExcel> util = new ExcelUtil(SubGameDataExcel.class);
         String fileName = "游戏数据导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        FileUtils.setFileName(response, fileName + ".xlsx");
         util.downloadExcel(list, fileName, response.getOutputStream());
     }
     /**
@@ -72,7 +72,7 @@ public class SubGameDataController {
         ExcelUtil<SubGameDataExcel> util = new ExcelUtil(SubGameDataExcel.class);
         String fileName = "房间明细导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        FileUtils.setFileName(response, fileName + ".xlsx");
         util.downloadExcel(list, fileName, response.getOutputStream());
     }
 }

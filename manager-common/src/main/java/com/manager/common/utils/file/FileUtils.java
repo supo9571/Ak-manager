@@ -160,6 +160,19 @@ public class FileUtils {
         response.setHeader("Content-disposition", contentDispositionValue.toString());
     }
 
+    public static void setFileName(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
+        String percentEncodedFileName = percentEncode(realFileName);
+        StringBuilder contentDispositionValue = new StringBuilder();
+        contentDispositionValue.append("attachment; filename=")
+                .append(percentEncodedFileName)
+                .append(";")
+                .append("filename*=")
+                .append("utf-8''")
+                .append(percentEncodedFileName);
+
+        response.setHeader("Content-disposition", contentDispositionValue.toString());
+    }
+
     /**
      * 百分号编码工具方法
      *

@@ -49,7 +49,7 @@ public class CommonController {
             String filePath = ManagerConfig.getDownloadPath() + fileName;
 
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, realFileName);
+            FileUtils.setFileName(response, realFileName);
             FileUtils.writeBytes(filePath, response.getOutputStream());
             if (delete) {
                 FileUtils.deleteFile(filePath);
@@ -96,7 +96,7 @@ public class CommonController {
             // 下载名称
             String downloadName = StringUtils.substringAfterLast(downloadPath, "/");
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, downloadName);
+            FileUtils.setFileName(response, downloadName);
             FileUtils.writeBytes(downloadPath, response.getOutputStream());
         } catch (Exception e) {
             log.error("下载文件失败", e);
