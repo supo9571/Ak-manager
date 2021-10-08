@@ -4,7 +4,7 @@
 <mapper namespace="com.data.mapper.MailMapper">
 
     <select id="getTips" resultType="java.util.Map">
-        select id, notice_content description, notice_content imageUrl, notice_title title, push Type
+        select id Id, notice_content Description, notice_content ImageUrl, notice_title Title, push Type
         from sys_system_notice
         where (state = '2' or (state = '1' and sysdate() >= send_out_time))
           and (
