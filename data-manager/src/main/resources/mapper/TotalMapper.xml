@@ -4,7 +4,41 @@
 <mapper namespace="com.data.mapper.TotalMapper">
 
     <select id="getTotals" resultType="java.util.Map">
-        SELECT * from data_total_day
+        SELECT  exchange_count exchangeCount,
+                give_num giveNum,
+                channel,
+                new_recharge_count newRechargeCount,
+                offline_pay_rate offlinePayRate,
+                vip_count vipCount,
+                recharge_give_count rechargeGiveCount,
+                recharge_num rechargeNum,
+                new_exchange_count newExchangeCount,
+                active_num activeNum,
+                activity_count activityCount,
+                exchange_num exchangeNum,
+                system_win systemWin,
+                win_rate winRate,
+                day,
+                reward_count rewardCount,
+                commission_team_count commissionTeamCount,
+                give_count giveCount,
+                online_pay_rate onlinePayRate,
+                fee_count feeCount,
+                alms_count almsCount,
+                new_water newWater,
+                offline_give_count offlineGiveCount,
+                bind_give_count bindGiveCount,
+                performance_count performanceCount,
+                recharge_count rechargeCount,
+                new_num newNum,
+                vip_level_count vipLevelCount,
+                balance_count balanceCount,
+                confiscate_count confiscateCount,
+                new_recharge_num newRechargeNum,
+                actual_exchange_count actualExchangeCount,
+                commission_sub_count commissionSubCount,
+                bet_count betCount
+        from data_total_day
         where day >= #{beginTime} and #{endTime} >= day
         and channel = #{channel}
     </select>
