@@ -51,4 +51,15 @@
         </set>
         where uid = #{uid}
     </update>
+
+    <update id="updateBank">
+        update data_register
+        <set>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="account != null and account != ''">account = #{account},</if>
+            <if test="originBank != null and originBank != ''">origin_bank = #{originBank},</if>
+        </set>
+        where uid = #{uid}
+    </update>
 </mapper>

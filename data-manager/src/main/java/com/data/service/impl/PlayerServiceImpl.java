@@ -3,10 +3,12 @@ package com.data.service.impl;
 import com.data.mapper.PlayerMapper;
 import com.data.service.PlayerService;
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.UserExchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/8/20
@@ -29,5 +31,25 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Integer updatePlayer(PlayUser playUser) {
         return playerMapper.updatePlayer(playUser);
+    }
+
+    @Override
+    public String getPhone(Long uid) {
+        return playerMapper.getPhone(uid);
+    }
+
+    @Override
+    public Map getBankInfo(Long uid) {
+        return playerMapper.getBankInfo(uid);
+    }
+
+    @Override
+    public Map getAlipayInfo(Long uid) {
+        return playerMapper.getAlipayInfo(uid);
+    }
+
+    @Override
+    public Integer updateBank(UserExchange userExchange) {
+        return playerMapper.updateBank(userExchange);
     }
 }

@@ -47,6 +47,8 @@
         FROM data_total_day
         WHERE DAY >= #{beginTime}
         AND #{endTime}>=DAY
-        AND channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        <if test="tid!=null and tid!=0">
+            AND channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
     </select>
 </mapper>

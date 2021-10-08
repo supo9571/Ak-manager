@@ -51,7 +51,7 @@ public class AgentController extends BaseController {
     }
 
     /**
-     * 领取记录
+     * 推广记录
      */
     @PostMapping("/popularize")
     public AjaxResult popularize(String uid, Integer page, Integer size, String orderByColumn, String isAsc) {
