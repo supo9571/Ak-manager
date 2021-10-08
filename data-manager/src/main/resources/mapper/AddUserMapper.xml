@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.AddUserMapper">
+
+    <select id="getList" resultType="com.manager.common.core.domain.model.AddUser">
+        SELECT
+            day,
+            COUNT(uid) as uid,
+            SUM(agentTime) as agentTime,
+            SUM(payUserCount) as payUserCount,
+            SUM(payUserCount) / COUNT(t.uid) as payUserRate,
+            SUM(userRechargeMoney) as userRechargeMoney,
+            SUM(userExchangeMoney) as  userExchangeMoney,
+            SUM(userRechargeMoney) /  COUNT(uid) as addArpu,
+            SUM(userSumBet) as userSumBet,
+            SUM(userReward) as userReward,
+            SUM(userSumBet) - SUM(userReward) as consumption
+            from
+            (
+                SELECT
+                FROM_UNIXTIME(dr.time, '%Y-%m-%d') as day,
+                SUM(FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') = FROM_UNIXTIME(dr.time, '%Y-%m-%d')) as agentTime,
+                dr.uid as uid,
+                (
+                SELECT COUNT(distinct uid) from
+                config_recharge_order cro
+                where
+                cro.recharge_amount > 0
+                and cro.uid <![CDATA[<>]]> 0
+                and dr.uid = cro.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                ) as payUserCount,
+                (
+                SELECT SUM(cro.recharge_amount) from
+                config_recharge_order cro
+                where
+                dr.uid = cro.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                ) as userRechargeMoney,
+                (
+                SELECT SUM(ceo.withdraw_money) from
+                config_exchange_order ceo
+                where
+                dr.uid = ceo.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(ceo.update_time, '%Y-%m-%d')
+                and ceo.exaa_status = '5'
+                ) as userExchangeMoney,
+                (
+                SELECT SUM(dw.value) from
+                data_water dw
+                where dr.uid = dw.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = FROM_UNIXTIME(dw.time, '%Y-%m-%d')
+                ) as userSumBet,
+                (
+                SELECT SUM(dw.reward) from
+                data_water dw
+                where dr.uid = dw.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = FROM_UNIXTIME(dw.time, '%Y-%m-%d')
+                ) as userReward
+                from
+                data_register dr where  1=1
+                <if test="channel !=null and channel !=''">
+                    and dr.channel = #{channel}
+                </if>
+                <if test="tid !=null and tid !=''">
+                    and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+                </if>
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') >= '2021-09-16'
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> '2021-10-16'
+                group by FROM_UNIXTIME(dr.time, '%Y-%m-%d'), dr.uid
+            )
+        t group by day
+    </select>
+
+    <select id="getUserList" resultType="String">
+        select
+            dr.uid as uid
+        from
+            data_register dr
+        where
+            #{day} = FROM_UNIXTIME(dr.time, '%Y-%m-%d') = '2021-09-16'
+    </select>
+
+    <select id="getCardList" resultType="com.manager.common.core.domain.model.AddUser">
+        SELECT
+            COUNT(distinct dcu.uid) as cardPlayingRate,
+            COUNT(1) as userCardCount
+        from
+            data_card_user dcu
+        where
+            dcu.uid in (
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+          and #{day} = FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d')
+    </select>
+
+</mapper>
