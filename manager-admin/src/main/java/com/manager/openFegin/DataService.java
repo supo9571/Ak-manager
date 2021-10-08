@@ -101,4 +101,8 @@ public interface DataService {
 
     @PostMapping(value = "/data/hotupdate/find")
     AjaxResult findhotUpdateById(@RequestParam("id") Integer id);
+
+    @PostMapping(value = "/data/activity/report/list")
+    AjaxResult getActivityList(@RequestBody Coins coins);
+
 }
