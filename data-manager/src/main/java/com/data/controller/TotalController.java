@@ -32,6 +32,13 @@ public class TotalController extends BaseController {
         List list = totalService.getTotals(summarize);
         return AjaxResult.success(getDataTable(list));
     }
+    /**
+     * 总览 列表数据导出
+     */
+    @PostMapping("/export")
+    public List export(@RequestBody Summarize summarize) {
+        return totalService.getTotals(summarize);
+    }
 
     /**
      * 总览 左侧数据
