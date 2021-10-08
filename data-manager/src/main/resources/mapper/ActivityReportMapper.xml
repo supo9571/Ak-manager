@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.ActivityReportMapper">
+
+    <select id="selectActivityList"  resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Coins">
+        SELECT
+            r_id as rId,
+            r_name as rName,
+            IFNULL(sum(dc.value),0) as amount
+        FROM
+            data_coins dc
+            LEFT JOIN config_reason cr ON dc.r = cr.r_id
+        <where>
+            cr.r_id  in(110001,110002,110003,110004,110005,110006,110007,110008,100063)
+            <if test="r!=null and r!=''">
+                and dc.r = #{r}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dc.mstime between #{beginms} and #{endms}
+            </if>
+        </where>
+        GROUP BY r_id,r_name
+    </select>
+
+
+
+</mapper>
