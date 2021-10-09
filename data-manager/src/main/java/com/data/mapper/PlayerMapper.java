@@ -35,7 +35,7 @@ public interface PlayerMapper {
 
     Map getRecAndexc(@Param("uid") Long uid);
 
-    List getRecharInfo(@Param("uid") String uid);
+    List getRechargeInfo(@Param("uid") String uid);
 
     List getExchangeInfo(@Param("uid") String uid);
 }

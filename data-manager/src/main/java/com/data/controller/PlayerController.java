@@ -91,10 +91,10 @@ public class PlayerController extends BaseController {
     /**
      * 充值记录
      */
-    @PostMapping("/recharInfo")
-    public AjaxResult recharInfo(@RequestBody PlayUser playUser) {
+    @PostMapping("/rechargeInfo")
+    public AjaxResult rechargeInfo(@RequestBody PlayUser playUser) {
         startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
-        List list = playerService.getRecharInfo(playUser.getUid());
+        List list = playerService.getRechargeInfo(playUser.getUid());
         return AjaxResult.success(getDataTable(list));
     }
 

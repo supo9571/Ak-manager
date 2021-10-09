@@ -26,7 +26,7 @@ public interface PlayerService {
 
     Map getRecAndexc(Long uid);
 
-    List getRecharInfo(String uid);
+    List getRechargeInfo(String uid);
 
     List getExchangeInfo(String uid);
 }

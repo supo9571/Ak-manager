@@ -4,15 +4,18 @@ import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.UserExchange;
 import com.manager.common.enums.BusinessType;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/8/19
@@ -45,15 +48,65 @@ public class PlayerController extends BaseController {
         return dataService.getPlayerCurr(uid);
     }
 
-
     /**
      * 修改玩家信息
      */
     @PreAuthorize("@ss.hasPermi('data:player:edit')")
-    @ApiOperation(value = "修改玩家信息")
-    @Log(title = "修改玩家信息", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "修改基础信息")
+    @Log(title = "修改玩家基础信息", businessType = BusinessType.UPDATE)
     @GetMapping("/edit")
     public AjaxResult edit(PlayUser playUser) {
         return dataService.updatePlayer(playUser);
+    }
+
+    /**
+     * 玩家信息
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:edit')")
+    @ApiOperation(value = "信息修改详情")
+    @GetMapping("/info")
+    public AjaxResult info(Long uid) {
+        return dataService.getInfo(uid);
+    }
+
+    /**
+     * 修改 银行卡/支付宝 信息
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:edit')")
+    @ApiOperation(value = "银行卡/支付宝修改")
+    @Log(title = "修改玩家银行卡/支付宝信息", businessType = BusinessType.UPDATE)
+    @GetMapping("/editExchange")
+    public AjaxResult editBank(@RequestBody UserExchange userExchange) {
+        return dataService.updateBank(userExchange);
+    }
+
+    /**
+     * 充值提现 数据
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "充值提现数据")
+    @PostMapping("/recAndexc")
+    public AjaxResult recAndexc(Long uid) {
+        return dataService.recAndexc(uid);
+    }
+
+    /**
+     * 充值记录
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "充值记录")
+    @PostMapping("/rechargeInfo")
+    public AjaxResult rechargeInfo(@RequestBody PlayUser playUser) {
+        return dataService.rechargeInfo(playUser);
+    }
+
+    /**
+     * 提现记录
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "提现记录")
+    @PostMapping("/exchangeInfo")
+    public AjaxResult exchangeInfo(@RequestBody PlayUser playUser) {
+        return dataService.exchangeInfo(playUser);
     }
 }

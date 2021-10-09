@@ -59,8 +59,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List getRecharInfo(String uid) {
-        return playerMapper.getRecharInfo(uid);
+    public List getRechargeInfo(String uid) {
+        return playerMapper.getRechargeInfo(uid);
     }
 
     @Override
