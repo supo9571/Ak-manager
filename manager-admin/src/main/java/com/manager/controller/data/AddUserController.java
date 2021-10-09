@@ -4,6 +4,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.AddUser;
 import com.manager.common.core.domain.model.SubGameData;
 import com.manager.common.core.domain.model.SubGameDataExcel;
+import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.openFegin.DataService;
@@ -41,6 +42,7 @@ public class AddUserController {
     @ApiOperation(value = "查询新增用户")
     @PostMapping("/list")
     public AjaxResult getAddUser(@RequestBody AddUser addUser) {
+        addUser.setTid2(SecurityUtils.getUserId());
         return dataService.getAddUser(addUser);
     }
 
@@ -48,6 +50,7 @@ public class AddUserController {
     @ApiOperation(value = "新增用户导出")
     @PostMapping("/export")
     public void gameExport(@RequestBody AddUser addUser, HttpServletResponse response) throws IOException {
+        addUser.setTid2(SecurityUtils.getUserId());
         List list = (List) dataService.getAddUser(addUser).get("data");
         ExcelUtil<AddUser> util = new ExcelUtil(AddUser.class);
         String fileName = "新增用户导出";
