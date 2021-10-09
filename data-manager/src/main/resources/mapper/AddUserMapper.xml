@@ -60,9 +60,18 @@
                 ) as userReward
                 from
                 data_register dr where  1=1
-                <if test="channel !=null and channel !=''">
-                    and dr.channel = #{channel}
-                </if>
+                <choose>
+                    <when test="channel !=null and channel !=''">
+                        and dr.channel = #{channel}
+                    </when>
+                    <otherwise>
+                        and dr. channel IN (
+                            SELECT t.t_id FROM sys_tenant t
+                            WHERE t.t_type = '2'
+                            AND (t.ancestors LIKE concat('%', #{tid2}, '%') OR t_id = #{tid2})
+                        )
+                    </otherwise>
+                </choose>
                 <if test="tid !=null and tid !=''">
                     and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
                 </if>
@@ -79,22 +88,33 @@
         from
             data_register dr
         where
-            #{day} = FROM_UNIXTIME(dr.time, '%Y-%m-%d') = '2021-09-16'
+            #{day} = FROM_UNIXTIME(dr.time, '%Y-%m-%d')
     </select>
 
-    <select id="getCardList" resultType="com.manager.common.core.domain.model.AddUser">
+    <select id="getCardPlayingRate" resultType="Integer">
         SELECT
-            COUNT(distinct dcu.uid) as cardPlayingRate,
-            COUNT(1) as userCardCount
+            COUNT(distinct dcu.uid) as cardPlayingRate
         from
             data_card_user dcu
         where
-            dcu.uid in (
+            dcu.uid in
             <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
                 #{item}
             </foreach>
-            )
           and #{day} = FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d')
+    </select>
+
+    <select id="getUserCardCount" resultType="Integer">
+        SELECT
+            COUNT(1) as userCardCount
+        from
+        data_card_user dcu
+        where
+        dcu.uid in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and #{day} = FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d')
     </select>
 
 </mapper>

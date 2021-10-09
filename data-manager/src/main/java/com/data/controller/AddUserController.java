@@ -28,7 +28,6 @@ public class AddUserController extends BaseController {
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody AddUser addUser) {
-        startOrder("betCount","desc");
         return AjaxResult.success("查询成功", addUserService.getList(addUser));
     }
 

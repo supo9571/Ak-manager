@@ -15,6 +15,8 @@ public class AddUser extends BaseEntity {
     @ApiModelProperty("平台id")
     private Integer tid;
 
+    private Integer tid2;
+
     @Excel(name = "日期")
     @ApiModelProperty("日期")
     private String day;

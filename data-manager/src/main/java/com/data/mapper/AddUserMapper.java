@@ -1,10 +1,9 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.AddUser;
-import com.manager.common.core.domain.model.SubGameData;
-import com.manager.common.core.domain.model.SubGameDataExcel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,6 +13,14 @@ import java.util.List;
  */
 @Mapper
 public interface AddUserMapper {
+
+    /**
+     * 通过userId获取Tid
+     * @param userId
+     * @return
+     */
+    @Select("SELECT su.t_id from sys_user su where su.user_id = #{userId} limit 1")
+    Integer getTid(@Param("userId") Long userId);
 
     /**
      * 查询
@@ -34,7 +41,9 @@ public interface AddUserMapper {
      * @param day
      * @return
      */
-    AddUser getCardList(@Param("list") List<String> list,@Param("day") String day);
+    Integer getCardPlayingRate(@Param("list") List<String> list,@Param("day") String day);
+
+    Integer getUserCardCount(@Param("list") List<String> list,@Param("day") String day);
 
 
 }
