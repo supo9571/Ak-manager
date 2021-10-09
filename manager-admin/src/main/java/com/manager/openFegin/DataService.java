@@ -119,4 +119,7 @@ public interface DataService {
 
     @PostMapping(value = "/data/player/exchangeInfo", consumes = "application/json")
     AjaxResult exchangeInfo(@RequestBody PlayUser playUser);
+
+    @PostMapping(value = "/data/addUser/list", consumes = "application/json")
+    AjaxResult getAddUser(@RequestBody AddUser addUser);
 }
