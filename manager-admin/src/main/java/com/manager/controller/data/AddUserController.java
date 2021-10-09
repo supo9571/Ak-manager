@@ -35,7 +35,7 @@ public class AddUserController {
 
 
     /**
-     * 获取子游戏实时数据
+     * 查询新增用户
      */
     @PreAuthorize("@ss.hasPermi('data:addUser:list')")
     @ApiOperation(value = "查询新增用户")
