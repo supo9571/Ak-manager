@@ -3,47 +3,48 @@ package com.manager.controller.data;
 import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.Coins;
+import com.manager.common.core.domain.model.param.DataAnalysisParam;
+import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
+ * 用于数据分析相关接口
  * @author jason
  * @date 2021-10-08
  */
 @RestController
-@Api(tags = "数据分析-活动列表")
-@RequestMapping("/data/activity/report")
-public class ActivityReportController  extends BaseController {
+@Api(tags = "数据分析")
+@RequestMapping("/data/analysis/report")
+public class DataAnalysisController extends BaseController {
 
-    @Autowired
+    @Resource
     private DataService dataService;
 
-    @ApiOperation(value = "获取活动列表")
-    @GetMapping("/list")
-    public AjaxResult list(Coins coins) {
-        return dataService.getActivityList(coins);
+    @ApiOperation(value = "提现top100")
+    @GetMapping("/withdraw/top/List")
+    public AjaxResult list(DataAnalysisParam param) {
+        return dataService.withdrawTopList(param);
     }
 
-    @ApiOperation(value = "活动列表导出")
-    @Log(title = "活动列表导出", businessType = BusinessType.EXPORT)
+    @ApiOperation(value = "提现top100导出")
+    @Log(title = "提现top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(@RequestBody Coins coins, HttpServletResponse response) throws IOException {
-        AjaxResult ajaxResult = dataService.getActivityList(coins);
-        ExcelUtil util = new ExcelUtil(Map.class);
-        String fileName = "活动列表导出";
+    public void export(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        AjaxResult ajaxResult = dataService.withdrawTopList(param);
+        ExcelUtil<DataAnalysisVO> util = new ExcelUtil(DataAnalysisVO.class);
+        String fileName = "提现top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
