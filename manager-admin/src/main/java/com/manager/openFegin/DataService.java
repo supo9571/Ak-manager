@@ -122,4 +122,19 @@ public interface DataService {
 
     @PostMapping(value = "/data/addUser/list", consumes = "application/json")
     AjaxResult getAddUser(@RequestBody AddUser addUser);
+
+    @PostMapping(value = "/data/player/userInfo")
+    AjaxResult userInfo(@RequestParam("uid") Long uid);
+
+    @PostMapping(value = "/data/player/waterInfo", consumes = "application/json")
+    AjaxResult waterInfo(@RequestBody PlayWater playWater);
+
+    @PostMapping(value = "/data/player/updateToken")
+    AjaxResult updateToken(@RequestParam("uid") Long uid);
+
+    @PostMapping(value = "/data/player/lock", consumes = "application/json")
+    AjaxResult lock(@RequestBody UserLock userLock);
+
+    @PostMapping(value = "/data/player/lockLog", consumes = "application/json")
+    AjaxResult lockLog(@RequestParam("uid") Long uid);
 }
