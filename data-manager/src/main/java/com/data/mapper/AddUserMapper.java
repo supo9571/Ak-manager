@@ -20,7 +20,7 @@ public interface AddUserMapper {
      * @return
      */
     @Select("SELECT su.t_id from sys_user su where su.user_id = #{userId} limit 1")
-    Integer getTid(@Param("userId") Long userId);
+    Long getTid(@Param("userId") Long userId);
 
     /**
      * 查询

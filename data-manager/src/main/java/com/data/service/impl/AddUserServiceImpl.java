@@ -27,7 +27,7 @@ public class AddUserServiceImpl implements AddUserService {
     @Override
     public List getList(AddUser addUser) {
         // 默认查看当前身份的总数据
-        Integer tid = addUserMapper.getTid(SecurityUtils.getUserId());
+        Long tid = addUserMapper.getTid(addUser.getTid2());
         addUser.setTid2(tid);
         // 获取计算完成后的数据
         List<AddUser> addUserList = addUserMapper.getList(addUser);
