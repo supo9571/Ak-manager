@@ -46,7 +46,7 @@ public class MailController extends BaseController {
     /**
      * 邮件列表
      */
-    @PostMapping("/app/get_mail_list")
+    @PostMapping("/server_api/get_mail_list")
     public JSONObject getMailList() {
         String channelId = getHeader("Client-ChannelId");
         String uid = getHeader("uid");

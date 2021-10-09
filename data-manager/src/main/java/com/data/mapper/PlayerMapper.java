@@ -32,4 +32,10 @@ public interface PlayerMapper {
     Map getAlipayInfo(@Param("uid") Long uid);
 
     Integer updateBank(UserExchange userExchange);
+
+    Map getRecAndexc(@Param("uid") Long uid);
+
+    List getRecharInfo(@Param("uid") String uid);
+
+    List getExchangeInfo(@Param("uid") String uid);
 }

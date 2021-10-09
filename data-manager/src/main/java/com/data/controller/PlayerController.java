@@ -80,5 +80,31 @@ public class PlayerController extends BaseController {
         return i > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
+    /**
+     * 充值提现 数据
+     */
+    @PostMapping("/recAndexc")
+    public AjaxResult recAndexc(Long uid) {
+        return AjaxResult.success(playerService.getRecAndexc(uid));
+    }
 
+    /**
+     * 充值记录
+     */
+    @PostMapping("/recharInfo")
+    public AjaxResult recharInfo(@RequestBody PlayUser playUser) {
+        startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
+        List list = playerService.getRecharInfo(playUser.getUid());
+        return AjaxResult.success(getDataTable(list));
+    }
+
+    /**
+     * 提现记录
+     */
+    @PostMapping("/exchangeInfo")
+    public AjaxResult exchangeInfo(@RequestBody PlayUser playUser) {
+        startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
+        List list = playerService.getExchangeInfo(playUser.getUid());
+        return AjaxResult.success(getDataTable(list));
+    }
 }

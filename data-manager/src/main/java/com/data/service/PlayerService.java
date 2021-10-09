@@ -23,4 +23,10 @@ public interface PlayerService {
     Map getAlipayInfo(Long uid);
 
     Integer updateBank(UserExchange userExchange);
+
+    Map getRecAndexc(Long uid);
+
+    List getRecharInfo(String uid);
+
+    List getExchangeInfo(String uid);
 }

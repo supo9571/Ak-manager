@@ -62,4 +62,30 @@
         </set>
         where uid = #{uid}
     </update>
+
+    <select id="getRecAndexc" resultType="java.util.Map">
+        select today_add todayAdd, today_give todayGive, today_red todayRed,
+        total_add totalAdd, total_give totalGive, total_red totalRed
+        from data_register
+        where uid = #{uid}
+    </select>
+
+    <select id="getRecharInfo" resultType="java.util.Map">
+        SELECT finish_time finishTime,
+               recharge_amount rechargeAmount,
+               recharge_type rechargeType,
+               admin_user_id adminUserId
+        FROM config_recharge_order
+        WHERE uid = #{uid}
+        AND payment_status = '1'
+    </select>
+
+    <select id="getExchangeInfo" resultType="java.util.Map">
+        SELECT create_time createTime,
+               withdraw_type withdrawType,
+               withdraw_money withdrawMoney
+        FROM config_exchange_order
+        WHERE uid = #{uid}
+        AND exaa_status = '5'
+    </select>
 </mapper>

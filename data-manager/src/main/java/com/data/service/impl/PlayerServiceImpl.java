@@ -52,4 +52,19 @@ public class PlayerServiceImpl implements PlayerService {
     public Integer updateBank(UserExchange userExchange) {
         return playerMapper.updateBank(userExchange);
     }
+
+    @Override
+    public Map getRecAndexc(Long uid) {
+        return playerMapper.getRecAndexc(uid);
+    }
+
+    @Override
+    public List getRecharInfo(String uid) {
+        return playerMapper.getRecharInfo(uid);
+    }
+
+    @Override
+    public List getExchangeInfo(String uid) {
+        return playerMapper.getExchangeInfo(uid);
+    }
 }
