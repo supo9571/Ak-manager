@@ -72,4 +72,10 @@ public class AddUser extends BaseEntity {
     @ApiModelProperty("渠道")
     private String channel;
 
+    @ApiModelProperty("创建时间1")
+    private String createTime1;
+
+    @ApiModelProperty("创建时间1")
+    private String createTime2;
+
 }

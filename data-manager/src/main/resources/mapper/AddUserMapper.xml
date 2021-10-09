@@ -75,8 +75,8 @@
                 <if test="tid !=null and tid !=''">
                     and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
                 </if>
-                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') >= '2021-09-16'
-                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> '2021-10-16'
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') >= #{createTime1}
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
                 group by FROM_UNIXTIME(dr.time, '%Y-%m-%d'), dr.uid
             )
         t group by day
