@@ -19,7 +19,8 @@ public class DecodeMap {
             "\"Y2QyZWMx\":\"hlxd\",\"YTE2NTc4\":\"jdqs\",\"NjFjMGRh\":\"jxqy\",\"NzE0ZWQz\":\"jzhw\",\"MjI2MTRh\":\"kpqz\",\"YjdjZWNm\":\"lhdz\"," +
             "\"MmVmYmY1\":\"mssj\",\"NWM1MDBk\":\"pdsgj\",\"MTAyZGFh\":\"psz\",\"NDQ1MTkw\":\"rummy\",\"ZjhiODA2\":\"sgj\",\"YzhkOGIz\":\"shjx\"," +
             "\"YTE1YWQ1\":\"teen_patti\",\"ZDliMGM3\":\"wrzjh\",\"MDhhODQ1\":\"wzry\",\"M2ZhMWIz\":\"res\",\"Nzk1ZTc1\":\"animation\",\"NjVhM2Rk\":" +
-            "\"labelatlas\",\"MTI3MjY3\":\"sound\",\"Mjk1YjM5\":\"version.manifest\",\"ZWIwZGU2\":\"game_versions\",\"NjQ1NTJh\":\"csd\",\"YTc5ZDcw\": \"qznn\"}";
+            "\"labelatlas\",\"MTI3MjY3\":\"sound\",\"Mjk1YjM5\":\"version.manifest\",\"ZWIwZGU2\":\"game_versions\",\"NjQ1NTJh\":\"csd\",\"YTc5ZDcw\": \"qznn\"," +
+            "\"NTJhZDVi\": \"ssnh\"}";
 
     /**
      * 获取下载路径

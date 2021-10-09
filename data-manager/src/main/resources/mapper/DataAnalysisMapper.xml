@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.DataAnalysisMapper">
+
+   <select id="withdrawTopList" resultType="com.manager.common.core.domain.model.vo.DataAnalysisVO"  parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+       SELECT
+           ceo.channel,
+           ceo.uid,
+           dr.name,
+           dr.time,
+           IFNULL(sum(ceo.withdraw_money),0) withdrawAmount
+       from config_exchange_order ceo LEFT JOIN data_register dr on ceo.uid = dr.uid
+       where
+           exaa_status = 5
+           <if test="beginTime!=null and beginTime !=''">
+               and ceo.update_time between #{beginms} and #{endms}
+           </if>
+           <if test="tid!=null and tid!=''">
+               and ceo.tid = #{tid}
+           </if>
+       GROUP BY channel,uid,dr.name
+       ORDER BY sum(ceo.curr_money) desc LIMIT 100
+   </select>
+
+    <select id="getCurrentAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT curr_money from config_exchange_order
+        where exaa_status = 5 and uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and tid = #{tid}
+        </if>
+        ORDER BY id desc LIMIT 1
+    </select>
+
+    <select id="rechargeAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
+        where payment_status = 1 and uid = #{uid}
+        <if test="beginTime!=null and beginTime !=''">
+            and update_time between #{beginms} and #{endms}
+        </if>
+        <if test="tid!=null and tid!=''">
+            and tid = #{tid}
+        </if>
+    </select>
+
+    <select id="rechargeAmountTotal" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
+        where payment_status = 1 and uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and tid = #{tid}
+        </if>
+    </select>
+
+    <select id="withdrawAmountTotal" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        select IFNULL(sum(withdraw_money),0) amount  from config_exchange_order
+        where exaa_status = 5 and uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and tid = #{tid}
+        </if>
+    </select>
+
+
+</mapper>

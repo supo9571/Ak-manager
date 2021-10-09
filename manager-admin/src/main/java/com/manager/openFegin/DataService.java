@@ -2,6 +2,7 @@ package com.manager.openFegin;
 
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.*;
+import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -122,4 +123,21 @@ public interface DataService {
 
     @PostMapping(value = "/data/addUser/list", consumes = "application/json")
     AjaxResult getAddUser(@RequestBody AddUser addUser);
+
+    @PostMapping(value = "/data/player/userInfo")
+    AjaxResult userInfo(@RequestParam("uid") Long uid);
+
+    @PostMapping(value = "/data/player/waterInfo", consumes = "application/json")
+    AjaxResult waterInfo(@RequestBody PlayWater playWater);
+
+    @PostMapping(value = "/data/player/updateToken")
+    AjaxResult updateToken(@RequestParam("uid") Long uid);
+
+    @PostMapping(value = "/data/player/lock", consumes = "application/json")
+    AjaxResult lock(@RequestBody UserLock userLock);
+
+    @PostMapping(value = "/data/player/lockLog", consumes = "application/json")
+    AjaxResult lockLog(@RequestParam("uid") Long uid);
+    @PostMapping("/data/report/withdraw/top/List")
+    AjaxResult withdrawTopList(@RequestBody DataAnalysisParam param);
 }

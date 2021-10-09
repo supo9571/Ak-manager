@@ -32,5 +32,4 @@ public class ActivityReportController extends BaseController {
     }
 
 
-
 }

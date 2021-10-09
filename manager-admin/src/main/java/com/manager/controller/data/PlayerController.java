@@ -4,8 +4,11 @@ import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
+import com.manager.common.core.domain.model.UserLock;
 import com.manager.common.enums.BusinessType;
+import com.manager.common.utils.SecurityUtils;
 import com.manager.openFegin.AgentService;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
@@ -13,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author marvin 2021/8/19
@@ -120,5 +125,56 @@ public class PlayerController extends BaseController {
         return agentService.getPopularizes(uid, page, size, orderByColumn, isAsc);
     }
 
+    /**
+     * 基本详情
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "基本详情")
+    @PostMapping("/userInfo")
+    public AjaxResult userInfo(Long uid) {
+        return dataService.userInfo(uid);
+    }
 
+    /**
+     * 流水日志
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "流水日志")
+    @PostMapping("/waterInfo")
+    public AjaxResult waterInfo(@RequestBody PlayWater playWater) {
+        return dataService.waterInfo(playWater);
+    }
+
+    /**
+     * 更改设备码
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "更改设备码")
+    @Log(title = "更改设备码", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateToken")
+    public AjaxResult updateToken(Long uid) {
+        return dataService.updateToken(uid);
+    }
+
+    /**
+     * 封号解封
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "封号解封")
+    @Log(title = "封号解封", businessType = BusinessType.UPDATE)
+    @PostMapping("/lock")
+    public AjaxResult lock(@RequestBody UserLock userLock) {
+        userLock.setCreateBy(SecurityUtils.getUsername());
+        return dataService.lock(userLock);
+    }
+
+    /**
+     * 封号解封记录
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "封号解封")
+    @PostMapping("/lockLog")
+    public AjaxResult lockLog(Long uid) {
+        return dataService.lockLog(uid);
+    }
 }
