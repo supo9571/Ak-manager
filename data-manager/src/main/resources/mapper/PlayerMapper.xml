@@ -70,7 +70,7 @@
         where uid = #{uid}
     </select>
 
-    <select id="getRecharInfo" resultType="java.util.Map">
+    <select id="getRechargeInfo" resultType="java.util.Map">
         SELECT finish_time finishTime,
                recharge_amount rechargeAmount,
                recharge_type rechargeType,
@@ -88,4 +88,67 @@
         WHERE uid = #{uid}
         AND exaa_status = '5'
     </select>
+
+    <select id="userInfo" resultType="java.util.Map">
+        SELECT uid,name, phone,FROM_UNIXTIME(TIME) registerTime,register_ip registerIp,
+            device_id deviceId,client_version clientVersion,
+            FROM_UNIXTIME(login_time) loginTime,login_ip loginIp,
+        (SELECT finish_time FROM config_recharge_order WHERE uid = uid AND payment_status = '1' ORDER BY finish_time LIMIT 0,1) firstTime,
+        (SELECT finish_time FROM config_recharge_order WHERE uid = uid AND payment_status = '1' ORDER BY finish_time desc LIMIT 0,1) lastTime
+        FROM data_register
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="waterInfo" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.PlayWater">
+        select
+        c.curr,
+        FROM_UNIXTIME(c.`time`) `time`,
+        c.`value`,
+        c.`before`,
+        c.game_type gameType,
+        c.r
+        from data_coins c
+        <where>
+            <if test="uid!=null and uid !=''">
+                and c.uid = #{uid}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and c.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="gameType!=null and gameType !=''">
+                and c.game_type in
+                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+            <if test="r!=null and r !=''">
+                and c.r in
+                <foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateToken">
+        UPDATE  `data_user`
+        SET seed_token = CONCAT(seed_token,"---")
+        WHERE account_id = (SELECT account_id FROM data_register WHERE uid = #{uid})
+    </update>
+
+    <insert id="saveUserLock">
+        insert into data_user_lock(uid, lock_type, lock_day, lock_mark, create_time, update_time, create_by)
+        values (#{uid}, #{lockType}, #{lockDay}, #{lockMark}, sysdate(), sysdate(), #{createBy})
+        ON DUPLICATE KEY
+        UPDATE lock_type=values (lock_type),
+            lock_day=values (lock_day),
+            lock_mark=values (lock_mark),
+            update_time=values (update_time),
+            create_by=values (create_by);
+    </insert>
+
+    <insert id="saveUserLockLog">
+        insert into data_lock_log(uid, lock_type, lock_day, lock_mark, create_time, create_by)
+        values (#{uid}, #{lockType}, #{lockDay}, #{lockMark}, sysdate(), #{createBy})
+    </insert>
 </mapper>

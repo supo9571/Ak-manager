@@ -1,7 +1,9 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
+import com.manager.common.core.domain.model.UserLock;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -38,4 +40,17 @@ public interface PlayerMapper {
     List getRechargeInfo(@Param("uid") String uid);
 
     List getExchangeInfo(@Param("uid") String uid);
+
+    Map userInfo(@Param("uid") Long uid);
+
+    List waterInfo(PlayWater playWater);
+
+    void updateToken(@Param("uid") Long uid);
+
+    void saveUserLock(UserLock userLock);
+
+    void saveUserLockLog(UserLock userLock);
+
+    @Select("SELECT uid,create_time createTime,lock_type lockDay,lock_day lockDay,lock_mark lockMark,create_by createBy FROM data_lock_log where uid = #{uid}")
+    List<Map> getLockLog(@Param("uid") Long uid);
 }

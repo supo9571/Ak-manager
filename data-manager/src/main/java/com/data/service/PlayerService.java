@@ -1,7 +1,9 @@
 package com.data.service;
 
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
+import com.manager.common.core.domain.model.UserLock;
 
 import java.util.List;
 import java.util.Map;
@@ -29,4 +31,14 @@ public interface PlayerService {
     List getRechargeInfo(String uid);
 
     List getExchangeInfo(String uid);
+
+    Map userInfo(Long uid);
+
+    List waterInfo(PlayWater playWater);
+
+    void updateToken(Long uid);
+
+    void saveUserLock(UserLock userLock);
+
+    List getLockLog(Long uid);
 }

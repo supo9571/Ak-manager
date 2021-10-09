@@ -3,7 +3,10 @@ package com.data.controller;
 import com.data.service.PlayerService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
+import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
+import com.manager.common.core.domain.model.UserLock;
+import com.manager.common.utils.ip.AddressUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -106,5 +109,50 @@ public class PlayerController extends BaseController {
         startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
         List list = playerService.getExchangeInfo(playUser.getUid());
         return AjaxResult.success(getDataTable(list));
+    }
+
+    /**
+     * 基本详情
+     */
+    @PostMapping("/userInfo")
+    public AjaxResult userInfo(Long uid) {
+        Map map = playerService.userInfo(uid);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 流水日志
+     */
+    @PostMapping("/waterInfo")
+    public AjaxResult waterInfo(@RequestBody PlayWater playWater) {
+        startPage(playWater.getPage(), playWater.getSize(), playWater.getOrderByColumn(), playWater.getIsAsc());
+        List list = playerService.waterInfo(playWater);
+        return AjaxResult.success(getDataTable(list));
+    }
+
+    /**
+     * 更改设备码
+     */
+    @PostMapping("/updateToken")
+    public AjaxResult updateToken(Long uid) {
+        playerService.updateToken(uid);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 封号解封
+     */
+    @PostMapping("/lock")
+    public AjaxResult lock(@RequestBody UserLock userLock) {
+        playerService.saveUserLock(userLock);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 封号解封记录
+     */
+    @PostMapping("/lockLog")
+    public AjaxResult lockLog(Long uid) {
+        return AjaxResult.success(playerService.getLockLog(uid));
     }
 }

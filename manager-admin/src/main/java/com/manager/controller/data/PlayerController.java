@@ -6,16 +6,13 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
 import com.manager.common.core.domain.model.UserExchange;
 import com.manager.common.enums.BusinessType;
+import com.manager.openFegin.AgentService;
 import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author marvin 2021/8/19
@@ -27,6 +24,9 @@ public class PlayerController extends BaseController {
 
     @Autowired
     private DataService dataService;
+
+    @Autowired
+    private AgentService agentService;
 
     /**
      * 获取用户列表
@@ -109,4 +109,16 @@ public class PlayerController extends BaseController {
     public AjaxResult exchangeInfo(@RequestBody PlayUser playUser) {
         return dataService.exchangeInfo(playUser);
     }
+
+    /**
+     * 推广记录
+     */
+    @PreAuthorize("@ss.hasPermi('data:player:list')")
+    @ApiOperation(value = "推广记录")
+    @PostMapping("/popularize")
+    public AjaxResult popularize(String uid, Integer page, Integer size, String orderByColumn, String isAsc) {
+        return agentService.getPopularizes(uid, page, size, orderByColumn, isAsc);
+    }
+
+
 }
