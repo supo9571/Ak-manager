@@ -79,7 +79,7 @@
                 and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
                 group by FROM_UNIXTIME(dr.time, '%Y-%m-%d'), dr.uid
             )
-        t group by day
+        t group by day order by day DESC
     </select>
 
     <select id="getUserList" resultType="String">
