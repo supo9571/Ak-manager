@@ -6,6 +6,8 @@ import com.manager.common.core.domain.entity.DataUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * @author marvin 2021/8/28
  */
@@ -52,6 +54,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateDataUser(DataUser dataUser) {
         return userMapper.updateDataUser(dataUser);
+    }
+
+    @Override
+    public Map selectLock(String uid) {
+        return userMapper.selectLock(uid);
     }
 
 }

@@ -216,6 +216,25 @@ public class UserController extends BaseController {
         return relust;
     }
 
+    /**
+     * 查询是否封号
+     * @return
+     */
+    @PostMapping("/user/forbidden")
+    public JSONObject forbidden(@RequestBody JSONObject param) {
+        String uid = param.getString("uid");
+        JSONObject relust = new JSONObject();
+        Map map = userService.selectLock(uid);
+        if(map!=null){
+            relust.put("is_forbidden",true);
+            relust.put("reason",map.get("lockMark"));
+            relust.put("end_time",map.get("endTime"));
+        }else {
+            relust.put("is_forbidden",false);
+        }
+        return relust;
+    }
+
     private String setToken(Long accountId) {
         String token = IdUtils.fastSimpleUUID();
         redisCache.setCacheObject(token, accountId, 15, TimeUnit.DAYS);

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.Map;
+
 /**
  * @author marvin 2021/8/28
  */
@@ -31,4 +33,8 @@ public interface UserMapper {
     void updatePassword(@Param("phone") String phone, @Param("password") String password);
 
     int updateDataUser(DataUser dataUser);
+
+    @Select("SELECT UNIX_TIMESTAMP(update_time) + lock_day*60*60*24 endTime,lock_mark lockMark FROM data_user_lock " +
+            "WHERE uid = #{uid} AND UNIX_TIMESTAMP(NOW())<= UNIX_TIMESTAMP(update_time)+lock_day*60*60*24 and lock_type in ('0','1') ")
+    Map selectLock(@Param("uid") String uid);
 }

@@ -24,4 +24,6 @@ public interface UserService {
     void updatePassword(String phoneNumber, String password);
 
     int updateDataUser(DataUser dataUser);
+
+    Map selectLock(String uid);
 }
