@@ -1,5 +1,6 @@
 package com.data.controller.api;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.config.redis.RedisCache;
@@ -190,29 +191,26 @@ public class UserController extends BaseController {
         } else {
             relust.put("pkg_channel", dataUser.getPackage_channel());
             relust.put("key_token", token);
-            //查询游客 之前是否登录过
-            DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
-            if (user != null) {
-                redisCache.setCacheObject(token, user.getAccountId(), 10, TimeUnit.MINUTES);
-                relust.put("code", 0);
-                relust.put("account_id", user.getAccountId());
-            } else {
-                String pwd = DigestUtils.md5Hex("123456");
-                String phone = requestUtils.getRomodphone();
-                dataUser.setPhone(phone);
-                dataUser.setPassword(pwd);
-                int n = userService.insertToDataUser(dataUser);
-                if (n > 0) {
-                    redisCache.setCacheObject(token, dataUser.getAccountId(), 10, TimeUnit.MINUTES);
+            synchronized (dataUser) { //防止 重复提交
+                //查询游客 之前是否登录过
+                DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
+                if (user != null) {
+                    redisCache.setCacheObject(token, user.getAccountId(), 10, TimeUnit.MINUTES);
                     relust.put("code", 0);
-                    relust.put("account_id", dataUser.getAccountId());
+                    relust.put("account_id", user.getAccountId());
                 } else {
-                    relust.put("code", -1);
-                    relust.put("desc", "服务器出错");
+                    int n = userService.insertToDataUser(dataUser);
+                    if (n > 0) {
+                        redisCache.setCacheObject(token, dataUser.getAccountId(), 10, TimeUnit.MINUTES);
+                        relust.put("code", 0);
+                        relust.put("account_id", dataUser.getAccountId());
+                    } else {
+                        relust.put("code", -1);
+                        relust.put("desc", "服务器出错");
+                    }
                 }
             }
         }
-
         return relust;
     }
 
@@ -232,6 +230,19 @@ public class UserController extends BaseController {
         }else {
             relust.put("is_forbidden",false);
         }
+        return relust;
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @PostMapping("/user/become_agent")
+    public JSONObject becomeAgent(@RequestBody JSONObject param) {
+        String accountId = param.getString("account_id");
+        Map map = userService.becomeAgent(accountId);
+        map.put("code",0);
+        JSONObject relust = new JSONObject(map);
         return relust;
     }
 

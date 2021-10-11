@@ -61,4 +61,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectLock(uid);
     }
 
+    @Override
+    public Map becomeAgent(String accountId) {
+        return userMapper.becomeAgent(accountId);
+    }
+
 }

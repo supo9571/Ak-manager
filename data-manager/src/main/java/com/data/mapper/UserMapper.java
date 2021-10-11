@@ -37,4 +37,8 @@ public interface UserMapper {
     @Select("SELECT UNIX_TIMESTAMP(update_time) + lock_day*60*60*24 endTime,lock_mark lockMark FROM data_user_lock " +
             "WHERE uid = #{uid} AND UNIX_TIMESTAMP(NOW())<= UNIX_TIMESTAMP(update_time)+lock_day*60*60*24 and lock_type in ('0','1') ")
     Map selectLock(@Param("uid") String uid);
+
+    @Select("SELECT u.phone,r.channel,r.register_ip,device_id dev_code  FROM data_register r LEFT JOIN data_user u " +
+            "ON r.account_id = u.account_id WHERE r.account_id = #{accountId} ")
+    Map becomeAgent(@Param("accountId")String accountId);
 }

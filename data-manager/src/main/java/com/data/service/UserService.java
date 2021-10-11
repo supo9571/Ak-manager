@@ -26,4 +26,6 @@ public interface UserService {
     int updateDataUser(DataUser dataUser);
 
     Map selectLock(String uid);
+
+    Map becomeAgent(String accountId);
 }
