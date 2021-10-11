@@ -156,6 +156,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     @Autowired
     private GlobalConfig globalConfig;
 
+    private static String lock = "withdrawLock";
     /**
      * 100004 分享奖励
      */
@@ -164,28 +165,35 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     public JSONObject getWithdraw(String uid, BigDecimal cash) {
         JSONObject result = new JSONObject();
         Map map = new HashMap();
-        //查询 可提余额
-        BigDecimal decimal = configAgentMapper.getWaitIncom(uid, DateUtils.getDate());
-        if (decimal.compareTo(cash) >= 0) {
-            JSONObject param = new JSONObject();
-            param.put("cmd", "addcoins");
-            param.put("reason", 100038);
-            param.put("type", 1);
-            param.put("value", cash.multiply(new BigDecimal(10000)));
-            param.put("uid", Long.valueOf(uid));
-            //操作 用户金币
-            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
-                    "data=" + param.toJSONString());
-            JSONObject resultJson = JSONObject.parseObject(resultStr);
-            if (resultJson != null && resultJson.getInteger("code") == 0) {
-                //记录 领取记录
-                configAgentMapper.saveWithdarw(uid, cash);
-                configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());
-                map.put("rebate", cash);
-                map.put("commission_pre_all", decimal.subtract(cash));
-                result.put("code", 200);
-                result.put("result", map);
-                return result;
+        synchronized (lock){
+            //查询 可提余额
+            BigDecimal decimal = configAgentMapper.getWaitIncom(uid, DateUtils.getDate());
+            if (decimal.compareTo(cash) >= 0) {
+                JSONObject param = new JSONObject();
+                param.put("cmd", "addcoins");
+                param.put("reason", 100038);
+                param.put("type", 1);
+                param.put("value", cash.multiply(new BigDecimal(10000)));
+                param.put("uid", Long.valueOf(uid));
+                //操作 用户金币
+                String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                        "data=" + param.toJSONString());
+                JSONObject resultJson = JSONObject.parseObject(resultStr);
+                if (resultJson != null && resultJson.getInteger("code") == 0) {
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //记录 领取记录
+                    configAgentMapper.saveWithdarw(uid, cash);
+                    configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());
+                    map.put("rebate", cash);
+                    map.put("commission_pre_all", decimal.subtract(cash));
+                    result.put("code", 200);
+                    result.put("result", map);
+                    return result;
+                }
             }
         }
         result.put("code", 500);

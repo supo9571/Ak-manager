@@ -106,7 +106,7 @@ public class ActingController extends BaseController {
      * 领取佣金
      */
     @PostMapping("/agentv2/withdraw")
-    public JSONObject withdraw(@RequestBody JSONObject param) {
+    public JSONObject withdraw(@RequestBody JSONObject param){
         String uid = getHeader("uid");//玩家id
         BigDecimal cash = param.getBigDecimal("cash");//领取金额
         return configAgenService.getWithdraw(uid, cash);

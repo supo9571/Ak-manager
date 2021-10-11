@@ -171,10 +171,10 @@ public class UserController extends BaseController {
 
     /**
      * 游客 登录
-     *
      * @param dataUser
      * @return
      */
+    private static String registerLock = "registerLock";
     @PostMapping("/user/register_tourist")
     public JSONObject tourist(@RequestBody DataUser dataUser) {
         JSONObject relust = new JSONObject();
@@ -190,7 +190,7 @@ public class UserController extends BaseController {
         } else {
             relust.put("pkg_channel", dataUser.getPackage_channel());
             relust.put("key_token", token);
-            synchronized (dataUser) { //防止 重复提交
+            synchronized (registerLock) { //防止 重复提交
                 //查询游客 之前是否登录过
                 DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
                 if (user != null) {

@@ -66,8 +66,8 @@ public interface ConfigAgentMapper {
     @Select("select count(*) from agent_commission_day where uid = #{uid}")
     Integer getIncomeCount(Long uid);
 
-    @Select("select c.wait_income-d.cash_income from agent_commission c left join agent_commission_day d" +
-            "ON d.uid = c.uid where uid = #{uid} and d.day = #{day} ")
+    @Select("select c.wait_income-d.cash_income from agent_commission c left join agent_commission_day d " +
+            "ON d.uid = c.uid where c.uid = #{uid} and d.day = #{day} ")
     BigDecimal getWaitIncom(@Param("uid") String uid, @Param("day") String day);
 
     @Insert("insert into agent_case_income (uid,case_income,create_time) values (#{uid},#{cash},sysdate())")
