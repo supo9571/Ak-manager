@@ -8,6 +8,7 @@ import com.consumer.mapper.InsertMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class InsertHandler {
 
 //    @PostConstruct
 //    public void test() {
-//        JSONObject result = JSONObject.parseObject("{\"exinfo\":{\"control_info1\":{\"game_times\":16},\"control_info2\":{}},\"end_time\":1633333947,\"total_num\":3,\"winner_list\":{},\"key\":\"tablesvr_1_1633333947_38\",\"mstime\":1633333947130,\"table_gid\":\"20211004155227130368_32\",\"begin_time\":1633333943,\"loser_list\":[{\"uid\":100095,\"left_score\":15947691,\"add_score\":-9000,\"pay_fee\":0,\"bet_coins\":16000,\"is_robot\":false,\"channel\":\"10001\"}],\"game_type\":7,\"time\":1633333947,\"address\":\":0000003b\",\"table_type\":701,\"op\":\"card_record\",\"side_list\":[[18,1000,0,1],[18,1000,0,1],[18,1000,0,1],[18,1000,0,1],[7,1000,0,1],[7,1000,0,1],[7,1000,0,1],[7,1000,0,1],[18,1000,0,1],[18,1000,0,1],[18,1000,0,1],[7,1000,5000,1],[1,1000,0,1],[1,1000,2000,1],[33,1000,0,1],[3,1000,0,1]],\"system_win\":9000}");
+//        JSONObject result = JSONObject.parseObject("{\"total_num\":4,\"loser_list\":[{\"water_coins\":0,\"uid\":101891,\"left_score\":5218589,\"add_score\":-6601265,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"water_coins\":0,\"uid\":102001,\"left_score\":4726774,\"add_score\":-5026406,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"water_coins\":0,\"uid\":104099,\"left_score\":13126965,\"add_score\":-6701874,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false}],\"curr_round\":10,\"begin_time\":1633935085,\"time\":1633935092,\"table_type\":202,\"system_win\":0,\"exinfo\":{\"system_result\":0,\"control_info2\":{},\"control_uid\":0,\"control_info1\":{\"game_times\":0}},\"end_time\":1633935092,\"winner_list\":[{\"water_coins\":0,\"uid\":101119,\"left_score\":35742688,\"add_score\":17413143,\"pay_fee\":916400,\"is_robot\":true,\"is_banker\":true}],\"table_gid\":\"20211011145132_12\",\"game_type\":2,\"address\":\":00000022\",\"key\":\"tablesvr_1_1633935092_32\",\"op\":\"card_record\",\"mstime\":1633935092476,\"side_list\":[{\"cards\":[312,309,407,404,102],\"card_times\":-1,\"side\":5,\"add_score\":-6601265,\"bet_times\":20,\"card_type\":2,\"is_banker\":false,\"banker_times\":1,\"uid\":101891},{\"cards\":[212,209,208,307,305],\"card_times\":-2,\"side\":2,\"add_score\":-5026406,\"bet_times\":15,\"card_type\":9,\"is_banker\":false,\"banker_times\":1,\"uid\":102001},{\"cards\":[412,311,106,303,101],\"card_times\":3,\"side\":4,\"add_score\":17413143,\"bet_times\":0,\"card_type\":10,\"is_banker\":true,\"banker_times\":4,\"uid\":101119},{\"cards\":[413,313,409,306,301],\"card_times\":-1,\"side\":3,\"add_score\":-6701874,\"bet_times\":20,\"card_type\":6,\"is_banker\":false,\"banker_times\":2,\"uid\":104099}]}");
 //        Card card = JSON.toJavaObject(result, Card.class);
 //        if ("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList())) return;
 //        if (card.getLoserList() == null && card.getWinnerList() == null) return;
@@ -130,7 +131,7 @@ public class InsertHandler {
                 }
                 betCoins += cardUser.getBetCoins();
                 uid.append(cardUser.getUid() + ",");
-                if(!channel.contains(cardUser.getChannel())){
+                if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
                     channel = channel.concat(cardUser.getChannel()+",");
                 }
             }
@@ -157,7 +158,7 @@ public class InsertHandler {
                 }
                 betCoins += cardUser.getBetCoins();
                 uid.append(cardUser.getUid() + ",");
-                if(!channel.contains(cardUser.getChannel())){
+                if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
                     channel = channel.concat(cardUser.getChannel()+",");
                 }
             }
@@ -167,7 +168,9 @@ public class InsertHandler {
         card.setPayFee(payFee);
         card.setBetCoins(betCoins);
         card.setUid(uid.substring(0, uid.length() - 1));
-        card.setChannel(channel.substring(0, channel.length() - 1));
+        if(!StringUtils.isEmpty(channel)){
+            card.setChannel(channel.substring(0, channel.length() - 1));
+        }
 
     }
 }
