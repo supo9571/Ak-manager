@@ -51,7 +51,7 @@
         other_ratio=values(other_ratio),
         other_income=values(other_income),
         total_income=values(total_income),
-        wait_income=total_income-values(cash_income);
+        wait_income=values(total_income)-cash_income;
     </insert>
 
     <select id="selectDayIncome" resultType="com.job.executor.domain.AgentCommission">

@@ -25,9 +25,9 @@ public interface ConfigAgentMapper {
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid") String uid, @Param("time") Long time, @Param("agentTime") Long agentTime);
 
     @Select("SELECT d.uid," +
-            "d.sub_ratio+c.sub_ratio sub_water," +
-            "d.other_ratio+c.other_ratio team_water," +
-            "d.total_income+c.total_income commission_all," +
+            "d.sub_ratio+IF(c.sub_ratio IS NULL,0,c.sub_ratio) sub_water," +
+            "d.other_ratio+IF(c.other_ratio IS NULL,0,c.other_ratio) team_water," +
+            "d.total_income+IF(c.total_income IS NULL,0,c.total_income) commission_all," +
             "d.total_income today_income," +
             "d.team_num teamNum " +
             "FROM agent_commission_day d " +
@@ -47,7 +47,7 @@ public interface ConfigAgentMapper {
 
     @Select("SELECT d.uid,d.agent_id pid,d.team_num team_num_with_new,d.sub_num first_proxy_num_with_new," +
             "d.total_income+c.total_income commission_all," +
-            "d.wait_income+c.wait_income commission_pre_all," +
+            "c.wait_income - d.cash_income commission_pre_all," +
             "d.total_income todayRate " +
             "FROM agent_commission_day d " +
             "LEFT JOIN agent_commission c " +
@@ -66,8 +66,9 @@ public interface ConfigAgentMapper {
     @Select("select count(*) from agent_commission_day where uid = #{uid}")
     Integer getIncomeCount(Long uid);
 
-    @Select("select wait_income from agent_commission where uid = #{uid}")
-    BigDecimal getWaitIncom(@Param("uid") String uid);
+    @Select("select c.wait_income-d.cash_income from agent_commission c left join agent_commission_day d" +
+            "ON d.uid = c.uid where uid = #{uid} and d.day = #{day} ")
+    BigDecimal getWaitIncom(@Param("uid") String uid, @Param("day") String day);
 
     @Insert("insert into agent_case_income (uid,case_income,create_time) values (#{uid},#{cash},sysdate())")
     void saveWithdarw(@Param("uid") String uid, @Param("cash") BigDecimal cash);

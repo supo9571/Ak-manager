@@ -2,11 +2,11 @@ package com.data.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.redis.RedisCache;
 import com.data.mapper.MonthCardMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MonthCardService;
 import com.manager.common.core.domain.model.ExchangeOrder;
-import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,9 @@ public class MonthCardServiceImpl implements MonthCardService {
 
     @Autowired
     private TenantMapper tenantMapper;
+
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     public JSONObject getMonthConfig(String cid) {
@@ -165,6 +168,11 @@ public class MonthCardServiceImpl implements MonthCardService {
         JSONObject result = new JSONObject();
         result.put("code", 200);
         result.put("msg", "ok");
+        List list = redisCache.getCacheObject("BankList");
+        if(list==null || list.size()<0 ){
+            list = monthCardMapper.getBankList();
+            redisCache.setCacheObject("BankList",list);
+        }
         result.put("result", monthCardMapper.getBankList());
         return result;
     }

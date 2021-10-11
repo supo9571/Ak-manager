@@ -165,7 +165,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         JSONObject result = new JSONObject();
         Map map = new HashMap();
         //查询 可提余额
-        BigDecimal decimal = configAgentMapper.getWaitIncom(uid);
+        BigDecimal decimal = configAgentMapper.getWaitIncom(uid, DateUtils.getDate());
         if (decimal.compareTo(cash) >= 0) {
             JSONObject param = new JSONObject();
             param.put("cmd", "addcoins");

@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
 import com.data.service.MonthCardService;
-import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.ExchangeOrder;
-import com.manager.common.utils.http.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +27,6 @@ public class MonthCardController extends BaseController {
 
     @Autowired
     private MonthCardService monthCardService;
-
-    @Autowired
-    private GlobalConfig globalConfig;
 
     /**
      * 月卡接口
