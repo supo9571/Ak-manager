@@ -1,18 +1,17 @@
 package com.manager.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Entity基类
@@ -23,6 +22,12 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 所属平台
+     */
+    @ApiModelProperty(hidden = true)
+    private Integer tenant;
 
     /**
      * 搜索值

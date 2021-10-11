@@ -22,6 +22,9 @@
             <if test="tid!=null and tid !=''">
                 and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
             </if>
+            <if test="tenant!=null and tenant !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+            </if>
             <if test="uid!=null and uid !=''">
                 and o.uid = #{uid}
             </if>

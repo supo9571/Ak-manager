@@ -43,6 +43,9 @@
             <if test="tid!=null and tid !=''">
                 and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
             </if>
+            <if test="tenant!=null and tenant !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+            </if>
         </where>
     </select>
 
@@ -66,6 +69,9 @@
             </if>
             <if test="tid!=null and tid !=''">
                 and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            </if>
+            <if test="tenant!=null and tenant !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
             <if test="r!=null and r !=''">
                 and c.r = #{r}
