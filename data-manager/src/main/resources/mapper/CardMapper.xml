@@ -11,7 +11,9 @@
         FROM_UNIXTIME(c.end_time) endTime,
         c.side_list sideList,c.uid,
         c.total_num totalNum,c.ai_num aiNum,
-        c.add_score addScore,c.pay_fee payFee,c.bet_coins betCoins
+        c.add_score/10000 addScore,
+        c.pay_fee/10000 payFee,
+        c.bet_coins/10000 betCoins
         from data_card c
         <where>
             <if test="tableGid!=null and tableGid !=''">
@@ -22,6 +24,9 @@
             </if>
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
+            </if>
+            <if test="tid!=null and tid !=''">
+                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
             </if>
         </where>
     </select>
@@ -32,7 +37,10 @@
         u.table_type tableType,
         FROM_UNIXTIME(u.begin_time) beginTime,
         FROM_UNIXTIME(u.end_time) endTime,
-        c.total_num totalNum,u.add_score addScore,u.pay_fee payFee,u.bet_coins betCoins,
+        c.total_num totalNum,
+        u.add_score/10000 addScore,
+        u.pay_fee/10000 payFee,
+        u.bet_coins/10000 betCoins,
         c.ai_num aiNum,c.side_list sideList
         from data_card_user u
         left join data_card c on u.table_gid = c.table_gid
@@ -42,15 +50,22 @@
             </if>
             <if test="beginTime!=null and beginTime !=''">
                 and u.mstime between #{beginms} and #{endms}
+                and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
                 and u.game_type = #{gameId}
+            </if>
+            <if test="tid!=null and tid !=''">
+                and u.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            </if>
+            <if test="uid!=null and uid !=''">
+                and u.uid = #{uid}
             </if>
         </where>
     </select>
 
     <select id="selectCardCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
-        select sum(c.add_score) countScore,sum(c.pay_fee) countPayfee,sum(c.bet_coins) countBetCoins
+        select sum(c.add_score)/10000 countScore,sum(c.pay_fee) countPayfee,sum(c.bet_coins) countBetCoins
         from data_card c
         <where>
             <if test="tableGid!=null and tableGid !=''">
@@ -62,12 +77,15 @@
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
             </if>
+            <if test="tid!=null and tid !=''">
+                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            </if>
         </where>
     </select>
 
     <select id="selectCardUserCount" resultType="java.util.Map"
             parameterType="com.manager.common.core.domain.model.Card">
-        select sum(u.add_score) countScore,sum(u.pay_fee) countPayfee,sum(u.bet_coins) countBetCoins
+        select sum(u.add_score)/10000 countScore,sum(u.pay_fee) countPayfee,sum(u.bet_coins) countBetCoins
         from data_card_user u
         <where>
             <if test="tableGid!=null and tableGid !=''">
@@ -78,6 +96,12 @@
             </if>
             <if test="gameId!=null and gameId !=''">
                 and u.game_type = #{gameId}
+            </if>
+            <if test="tid!=null and tid !=''">
+                and u.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            </if>
+            <if test="uid!=null and uid !=''">
+                and u.uid = #{uid}
             </if>
         </where>
     </select>
@@ -89,10 +113,10 @@
     </select>
 
     <select id="findUserInfo" resultType="java.util.Map">
-        select add_score  addScore,
-               pay_fee    payFee,
-               bet_coins  betCoins,
-               left_score leftScore,
+        select add_score/10000  addScore,
+               pay_fee/10000    payFee,
+               bet_coins/10000  betCoins,
+               left_score/10000 leftScore,
                is_robot   isRobot
         from data_card_user
         where table_gid = #{tableGid}

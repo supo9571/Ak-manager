@@ -40,6 +40,9 @@
             <if test="endTime!=null and endTime !=''">
                 and UNIX_TIMESTAMP(#{endTime}) >= time
             </if>
+            <if test="tid!=null and tid !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            </if>
         </where>
     </select>
 

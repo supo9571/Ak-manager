@@ -11,6 +11,9 @@ import lombok.Data;
 public class PlayUser extends BaseEntity {
 
 
+    @ApiModelProperty("平台id")
+    private String tid;
+
     @ApiModelProperty("玩家id")
     private String uid;
 

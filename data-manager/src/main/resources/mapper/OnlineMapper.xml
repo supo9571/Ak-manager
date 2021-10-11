@@ -19,8 +19,8 @@
             <if test="loginIp!=null and loginIp !=''">
                 and r.login_ip = #{loginIp}
             </if>
-            <if test="channel!=null and channel !=''">
-                and r.channel = #{channel}
+            <if test="tid!=null and tid !=''">
+                and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
             </if>
             <if test="uid!=null and uid !=''">
                 and o.uid = #{uid}
@@ -31,7 +31,6 @@
                     '${item}'
                 </foreach>
             </if>
-
         </where>
     </select>
 </mapper>

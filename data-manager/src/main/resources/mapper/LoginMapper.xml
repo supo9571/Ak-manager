@@ -17,8 +17,8 @@
                     '${item}'
                 </foreach>
             </if>
-            <if test="channel!=null and channel!=''">
-                and channel = #{channel}
+            <if test="tid!=null and tid !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
             </if>
             <if test="ip!=null and ip!=''">
                 and ip_address = #{ip}

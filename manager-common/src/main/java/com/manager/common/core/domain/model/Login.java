@@ -22,8 +22,8 @@ public class Login extends BaseEntity {
     @ApiModelProperty("登录时间")
     private String time;
 
-    @ApiModelProperty("渠道")
-    private String channel;
+    @ApiModelProperty("平台id")
+    private String tid;
 
     @ApiModelProperty("vip等级")
     private int vipLevel;

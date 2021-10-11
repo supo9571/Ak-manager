@@ -6,7 +6,6 @@ import com.manager.common.core.domain.model.PlayUser;
 import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
 import com.manager.common.core.domain.model.UserLock;
-import com.manager.common.utils.ip.AddressUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;

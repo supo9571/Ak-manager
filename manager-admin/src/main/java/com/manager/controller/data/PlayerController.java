@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author marvin 2021/8/19
  */
@@ -172,7 +170,7 @@ public class PlayerController extends BaseController {
      * 封号解封记录
      */
     @PreAuthorize("@ss.hasPermi('data:player:list')")
-    @ApiOperation(value = "封号解封")
+    @ApiOperation(value = "封号解封记录")
     @PostMapping("/lockLog")
     public AjaxResult lockLog(Long uid) {
         return dataService.lockLog(uid);
