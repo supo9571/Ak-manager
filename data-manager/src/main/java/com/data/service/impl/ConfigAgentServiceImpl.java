@@ -172,7 +172,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             param.put("reason", 100038);
             param.put("type", 1);
             param.put("value", cash.multiply(new BigDecimal(10000)));
-            param.put("uid", uid);
+            param.put("uid", Long.valueOf(uid));
             //操作 用户金币
             String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
                     "data=" + param.toJSONString());

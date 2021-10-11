@@ -53,4 +53,7 @@ public interface PlayerMapper {
 
     @Select("SELECT uid,create_time createTime,lock_type lockDay,lock_day lockDay,lock_mark lockMark,create_by createBy FROM data_lock_log where uid = #{uid}")
     List<Map> getLockLog(@Param("uid") Long uid);
+
+    @Select("select curr time from data_coins where uid = #{uid} order by mstime desc limit 0,1")
+    Long getUsercurr(@Param("uid") String uid);
 }

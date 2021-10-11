@@ -1,12 +1,16 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.mapper.PlayerMapper;
 import com.data.service.PlayerService;
 import com.data.utils.IpUtils;
+import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
 import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
 import com.manager.common.core.domain.model.UserLock;
+import com.manager.common.utils.http.HttpUtils;
 import com.manager.common.utils.ip.AddressUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,9 +94,37 @@ public class PlayerServiceImpl implements PlayerService {
         playerMapper.updateToken(uid);
     }
 
+    @Autowired
+    private GlobalConfig globalConfig;
+
     @Override
     @Transactional
     public void saveUserLock(UserLock userLock) {
+        if(userLock.getLockType()==0){// 不清币
+            JSONObject param = new JSONObject();
+            param.put("cmd", "forbidden");
+            param.put("reason", userLock.getLockMark());
+            param.put("uid", Long.valueOf(userLock.getUid()));
+            HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                    "data=" + param.toJSONString());
+        }
+        if(userLock.getLockType()==1){// 清币
+            JSONObject param = new JSONObject();
+            param.put("cmd", "forbidden");
+            param.put("reason", userLock.getLockMark());
+            param.put("uid", Long.valueOf(userLock.getUid()));
+            String url = globalConfig.getReportDomain() + globalConfig.getChangeCoins();
+            //踢人
+            HttpUtils.sendPost(url,"data=" + param.toJSONString());
+            //查询玩家余额
+            Long curr = playerMapper.getUsercurr(userLock.getUid());
+            //清币
+            param.put("cmd", "reducecoins");
+            param.put("reason", "300001");
+            param.put("type", 1);
+            param.put("value", curr);
+            HttpUtils.sendPost(url,"data=" + param.toJSONString());
+        }
         playerMapper.saveUserLock(userLock);
         playerMapper.saveUserLockLog(userLock);
     }
