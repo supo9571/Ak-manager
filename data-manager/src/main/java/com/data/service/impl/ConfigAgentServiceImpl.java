@@ -180,11 +180,6 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
                         "data=" + param.toJSONString());
                 JSONObject resultJson = JSONObject.parseObject(resultStr);
                 if (resultJson != null && resultJson.getInteger("code") == 0) {
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     //记录 领取记录
                     configAgentMapper.saveWithdarw(uid, cash);
                     configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());

@@ -194,13 +194,13 @@ public class UserController extends BaseController {
                 //查询游客 之前是否登录过
                 DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
                 if (user != null) {
-                    redisCache.setCacheObject(token, user.getAccountId(), 10, TimeUnit.MINUTES);
+                    redisCache.setCacheObject(token, user.getAccountId(), 15, TimeUnit.DAYS);
                     relust.put("code", 0);
                     relust.put("account_id", user.getAccountId());
                 } else {
                     int n = userService.insertToDataUser(dataUser);
                     if (n > 0) {
-                        redisCache.setCacheObject(token, dataUser.getAccountId(), 10, TimeUnit.MINUTES);
+                        redisCache.setCacheObject(token, dataUser.getAccountId(), 15, TimeUnit.DAYS);
                         relust.put("code", 0);
                         relust.put("account_id", dataUser.getAccountId());
                     } else {
