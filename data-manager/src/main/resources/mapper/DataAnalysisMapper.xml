@@ -59,5 +59,34 @@
         </if>
     </select>
 
+    <select id="getDataWaterTopList" resultType="com.manager.common.core.domain.model.vo.DataWaterTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT
+        dcu.channel,
+        dcu.uid,
+        dr.name,
+        dr.time,
+        IFNULL(sum(dcu.bet_coins),0) betTotal
+        FROM
+        data_card_user dcu
+        LEFT JOIN data_register dr ON dcu.uid = dr.uid
+        <where>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+        </where>
+        GROUP BY dcu.channel,dcu.uid,dr.NAME
+        ORDER BY sum( dcu.bet_coins ) DESC
+        LIMIT 100
+    </select>
+
+    <select id="getUserTableList" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT uid, count(uid) count from data_card_user
+        <where>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+        </where>
+        GROUP BY uid
+    </select>
 
 </mapper>

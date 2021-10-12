@@ -2,6 +2,7 @@ package com.data.mapper;
 
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
+import com.manager.common.core.domain.model.vo.DataWaterTopVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
@@ -15,6 +16,11 @@ import java.util.List;
 public interface DataAnalysisMapper {
 
 
+    /**
+     * 提现top100
+     * @param param
+     * @return
+     */
     List<DataAnalysisVO> withdrawTopList(DataAnalysisParam param);
 
 
@@ -45,5 +51,21 @@ public interface DataAnalysisMapper {
      * @return
      */
     BigDecimal withdrawAmountTotal(DataAnalysisParam param);
+
+
+    /**
+     * 流水top100
+     * @param param
+     * @return
+     */
+    List<DataWaterTopVO> getDataWaterTopList(DataAnalysisParam param);
+
+    /**
+     * 获取当前玩家总局数列表
+     * @param param
+     * @return
+     */
+    List getUserTableList(DataAnalysisParam param);
+
 
 }
