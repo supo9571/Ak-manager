@@ -83,7 +83,7 @@
         SELECT uid, count(uid) count from data_card_user
         <where>
             <if test="beginTime!=null and beginTime !=''">
-                and dcu.mstime between #{beginms} and #{endms}
+                and mstime between #{beginms} and #{endms}
             </if>
         </where>
         GROUP BY uid
