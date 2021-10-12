@@ -59,6 +59,20 @@ public class MailController extends BaseController {
     }
 
     /**
+     * 删除 邮件
+     */
+    @PostMapping("/server_api/del_mail")
+    public JSONObject delMail(@RequestBody JSONObject param) {
+        Integer mid = param.getInteger("mid");
+        JSONObject result = new JSONObject();
+        mailService.delMail(mid);
+        result.put("del_id", mid);
+        result.put("code", 200);
+        result.put("msg", "邮件删除成功!");
+        return result;
+    }
+
+    /**
      * 邮件已读
      */
     @PostMapping("/server_api/req_read_mail")

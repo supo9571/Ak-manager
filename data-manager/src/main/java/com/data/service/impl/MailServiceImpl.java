@@ -83,6 +83,11 @@ public class MailServiceImpl implements MailService {
         return result;
     }
 
+    @Override
+    public void delMail(Integer mid) {
+        mailMapper.delMail(mid);
+    }
+
     /**
      * 生成邮件记录
      */

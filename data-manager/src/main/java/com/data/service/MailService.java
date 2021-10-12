@@ -17,4 +17,6 @@ public interface MailService {
     void readMail(String ids);
 
     JSONObject receiveMail(String id);
+
+    void delMail(Integer mid);
 }

@@ -29,4 +29,7 @@ public interface MailMapper {
 
     @Update("update sys_mail_record set mail_state='3',update_time = sysdate() where id = #{id} ")
     void updateMailState(@Param("id") String id);
+
+    @Update("update sys_mail_record set del_flag='2',update_time = sysdate() where id = #{id} ")
+    void delMail(@Param("id") Integer mid);
 }
