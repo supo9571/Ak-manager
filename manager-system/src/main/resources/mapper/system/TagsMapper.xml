@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.system.mapper.TagsMapper">
+
+    <select id="getTags" resultType="java.util.Map">
+        select id,
+               tag_type tagType,
+               tag_name tagName,
+               run_index runIndex,
+               tag_desc tagDesc,
+               create_time createTime
+        from control_tags_config
+        <where>
+            <if test="tagType != null and tagType != 0 "> tag_type = #{tagType} </if>
+        </where>
+    </select>
+
+    <insert id="addTags" parameterType="com.manager.common.core.domain.entity.Tags">
+        insert into control_tags_config(tag_type,tag_name,run_index,tag_desc,create_time)
+        values (#{tagType},#{tagName},#{runIndex},#{tagDesc},sysdate())
+    </insert>
+
+    <update id="editTags" parameterType="com.manager.common.core.domain.entity.Tags">
+        update control_tags_config
+        <set>
+            <if test="tagType != null and tagType != '' "> tag_type = #{tagType}, </if>
+            <if test="tagName != null and tagName != '' "> tag_name = #{tagName}, </if>
+            <if test="runIndex != null and runIndex != '' "> run_index = #{runIndex}, </if>
+            <if test="tagDesc != null and tagDesc != '' "> tag_desc = #{tagDesc},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTags">
+        delete from control_tags_config where id = #{id}
+    </delete>
+</mapper>
