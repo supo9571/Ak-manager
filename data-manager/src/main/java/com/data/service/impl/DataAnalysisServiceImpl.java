@@ -5,6 +5,8 @@ import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.utils.bean.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -53,6 +55,26 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         return list;
     }
 
+    @Override
+    public List<RechargeTopVO> getRechargeTopList(DataAnalysisParam param) {
+        List<RechargeTopVO> list = mapper.getRechargeTopList(param);
+        if (!CollectionUtils.isEmpty(list)) {
+            list.forEach(vo -> {
+                param.setUid(vo.getUid());
+                vo.setWithdrawAmount(mapper.withdrawAmountTotal(param));
+                RechargeTopVO r = mapper.getLastPayTime(param);
+                if (r != null) {
+                    vo.setAmount(r.getAmount());
+                    vo.setLastPayTime(r.getLastPayTime());
+                    vo.setRechargeType(r.getRechargeType());
+                }
+                List<RechargeTopVO> gameList = mapper.getPlayGameList(param);
+                String gameNames = gameList.stream().map(RechargeTopVO::getGameNames).collect(Collectors.joining("、"));
+                vo.setGameNames(gameNames);
+            });
+        }
+        return list;
+    }
 
 
 }

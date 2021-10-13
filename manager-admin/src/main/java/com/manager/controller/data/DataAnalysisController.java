@@ -6,7 +6,9 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import com.manager.common.enums.BusinessType;
+import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.openFegin.DataService;
@@ -36,6 +38,7 @@ public class DataAnalysisController extends BaseController {
     @ApiOperation(value = "提现top100")
     @PostMapping("/withdraw/top/List")
     public AjaxResult withdrawTopList(@RequestBody DataAnalysisParam param) {
+        param.setCurrentUserId(SecurityUtils.getUserId());
         return dataService.withdrawTopList(param);
     }
 
@@ -43,6 +46,7 @@ public class DataAnalysisController extends BaseController {
     @Log(title = "提现top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.withdrawTopList(param);
         ExcelUtil<DataAnalysisVO> util = new ExcelUtil(DataAnalysisVO.class);
         String fileName = "提现top100导出";
@@ -54,6 +58,7 @@ public class DataAnalysisController extends BaseController {
     @ApiOperation(value = "流水top100")
     @PostMapping("/water/top/List")
     public AjaxResult getDataWaterTopList(@RequestBody DataAnalysisParam param) {
+        param.setCurrentUserId(SecurityUtils.getUserId());
         return dataService.getDataWaterTopList(param);
     }
 
@@ -61,6 +66,7 @@ public class DataAnalysisController extends BaseController {
     @Log(title = "提现top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/water/top/export")
     public void dataWaterTopExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getDataWaterTopList(param);
         ExcelUtil<DataWaterTopVO> util = new ExcelUtil(DataWaterTopVO.class);
         String fileName = "流水top100导出";
@@ -68,5 +74,29 @@ public class DataAnalysisController extends BaseController {
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
+
+
+    @ApiOperation(value = "充值top100")
+    @PostMapping("/recharge/top/List")
+    public AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param) {
+        param.setCurrentUserId(SecurityUtils.getUserId());
+        return dataService.getRechargeTopList(param);
+    }
+
+    @ApiOperation(value = "充值top100导出")
+    @Log(title = "充值top100导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/recharge/top/export")
+    public void getRechargeTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        param.setCurrentUserId(SecurityUtils.getUserId());
+        AjaxResult ajaxResult = dataService.getRechargeTopList(param);
+        ExcelUtil<RechargeTopVO> util = new ExcelUtil(RechargeTopVO.class);
+        String fileName = "充值top100导出";
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+    }
+
+
+
 
 }

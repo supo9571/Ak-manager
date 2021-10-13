@@ -5,6 +5,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,11 @@ public class DataAnalysisController extends BaseController {
         return AjaxResult.success("查询成功", list);
     }
 
-
+    @ApiModelProperty("充值top100")
+    @PostMapping("/recharge/top/List")
+    public AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param) {
+        List<RechargeTopVO> list = dataAnalysisService.getRechargeTopList(param);
+        return AjaxResult.success("查询成功", list);
+    }
 
 }
