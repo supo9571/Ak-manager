@@ -2,17 +2,11 @@ package com.data.service.impl;
 
 import com.data.mapper.AddUserMapper;
 import com.data.service.AddUserService;
-import com.data.service.SubGameDataService;
 import com.manager.common.core.domain.model.AddUser;
-import com.manager.common.core.domain.model.SubGameData;
-import com.manager.common.core.domain.model.SubGameDataExcel;
-import com.manager.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 新增用户

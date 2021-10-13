@@ -145,4 +145,7 @@ public interface DataService {
     @PostMapping("/data/report/water/top/List")
     AjaxResult getDataWaterTopList(@RequestBody DataAnalysisParam param);
 
+    @PostMapping(value = "/data/retainedAnalysis/list", consumes = "application/json")
+    AjaxResult getRetainedAnalysis(@RequestBody RetainedAnalysis retainedAnalysis);
+
 }

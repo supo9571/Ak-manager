@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.executor.mapper.RetainedAnalysisMapper">
+
+    <select id="getAddUserList" resultType="com.job.executor.domain.RetainedAnalysis">
+        SELECT
+            FROM_UNIXTIME(dr.time, '%Y-%m-%d') as day,
+            dr.channel as channel,
+            COUNT(distinct dr.uid) as userCount,
+            group_concat(distinct dr.uid) as uids
+        from
+            data_register dr
+        group by
+            FROM_UNIXTIME(dr.time, '%Y-%m-%d'),
+            dr.channel
+    </select>
+
+    <select id="getCardRecordList" resultType="com.job.executor.domain.RetainedAnalysis">
+        select
+            FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d') as day,
+            dcu.channel
+        from
+            data_card_user dcu
+        group by
+            FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d'),
+            dcu.channel
+    </select>
+
+    <select id="getRechargeUserList" resultType="com.job.executor.domain.RetainedAnalysis">
+        SELECT
+            date_format(cro.finish_time, '%Y-%m-%d') as day,
+            cro.channel as channel,
+            COUNT(distinct cro.uid) as userCount,
+            group_concat(distinct cro.uid) as uids
+        from
+            config_recharge_order cro
+        where cro.finish_time is true
+        group by
+            date_format(cro.finish_time, '%Y-%m-%d'),
+            cro.channel
+    </select>
+
+    <select id="getOneRechargeUserList" resultType="com.job.executor.domain.RetainedAnalysis">
+        SELECT
+            date_format(cro.finish_time, '%Y-%m-%d') as day,
+            cro.channel as channel,
+            COUNT(distinct cro.uid) as userCount,
+            group_concat(distinct cro.uid) as uids
+        from
+            config_recharge_order cro
+        where
+            cro.finish_time is true
+            and cro.uid in(select cro2.uid from config_recharge_order cro2 group by cro2.uid having count(cro2.uid)=1)
+        group by
+            date_format(cro.finish_time, '%Y-%m-%d'),
+            cro.channel
+    </select>
+
+    <select id="getFlowBackUserList" resultType="com.job.executor.domain.RetainedAnalysis">
+        SELECT
+            FROM_UNIXTIME(dl.time, '%Y-%m-%d') as day,
+            dl.cur_channel as channel,
+            COUNT(distinct dl.uid) as userCount,
+            group_concat(distinct dl.uid) as uids
+        from
+            data_login dl
+        where 1 = 1
+            and dl.uid in (select distinct dl2.uid from data_login dl2 where FROM_UNIXTIME(dl2.time, '%Y-%m-%d') <![CDATA[<=]]> DATE_SUB(now(), interval 7 DAY))
+        group by
+            FROM_UNIXTIME(dl.time, '%Y-%m-%d'),
+            dl.cur_channel
+    </select>
+
+    <select id="getRetained" resultType="String">
+        SELECT
+            COUNT(distinct dl.uid) as countUid
+        from
+            data_login dl
+        where
+            FROM_UNIXTIME(dl.time, '%Y-%m-%d') = DATE_SUB(#{dto.day}, interval #{dayType} DAY)
+        <if test="dto.uids!=null and dto.uids !=''">
+            and dl.uid in
+            <foreach item="item" index="index" collection="dto.uids.split(',')" open="(" separator="," close=")">
+                '${item}'
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="addRetainedAnalysis">
+        insert into data_retained_analysis(
+        day,
+        type,
+        channel,
+        user_count,
+        retained1,
+        retained2,
+        retained3,
+        retained4,
+        retained5,
+        retained6,
+        retained7,
+        retained15,
+        retained30,
+        retained45
+        )
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{item.day},
+            #{item.type},
+            #{item.channel},
+            #{item.userCount},
+            #{item.retained1},
+            #{item.retained2},
+            #{item.retained3},
+            #{item.retained4},
+            #{item.retained5},
+            #{item.retained6},
+            #{item.retained7},
+            #{item.retained15},
+            #{item.retained30},
+            #{item.retained45}
+            )
+        </foreach>
+    </insert>
+
+</mapper>
