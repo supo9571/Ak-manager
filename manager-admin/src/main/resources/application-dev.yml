@@ -102,6 +102,10 @@ manager:
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
+  #游戏服 地址
+  domain: http://18.142.67.104:6661
+  #发送游戏相关配置
+  gameSend: /upload
 
 # 开发环境配置
 server:

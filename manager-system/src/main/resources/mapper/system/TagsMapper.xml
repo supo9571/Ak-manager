@@ -36,4 +36,14 @@
     <delete id="deleteTags">
         delete from control_tags_config where id = #{id}
     </delete>
+
+    <select id="selectTags" resultType="java.util.Map">
+        select id,
+        tag_type,
+        tag_name,
+        run_index,
+        tag_desc,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') create_at
+        from control_tags_config
+    </select>
 </mapper>

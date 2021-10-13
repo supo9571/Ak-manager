@@ -16,4 +16,6 @@ public interface TagsService {
     List getTags(int tagType);
 
     int deleteTags(Integer id);
+
+    String sendTags();
 }

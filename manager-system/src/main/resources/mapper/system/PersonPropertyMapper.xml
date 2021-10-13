@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.system.mapper.PersonPropertyMapper">
+
+    <select id="getPersonPropertys" resultType="java.util.Map">
+        select property_id propertyId,
+        property_name propertyName,
+        pvp_property_list pvpPropertyList,
+        fish_property_list fishPropertyList,
+        danji_property_list danjiPropertyList,
+        property_desc propertyDesc
+        from control_person_property
+    </select>
+
+    <update id="editPersonPropertys" parameterType="com.manager.common.core.domain.entity.PersonProperty">
+        update control_person_property
+        <set>
+            <if test="propertyName != null and propertyName != ''"> property_name = #{propertyName}, </if>
+            <if test="pvpPropertyList != null and pvpPropertyList != ''"> pvp_property_list = #{pvpPropertyList}, </if>
+            <if test="fishPropertyList != null and fishPropertyList != ''"> fish_property_list = #{fishPropertyList}, </if>
+            <if test="danjiPropertyList != null and danjiPropertyList != ''"> danji_property_list = #{danjiPropertyList}, </if>
+            <if test="propertyDesc != null and propertyDesc != ''"> property_desc = #{propertyDesc}, </if>
+        </set>
+        where property_id = #{propertyId}
+    </update>
+
+    <select id="getPersonPropertyList" resultType="java.util.Map">
+        select property_id,
+               property_name,
+               pvp_property_list,
+               fish_property_list,
+               danji_property_list,
+               property_desc,
+               UNIX_TIMESTAMP(NOW()) update_time
+        from control_person_property
+    </select>
+</mapper>

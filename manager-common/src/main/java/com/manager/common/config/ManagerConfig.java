@@ -18,6 +18,10 @@ public class ManagerConfig {
      */
     private String name;
 
+    private String domain;
+
+    private String gameSend;
+
     /**
      * 版本
      */

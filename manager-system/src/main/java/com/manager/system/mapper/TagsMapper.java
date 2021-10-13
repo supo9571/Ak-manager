@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/10/12
@@ -19,4 +20,6 @@ public interface TagsMapper {
     List getTags(@Param("tagType") int tagType);
 
     int deleteTags(@Param("id") Integer id);
+
+    List<Map> selectTags();
 }

@@ -1,13 +1,16 @@
 package com.manager.controller.control;
 
 import com.manager.common.annotation.Log;
+import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.Tags;
 import com.manager.common.enums.BusinessType;
+import com.manager.common.utils.http.HttpUtils;
 import com.manager.system.service.TagsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +28,14 @@ import java.util.List;
 @RestController
 @Api(tags = "策略标签配置")
 @RequestMapping("/control/tags")
+@Slf4j
 public class TagsController extends BaseController {
 
     @Autowired
     private TagsService tagsService;
+
+    @Autowired
+    private ManagerConfig managerConfig;
 
     /**
      * 标签列表
@@ -73,5 +80,25 @@ public class TagsController extends BaseController {
     @GetMapping("/del")
     public AjaxResult deleteTags(Integer id) {
         return toAjax(tagsService.deleteTags(id));
+    }
+
+    /**
+     * 发送策略标签配置
+     */
+    @PreAuthorize("@ss.hasPermi('control:tags:send')")
+    @ApiOperation(value = "发送策略标签配置")
+    @Log(title = "发送策略标签配置", businessType = BusinessType.OTHER)
+    @GetMapping("/send")
+    public AjaxResult sendTags() {
+        String domain = managerConfig.getDomain();
+        String gameSend = managerConfig.getGameSend();
+        //查询 游戏配置
+        String param = tagsService.sendTags();
+        String result = HttpUtils.sendPost(domain + gameSend, "data=" + param);
+        if (!"scuess".equals(result)) {
+            log.error(result);
+            return AjaxResult.error();
+        }
+        return AjaxResult.success();
     }
 }
