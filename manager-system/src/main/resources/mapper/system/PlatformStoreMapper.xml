@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.system.mapper.PlatformStoreMapper">
+
+    <select id="getPlatformStrategys" resultType="java.util.Map">
+        select platform_id platformId,
+            platform_name platformName,
+            game_store_list gameStoreList,
+            person_store_list personStoreList,
+            update_time updateTime
+        from control_platform_config
+        <where>
+            <if test="platformId != 0"> and platform_id = #{platformId} </if>
+            <if test="strategyGameId != 0"> and game_store_list like concat('%',#{strategyGameId},'%') </if>
+            <if test="strategyPersonId != 0"> and person_store_list like concat('%',#{strategyPersonId},'%') </if>
+        </where>
+    </select>
+
+    <update id="editPlatformStrategy" parameterType="com.manager.common.core.domain.entity.PlatformStore">
+        update control_platform_config
+        <set>
+            <if test="platformName != null and platformName != ''"> platform_name = #{platformName}, </if>
+            <if test="gameStoreList != null and gameStoreList != ''"> game_store_list = #{gameStoreList}, </if>
+            <if test="personStoreList != null and personStoreList != ''"> person_store_list = #{personStoreList}, </if>
+        </set>
+        where platform_id = #{platformId}
+    </update>
+
+    <select id="getPlatformStrategyList" resultType="java.util.Map">
+        select platform_id,
+               platform_name,
+               game_store_list,
+               person_store_list,
+               UNIX_TIMESTAMP(update_time) update_time
+        from control_platform_config
+    </select>
+</mapper>

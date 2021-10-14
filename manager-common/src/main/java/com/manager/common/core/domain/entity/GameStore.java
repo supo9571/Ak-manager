@@ -6,6 +6,8 @@ import lombok.Data;
 
 /**
  * @author marvin 2021/10/13
+ * 游戏策略配置
+ * control_game_config
  */
 @Data
 public class GameStore extends BaseEntity {

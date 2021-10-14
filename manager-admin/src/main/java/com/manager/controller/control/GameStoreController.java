@@ -6,7 +6,6 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.GameStore;
 import com.manager.common.enums.BusinessType;
-import com.manager.common.utils.http.HttpUtils;
 import com.manager.system.service.GameStoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -89,15 +88,7 @@ public class GameStoreController extends BaseController {
     @Log(title = "发送游戏库存策略", businessType = BusinessType.OTHER)
     @GetMapping("/send")
     public AjaxResult sendGameStrategy() {
-        String domain = managerConfig.getDomain();
-        String gameSend = managerConfig.getGameSend();
-        //查询 游戏配置
         String param = gameStoreService.sendGameStrategy();
-        String result = HttpUtils.sendPost(domain + gameSend, "data=" + param);
-        if (!"scuess".equals(result)) {
-            log.error(result);
-            return AjaxResult.error();
-        }
-        return AjaxResult.success();
+        return toSend(managerConfig.getDomain()+managerConfig.getGameSend(),param);
     }
 }
