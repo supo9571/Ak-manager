@@ -50,7 +50,7 @@ public class RetainedAnalysisController {
     public void gameExport(@RequestBody RetainedAnalysis retainedAnalysis, HttpServletResponse response) throws IOException {
         retainedAnalysis.setTid2(SecurityUtils.getUserId());
         List list = (List) dataService.getRetainedAnalysis(retainedAnalysis).get("data");
-        ExcelUtil<AddUser> util = new ExcelUtil(AddUser.class);
+        ExcelUtil<RetainedAnalysis> util = new ExcelUtil(RetainedAnalysis.class);
         String fileName = "留存分析导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setFileName(response, fileName + ".xlsx");
