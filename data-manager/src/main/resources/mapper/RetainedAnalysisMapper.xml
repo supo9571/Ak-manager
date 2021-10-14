@@ -36,14 +36,11 @@
             and dra.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         <if test="type !=null and type !=''">
-            and dra.type = #{tid2}
+            and dra.type = #{type}
         </if>
+            and dra.day >= #{createTime1}
+            and dra.day <![CDATA[<=]]> #{createTime2}
         group by day order by day DESC
     </select>
-
-    <select id="getUserList" resultType="String">
-
-    </select>
-
 
 </mapper>

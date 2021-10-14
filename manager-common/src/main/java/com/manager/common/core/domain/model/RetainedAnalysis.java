@@ -73,4 +73,10 @@ public class RetainedAnalysis extends BaseEntity {
 
     @ApiModelProperty("状态 1.新增用户数 2.活跃留存 3.付费留存 4.新增充值留存 5.回流用户留存")
     private Integer type;
+
+    @ApiModelProperty("创建时间1")
+    private String createTime1;
+
+    @ApiModelProperty("创建时间1")
+    private String createTime2;
 }

@@ -21,4 +21,5 @@ public interface RetainedAnalysisMapper {
      */
     List<RetainedAnalysis> getList(RetainedAnalysis retainedAnalysis);
 
+
 }

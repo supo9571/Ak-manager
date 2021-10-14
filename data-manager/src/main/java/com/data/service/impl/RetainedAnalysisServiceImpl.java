@@ -25,6 +25,7 @@ public class RetainedAnalysisServiceImpl implements RetainedAnalysisService {
 
     @Override
     public List getList(RetainedAnalysis retainedAnalysis) {
+
         // 默认查看当前身份的总数据
         Long tid = addUserMapper.getTid(retainedAnalysis.getTid2());
         retainedAnalysis.setTid2(tid);

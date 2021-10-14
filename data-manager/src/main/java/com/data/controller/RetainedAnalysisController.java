@@ -2,7 +2,6 @@ package com.data.controller;
 
 import com.data.service.RetainedAnalysisService;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.AddUser;
 import com.manager.common.core.domain.model.RetainedAnalysis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

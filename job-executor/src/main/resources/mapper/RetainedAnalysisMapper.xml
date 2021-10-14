@@ -19,7 +19,8 @@
     <select id="getCardRecordList" resultType="com.job.executor.domain.RetainedAnalysis">
         select
             FROM_UNIXTIME(dcu.mstime / 1000, '%Y-%m-%d') as day,
-            dcu.channel
+            dcu.channel,
+            group_concat(distinct dcu.uid) as uids
         from
             data_card_user dcu
         group by

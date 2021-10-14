@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 
@@ -35,6 +36,14 @@ public class RetainedAnalysisHandle {
         List<RetainedAnalysis> addUserList = retainedAnalysisMapper.getAddUserList();
         // 活跃留存： （牌局）
         List<RetainedAnalysis> cardRecordList = retainedAnalysisMapper.getCardRecordList();
+        if(cardRecordList != null){
+            for (RetainedAnalysis analysis : cardRecordList) {
+                if(analysis.getUids() != null && analysis.getUids().length() >= 0){
+                    analysis.setUserCount(analysis.getUids().split(",").length);
+                }
+            }
+        }
+
         // 付费留存: (有充值的用户)
         List<RetainedAnalysis> rechargeUserList = retainedAnalysisMapper.getRechargeUserList();
         // 新增充值留存: (有史以来第一次充值的用户)

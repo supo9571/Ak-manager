@@ -1,6 +1,5 @@
 package com.data.service;
 
-import com.manager.common.core.domain.model.AddUser;
 import com.manager.common.core.domain.model.RetainedAnalysis;
 
 import java.util.List;
