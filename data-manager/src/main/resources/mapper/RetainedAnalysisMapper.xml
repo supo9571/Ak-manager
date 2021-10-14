@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.RetainedAnalysisMapper">
+
+    <select id="getList" resultType="com.manager.common.core.domain.model.RetainedAnalysis">
+        SELECT
+            dra.day as day,
+            SUM(dra.user_count) as userCount,
+            SUM(dra.retained1) as retained1,
+            SUM(dra.retained2) as retained2,
+            SUM(dra.retained3) as retained3,
+            SUM(dra.retained4) as retained4,
+            SUM(dra.retained5) as retained5,
+            SUM(dra.retained6) as retained6,
+            SUM(dra.retained7) as retained7,
+            SUM(dra.retained15) as retained15,
+            SUM(dra.retained30) as retained30,
+            SUM(dra.retained45) as retained45
+        from
+            data_retained_analysis dra
+        where 1 = 1
+        <choose>
+            <when test="channel !=null and channel !=''">
+                and dra.channel = #{channel}
+            </when>
+            <otherwise>
+                and dra. channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{tid2}, '%') OR t_id = #{tid2})
+                )
+            </otherwise>
+        </choose>
+        <if test="tid !=null and tid !=''">
+            and dra.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="type !=null and type !=''">
+            and dra.type = #{type}
+        </if>
+            and dra.day >= #{createTime1}
+            and dra.day <![CDATA[<=]]> #{createTime2}
+        group by day order by day DESC
+    </select>
+
+</mapper>

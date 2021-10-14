@@ -3,10 +3,12 @@ package com.data.mapper;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jason
@@ -65,7 +67,29 @@ public interface DataAnalysisMapper {
      * @param param
      * @return
      */
-    List getUserTableList(DataAnalysisParam param);
+    List<Map> getUserTableList(DataAnalysisParam param);
 
+
+    /**
+     * 获取充值top100
+     * @param param
+     * @return
+     */
+    List<RechargeTopVO> getRechargeTopList(DataAnalysisParam param);
+
+    /**
+     * 获取充值top100 最后支付时间、充值方式、携带金币
+     * @param param
+     * @return
+     */
+    RechargeTopVO getLastPayTime(DataAnalysisParam param);
+
+
+    /**
+     * 获取当前玩家最近常玩游戏名称
+     * @param param
+     * @return
+     */
+    List<RechargeTopVO> getPlayGameList(DataAnalysisParam param);
 
 }

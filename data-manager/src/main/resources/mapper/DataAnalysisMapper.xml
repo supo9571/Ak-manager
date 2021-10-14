@@ -17,7 +17,14 @@
                and ceo.update_time between #{beginms} and #{endms}
            </if>
            <if test="tid!=null and tid!=''">
-               and ceo.tid = #{tid}
+               and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+           </if>
+           <if test="currentUserId!=null and currentUserId!=''">
+               and dr.channel IN (
+               SELECT t.t_id FROM sys_tenant t
+               WHERE t.t_type = '2'
+               AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+               )
            </if>
        GROUP BY channel,uid,dr.name
        ORDER BY sum(ceo.curr_money) desc LIMIT 100
@@ -27,7 +34,7 @@
         SELECT curr_money from config_exchange_order
         where exaa_status = 5 and uid = #{uid}
         <if test="tid!=null and tid!=''">
-            and tid = #{tid}
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         ORDER BY id desc LIMIT 1
     </select>
@@ -39,7 +46,7 @@
             and update_time between #{beginms} and #{endms}
         </if>
         <if test="tid!=null and tid!=''">
-            and tid = #{tid}
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
     </select>
 
@@ -47,7 +54,7 @@
         select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
         where payment_status = 1 and uid = #{uid}
         <if test="tid!=null and tid!=''">
-            and tid = #{tid}
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
     </select>
 
@@ -55,7 +62,7 @@
         select IFNULL(sum(withdraw_money),0) amount  from config_exchange_order
         where exaa_status = 5 and uid = #{uid}
         <if test="tid!=null and tid!=''">
-            and tid = #{tid}
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
     </select>
 
@@ -73,6 +80,16 @@
             <if test="beginTime!=null and beginTime !=''">
                 and dcu.mstime between #{beginms} and #{endms}
             </if>
+            <if test="tid!=null and tid!=''">
+                and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="currentUserId!=null and currentUserId!=''">
+                and dr.channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+                )
+            </if>
         </where>
         GROUP BY dcu.channel,dcu.uid,dr.NAME
         ORDER BY sum( dcu.bet_coins ) DESC
@@ -85,8 +102,77 @@
             <if test="beginTime!=null and beginTime !=''">
                 and mstime between #{beginms} and #{endms}
             </if>
+            <if test="tid!=null and tid!=''">
+                and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
         </where>
         GROUP BY uid
     </select>
+
+    <select id="getRechargeTopList" resultType="com.manager.common.core.domain.model.vo.RechargeTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT
+            cro.channel,
+            cro.uid,
+            dr.name,
+            dr.time,
+            COUNT(cro.uid) rechargeCount,
+            IFNULL(SUM(cro.recharge_amount),0) rechargeAmount,
+            dr.login_time lastLoginTime
+        FROM
+        config_recharge_order cro
+        LEFT JOIN data_register dr ON cro.uid = dr.uid
+        <where>
+            payment_status =1
+            <if test="beginTime!=null and beginTime !=''">
+                and cro.finish_time between #{beginms} and #{endms}
+            </if>
+            <if test="tid!=null and tid!=''">
+                and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="currentUserId!=null and currentUserId!=''">
+                and dr.channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+                )
+            </if>
+        </where>
+        GROUP BY cro.channel,cro.uid,dr.NAME
+        ORDER BY sum(cro.recharge_amount) DESC
+        LIMIT 100
+    </select>
+
+    <select id="getLastPayTime" resultType="com.manager.common.core.domain.model.vo.RechargeTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT after_order_money amount,recharge_type rechargeType,finish_time lastPayTime
+        from config_recharge_order
+        WHERE payment_status =1 and uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="currentUserId!=null and currentUserId!=''">
+            and channel IN (
+            SELECT t.t_id FROM sys_tenant t
+            WHERE t.t_type = '2'
+            AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+            )
+        </if>
+        ORDER BY finish_time desc
+        LIMIT 1
+    </select>
+
+    <select id="getPlayGameList" resultType="com.manager.common.core.domain.model.vo.RechargeTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT
+            cg.game_name gameNames
+        FROM
+            data_card dc
+            LEFT JOIN config_game cg ON dc.table_type = cg.game_id
+        WHERE cg.game_name is not null and uid = #{uid}
+        <if test="beginTime!=null and beginTime !=''">
+            and dcu.mstime between #{beginms} and #{endms}
+        </if>
+        GROUP BY cg.game_name
+        ORDER BY sum(dc.system_win) desc LIMIT 3
+    </select>
+
 
 </mapper>

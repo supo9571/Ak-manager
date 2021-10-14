@@ -17,4 +17,7 @@ public class DataAnalysisParam extends BaseEntity {
     @ApiModelProperty(value = "uid",hidden = true)
     private Integer uid;
 
+    @ApiModelProperty(value = "当前userIds",hidden = true)
+    private Long currentUserId;
+
 }
