@@ -48,9 +48,7 @@ public class PersonStoreController extends BaseController {
     @ApiOperation(value = "查询个人库存策略")
     @GetMapping("/list")
     public AjaxResult getPersonStrategys(@RequestParam(defaultValue = "0") Integer strategyTagId) {
-        startPage();
-        List list = personStoreService.getPersonStrategys(strategyTagId);
-        return AjaxResult.success(getDataTable(list));
+        return AjaxResult.success(personStoreService.getPersonStrategys(strategyTagId));
     }
 
     /**

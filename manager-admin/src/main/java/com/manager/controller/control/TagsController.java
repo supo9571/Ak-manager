@@ -42,10 +42,8 @@ public class TagsController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:tags:list')")
     @ApiOperation(value = "标签列表")
     @GetMapping("/list")
-    public AjaxResult getTags(@RequestParam(required=false,defaultValue = "0") Integer tagType) {
-        startPage();
-        List list = tagsService.getTags(tagType);
-        return AjaxResult.success(getDataTable(list));
+    public AjaxResult getTags(@RequestParam(defaultValue = "0") Integer tagType) {
+        return AjaxResult.success(tagsService.getTags(tagType));
     }
 
     /**

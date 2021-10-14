@@ -46,9 +46,7 @@ public class PlatformStoreController extends BaseController {
     })
     public AjaxResult getPlatformStrategys(@RequestParam(defaultValue = "0") Integer platformId,@RequestParam(defaultValue = "0") Integer strategyGameId,
                                          @RequestParam(defaultValue = "0") Integer strategyPersonId) {
-        startPage();
-        List list = platformStoreService.getPlatformStrategys(platformId,strategyGameId,strategyPersonId);
-        return AjaxResult.success(getDataTable(list));
+        return AjaxResult.success(platformStoreService.getPlatformStrategys(platformId,strategyGameId,strategyPersonId));
     }
 
     /**
