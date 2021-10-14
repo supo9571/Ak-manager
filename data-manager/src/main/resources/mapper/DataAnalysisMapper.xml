@@ -124,7 +124,7 @@
         <where>
             payment_status =1
             <if test="beginTime!=null and beginTime !=''">
-                and dcu.mstime between #{beginms} and #{endms}
+                and cro.finish_time between #{beginms} and #{endms}
             </if>
             <if test="tid!=null and tid!=''">
                 and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
