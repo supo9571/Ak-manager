@@ -8,6 +8,7 @@ import com.manager.common.core.domain.model.RetainedAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -54,7 +55,11 @@ public class RetainedAnalysisServiceImpl implements RetainedAnalysisService {
     // 算百分比
     private String extracted(String retained,Integer userCount) {
         Double d = (Double.parseDouble(retained) / userCount.doubleValue()) * 100;
-        return retained + "(" + d + ")";
+
+        // 处理小数位，保留两位小数
+        DecimalFormat df = new DecimalFormat("#.00");
+        String str = df.format(d);
+        return retained + "(" + str + "%)";
     }
 }
 

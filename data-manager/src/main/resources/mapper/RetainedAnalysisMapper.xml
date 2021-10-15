@@ -25,7 +25,7 @@
                 and dra.channel = #{channel}
             </when>
             <otherwise>
-                and dra. channel IN (
+                and dra.channel IN (
                 SELECT t.t_id FROM sys_tenant t
                 WHERE t.t_type = '2'
                 AND (t.ancestors LIKE concat('%', #{tid2}, '%') OR t_id = #{tid2})
