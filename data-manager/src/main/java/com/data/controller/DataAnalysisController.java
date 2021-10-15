@@ -5,6 +5,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.EarningsTopVO;
 import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -48,6 +49,13 @@ public class DataAnalysisController extends BaseController {
     @PostMapping("/recharge/top/List")
     public AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param) {
         List<RechargeTopVO> list = dataAnalysisService.getRechargeTopList(param);
+        return AjaxResult.success("查询成功", list);
+    }
+
+    @ApiModelProperty("净盈利top100")
+    @PostMapping("/earnings/top/List")
+    public AjaxResult getEarningsTopList(@RequestBody DataAnalysisParam param) {
+        List<EarningsTopVO> list = dataAnalysisService.getEarningsTopList(param);
         return AjaxResult.success("查询成功", list);
     }
 

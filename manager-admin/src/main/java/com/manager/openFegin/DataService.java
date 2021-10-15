@@ -151,4 +151,7 @@ public interface DataService {
     @PostMapping("/data/report/recharge/top/List")
     AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param);
 
+    @PostMapping("/data/report/earnings/top/List")
+    AjaxResult getEarningsTopList(@RequestBody DataAnalysisParam param);
+
 }

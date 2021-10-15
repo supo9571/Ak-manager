@@ -6,6 +6,7 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.EarningsTopVO;
 import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
@@ -97,6 +98,25 @@ public class DataAnalysisController extends BaseController {
     }
 
 
+    @ApiOperation(value = "净盈利top100")
+    @PostMapping("/earnings/top/List")
+    public AjaxResult getEarningsTopList(@RequestBody DataAnalysisParam param) {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        return dataService.getEarningsTopList(param);
+    }
+
+    @ApiOperation(value = "净盈利top100导出")
+    @Log(title = "净盈利top100导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/earnings/top/export")
+    public void getEarningsTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        AjaxResult ajaxResult = dataService.getEarningsTopList(param);
+        ExcelUtil<EarningsTopVO> util = new ExcelUtil(EarningsTopVO.class);
+        String fileName = "净盈利top100导出";
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+    }
 
 
 }
