@@ -6,9 +6,9 @@
 
     <insert id="addGameStrategy">
         insert into control_game_config(strategy_name,strategy_tag_id,strategy_status,play_sha_rate,play_song_rate,game_list,
-                                        base_store,reward_store,limit_list,play_sha_limit,play_song_limit,danji_sha_rate,update_time)
+                                        base_store,reward_store,limit_list,play_sha_limit,play_song_limit,danji_sha_rate,danji_song_rate,update_time)
         values (#{strategyName},#{strategyTagId},#{strategyStatus},#{playShaRate},#{playSongRate},#{gameList},
-                #{baseStore},#{rewardStore},#{limitList},#{playShaLimit},#{playSongLimit},#{danjiShaRate},sysdate())
+                #{baseStore},#{rewardStore},#{limitList},#{playShaLimit},#{playSongLimit},#{danjiShaRate},#{danjiSongRate},sysdate())
     </insert>
 
     <select id="getGameStrategys" resultType="java.util.Map">
@@ -25,6 +25,7 @@
                play_sha_limit playShaLimit,
                play_song_limit playSongLimit,
                danji_sha_rate danjiShaRate,
+               danji_song_rate danjiSongRate,
                update_time updateTime
         from control_game_config
         <where>
@@ -46,6 +47,7 @@
             <if test="playShaLimit != null and playShaLimit != ''"> play_sha_limit = #{playShaLimit},</if>
             <if test="playSongLimit != null and playSongLimit != ''"> play_song_limit = #{playSongLimit},</if>
             <if test="danjiShaRate != null and danjiShaRate != ''"> danji_sha_rate = #{danjiShaRate},</if>
+            <if test="danjiSongRate != null and danjiSongRate != ''"> danji_song_rate = #{danjiSongRate},</if>
         </set>
         where id = #{id}
     </update>
@@ -69,6 +71,7 @@
                play_sha_limit,
                play_song_limit,
                danji_sha_rate,
+               danji_song_rate,
                calculation_type,
                UNIX_TIMESTAMP(update_time) strategy_up_time
         from control_game_config

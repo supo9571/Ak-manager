@@ -27,7 +27,7 @@ public class ResultHandle {
      * 计算 每日 游戏执行结果
      */
     @XxlJob("game_result")
-    @PostConstruct
+//    @PostConstruct
     public void gameResult() {
         String date = DateUtil.formatDate(new Date());
         String endTime = System.currentTimeMillis()+"";

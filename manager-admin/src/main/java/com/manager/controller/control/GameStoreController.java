@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,7 +38,7 @@ public class GameStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:game:add')")
     @ApiOperation(value = "新增游戏库存策略")
     @Log(title = "新增游戏库存策略", businessType = BusinessType.INSERT)
-    @GetMapping("/add")
+    @PostMapping("/add")
     public AjaxResult addGameStrategy(GameStore gameStore) {
         return toAjax(gameStoreService.addGameStrategy(gameStore));
     }
@@ -64,7 +61,7 @@ public class GameStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:game:edit')")
     @ApiOperation(value = "编辑游戏库存策略")
     @Log(title = "编辑游戏库存策略", businessType = BusinessType.UPDATE)
-    @GetMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult editGameStrategy(GameStore gameStore) {
         return toAjax(gameStoreService.editGameStrategy(gameStore));
     }

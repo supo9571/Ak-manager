@@ -48,7 +48,10 @@ public class GameStore extends BaseEntity {
     @ApiModelProperty(value = "玩家送阀值")
     private int playSongLimit;
 
-    @ApiModelProperty(value = "单机送概率")
+    @ApiModelProperty(value = "单机杀概率")
     private int danjiShaRate;
+
+    @ApiModelProperty(value = "单机送概率")
+    private int danjiSongRate;
 
 }
