@@ -71,7 +71,7 @@
     </select>
 
     <select id="selectCardCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
-        select sum(c.add_score)/10000 countScore,sum(c.pay_fee)/10000 countPayfee,sum(c.bet_coins) countBetCoins
+        select sum(c.add_score)/10000 countScore,sum(c.pay_fee)/10000 countPayfee,sum(c.bet_coins)/10000 countBetCoins
         from data_card c
         <where>
             <if test="tableGid!=null and tableGid !=''">
@@ -94,7 +94,7 @@
 
     <select id="selectCardUserCount" resultType="java.util.Map"
             parameterType="com.manager.common.core.domain.model.Card">
-        select sum(u.add_score)/10000 countScore,sum(u.pay_fee)/10000 countPayfee,sum(u.bet_coins) countBetCoins
+        select sum(u.add_score)/10000 countScore,sum(u.pay_fee)/10000 countPayfee,sum(u.bet_coins)/10000 countBetCoins
         from data_card_user u
         <where>
             <if test="tableGid!=null and tableGid !=''">

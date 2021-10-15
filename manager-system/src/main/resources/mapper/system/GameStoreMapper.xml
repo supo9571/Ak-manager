@@ -12,7 +12,8 @@
     </insert>
 
     <select id="getGameStrategys" resultType="java.util.Map">
-        select strategy_name strategyName,
+        select id,
+               strategy_name strategyName,
                strategy_tag_id strategyTagId,
                strategy_status strategyStatus,
                play_sha_rate playShaRate,
@@ -23,7 +24,8 @@
                limit_list limitList,
                play_sha_limit playShaLimit,
                play_song_limit playSongLimit,
-               danji_sha_rate danjiShaRate
+               danji_sha_rate danjiShaRate,
+               update_time updateTime
         from control_game_config
         <where>
             <if test="strategyTagId != 0"> strategy_tag_id = #{strategyTagId}</if>
@@ -68,7 +70,7 @@
                play_song_limit,
                danji_sha_rate,
                calculation_type,
-               UNIX_TIMESTAMP(NOW()) strategy_up_time
+               UNIX_TIMESTAMP(update_time) strategy_up_time
         from control_game_config
     </select>
 </mapper>

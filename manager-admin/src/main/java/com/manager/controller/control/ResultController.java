@@ -1,0 +1,40 @@
+package com.manager.controller.control;
+
+import com.manager.common.core.controller.BaseController;
+import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.utils.DateUtils;
+import com.manager.system.service.ResultService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * @author marvin 2021/10/13
+ * 游戏库存策略 执行结果
+ */
+@RestController
+@Api(tags = "库存执行结果")
+@RequestMapping("/control/result")
+@Slf4j
+public class ResultController extends BaseController {
+
+    @Autowired
+    private ResultService resultService;
+
+    /**
+     * 查询游戏库存执行结果
+     */
+    @PreAuthorize("@ss.hasPermi('control:result:game')")
+    @ApiOperation(value = "查询游戏库存执行结果")
+    @PostMapping("/game")
+    public AjaxResult getGameResult(@RequestParam(defaultValue = "0") int tid,@RequestParam(defaultValue = "0") int strategyId, String day) {
+        if(StringUtils.isBlank(day)){
+            day = DateUtils.getDate();
+        }
+        return AjaxResult.success(resultService.getGameResult(tid,strategyId,day));
+    }
+}
