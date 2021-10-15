@@ -6,6 +6,7 @@ import lombok.Data;
 
 /**
  * @author marvin 2021/10/13
+ * 个人属性配置
  * control_person_property
  */
 @Data

@@ -8,6 +8,7 @@ import com.manager.common.core.page.TableDataInfo;
 import com.manager.common.core.page.TableSupport;
 import com.manager.common.utils.DateUtils;
 import com.manager.common.utils.StringUtils;
+import com.manager.common.utils.http.HttpUtils;
 import com.manager.common.utils.sql.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,13 @@ public class BaseController {
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
+    protected AjaxResult toSend(String url, String param) {
+        String result = HttpUtils.sendPost(url, "data=" + param);
+        if (!"scuess".equals(result)) {
+            return AjaxResult.error();
+        }
+        return AjaxResult.success();
+    }
     /**
      * 响应返回结果
      *

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.system.mapper.PersonStoreMapper">
+
+    <insert id="addPersonStore" parameterType="com.manager.common.core.domain.entity.PersonStore">
+        insert into control_person_config(strategy_name,strategy_tag_id,strategy_desc,strategy_status,fish_max_run_times,danji_pvp_max_run_times,condition_list,
+                                          game_list,run_result,run_rate,update_time)
+        values (#{strategyName},#{strategyTagId},#{strategyDesc},#{strategyStatus},#{fishMaxRunTimes},#{danjiPvpMaxRunTimes},#{conditionList},
+                #{gameList},#{runResult},#{runRate},sysdate())
+    </insert>
+
+    <select id="getPersonStrategys" resultType="java.util.Map">
+        select strategy_id strategyId,
+               strategy_name strategyName,
+               strategy_tag_id strategyTagId,
+               strategy_desc strategyDesc,
+               strategy_status strategyStatus,
+               fish_max_run_times fishMaxRunTimes,
+               danji_pvp_max_run_times danjiPvpMaxRunTimes,
+               condition_list conditionList,
+               game_list gameList,
+               run_result runResult,
+               run_rate runRate
+        from control_person_config
+        <where>
+            <if test="strategyTagId != 0"> strategy_tag_id = #{strategyTagId} </if>
+        </where>
+    </select>
+
+    <update id="editPersonStrategy" parameterType="com.manager.common.core.domain.entity.PersonStore">
+        update control_person_config
+        <set>
+            <if test="strategyName != null and strategyName != ''"> strategy_name = #{strategyName}, </if>
+            <if test="strategyTagId != null and strategyTagId != ''"> strategy_tag_id = #{strategyTagId}, </if>
+            <if test="strategyDesc != null and strategyDesc != ''"> strategy_desc = #{strategyDesc}, </if>
+            <if test="strategyStatus != null and strategyStatus != ''"> strategy_status = #{strategyStatus}, </if>
+            <if test="fishMaxRunTimes != null and fishMaxRunTimes != ''"> fish_max_run_times = #{fishMaxRunTimes}, </if>
+            <if test="danjiPvpMaxRunTimes != null and danjiPvpMaxRunTimes != ''"> danji_pvp_max_run_times = #{danjiPvpMaxRunTimes}, </if>
+            <if test="conditionList != null and conditionList != ''"> condition_list = #{conditionList}, </if>
+            <if test="gameList != null and gameList != ''"> game_list = #{gameList}, </if>
+            <if test="runResult != null and runResult != ''"> run_result = #{runResult}, </if>
+            <if test="runRate != null and runRate != ''"> run_rate = #{runRate}, </if>
+        </set>
+        where strategy_id = #{strategyId}
+    </update>
+
+    <delete id="delPersonStrategy">
+        delete from control_person_config
+        where strategy_id = #{strategyId}
+    </delete>
+
+    <select id="getPersonStrategyList" resultType="java.util.Map">
+        select strategy_id,
+               strategy_name,
+               strategy_tag_id,
+               strategy_desc,
+               strategy_status,
+               fish_max_run_times,
+               danji_pvp_max_run_times,
+               condition_list,
+               game_list,
+               run_result,
+               run_rate
+        from control_person_config
+    </select>
+</mapper>

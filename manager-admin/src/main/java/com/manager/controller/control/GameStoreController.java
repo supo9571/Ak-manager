@@ -6,17 +6,13 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.GameStore;
 import com.manager.common.enums.BusinessType;
-import com.manager.common.utils.http.HttpUtils;
 import com.manager.system.service.GameStoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,7 +38,7 @@ public class GameStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:game:add')")
     @ApiOperation(value = "新增游戏库存策略")
     @Log(title = "新增游戏库存策略", businessType = BusinessType.INSERT)
-    @GetMapping("/add")
+    @PostMapping("/add")
     public AjaxResult addGameStrategy(GameStore gameStore) {
         return toAjax(gameStoreService.addGameStrategy(gameStore));
     }
@@ -65,7 +61,7 @@ public class GameStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:game:edit')")
     @ApiOperation(value = "编辑游戏库存策略")
     @Log(title = "编辑游戏库存策略", businessType = BusinessType.UPDATE)
-    @GetMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult editGameStrategy(GameStore gameStore) {
         return toAjax(gameStoreService.editGameStrategy(gameStore));
     }
@@ -89,15 +85,7 @@ public class GameStoreController extends BaseController {
     @Log(title = "发送游戏库存策略", businessType = BusinessType.OTHER)
     @GetMapping("/send")
     public AjaxResult sendGameStrategy() {
-        String domain = managerConfig.getDomain();
-        String gameSend = managerConfig.getGameSend();
-        //查询 游戏配置
         String param = gameStoreService.sendGameStrategy();
-        String result = HttpUtils.sendPost(domain + gameSend, "data=" + param);
-        if (!"scuess".equals(result)) {
-            log.error(result);
-            return AjaxResult.error();
-        }
-        return AjaxResult.success();
+        return toSend(managerConfig.getDomain()+managerConfig.getGameSend(),param);
     }
 }

@@ -3,6 +3,7 @@ package com.data.mapper;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.DataAnalysisVO;
 import com.manager.common.core.domain.model.vo.DataWaterTopVO;
+import com.manager.common.core.domain.model.vo.EarningsTopVO;
 import com.manager.common.core.domain.model.vo.RechargeTopVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -47,6 +48,15 @@ public interface DataAnalysisMapper {
      */
     BigDecimal rechargeAmountTotal(DataAnalysisParam param);
 
+
+    /**
+     * 提现金额 时间段
+     * @param param
+     * @return
+     */
+    BigDecimal withdrawAmount(DataAnalysisParam param);
+
+
     /**
      * 总提现金额
      * @param param
@@ -56,14 +66,14 @@ public interface DataAnalysisMapper {
 
 
     /**
-     * 流水top100
+     * 流水top100 -时间段
      * @param param
      * @return
      */
     List<DataWaterTopVO> getDataWaterTopList(DataAnalysisParam param);
 
     /**
-     * 获取当前玩家总局数列表
+     * 获取当前玩家总局数列表 -时间段
      * @param param
      * @return
      */
@@ -71,7 +81,7 @@ public interface DataAnalysisMapper {
 
 
     /**
-     * 获取充值top100
+     * 获取充值top100 -时间段
      * @param param
      * @return
      */
@@ -91,5 +101,56 @@ public interface DataAnalysisMapper {
      * @return
      */
     List<RechargeTopVO> getPlayGameList(DataAnalysisParam param);
+
+    /**
+     * 净盈利top100 -时间段 提现
+     * @param param
+     * @return
+     */
+    List<EarningsTopVO> getEarningsWithdrawList(DataAnalysisParam param);
+
+
+    /**
+     * 净盈利top100 -时间段 充值
+     * @param param
+     * @return
+     */
+    List<EarningsTopVO> getEarningsRechargeList(DataAnalysisParam param);
+
+    /**
+     * 净盈利top100
+     * 起始时间的余额
+     * 起始时间的余额小于等于 起始时间的第一条记录的余额
+     * @param param
+     * @return
+     */
+    Integer getDataCoinsStartTimeAmount(DataAnalysisParam param);
+
+    /**
+     * 净盈利top100
+     * 结束时间的余额
+     * 结束时间的余额  大于等于 结束时间的第一条记录的余额
+     * @param param
+     * @return
+     */
+    Integer getDataCoinsEndTimeAmount(DataAnalysisParam param);
+
+
+    /**
+     * 获取用户的相关信息
+     * @param param
+     * @return
+     */
+    EarningsTopVO getUserInfo(DataAnalysisParam param);
+
+
+    /**
+     * 获取用户投注总流水-时间段
+     * @param param
+     * @return
+     */
+    Long getUserBetTotal(DataAnalysisParam param);
+
+
 
 }

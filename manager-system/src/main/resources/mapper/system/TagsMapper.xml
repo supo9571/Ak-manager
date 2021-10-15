@@ -6,12 +6,16 @@
 
     <select id="getTags" resultType="java.util.Map">
         select id,
-               tag_type tagType,
-               tag_name tagName,
-               run_index runIndex,
-               tag_desc tagDesc,
-               create_time createTime
-        from control_tags_config
+        tag_type tagType,
+        tag_name tagName,
+        run_index runIndex,
+        tag_desc tagDesc,
+        create_time createTime,
+        if(c.tag_type=1,
+            (SELECT COUNT(1) FROM control_game_config WHERE strategy_tag_id = c.id) ,
+            (SELECT COUNT(1) FROM control_person_config WHERE strategy_tag_id = c.id)
+        ) tagCount
+        from control_tags_config c
         <where>
             <if test="tagType != null and tagType != 0 "> tag_type = #{tagType} </if>
         </where>

@@ -6,7 +6,6 @@ import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.PersonProperty;
 import com.manager.common.enums.BusinessType;
-import com.manager.common.utils.http.HttpUtils;
 import com.manager.system.service.PersonPropertyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,15 +60,7 @@ public class PersonPropertyController extends BaseController {
     @Log(title = "发送个人属性配置", businessType = BusinessType.OTHER)
     @GetMapping("/send")
     public AjaxResult sendProperty() {
-        String domain = managerConfig.getDomain();
-        String gameSend = managerConfig.getGameSend();
-        //查询 游戏配置
         String param = personPropertyService.sendProperty();
-        String result = HttpUtils.sendPost(domain + gameSend, "data=" + param);
-        if (!"scuess".equals(result)) {
-            log.error(result);
-            return AjaxResult.error();
-        }
-        return AjaxResult.success();
+        return toSend(managerConfig.getDomain()+managerConfig.getGameSend(),param);
     }
 }

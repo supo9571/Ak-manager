@@ -40,7 +40,7 @@
     </select>
 
     <select id="rechargeAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
-        select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
+        select IFNULL(sum(recharge_amount),0) amount from config_recharge_order
         where payment_status = 1 and uid = #{uid}
         <if test="beginTime!=null and beginTime !=''">
             and update_time between #{beginms} and #{endms}
@@ -53,6 +53,17 @@
     <select id="rechargeAmountTotal" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
         select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
         where payment_status = 1 and uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+    </select>
+
+    <select id="withdrawAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        select IFNULL(sum(withdraw_money),0) amount  from config_exchange_order
+        where exaa_status = 5 and uid = #{uid}
+        <if test="beginTime!=null and beginTime !=''">
+            and update_time between #{beginms} and #{endms}
+        </if>
         <if test="tid!=null and tid!=''">
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
@@ -168,10 +179,104 @@
             LEFT JOIN config_game cg ON dc.table_type = cg.game_id
         WHERE cg.game_name is not null and uid = #{uid}
         <if test="beginTime!=null and beginTime !=''">
-            and dcu.mstime between #{beginms} and #{endms}
+            and dc.mstime between #{beginms} and #{endms}
         </if>
         GROUP BY cg.game_name
         ORDER BY sum(dc.system_win) desc LIMIT 3
+    </select>
+
+    <select id="getEarningsWithdrawList" resultType="com.manager.common.core.domain.model.vo.EarningsTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT ceo.uid,IFNULL(SUM(ceo.withdraw_money),0) withdrawAmount
+        from config_exchange_order ceo
+        WHERE ceo.exaa_status in(1,2,3,4,5,6)
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="currentUserId!=null and currentUserId!=''">
+            and channel IN (
+            SELECT t.t_id FROM sys_tenant t
+            WHERE t.t_type = '2'
+            AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+            )
+        </if>
+        <if test="beginTime!=null and beginTime !=''">
+            and ceo.update_time >=  #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and ceo.update_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        GROUP BY ceo.uid
+        ORDER BY withdrawAmount desc LIMIT 100
+    </select>
+
+    <select id="getEarningsRechargeList" resultType="com.manager.common.core.domain.model.vo.EarningsTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT cro.uid,IFNULL(SUM(cro.recharge_amount),0) rechargeAmount
+        from config_recharge_order cro
+        WHERE cro.payment_status = 1
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="currentUserId!=null and currentUserId!=''">
+            and channel IN (
+            SELECT t.t_id FROM sys_tenant t
+            WHERE t.t_type = '2'
+            AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId})
+            )
+        </if>
+        <if test="beginTime!=null and beginTime !=''">
+            and cro.update_time between #{beginms} and #{endms}
+        </if>
+        GROUP BY cro.uid
+        ORDER BY rechargeAmount desc LIMIT 100
+    </select>
+    
+    <select id="getDataCoinsStartTimeAmount" resultType="Integer" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT IFNULL(curr,0) curr
+        FROM data_coins
+        WHERE uid = #{uid}
+        <if test="endTime!=null and endTime!=''">
+            and UNIX_TIMESTAMP(#{endTime}) >= time
+        </if>
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        LIMIT 1
+    </select>
+
+    <select id="getDataCoinsEndTimeAmount" resultType="Integer" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT IFNULL(curr,0) curr
+        FROM data_coins
+        WHERE uid = #{uid}
+        <if test="endTime!=null and endTime!=''">
+            and UNIX_TIMESTAMP(#{endTime}) >= time
+        </if>
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        LIMIT 1
+    </select>
+
+    <select id="getUserInfo" resultType="com.manager.common.core.domain.model.vo.EarningsTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT dr.channel,dr.name,dr.time,dr.login_time lastLoginTime
+        FROM data_register  dr
+        WHERE uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+    </select>
+
+    <select id="getUserBetTotal" resultType="Long" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT IFNULL(sum(dw.value),0) betTotal from data_water dw
+        WHERE uid = #{uid}
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="beginTime!=null and beginTime !=''">
+            and dw.time >=  #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and dw.time <![CDATA[ <= ]]> #{endTime}
+        </if>
     </select>
 
 
