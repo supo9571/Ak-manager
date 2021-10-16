@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.DirectRechargeMapper">
+
+    <select id="getList" resultType="com.manager.common.core.domain.model.DirectRecharge">
+        SELECT
+            dr.uid as uid,
+            dr.agent_id as agentId,
+            dr.channel as channel,
+            FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S') as agentTime,
+            (
+            SELECT
+                SUM(cro.recharge_amount)
+            from
+                config_recharge_order cro
+            where
+                cro.uid = dr.uid
+                and cro.finish_time >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S')
+                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
+                         or cro.operate_type is null)
+            ) as rechargeAmount
+        FROM
+            data_register dr
+        where
+            dr.agent_id = #{agentId}
+    </select>
+
+
+    <select id="getSubList" resultType="com.manager.common.core.domain.model.DirectRecharge">
+        SELECT
+            dr.uid as uid,
+            dr.agent_id as agentId,
+            dr.channel as channel,
+            FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S') as agentTime
+        FROM
+            data_register dr
+        where
+            dr.agent_id = #{agentId}
+            and dr.uid = #{uid}
+    </select>
+
+    <select id="getSubList2" resultType="com.manager.common.core.domain.model.DirectRecharge">
+        SELECT
+            cro.recharge_amount as rechargeAmount,
+            cro.finish_time as agentTime
+        from
+            config_recharge_order cro
+        where
+            cro.uid = #{uid}
+            and cro.finish_time >= FROM_UNIXTIME(#{agentTime}, '%Y-%m-%d %H:%i:%S')
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
+                or cro.operate_type is null)
+    </select>
+</mapper>
