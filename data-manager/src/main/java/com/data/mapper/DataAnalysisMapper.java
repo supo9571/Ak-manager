@@ -1,10 +1,7 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
-import com.manager.common.core.domain.model.vo.DataAnalysisVO;
-import com.manager.common.core.domain.model.vo.DataWaterTopVO;
-import com.manager.common.core.domain.model.vo.EarningsTopVO;
-import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.core.domain.model.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
@@ -150,6 +147,14 @@ public interface DataAnalysisMapper {
      * @return
      */
     Long getUserBetTotal(DataAnalysisParam param);
+
+
+    /**
+     * 全民代理top100
+     * @param param
+     * @return
+     */
+    List<AgentTopVO> getAgentTopList(DataAnalysisParam param);
 
 
 

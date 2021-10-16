@@ -163,4 +163,7 @@ public interface DataService {
     @PostMapping("/data/directRecharge/subList")
     AjaxResult getSubDirectRecharge(@RequestBody DirectRecharge param);
 
+    @PostMapping("/data/report/agent/top/List")
+    AjaxResult getAgentTopList(@RequestBody DataAnalysisParam param);
+
 }

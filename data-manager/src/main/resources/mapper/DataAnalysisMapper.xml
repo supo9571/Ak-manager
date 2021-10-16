@@ -279,5 +279,35 @@
         </if>
     </select>
 
+    <select id="getAgentTopList" resultType="com.manager.common.core.domain.model.vo.AgentTopVO" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT
+            ac.channel,
+            ac.uid,
+            dr.name,
+            dr.time,
+            ac.sub_num subNum,
+            ac.total_income totalIncome,
+            ac.cash_income cashIncome
+        from agent_commission ac LEFT JOIN data_register dr ON ac.uid =dr.uid
+        <where>
+            <if test="tid!=null and tid!=''">
+                ac.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="currentUserId!=null and currentUserId!=''">
+                and ac.channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId}))
+            </if>
+        </where>
+        <if  test="type == 1">
+            ORDER BY ac.sub_num desc
+        </if>
+        <if  test="type == 2">
+            ORDER BY ac.cash_income desc
+        </if>
+        LIMIT 100
+    </select>
+
 
 </mapper>

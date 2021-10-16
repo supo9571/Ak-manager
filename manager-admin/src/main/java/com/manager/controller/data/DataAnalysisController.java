@@ -4,10 +4,7 @@ import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
-import com.manager.common.core.domain.model.vo.DataAnalysisVO;
-import com.manager.common.core.domain.model.vo.DataWaterTopVO;
-import com.manager.common.core.domain.model.vo.EarningsTopVO;
-import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.core.domain.model.vo.*;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.file.FileUtils;
@@ -117,6 +114,27 @@ public class DataAnalysisController extends BaseController {
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
+
+    @ApiOperation(value = "全民代理top100")
+    @PostMapping("/agent/top/List")
+    public AjaxResult getAgentTopList(@RequestBody DataAnalysisParam param) {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        return dataService.getAgentTopList(param);
+    }
+
+    @ApiOperation(value = "全民代理top100导出")
+    @Log(title = "全民代理top100导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/agent/top/export")
+    public void getAgentTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        AjaxResult ajaxResult = dataService.getAgentTopList(param);
+        ExcelUtil<AgentTopVO> util = new ExcelUtil(AgentTopVO.class);
+        String fileName = "全民代理top100导出";
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+    }
+
 
 
 }

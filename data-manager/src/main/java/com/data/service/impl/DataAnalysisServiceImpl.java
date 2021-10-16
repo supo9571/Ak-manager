@@ -3,10 +3,7 @@ package com.data.service.impl;
 import com.data.mapper.DataAnalysisMapper;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
-import com.manager.common.core.domain.model.vo.DataAnalysisVO;
-import com.manager.common.core.domain.model.vo.DataWaterTopVO;
-import com.manager.common.core.domain.model.vo.EarningsTopVO;
-import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.core.domain.model.vo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -119,6 +116,11 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
             });
         }
         return list;
+    }
+
+    @Override
+    public List<AgentTopVO> getAgentTopList(DataAnalysisParam param) {
+        return mapper.getAgentTopList(param);
     }
 
 
