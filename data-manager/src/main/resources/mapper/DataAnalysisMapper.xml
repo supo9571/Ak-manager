@@ -49,7 +49,7 @@
             and uid = #{uid}
         </if>
         <if test="beginTime!=null and beginTime !=''">
-            and update_time between #{beginms} and #{endms}
+            and finish_time between #{beginTime} and #{endTime}
         </if>
         <if test="tid!=null and tid!=''">
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')

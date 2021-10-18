@@ -4,11 +4,14 @@ import com.data.mapper.DataAnalysisMapper;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.*;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
  * @date 2021-10-08
  */
 @Service
+@Slf4j
 public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Resource
@@ -137,9 +141,9 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
                 if (amountTotal.compareTo(BigDecimal.ZERO) > 0) {
                     BigDecimal percentage = amountTotal;
                     if (vo.getCount() != 0) {
-                        percentage = amountTotal.divide(new BigDecimal(vo.getCount()));
+                        percentage = amountTotal.divide(new BigDecimal(vo.getCount()), 2, BigDecimal.ROUND_HALF_UP);
                     }
-                    vo.setPercentage(percentage + "%");
+                    vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
                 }
                 list.add(vo);
             }
@@ -192,6 +196,6 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     public static void main(String[] args) {
         BigDecimal amount = new BigDecimal(0);
-        System.out.println(new BigDecimal(50).divide(amount));
+        System.out.println(new BigDecimal(52704.4400000000).setScale(2, BigDecimal.ROUND_DOWN));
     }
 }
