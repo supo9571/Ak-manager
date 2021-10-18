@@ -4,6 +4,7 @@ import com.manager.common.core.domain.model.param.DataAnalysisParam;
 import com.manager.common.core.domain.model.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jason
@@ -38,5 +39,11 @@ public interface DataAnalysisService {
      */
     List<AgentTopVO> getAgentTopList(DataAnalysisParam param);
 
+    /**
+     * 付费习惯
+     * @param param
+     * @return
+     */
+    List<PayInfoVO> getPayInfoList(DataAnalysisParam param);
 
 }
