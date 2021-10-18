@@ -27,8 +27,8 @@ public class DirectRechargeController extends BaseController {
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody DirectRecharge directRecharge) {
-        startOrder(directRecharge.getOrderByColumn(),directRecharge.getIsAsc());
-        return AjaxResult.success("查询成功", directRechargeService.getList(directRecharge));
+        directRecharge.setPage2(getHandlePage(directRecharge.getPage(),directRecharge.getSize()));
+        return AjaxResult.success("查询成功",directRechargeService.getList(directRecharge));
     }
 
     /**
@@ -36,6 +36,7 @@ public class DirectRechargeController extends BaseController {
      */
     @PostMapping("/subList")
     public AjaxResult subList(@RequestBody DirectRecharge directRecharge) {
+        directRecharge.setPage2(getHandlePage(directRecharge.getPage(),directRecharge.getSize()));
         return AjaxResult.success("查询成功", directRechargeService.getSubList(directRecharge));
     }
 

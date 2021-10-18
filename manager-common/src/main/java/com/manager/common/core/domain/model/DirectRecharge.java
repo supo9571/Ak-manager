@@ -41,4 +41,6 @@ public class DirectRecharge extends BaseEntity {
     @ApiModelProperty("充值时间1")
     private String rechargeTime2;
 
+    private Integer page2;
+
 }

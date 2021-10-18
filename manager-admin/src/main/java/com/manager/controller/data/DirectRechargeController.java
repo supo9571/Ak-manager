@@ -37,7 +37,7 @@ public class DirectRechargeController {
     /**
      * 查询直属玩家充值
      */
-    @PreAuthorize("@ss.hasPermi('data:addUser:list')")
+    @PreAuthorize("@ss.hasPermi('data:directRecharge:list')")
     @ApiOperation(value = "查询直属玩家充值")
     @PostMapping("/list")
     public AjaxResult getDirectRecharge(@RequestBody DirectRecharge directRecharge) {
@@ -47,13 +47,11 @@ public class DirectRechargeController {
     /**
      * 查询每日明细
      */
-    @PreAuthorize("@ss.hasPermi('data:addUser:list')")
+    @PreAuthorize("@ss.hasPermi('data:directRecharge:list')")
     @ApiOperation(value = "查询每日明细")
     @PostMapping("/subList")
     public AjaxResult getSubDirectRecharge(@RequestBody DirectRecharge directRecharge) {
         return dataService.getSubDirectRecharge(directRecharge);
     }
-
-
 
 }

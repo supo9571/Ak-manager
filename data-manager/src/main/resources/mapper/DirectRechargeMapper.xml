@@ -11,7 +11,7 @@
             FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S') as agentTime,
             (
             SELECT
-                SUM(cro.recharge_amount)
+                SUM(cro.recharge_amount) as rechargeAmount
             from
                 config_recharge_order cro
             where
@@ -19,11 +19,69 @@
                 and cro.finish_time >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S')
                 and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
                          or cro.operate_type is null)
+                <if test="rechargeTime1!=null and rechargeTime1!=''">
+                    and cro.finish_time >= #{rechargeTime1}
+                </if>
+                <if test="rechargeTime2!=null and rechargeTime2!=''">
+                    and cro.finish_time <![CDATA[<=]]> #{rechargeTime2}
+                </if>
             ) as rechargeAmount
         FROM
             data_register dr
         where
             dr.agent_id = #{agentId}
+        <if test="agentTime1!=null and agentTime1!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+        </if>
+        <if test="agentTime2!=null and agentTime2!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+        </if>
+        <if test="orderByColumn!=null and orderByColumn!=''">
+            <choose>
+                <when test="isAsc == 'asc'">
+                    order by rechargeAmount ASC
+                </when>
+                <otherwise>
+                    order by rechargeAmount DESC
+                </otherwise>
+            </choose>
+        </if>
+        <if test="page2 != null">
+            LIMIT #{page2},#{size}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="Integer">
+        SELECT
+            count(1)
+        FROM
+            data_register dr
+        where
+            dr.agent_id = #{agentId}
+        <if test="agentTime1!=null and agentTime1!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+        </if>
+        <if test="agentTime2!=null and agentTime2!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+        </if>
+    </select>
+
+    <select id="getRechargeAmount" resultType="String">
+        SELECT
+            SUM(cro.recharge_amount)
+        from
+            config_recharge_order cro
+        where
+            cro.uid = #{uid}
+            and cro.finish_time >= #{agentTime}
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
+            or cro.operate_type is null)
+        <if test="rechargeTime1!=null and rechargeTime1!=''">
+            and cro.finish_time >= #{rechargeTime1}
+        </if>
+        <if test="rechargeTime2!=null and rechargeTime2!=''">
+            and cro.finish_time <![CDATA[<=]]> #{rechargeTime2}
+        </if>
     </select>
 
 
@@ -38,6 +96,12 @@
         where
             dr.agent_id = #{agentId}
             and dr.uid = #{uid}
+        <if test="agentTime1!=null and agentTime1!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+        </if>
+        <if test="agentTime2!=null and agentTime2!=''">
+            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+        </if>
     </select>
 
     <select id="getSubList2" resultType="com.manager.common.core.domain.model.DirectRecharge">
@@ -51,5 +115,42 @@
             and cro.finish_time >= FROM_UNIXTIME(#{agentTime}, '%Y-%m-%d %H:%i:%S')
             and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
                 or cro.operate_type is null)
+        <if test="rechargeTime1!=null and rechargeTime1!=''">
+            and cro.finish_time >= #{rechargeTime1}
+        </if>
+        <if test="rechargeTime2!=null and rechargeTime2!=''">
+            and cro.finish_time <![CDATA[<=]]> #{rechargeTime2}
+        </if>
+        <if test="orderByColumn!=null and orderByColumn!=''">
+            <choose>
+                <when test="isAsc == 'asc'">
+                    order by rechargeAmount ASC
+                </when>
+                <otherwise>
+                    order by rechargeAmount DESC
+                </otherwise>
+            </choose>
+        </if>
+        <if test="page2 != null">
+            LIMIT #{page2},#{size}
+        </if>
+    </select>
+
+    <select id="getSubListCount" resultType="Integer">
+        SELECT
+            count(1)
+        from
+        config_recharge_order cro
+        where
+        cro.uid = #{uid}
+        and cro.finish_time >= FROM_UNIXTIME(#{agentTime}, '%Y-%m-%d %H:%i:%S')
+        and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
+        or cro.operate_type is null)
+        <if test="rechargeTime1!=null and rechargeTime1!=''">
+            and cro.finish_time >= #{rechargeTime1}
+        </if>
+        <if test="rechargeTime2!=null and rechargeTime2!=''">
+            and cro.finish_time <![CDATA[<=]]> #{rechargeTime2}
+        </if>
     </select>
 </mapper>

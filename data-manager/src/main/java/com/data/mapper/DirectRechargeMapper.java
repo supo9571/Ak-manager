@@ -21,8 +21,17 @@ public interface DirectRechargeMapper {
      */
     List<DirectRecharge> getList(DirectRecharge directRecharge);
 
+    String getRechargeAmount(@Param("uid") String uid,
+                                     @Param("agentTime") String agentTime,
+                                     @Param("rechargeTime1") String rechargeTime1,
+                                     @Param("rechargeTime2") String rechargeTime2);
+
+    Integer getListCount(DirectRecharge directRecharge);
+
     DirectRecharge getSubList(DirectRecharge directRecharge);
 
-    List<DirectRecharge> getSubList2(@Param("uid") String uid,@Param("agentTime") String agentTime);
+    List<DirectRecharge> getSubList2(DirectRecharge directRecharge);
+
+    Integer getSubListCount(DirectRecharge directRecharge);
 
 }
