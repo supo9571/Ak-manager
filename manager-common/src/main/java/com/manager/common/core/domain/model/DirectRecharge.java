@@ -1,11 +1,8 @@
 package com.manager.common.core.domain.model;
 
-import com.manager.common.annotation.Excel;
 import com.manager.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 /**
  * 直属玩家充值报表
@@ -36,7 +33,15 @@ public class DirectRecharge extends BaseEntity {
     private String agentTime2;
 
     @ApiModelProperty("充值金额")
-    private String rechargeAmount;
+    private String rechargeAmount = "0";
+
+    public void setRechargeAmount(String rechargeAmount) {
+        if(rechargeAmount == null || rechargeAmount.length() == 0){
+            this.rechargeAmount = "0";
+        }else{
+            this.rechargeAmount = rechargeAmount;
+        }
+    }
 
     @ApiModelProperty("充值时间1")
     private String rechargeTime1;
