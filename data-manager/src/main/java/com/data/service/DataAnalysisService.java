@@ -1,9 +1,7 @@
 package com.data.service;
 
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
-import com.manager.common.core.domain.model.vo.DataAnalysisVO;
-import com.manager.common.core.domain.model.vo.DataWaterTopVO;
-import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.core.domain.model.vo.*;
 
 import java.util.List;
 
@@ -24,6 +22,21 @@ public interface DataAnalysisService {
      * @return
      */
     List<RechargeTopVO> getRechargeTopList(DataAnalysisParam param);
+
+    /**
+     * 净盈利top100
+     * @param param
+     * @return
+     */
+    List<EarningsTopVO> getEarningsTopList(DataAnalysisParam param);
+
+
+    /**
+     * 全民代理top100
+     * @param param
+     * @return
+     */
+    List<AgentTopVO> getAgentTopList(DataAnalysisParam param);
 
 
 }

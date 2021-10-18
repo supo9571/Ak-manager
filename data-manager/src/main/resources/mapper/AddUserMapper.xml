@@ -37,6 +37,7 @@
                 where
                 dr.uid = cro.uid
                 and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
                 ) as userRechargeMoney,
                 (
                 SELECT SUM(ceo.withdraw_money) from

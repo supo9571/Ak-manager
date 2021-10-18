@@ -37,6 +37,7 @@
         from
             config_recharge_order cro
         where cro.finish_time is true
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4')
         group by
             date_format(cro.finish_time, '%Y-%m-%d'),
             cro.channel
@@ -53,6 +54,7 @@
         where
             cro.finish_time is true
             and cro.uid in(select cro2.uid from config_recharge_order cro2 group by cro2.uid having count(cro2.uid)=1)
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
         group by
             date_format(cro.finish_time, '%Y-%m-%d'),
             cro.channel

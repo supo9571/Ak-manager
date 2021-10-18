@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.LtvReportMapper">
+
+    <select id="getList" resultType="com.manager.common.core.domain.model.LtvReport">
+        SELECT
+            FROM_UNIXTIME(dr.time, '%Y-%m-%d') as day,
+            COUNT(distinct dr.uid) as userCount,
+            GROUP_CONCAT(distinct dr.uid)
+        from
+            data_register dr
+        where
+            1 = 1
+        <choose>
+            <when test="channel !=null and channel !=''">
+                and dr.channel = #{channel}
+            </when>
+            <otherwise>
+                and dr.channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{tid2}, '%') OR t_id = #{tid2})
+                )
+            </otherwise>
+        </choose>
+        <if test="tid !=null and tid !=''">
+            and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+            and FROM_UNIXTIME(dr.time, '%Y-%m-%d') >= #{createTime1}
+            and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> #{createTime2}
+        group by
+            FROM_UNIXTIME(dr.time, '%Y-%m-%d')
+    </select>
+
+    <select id="getRecharge" resultType="String">
+        SELECT
+            SUM(cro.recharge_amount)
+        from
+            config_recharge_order cro
+        where 1 = 1
+        <if test="uids!=null and uids !=''">
+            and cro.uid in
+            <foreach item="item" index="index" collection="uids.split(',')" open="(" separator="," close=")">
+                '${item}'
+            </foreach>
+        </if>
+            and date_format(cro.finish_time, '%Y-%m-%d') <![CDATA[<=]]> date_add(#{day}, interval #{recharge} DAY)
+            and date_format(cro.finish_time, '%Y-%m-%d') is true
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+    </select>
+
+</mapper>

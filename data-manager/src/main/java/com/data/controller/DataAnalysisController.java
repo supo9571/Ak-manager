@@ -3,9 +3,7 @@ package com.data.controller;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
-import com.manager.common.core.domain.model.vo.DataAnalysisVO;
-import com.manager.common.core.domain.model.vo.DataWaterTopVO;
-import com.manager.common.core.domain.model.vo.RechargeTopVO;
+import com.manager.common.core.domain.model.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +16,7 @@ import java.util.List;
 
 /**
  * 用于数据分析相关接口
+ *
  * @author jason
  * @date 2021-10-08
  */
@@ -48,6 +47,20 @@ public class DataAnalysisController extends BaseController {
     @PostMapping("/recharge/top/List")
     public AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param) {
         List<RechargeTopVO> list = dataAnalysisService.getRechargeTopList(param);
+        return AjaxResult.success("查询成功", list);
+    }
+
+    @ApiModelProperty("净盈利top100")
+    @PostMapping("/earnings/top/List")
+    public AjaxResult getEarningsTopList(@RequestBody DataAnalysisParam param) {
+        List<EarningsTopVO> list = dataAnalysisService.getEarningsTopList(param);
+        return AjaxResult.success("查询成功", list);
+    }
+
+    @ApiModelProperty("全民代理top100")
+    @PostMapping("/agent/top/List")
+    public AjaxResult getAgentTopList(@RequestBody DataAnalysisParam param) {
+        List<AgentTopVO> list = dataAnalysisService.getAgentTopList(param);
         return AjaxResult.success("查询成功", list);
     }
 

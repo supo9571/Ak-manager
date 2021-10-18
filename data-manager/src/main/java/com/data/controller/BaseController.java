@@ -47,6 +47,14 @@ public class BaseController {
     }
 
     /**
+     * select * from table limit (start-1)*pageSize,pageSize; 其中start是页码，pageSize是每页显示的条数。
+     */
+    protected Integer getHandlePage(Integer page, Integer size) {
+        Integer page2 = (page-1) * size;
+        return page2;
+    }
+
+    /**
      * 响应请求分页数据
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
