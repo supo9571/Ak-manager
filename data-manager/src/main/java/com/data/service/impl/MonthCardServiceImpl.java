@@ -91,6 +91,11 @@ public class MonthCardServiceImpl implements MonthCardService {
         return monthCardMapper.getVipGive(tenantMapper.getTidByCid(channelId));
     }
 
+    @Override
+    public Integer getBankGive(String channelId) {
+        return monthCardMapper.getBankGive(tenantMapper.getTidByCid(channelId));
+    }
+
     /**
      * 绑定 提现支付宝/银行卡
      *

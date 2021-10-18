@@ -73,8 +73,10 @@ public class MonthCardController extends BaseController {
         String channelId = getHeader("Client-ChannelId");//渠道id
         JSONObject jsonObject = new JSONObject();
         Integer give = monthCardService.getVipGive(channelId);
+        Integer bank = monthCardService.getBankGive(channelId);
         Map map = new HashMap();
         map.put("vip", give);
+        map.put("unionbank", bank);
         jsonObject.put("result", map);
         return jsonObject;
     }

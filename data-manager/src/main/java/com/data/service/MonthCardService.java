@@ -23,4 +23,6 @@ public interface MonthCardService {
     JSONObject getExchangeConfig(String uid, String channelId);
 
     JSONObject getBankList();
+
+    Integer getBankGive(String channelId);
 }
