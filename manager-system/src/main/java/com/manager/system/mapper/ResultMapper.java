@@ -12,4 +12,8 @@ import java.util.List;
 public interface ResultMapper {
 
     List getGameResult(@Param("tid") int tid,@Param("strategyId") int strategyId,@Param("day") String day);
+
+    List getPersonResult(@Param("tid") int tid, @Param("strategyId") int strategyId, @Param("uid") int uid, @Param("day") String day, @Param("cardName") String cardName, @Param("cardUserName") String cardUserName);
+
+    List getPersonResultInfo(@Param("uid")int uid, @Param("strategyFlag")String strategyFlag,@Param("cardName")String cardName);
 }

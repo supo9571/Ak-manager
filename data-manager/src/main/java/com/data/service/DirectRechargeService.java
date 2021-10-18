@@ -3,6 +3,7 @@ package com.data.service;
 import com.manager.common.core.domain.model.DirectRecharge;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 直属玩家充值报表
@@ -13,10 +14,10 @@ public interface DirectRechargeService {
     /**
      * 查询
      */
-    List<DirectRecharge> getList(DirectRecharge directRecharge);
+    Map getList(DirectRecharge directRecharge);
 
     /**
      * 每日明细
      */
-    List<DirectRecharge> getSubList(DirectRecharge directRecharge);
+    Map getSubList(DirectRecharge directRecharge);
 }

@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,7 +33,7 @@ public class PersonStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:person:add')")
     @ApiOperation(value = "新增个人库存策略")
     @Log(title = "新增个人库存策略", businessType = BusinessType.INSERT)
-    @GetMapping("/add")
+    @PostMapping("/add")
     public AjaxResult addPersonStore(PersonStore personStore) {
         return toAjax(personStoreService.addPersonStore(personStore));
     }
@@ -57,7 +54,7 @@ public class PersonStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:person:edit')")
     @ApiOperation(value = "编辑个人库存策略")
     @Log(title = "编辑个人库存策略", businessType = BusinessType.UPDATE)
-    @GetMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult editPersonStrategy(PersonStore personStore) {
         return toAjax(personStoreService.editPersonStrategy(personStore));
     }

@@ -8,4 +8,8 @@ import java.util.List;
 public interface ResultService {
 
     List getGameResult(int tid, int strategyId, String day);
+
+    List getPersonResult(int tid, int strategyId, int uid, String day);
+
+    List getPersonResultInfo(int uid, String strategyFlag, String day);
 }

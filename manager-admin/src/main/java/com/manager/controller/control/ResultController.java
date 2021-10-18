@@ -37,4 +37,31 @@ public class ResultController extends BaseController {
         }
         return AjaxResult.success(resultService.getGameResult(tid,strategyId,day));
     }
+
+    /**
+     * 查询个人库存执行结果
+     */
+    @PreAuthorize("@ss.hasPermi('control:result:person')")
+    @ApiOperation(value = "查询个人库存执行结果")
+    @PostMapping("/person")
+    public AjaxResult getPersonResult(@RequestParam(defaultValue = "0") int tid,@RequestParam(defaultValue = "0") int strategyId,
+                                      @RequestParam(defaultValue = "0") int uid, String day) {
+        if(StringUtils.isBlank(day)){
+            day = DateUtils.getDate();
+        }
+        return AjaxResult.success(resultService.getPersonResult(tid,strategyId,uid,day));
+    }
+
+    /**
+     * 查询个人库存执行结果 详情
+     */
+    @PreAuthorize("@ss.hasPermi('control:result:person')")
+    @ApiOperation(value = "查询个人库存执行结果详情")
+    @PostMapping("/personInfo")
+    public AjaxResult getPersonResultInfo(int uid,String strategyFlag,String day) {
+        if(StringUtils.isBlank(day)){
+            day = DateUtils.getDate();
+        }
+        return AjaxResult.success(resultService.getPersonResultInfo(uid,strategyFlag,day));
+    }
 }

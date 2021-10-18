@@ -14,6 +14,9 @@ import java.math.BigDecimal;
 @Data
 public class DirectRecharge extends BaseEntity {
 
+    @ApiModelProperty("平台id")
+    private String tid;
+
     @ApiModelProperty("玩家id")
     private String uid;
 
@@ -40,5 +43,7 @@ public class DirectRecharge extends BaseEntity {
 
     @ApiModelProperty("充值时间1")
     private String rechargeTime2;
+
+    private Integer page2;
 
 }
