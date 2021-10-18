@@ -339,7 +339,7 @@
             config_recharge_order
         where payment_status = 1
         <if test="tid!=null and tid!=''">
-            channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         <if test="currentUserId!=null and currentUserId!=''">
             and ac.channel IN (
@@ -351,7 +351,7 @@
             and update_time between #{beginms} and #{endms}
         </if>
         <if test="channelId!=null and channelId!=''">
-            channel = #{channelId}
+            and channel = #{channelId}
         </if>
     </select>
 
