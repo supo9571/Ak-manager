@@ -9,10 +9,8 @@ import com.manager.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 直属玩家充值报表
@@ -30,9 +28,19 @@ public class DirectRechargeServiceImpl implements DirectRechargeService {
         Map result = new HashMap();
         List<DirectRecharge> list = directRechargeMapper.getList(directRecharge);
 
+        // 充值金额处理
         for (DirectRecharge recharge : list) {
             recharge.setRechargeAmount(directRechargeMapper.getRechargeAmount(
                     recharge.getUid(),recharge.getAgentTime(),directRecharge.getRechargeTime1(),directRecharge.getRechargeTime2()));
+        }
+
+        // 处理排序
+        if(list!=null && !list.isEmpty()){
+            if("asc".equals(directRecharge.getIsAsc())){
+                Collections.sort(list, (a, b) -> a.getRechargeAmount().compareTo(b.getRechargeAmount()));
+            }else{
+                Collections.sort(list, (a, b) -> b.getRechargeAmount().compareTo(a.getRechargeAmount()));
+            }
         }
 
         result.put("data",list);
