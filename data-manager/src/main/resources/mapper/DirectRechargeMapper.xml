@@ -8,43 +8,19 @@
             dr.uid as uid,
             dr.agent_id as agentId,
             dr.channel as channel,
-            FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S') as agentTime,
-            (
-            SELECT
-                SUM(cro.recharge_amount) as rechargeAmount
-            from
-                config_recharge_order cro
-            where
-                cro.uid = dr.uid
-                and cro.finish_time >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S')
-                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'
-                         or cro.operate_type is null)
-                <if test="rechargeTime1!=null and rechargeTime1!=''">
-                    and cro.finish_time >= #{rechargeTime1}
-                </if>
-                <if test="rechargeTime2!=null and rechargeTime2!=''">
-                    and cro.finish_time <![CDATA[<=]]> #{rechargeTime2}
-                </if>
-            ) as rechargeAmount
+            FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d %H:%i:%S') as agentTime
         FROM
             data_register dr
         where
             dr.agent_id = #{agentId}
         <if test="agentTime1!=null and agentTime1!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+            and #{agentTime1} <![CDATA[<=]]> FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
         </if>
         <if test="agentTime2!=null and agentTime2!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+            and #{agentTime2} >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
         </if>
-        <if test="orderByColumn!=null and orderByColumn!=''">
-            <choose>
-                <when test="isAsc == 'asc'">
-                    order by rechargeAmount ASC
-                </when>
-                <otherwise>
-                    order by rechargeAmount DESC
-                </otherwise>
-            </choose>
+        <if test="tid !=null and tid !=''">
+            and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         <if test="page2 != null">
             LIMIT #{page2},#{size}
@@ -59,10 +35,13 @@
         where
             dr.agent_id = #{agentId}
         <if test="agentTime1!=null and agentTime1!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+            and #{agentTime1} <![CDATA[<=]]> FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
         </if>
         <if test="agentTime2!=null and agentTime2!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+            and #{agentTime2} >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
+        </if>
+        <if test="tid !=null and tid !=''">
+            and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
     </select>
 
@@ -97,10 +76,13 @@
             dr.agent_id = #{agentId}
             and dr.uid = #{uid}
         <if test="agentTime1!=null and agentTime1!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') >= #{agentTime1}
+            and #{agentTime1} <![CDATA[<=]]> FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
         </if>
         <if test="agentTime2!=null and agentTime2!=''">
-            and FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') <![CDATA[<=]]> #{agentTime2}
+            and #{agentTime2} >= FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d')
+        </if>
+        <if test="tid !=null and tid !=''">
+            and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
     </select>
 
