@@ -348,7 +348,7 @@
             AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId}))
         </if>
         <if test="beginTime!=null and beginTime !=''">
-            and finish_time between #{beginms} and #{endms}
+            and finish_time between #{beginTime} and #{endTime}
         </if>
         <if test="channelId!=null and channelId!=''">
             and channel = #{channelId}
