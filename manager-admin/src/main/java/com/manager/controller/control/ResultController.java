@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author marvin 2021/10/13
  * 游戏库存策略 执行结果
@@ -46,10 +50,16 @@ public class ResultController extends BaseController {
     @PostMapping("/person")
     public AjaxResult getPersonResult(@RequestParam(defaultValue = "0") int tid,@RequestParam(defaultValue = "0") int strategyId,
                                       @RequestParam(defaultValue = "0") int uid, String day) {
+        startPage();
         if(StringUtils.isBlank(day)){
             day = DateUtils.getDate();
         }
-        return AjaxResult.success(resultService.getPersonResult(tid,strategyId,uid,day));
+        List list = resultService.getPersonResult(tid,strategyId,uid,day);
+        Map count = resultService.getPersonResultCount(tid,strategyId,uid,day);
+        Map result = new HashMap();
+        result.put("list", getDataTable(list));
+        result.put("count", count);
+        return AjaxResult.success(result);
     }
 
     /**

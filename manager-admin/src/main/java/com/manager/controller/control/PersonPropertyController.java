@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,7 +45,7 @@ public class PersonPropertyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('control:property:edit')")
     @ApiOperation(value = "编辑个人属性配置")
-    @GetMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult editPersonPropertys(PersonProperty personProperty) {
         return toAjax(personPropertyService.editPersonPropertys(personProperty));
     }

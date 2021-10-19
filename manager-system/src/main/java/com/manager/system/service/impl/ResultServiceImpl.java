@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/10/15
@@ -35,6 +36,22 @@ public class ResultServiceImpl implements ResultService {
             String cardName = "data_card_" + year + mon;
             String cardUserName = "data_card_user_" + year + mon;
             return resultMapper.getPersonResult(tid, strategyId, uid, day,cardName,cardUserName);
+        } catch (ParseException e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Map getPersonResultCount(int tid, int strategyId, int uid, String day) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = simpleDateFormat.parse(day);
+            String year = String.format("%ty",date);
+            String mon = String.format("%tm", date);
+            String cardName = "data_card_" + year + mon;
+            String cardUserName = "data_card_user_" + year + mon;
+            return resultMapper.getPersonResultCount(tid, strategyId, uid, day,cardName,cardUserName);
         } catch (ParseException e) {
             log.error(e.getMessage());
         }
