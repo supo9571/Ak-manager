@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.controller.BaseController;
+import com.data.mapper.TenantMapper;
 import com.data.service.UpdateService;
 import com.manager.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class HotUpdateController extends BaseController {
 
     @Autowired
     private UpdateService updateService;
+    @Autowired
+    private TenantMapper tenantMapper;
 
     @GetMapping("/hotupdate")
     public JSONObject hotUpdate() {
@@ -40,12 +43,13 @@ public class HotUpdateController extends BaseController {
         String versionId = getHeader("Client-VersionId");//版本号
         String platform = getHeader("Client-platform");//平台 windows,ios，android
         String ip = getIp();
-
+        Integer tid = tenantMapper.getTidByCid(channelId);
         JSONObject result = new JSONObject();
         JSONObject data = new JSONObject();
         data.put("apiUrl", new String[]{globalConfig.getApiUrl()});
         data.put("errUploadUrl", globalConfig.getErrUploadUrl());
         data.put("headUrl", globalConfig.getHeadUrl());
+        data.put("platform",tid);
         //添加 客服信息
         data.put("customer", updateService.selectConsumer());
         //添加 停服公告
