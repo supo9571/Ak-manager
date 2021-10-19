@@ -169,4 +169,7 @@ public interface DataService {
     @PostMapping(value = "/data/report/pay/top/List", consumes = "application/json")
     AjaxResult getPayInfoList(@RequestBody DataAnalysisParam param);
 
+    @PostMapping(value = "/data/rechargeAndExchange/List", consumes = "application/json")
+    AjaxResult getRechargeAndExchange(@RequestBody RechargeAndExchange param);
+
 }
