@@ -10,7 +10,8 @@
         pvp_property_list pvpPropertyList,
         fish_property_list fishPropertyList,
         danji_property_list danjiPropertyList,
-        property_desc propertyDesc
+        property_desc propertyDesc,
+        update_time updateTime
         from control_person_property
     </select>
 

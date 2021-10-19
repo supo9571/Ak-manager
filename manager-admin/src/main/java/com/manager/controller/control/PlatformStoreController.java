@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,7 +52,7 @@ public class PlatformStoreController extends BaseController {
     @PreAuthorize("@ss.hasPermi('control:platform:edit')")
     @ApiOperation(value = "编辑盘口策略配置")
     @Log(title = "编辑盘口策略配置", businessType = BusinessType.UPDATE)
-    @GetMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult editPlatformStrategy(PlatformStore platformStore) {
         return toAjax(platformStoreService.editPlatformStrategy(platformStore));
     }
