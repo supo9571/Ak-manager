@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用于数据分析相关接口
@@ -63,5 +64,13 @@ public class DataAnalysisController extends BaseController {
         List<AgentTopVO> list = dataAnalysisService.getAgentTopList(param);
         return AjaxResult.success("查询成功", list);
     }
+
+    @ApiModelProperty("付费习惯")
+    @PostMapping("/pay/top/List")
+    public AjaxResult getPayInfoList(@RequestBody DataAnalysisParam param) {
+        List<PayInfoVO> list = dataAnalysisService.getPayInfoList(param);
+        return AjaxResult.success("查询成功", list);
+    }
+
 
 }

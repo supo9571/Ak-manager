@@ -32,7 +32,10 @@
 
     <select id="getCurrentAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
         SELECT curr_money from config_exchange_order
-        where exaa_status = 5 and uid = #{uid}
+        where exaa_status = 5
+        <if test="uid!=null and uid!=''">
+            and uid = #{uid}
+        </if>
         <if test="tid!=null and tid!=''">
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
@@ -41,18 +44,27 @@
 
     <select id="rechargeAmount" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
         select IFNULL(sum(recharge_amount),0) amount from config_recharge_order
-        where payment_status = 1 and uid = #{uid}
+        where payment_status = 1
+        <if test="uid!=null and uid!=''">
+            and uid = #{uid}
+        </if>
         <if test="beginTime!=null and beginTime !=''">
-            and update_time between #{beginms} and #{endms}
+            and finish_time between #{beginTime} and #{endTime}
         </if>
         <if test="tid!=null and tid!=''">
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            channel = #{channelId}
         </if>
     </select>
 
     <select id="rechargeAmountTotal" resultType="java.math.BigDecimal" parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
         select IFNULL(sum(recharge_amount),0) amount  from config_recharge_order
-        where payment_status = 1 and uid = #{uid}
+        where payment_status = 1
+        <if test="uid!=null and uid!=''">
+            and uid = #{uid}
+        </if>
         <if test="tid!=null and tid!=''">
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
@@ -309,5 +321,38 @@
         LIMIT 100
     </select>
 
+    <select id="getPayInfoList" resultType="java.util.Map"  parameterType="com.manager.common.core.domain.model.param.DataAnalysisParam">
+        SELECT
+            sum(case when recharge_amount>0 and recharge_amount <![CDATA[<]]> 50 then 1 else 0 end) as count1,
+            sum(case when recharge_amount>=50 and recharge_amount <![CDATA[<]]> 100 then 1 else 0 end) as count2,
+            sum(case when recharge_amount>=100 and recharge_amount <![CDATA[<]]> 200 then 1 else 0 end) as count3,
+            sum(case when recharge_amount>=200 and recharge_amount <![CDATA[<]]> 500 then 1 else 0 end) as count4,
+            sum(case when recharge_amount>=500 and recharge_amount <![CDATA[<]]> 1000 then 1 else 0 end) as count5,
+            sum(case when recharge_amount>=1000 and recharge_amount <![CDATA[<]]> 3000 then 1 else 0 end) as count6,
+            sum(case when recharge_amount>=3000 and recharge_amount <![CDATA[<]]> 5000 then 1 else 0 end) as count7,
+            sum(case when recharge_amount>=5000 and recharge_amount <![CDATA[<]]> 10000 then 1 else 0 end) as count8,
+            sum(case when recharge_amount>=10000 and recharge_amount <![CDATA[<]]> 20000 then 1 else 0 end) as count9,
+            sum(case when recharge_amount>=20000 and recharge_amount <![CDATA[<]]> 50000 then 1 else 0 end) as count10,
+            sum(case when recharge_amount>=50000 and recharge_amount <![CDATA[<]]> 100000 then 1 else 0 end) as count11,
+            sum(case when recharge_amount>=100000 then 1 else 0 end) as count12
+        from
+            config_recharge_order
+        where payment_status = 1
+        <if test="tid!=null and tid!=''">
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="currentUserId!=null and currentUserId!=''">
+            and ac.channel IN (
+            SELECT t.t_id FROM sys_tenant t
+            WHERE t.t_type = '2'
+            AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId}))
+        </if>
+        <if test="beginTime!=null and beginTime !=''">
+            and finish_time between #{beginTime} and #{endTime}
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            and channel = #{channelId}
+        </if>
+    </select>
 
 </mapper>

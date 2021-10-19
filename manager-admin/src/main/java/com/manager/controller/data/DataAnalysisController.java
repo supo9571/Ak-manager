@@ -135,6 +135,25 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @ApiOperation(value = "付费习惯")
+    @PostMapping("/pay/top/List")
+    public AjaxResult getPayInfoList(@RequestBody DataAnalysisParam param) {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        return dataService.getPayInfoList(param);
+    }
+
+    @ApiOperation(value = "付费习惯导出")
+    @Log(title = "付费习惯导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/pay/top/export")
+    public void getPayInfoListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
+        //param.setCurrentUserId(SecurityUtils.getUserId());
+        AjaxResult ajaxResult = dataService.getPayInfoList(param);
+        ExcelUtil<PayInfoVO> util = new ExcelUtil(PayInfoVO.class);
+        String fileName = "付费习惯导出";
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
+        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+    }
 
 
 }

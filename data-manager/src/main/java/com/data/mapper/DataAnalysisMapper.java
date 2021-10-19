@@ -157,5 +157,12 @@ public interface DataAnalysisMapper {
     List<AgentTopVO> getAgentTopList(DataAnalysisParam param);
 
 
+    /**
+     * 付费习惯
+     * @param param
+     * @return
+     */
+    Map<String,BigDecimal> getPayInfoList(DataAnalysisParam param);
+
 
 }
