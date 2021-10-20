@@ -79,7 +79,7 @@
                 ) as rechargeTotalSum,
                 (
                 SELECT
-                COUNT(ceo.withdraw_money)
+                COUNT(distinct ceo.uid)
                 from
                 config_exchange_order ceo
                 where
