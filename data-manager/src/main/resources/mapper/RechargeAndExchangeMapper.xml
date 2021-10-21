@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.RechargeAndExchangeMapper">
+
+    <select id="getList" resultType="com.manager.common.core.domain.model.RechargeAndExchange">
+        SELECT
+            t.day as day,
+            SUM(t.activeUser) as activeUser,
+            SUM(t.uid) as uid,
+            SUM(t.rechargeCount) as rechargeCount,
+            SUM(t.rechargeSum) as rechargeSum,
+            SUM(t.exchangeSum) as exchangeSum,
+            SUM(t.rechargeTotalCount) as rechargeTotalCount,
+            SUM(t.rechargeTotalSum) as rechargeTotalSum,
+            SUM(t.exchangeTotalCount) as exchangeTotalCount,
+            SUM(t.exchangeTotalSum) as exchangeTotalSum
+        FROM (
+            SELECT
+                FROM_UNIXTIME(dr.time, '%Y-%m-%d') as day,
+                COUNT(distinct dr.uid) as uid,
+                (
+                SELECT
+                COUNT(distinct dl.uid) as userCount
+                from
+                data_login dl
+                where
+                FROM_UNIXTIME(dl.time, '%Y-%m-%d') = FROM_UNIXTIME(dr.time, '%Y-%m-%d')
+                group by
+                FROM_UNIXTIME(dl.time, '%Y-%m-%d')
+                ) as activeUser,
+                (
+                SELECT
+                COUNT(distinct cro.uid)
+                FROM
+                config_recharge_order cro
+                where
+                cro.uid = dr.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+                ) as rechargeCount,
+                (
+                SELECT
+                SUM(cro.recharge_amount)
+                FROM
+                config_recharge_order cro
+                where
+                cro.uid = dr.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                and (cro.operate_type <![CDATA[<>]]>  '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+                ) as rechargeSum,
+                (
+                SELECT
+                SUM(ceo.withdraw_money)
+                from
+                config_exchange_order ceo
+                where
+                ceo.uid = dr.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(ceo.update_time, '%Y-%m-%d')
+                and ceo.exaa_status = '5'
+                ) as exchangeSum,
+                (
+                SELECT
+                COUNT(distinct cro.uid)
+                FROM
+                config_recharge_order cro
+                where
+                FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+                ) as rechargeTotalCount,
+                (
+                SELECT
+                SUM(cro.recharge_amount)
+                FROM
+                config_recharge_order cro
+                where
+                FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(cro.finish_time, '%Y-%m-%d')
+                and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+                ) as rechargeTotalSum,
+                (
+                SELECT
+                COUNT(distinct ceo.uid)
+                from
+                config_exchange_order ceo
+                where
+                ceo.uid = dr.uid
+                and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(ceo.update_time, '%Y-%m-%d')
+                and ceo.exaa_status = '5'
+                ) as exchangeTotalCount,
+                (
+                SELECT
+                SUM(ceo.withdraw_money)
+                from
+                config_exchange_order ceo
+                where
+                FROM_UNIXTIME(dr.time, '%Y-%m-%d') = date_format(ceo.update_time, '%Y-%m-%d')
+                and ceo.exaa_status = '5'
+                ) as exchangeTotalSum
+            from
+                data_register dr
+            where 1 = 1
+        <choose>
+            <when test="channel !=null and channel !=''">
+                and dr.channel = #{channel}
+            </when>
+            <otherwise>
+                and dr. channel IN (
+                SELECT t.t_id FROM sys_tenant t
+                WHERE t.t_type = '2'
+                AND (t.ancestors LIKE concat('%', #{tid2}, '%') OR t_id = #{tid2})
+                )
+            </otherwise>
+        </choose>
+        <if test="tid !=null and tid !=''">
+            and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+            and FROM_UNIXTIME(dr.time, '%Y-%m-%d') >= #{time1}
+            and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> #{time2}
+        group by
+            FROM_UNIXTIME(dr.time, '%Y-%m-%d'), dr.uid
+        ) t group by day order by day DESC
+    </select>
+
+</mapper>

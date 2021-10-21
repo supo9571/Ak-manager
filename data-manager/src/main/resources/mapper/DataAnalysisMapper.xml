@@ -55,7 +55,7 @@
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         <if test="channelId!=null and channelId!=''">
-            channel = #{channelId}
+           and channel = #{channelId}
         </if>
     </select>
 
@@ -236,7 +236,7 @@
             )
         </if>
         <if test="beginTime!=null and beginTime !=''">
-            and cro.update_time between #{beginms} and #{endms}
+            and cro.update_time between #{beginTime} and #{endTime}
         </if>
         GROUP BY cro.uid
         ORDER BY rechargeAmount desc LIMIT 100
@@ -355,4 +355,134 @@
         </if>
     </select>
 
+    <select id="getPlayerReportCount" resultType="int"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
+        SELECT
+            count(DISTINCT(dcu.uid))
+        from data_card_user dcu
+        LEFT JOIN agent_commission ac ON dcu.uid = ac.uid
+        <where>
+            <if test="tid!=null and tid!=''">
+                and dcu.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and dcu.channel = #{channelId}
+            </if>
+            <if test="agentId!=null and agentId!=''">
+                and ac.agent_id = #{agentId}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (dcu.uid = #{keyword} or dcu.uid = (select uid from data_register where phone=  #{keyword}))
+            </if>
+            <if test="gameId!=null and gameId!=0">
+                and dcu.table_type = #{gameId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPlayerReportList" resultType="com.manager.common.core.domain.model.vo.PlayerReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
+        SELECT
+            dcu.uid,
+            ac.agent_id agentId,
+            dcu.channel,
+            count(dcu.uid) gameTableNum,
+            sum(dcu.bet_coins) betCoins,
+            sum(dcu.add_score) addScore,
+            (sum(dcu.add_score) + sum(dcu.bet_coins)) rewardAmount
+        from data_card_user dcu
+        LEFT JOIN agent_commission ac ON dcu.uid = ac.uid
+        <where>
+            <if test="tid!=null and tid!=''">
+                and dcu.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and dcu.channel = #{channelId}
+            </if>
+            <if test="agentId!=null and agentId!=''">
+                and ac.agent_id = #{agentId}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (dcu.uid = #{keyword} or dcu.uid = (select uid from data_register where phone=  #{keyword}))
+            </if>
+            <if test="gameId!=null and gameId!=0">
+                and dcu.table_type = #{gameId}
+            </if>
+        </where>
+        GROUP BY dcu.channel,dcu.uid
+        ORDER BY dcu.channel,sum(dcu.add_score) DESC
+    </select>
+
+    <select id="getPlayerGameReportList" resultType="com.manager.common.core.domain.model.vo.PlayerGameReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
+        SELECT
+            cg.game_name gameName,
+            count(dcu.uid) gameTableNum,
+            sum(dcu.bet_coins) betCoins,
+            (sum(dcu.add_score) + sum(dcu.bet_coins)) rewardAmount,
+            sum(dcu.add_score) addScore
+        from data_card_user dcu
+        LEFT JOIN config_game cg ON dcu.table_type = cg.game_id
+        <where>
+            <if test="tid!=null and tid!=''">
+                and dcu.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and dcu.channel = #{channelId}
+            </if>
+            <if test="agentId!=null and agentId!=''">
+                and ac.agent_id = #{agentId}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (dcu.uid = #{keyword} or dcu.uid = (select uid from data_register where phone=  #{keyword}))
+            </if>
+            <if test="gameId!=null and gameId!=0">
+                and dcu.table_type = #{gameId}
+            </if>
+        </where>
+        GROUP BY cg.game_name
+        ORDER BY sum(dcu.add_score) DESC
+    </select>
+
+    <select id="getPlayerDayReportList" resultType="com.manager.common.core.domain.model.vo.PlayerDayReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
+        SELECT
+            FROM_UNIXTIME(dcu.begin_time, '%Y-%m-%d') as day,
+            dcu.channel,
+            dcu.uid,
+            ac.agent_id agentId,
+            count(dcu.uid) gameTableNum,
+            sum(dcu.bet_coins) betCoins,
+            (sum(dcu.add_score) + sum(dcu.bet_coins)) rewardAmount,
+            sum(dcu.add_score) addScore
+        from data_card_user dcu
+        LEFT JOIN agent_commission ac  on dcu.uid = ac.uid
+        <where>
+            <if test="tid!=null and tid!=''">
+                and dcu.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and dcu.channel = #{channelId}
+            </if>
+            <if test="agentId!=null and agentId!=''">
+                and ac.agent_id = #{agentId}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (dcu.uid = #{keyword} or dcu.uid = (select uid from data_register where phone=  #{keyword}))
+            </if>
+            <if test="gameId!=null and gameId!=0">
+                and dcu.table_type = #{gameId}
+            </if>
+        </where>
+        GROUP BY dcu.channel,dcu.uid,day
+        ORDER BY day DESC
+    </select>
 </mapper>

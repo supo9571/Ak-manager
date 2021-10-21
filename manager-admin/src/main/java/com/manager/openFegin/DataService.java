@@ -3,6 +3,9 @@ package com.manager.openFegin;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.*;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
+import com.manager.common.core.domain.model.param.PlayerReportParam;
+import com.manager.common.core.domain.model.vo.PlayerDayReportVO;
+import com.manager.common.core.domain.model.vo.PlayerGameReportVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -168,5 +171,17 @@ public interface DataService {
 
     @PostMapping(value = "/data/report/pay/top/List", consumes = "application/json")
     AjaxResult getPayInfoList(@RequestBody DataAnalysisParam param);
+
+    @PostMapping(value = "/data/rechargeAndExchange/List", consumes = "application/json")
+    AjaxResult getRechargeAndExchange(@RequestBody RechargeAndExchange param);
+
+    @PostMapping(value = "/data/report/player/List", consumes = "application/json")
+    AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param);
+
+    @PostMapping(value = "/data/report/player/game/List", consumes = "application/json")
+    AjaxResult getPlayerGameReportList(@RequestBody PlayerReportParam param);
+
+    @PostMapping(value = "/data/report/player/day/List", consumes = "application/json")
+    AjaxResult getPlayerDayReportList(@RequestBody PlayerReportParam param);
 
 }
