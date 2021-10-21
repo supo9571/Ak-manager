@@ -6,6 +6,7 @@ import com.manager.common.core.domain.model.ControlPlayer;
 import com.manager.common.core.domain.model.ControlPlayerInfo;
 import com.manager.common.enums.BusinessType;
 import com.manager.openFegin.SubGameDataService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 玩家风控设置
  */
 @RestController
+@Api(tags = "玩家风控设置")
 @RequestMapping("/data/control/player")
 public class ControlPlayerController {
 
