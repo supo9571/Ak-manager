@@ -22,10 +22,10 @@ public class AgentController {
     private AgentService agentService;
 
     /**
-     * 获取牌局记录 列表
+     * 获取代理 列表
      */
     @PreAuthorize("@ss.hasPermi('data:agent:list')")
-    @ApiOperation(value = "查询牌局记录列表")
+    @ApiOperation(value = "查询代理列表")
     @GetMapping("/list")
     public AjaxResult list(Integer tid, String uid, String agentId, Integer page, Integer size, String orderByColumn, String isAsc) {
         return agentService.getAgents(tid, uid, agentId, page, size, orderByColumn, isAsc);

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.ControlPlayerMapper">
+
+    <insert id="add" parameterType="com.manager.common.core.domain.model.ControlPlayer">
+        insert into control_player_config (`uid`, `type`, `risk_power`, `send_level`, `mark`, `create_by`, `create_time`, `tid`)
+        values (#{uid}, #{type}, #{riskPower}, #{sendLevel}, #{mark}, #{createBy}, sysdate(), #{tid})
+    </insert>
+
+    <insert id="addInfo" parameterType="com.manager.common.core.domain.model.ControlPlayerInfo">
+        insert into control_player_info (`uid`, `update_type`, `update_before`, `update_after`, `update_time`, `update_by`, `tid`)
+        values (#{uid}, #{updateType}, #{updateBefore}, #{updateAfter}, sysdate(), #{updateBy}, #{tid})
+    </insert>
+
+    <select id="checkUid" parameterType="com.manager.common.core.domain.model.ControlPlayer" resultType="java.lang.Integer">
+        select count(1) from data_register
+        where uid = #{uid}
+        <if test="tenant!=null and tenant!=0">
+            channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tenant}, '%'))
+        </if>
+    </select>
+
+    <select id="isExist" parameterType="com.manager.common.core.domain.model.ControlPlayer" resultType="java.lang.Integer">
+        select count(1) from control_player_config where uid = #{uid}
+    </select>
+
+    <select id="list" resultType="com.manager.common.core.domain.model.ControlPlayer">
+        select uid,
+               type,
+               risk_power riskPower,
+               send_level sendLevel,
+               mark,
+               create_by createBy,
+               create_time createTime
+        from
+        control_player_config
+        where tid = #{tid}
+        <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
+        <if test="type!=null and type!=0"> and type = #{type}</if>
+        <if test="beginTime!=null and beginTime!=''"> and create_time >= #{beginTime}</if>
+        <if test="endTime!=null and endTime!=''"> and #{endTime} >= create_time</if>
+    </select>
+
+    <select id="infoList" resultType="java.util.Map">
+        select id,uid,
+        update_type updateType,
+        update_before updateBefore,
+        update_after updateAfter,
+        update_time updateTime,
+        update_by updateBy
+        from control_player_info
+        where tid = #{tid}
+        <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
+        <if test="updateBy!=null and updateBy!=0"> and update_by = #{updateBy}</if>
+        <if test="updateType!=null and updateType!=0"> and update_type = #{updateType}</if>
+        <if test="beginTime!=null and beginTime!=''"> and update_time >= #{beginTime}</if>
+        <if test="endTime!=null and endTime!=''"> and #{endTime} >= update_time</if>
+    </select>
+
+    <select id="select" resultType="com.manager.common.core.domain.model.ControlPlayer">
+        select uid,
+               type,
+               risk_power riskPower,
+               send_level sendLevel,
+               mark,
+               create_by createBy,
+               create_time createTime
+        from
+            control_player_config
+        where uid = #{uid}
+    </select>
+
+    <update id="edit">
+        update control_player_config
+        <set>
+            <if test="type!=null and type !=''">type = #{type},</if>
+            <if test="riskPower!=null and riskPower !=''">risk_power = #{riskPower},</if>
+            <if test="sendLevel!=null and sendLevel !=''">send_level = #{sendLevel},</if>
+            <if test="mark!=null and mark !=''">mark = #{mark},</if>
+            <if test="createBy!=null and createBy !=''">create_by = #{createBy},</if>
+            create_time = sysdate()
+        </set>
+        where uid = #{uid}
+    </update>
+
+    <delete id="del">
+        delete from control_player_config where uid = #{uid}
+    </delete>
+
+    <select id="selectBet" resultType="java.util.Map">
+        select sum(add_score)/1000 addScore,sum(bet_coins)/1000 betCoins from data_card_user
+        where uid = #{uid}
+    </select>
+</mapper>
