@@ -1,6 +1,7 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
+import com.manager.common.core.domain.model.param.PlayerReportParam;
 import com.manager.common.core.domain.model.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -164,5 +165,32 @@ public interface DataAnalysisMapper {
      */
     Map<String,BigDecimal> getPayInfoList(DataAnalysisParam param);
 
+    /**
+     * 玩家报表count
+     * @param param
+     * @return
+     */
+    int getPlayerReportCount(PlayerReportParam param);
+
+    /**
+     * 玩家报表
+     * @param param
+     * @return
+     */
+    List<PlayerReportVO> getPlayerReportList(PlayerReportParam param);
+
+    /**
+     * 玩家报表-游戏明细
+     * @param param
+     * @return
+     */
+    List<PlayerGameReportVO> getPlayerGameReportList(PlayerReportParam param);
+
+    /**
+     * 玩家报表-日期明细
+     * @param param
+     * @return
+     */
+    List<PlayerDayReportVO> getPlayerDayReportList(PlayerReportParam param);
 
 }

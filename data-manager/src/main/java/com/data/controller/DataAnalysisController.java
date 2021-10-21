@@ -3,6 +3,7 @@ package com.data.controller;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
+import com.manager.common.core.domain.model.param.PlayerReportParam;
 import com.manager.common.core.domain.model.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,5 +74,29 @@ public class DataAnalysisController extends BaseController {
         return AjaxResult.success("查询成功", list);
     }
 
+    @ApiModelProperty("玩家报表-主功能")
+    @PostMapping("/player/List")
+    public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
+        Map result = new HashMap();
+        int count = dataAnalysisService.getPlayerReportCount(param);
+        List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
+        result.put("list", getDataTable(list));
+        result.put("count", count);
+        return AjaxResult.success("查询成功", result);
+    }
+
+    @ApiModelProperty("玩家报表-游戏明细")
+    @PostMapping("/player/game/List")
+    public AjaxResult getPlayerGameReportList(@RequestBody PlayerReportParam param) {
+        List<PlayerGameReportVO> list = dataAnalysisService.getPlayerGameReportList(param);
+        return AjaxResult.success("查询成功", list);
+    }
+
+    @ApiModelProperty("玩家报表-日期明细")
+    @PostMapping("/player/day/List")
+    public AjaxResult getPlayerDayReportList(@RequestBody PlayerReportParam param) {
+        List<PlayerDayReportVO> list = dataAnalysisService.getPlayerDayReportList(param);
+        return AjaxResult.success("查询成功", list);
+    }
 
 }

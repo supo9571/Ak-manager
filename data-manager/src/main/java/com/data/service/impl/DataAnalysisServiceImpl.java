@@ -3,6 +3,7 @@ package com.data.service.impl;
 import com.data.mapper.DataAnalysisMapper;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
+import com.manager.common.core.domain.model.param.PlayerReportParam;
 import com.manager.common.core.domain.model.vo.*;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
@@ -150,6 +151,30 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         }
         return list;
     }
+
+    @Override
+    public int getPlayerReportCount(PlayerReportParam param) {
+        return mapper.getPlayerReportCount(param);
+    }
+
+    @Override
+    public List<PlayerReportVO> getPlayerReportList(PlayerReportParam param) {
+        List<PlayerReportVO> list = mapper.getPlayerReportList(param);
+        return list;
+    }
+
+    @Override
+    public List<PlayerGameReportVO> getPlayerGameReportList(PlayerReportParam param) {
+        List<PlayerGameReportVO> list = mapper.getPlayerGameReportList(param);
+        return list;
+    }
+
+    @Override
+    public List<PlayerDayReportVO> getPlayerDayReportList(PlayerReportParam param) {
+        List<PlayerDayReportVO> list = mapper.getPlayerDayReportList(param);
+        return list;
+    }
+
 
     private static String getPayAmountName(Integer i) {
         String name = "";
