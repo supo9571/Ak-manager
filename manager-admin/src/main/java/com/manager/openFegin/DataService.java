@@ -187,4 +187,13 @@ public interface DataService {
     @PostMapping(value = "/data/report/player/day/List", consumes = "application/json")
     AjaxResult getPlayerDayReportList(@RequestBody PlayerReportParam param);
 
+    @PostMapping(value = "/data/onlineDataDay/getOnlineUserData", consumes = "application/json")
+    AjaxResult getOnlineUserData(@RequestBody OnlineDataDay param);
+
+    @PostMapping(value = "/data/onlineDataDay/getPcuData", consumes = "application/json")
+    AjaxResult getPcuData(@RequestBody OnlineDataDay param);
+
+    @PostMapping(value = "/data/onlineDataDay/getOnlineUserNum", consumes = "application/json")
+    AjaxResult getOnlineUserNum(@RequestBody OnlineDataDay param);
+
 }
