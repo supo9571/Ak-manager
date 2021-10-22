@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.data.mapper.OnlineDataDayMapper">
+
+    <select id="getOnlineUserData" resultType="com.manager.common.core.domain.model.OnlineDataDay">
+        SELECT
+            dod.create_time as day,
+            COUNT(distinct uid) as userCount
+        from
+            data_online_day dod
+        where
+            dod.create_time >= DATE_SUB(now(), interval 1 DAY)
+            and dod.create_time <![CDATA[<=]]> now()
+        <if test="tid !=null and tid !=''">
+            and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        </if>
+        <if test="channel !=null and channel !=''">
+            and dod.channel = #{channel}
+        </if>
+        <if test="gameId!=null and gameId!=''">
+            and dod.table_type = #{gameId}
+        </if>
+        group by
+            dod.create_time
+    </select>
+
+    <select id="getAvgNum" resultType="Integer">
+        SELECT
+            round(avg(t.userCount), 0) as avgNum
+        from
+        (
+            SELECT
+                dod.create_time as day,
+                COUNT(distinct uid) as userCount
+            from
+                data_online_day dod
+            where
+                dod.create_time >= DATE_SUB(now(), interval 1 DAY)
+                and dod.create_time <![CDATA[<=]]> now()
+            <if test="tid !=null and tid !=''">
+                and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channel !=null and channel !=''">
+                and dod.channel = #{channel}
+            </if>
+            <if test="gameId!=null and gameId!=''">
+                and dod.table_type = #{gameId}
+            </if>
+            group by
+                dod.create_time
+        )t
+    </select>
+
+    <select id="getPcuData" resultType="com.manager.common.core.domain.model.OnlineDataDay">
+        SELECT
+            t.day as day,
+	        MAX(t.userCount) as userCount
+        from
+            (
+            SELECT
+                dod.day,
+                dod.create_time,
+                COUNT(distinct uid) as userCount
+            from
+                data_online_day dod
+            where 1 = 1
+            <if test="tid !=null and tid !=''">
+                and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channel !=null and channel !=''">
+                and dod.channel = #{channel}
+            </if>
+            <if test="gameId!=null and gameId!=''">
+                and dod.table_type = #{gameId}
+            </if>
+            group by
+                dod.day,
+                dod.create_time
+            ) t
+        where 1 = 1
+        <if test="day !=null and day !=''">
+            and t.day = #{day}
+        </if>
+        group by day
+    </select>
+
+    <select id="getMaxAndAvg" resultType="java.util.Map">
+        SELECT
+            MAX(t.userCount) as maxCNum,
+            round(avg(t.userCount),0) as avgNum
+        from
+            (
+                SELECT
+                    dod.day,
+                    dod.create_time,
+                    COUNT(distinct uid) as userCount
+                from
+                    data_online_day dod
+                where
+                    1 = 1
+                <if test="tid !=null and tid !=''">
+                    and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+                </if>
+                <if test="channel !=null and channel !=''">
+                    and dod.channel = #{channel}
+                </if>
+                <if test="gameId!=null and gameId!=''">
+                    and dod.table_type = #{gameId}
+                </if>
+                group by
+                    dod.day,
+                    dod.create_time
+            ) t
+        where 1 = 1
+        <choose>
+            <when test="day == 1">
+                t.day = date_format(now(),'%Y-%m-%d')
+            </when>
+            <when test="day == 2">
+                t.day = date_format(now(),'%Y-%m-%d')
+            </when>
+        </choose>
+    </select>
+</mapper>
