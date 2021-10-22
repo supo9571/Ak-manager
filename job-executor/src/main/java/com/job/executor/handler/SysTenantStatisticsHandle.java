@@ -15,7 +15,10 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 平台 总代 渠道汇总
@@ -136,6 +139,7 @@ public class SysTenantStatisticsHandle {
             channelStatisticsDayMapper.saveChannelStatisticsDay(channelStatisticsDayList);
             // 汇总-小s
             channelStatisticsMapper.saveChannelStatistics(channelStatisticsList);
+            channelStatisticsDayMapper.setLastDate(nextDateTime);
 //            redisCache.setCacheObject(NEXT_DATE_KEY, nextDateTime);
         } catch (Exception e) {
             log.error("===tenantStatistics==> 执行定job异常：{}", e.getMessage());
