@@ -77,12 +77,20 @@ public class DataAnalysisController extends BaseController {
     @ApiModelProperty("玩家报表-主功能")
     @PostMapping("/player/List")
     public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
+        startPage(param.getPage(), param.getSize(), param.getOrderByColumn(), param.getIsAsc());
         Map result = new HashMap();
         int count = dataAnalysisService.getPlayerReportCount(param);
         List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
         result.put("list", getDataTable(list));
         result.put("count", count);
         return AjaxResult.success("查询成功", result);
+    }
+
+    @ApiModelProperty("玩家报表-主功能导出")
+    @PostMapping("/player/export")
+    public AjaxResult getPlayerReportListExport(@RequestBody PlayerReportParam param) {
+        List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
+        return AjaxResult.success("查询成功", list);
     }
 
     @ApiModelProperty("玩家报表-游戏明细")

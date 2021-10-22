@@ -414,7 +414,17 @@
             </if>
         </where>
         GROUP BY dcu.channel,dcu.uid
-        ORDER BY dcu.channel,sum(dcu.add_score) DESC
+        ORDER BY dcu.channel,
+        <if test="orderType == 1">
+            sum(dcu.bet_coins)
+        </if>
+        <if test="orderType == 2">
+            (sum(dcu.add_score) + sum(dcu.bet_coins))
+        </if>
+        <if test="orderType ==3">
+            sum(dcu.add_score)
+        </if>
+        DESC
     </select>
 
     <select id="getPlayerGameReportList" resultType="com.manager.common.core.domain.model.vo.PlayerGameReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
