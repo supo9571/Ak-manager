@@ -99,14 +99,14 @@
                     data_online_day dod
                 where
                     1 = 1
-                <if test="tid !=null and tid !=''">
-                    and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+                <if test="odd.tid !=null and odd.tid !=''">
+                    and dod.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{odd.tid} AND t_type = '2')
                 </if>
-                <if test="channel !=null and channel !=''">
-                    and dod.channel = #{channel}
+                <if test="odd.channel !=null and odd.channel !=''">
+                    and dod.channel = #{odd.channel}
                 </if>
-                <if test="gameId!=null and gameId!=''">
-                    and dod.table_type = #{gameId}
+                <if test="odd.gameId!=null and odd.gameId!=''">
+                    and dod.table_type = #{odd.gameId}
                 </if>
                 group by
                     dod.day,
@@ -118,7 +118,7 @@
                 t.day = date_format(now(),'%Y-%m-%d')
             </when>
             <when test="day == 2">
-                t.day = date_format(now(),'%Y-%m-%d')
+                t.day = date_format(DATE_SUB(now(), interval 1 day),'%Y-%m-%d')
             </when>
         </choose>
     </select>
