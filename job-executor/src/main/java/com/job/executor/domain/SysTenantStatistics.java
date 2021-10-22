@@ -1,49 +1,37 @@
 package com.job.executor.domain;
-//
-//import io.swagger.annotations.ApiModelProperty;
-//import lombok.Data;
-//
-//import java.math.BigDecimal;
-//
-///**
-// * 总代渠道
-// */
-//@Data
+
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+/**
+ * 总代渠道
+ */
+@Data
 public class SysTenantStatistics {
-//
-//    private static final long serialVersionUID = 1L;
-//
-//    @ApiModelProperty("总代/渠道号")
-//    private String tId;
-//
-//    @ApiModelProperty("总充提差额")
-//    private BigDecimal totalAmount;
-//
-//    @ApiModelProperty("总充值人数")
-//    private int rechargeNum;
-//
-//    @ApiModelProperty("总充值金额")
-//    private BigDecimal rechargeAmount;
-//
-//    @ApiModelProperty("总提现人数")
-//    private int withdrawNum;
-//
-//    @ApiModelProperty("总提现金额")
-//    private BigDecimal withdrawAmount;
-//
-//    @ApiModelProperty("线上赠送金额")
-//    private BigDecimal upAwardAmount;
-//
-//    @ApiModelProperty("线下赠送金额")
-//    private BigDecimal lowerAwardAmount;
-//
-//    @ApiModelProperty("直属返佣")
-//    private BigDecimal underCommission;
-//
-//    @ApiModelProperty("代理返佣")
-//    private BigDecimal agentCommission;
-//
-//    @ApiModelProperty("总安装量")
-//    private int registerNum;
-//
+
+    private static final long serialVersionUID = 1L;
+
+    private String tId;
+
+    private BigDecimal totalAmount;
+
+    private int rechargeNum;
+
+    private BigDecimal rechargeAmount;
+
+    private int withdrawNum;
+
+    private BigDecimal withdrawAmount;
+
+    private BigDecimal upAwardAmount;
+
+    private BigDecimal lowerAwardAmount;
+
+    private BigDecimal underCommission;
+
+    private BigDecimal agentCommission;
+
+    private int registerNum;
+
 }
