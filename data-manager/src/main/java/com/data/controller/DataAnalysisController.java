@@ -77,12 +77,14 @@ public class DataAnalysisController extends BaseController {
     @ApiModelProperty("玩家报表-主功能")
     @PostMapping("/player/List")
     public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
-        startPage(param.getPage(), param.getSize(), param.getOrderByColumn(), param.getIsAsc());
+        param.setPage2(getHandlePage(param.getPage(),param.getSize()));
         Map result = new HashMap();
         int count = dataAnalysisService.getPlayerReportCount(param);
         List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
-        result.put("list", getDataTable(list));
-        result.put("count", count);
+        result.put("data",list);
+        result.put("page",param.getPage());
+        result.put("size",param.getSize());
+        result.put("total",count);
         return AjaxResult.success("查询成功", result);
     }
 

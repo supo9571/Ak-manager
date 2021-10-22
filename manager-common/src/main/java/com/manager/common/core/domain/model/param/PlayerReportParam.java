@@ -29,4 +29,6 @@ public class PlayerReportParam extends BaseEntity {
     @ApiModelProperty("排序类型：1.投注金额 2.派奖金额 3.盈亏")
     private Integer orderType = 3;
 
+    private Integer page2;
+
 }

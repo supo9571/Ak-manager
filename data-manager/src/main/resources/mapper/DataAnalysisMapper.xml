@@ -425,6 +425,9 @@
             sum(dcu.add_score)
         </if>
         DESC
+        <if test="page2 != null">
+            LIMIT #{page2},#{size}
+        </if>
     </select>
 
     <select id="getPlayerGameReportList" resultType="com.manager.common.core.domain.model.vo.PlayerGameReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
