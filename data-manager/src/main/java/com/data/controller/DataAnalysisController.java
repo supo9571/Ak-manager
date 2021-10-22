@@ -78,18 +78,16 @@ public class DataAnalysisController extends BaseController {
     @ApiModelProperty("玩家报表-主功能")
     @PostMapping("/player/List")
     public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
-        param.setPage2(getHandlePage(param.getPage(), (param.getSize() - 1)));
+        param.setPage2(getHandlePage(param.getPage(), param.getSize()));
         Map result = new HashMap();
         int count = dataAnalysisService.getPlayerReportCount(param);
-        param.setSize(param.getSize() - 1);
+        param.setSize(param.getSize());
         List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
-        if (!CollectionUtils.isEmpty(list)) {
-            List<PlayerReportVO> sumList = dataAnalysisService.getPlayerReportSum(param);
-            list.addAll(sumList);
-        }
+        List<PlayerReportVO> dataSum = dataAnalysisService.getPlayerReportSum(param);
         result.put("data", list);
+        result.put("dataSum", dataSum);
         result.put("page", param.getPage());
-        result.put("size", param.getSize() + 1);
+        result.put("size", param.getSize());
         result.put("total", count);
         return AjaxResult.success("查询成功", result);
     }
