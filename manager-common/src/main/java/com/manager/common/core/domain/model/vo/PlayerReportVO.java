@@ -31,7 +31,7 @@ public class PlayerReportVO {
 
     @ApiModelProperty("投注金额")
     @Excel(name = "投注金额")
-    private Integer betCoins;
+    private Long betCoins;
 
     @ApiModelProperty("派奖金额")
     @Excel(name = "派奖金额", isStatistics = true)

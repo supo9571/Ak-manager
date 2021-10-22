@@ -424,11 +424,50 @@
         <if test="orderType ==3">
             sum(dcu.add_score)
         </if>
-        DESC
+        <choose>
+            <when test="isAsc == 'asc'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
         <if test="page2 != null">
             LIMIT #{page2},#{size}
         </if>
     </select>
+
+
+    <select id="getPlayerReportSum" resultType="com.manager.common.core.domain.model.vo.PlayerReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
+        SELECT
+        count(dcu.uid) gameTableNum,
+        sum(dcu.bet_coins) betCoins,
+        sum(dcu.add_score) addScore,
+        (sum(dcu.add_score) + sum(dcu.bet_coins)) rewardAmount
+        from data_card_user dcu
+        LEFT JOIN agent_commission ac ON dcu.uid = ac.uid
+        <where>
+            <if test="tid!=null and tid!=''">
+                and dcu.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and dcu.channel = #{channelId}
+            </if>
+            <if test="agentId!=null and agentId!=''">
+                and ac.agent_id = #{agentId}
+            </if>
+            <if test="beginTime!=null and beginTime !=''">
+                and dcu.mstime between #{beginms} and #{endms}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (dcu.uid = #{keyword} or dcu.uid = (select uid from data_register where phone=  #{keyword}))
+            </if>
+            <if test="gameId!=null and gameId!=0">
+                and dcu.table_type = #{gameId}
+            </if>
+        </where>
+    </select>
+
 
     <select id="getPlayerGameReportList" resultType="com.manager.common.core.domain.model.vo.PlayerGameReportVO"  parameterType="com.manager.common.core.domain.model.param.PlayerReportParam">
         SELECT

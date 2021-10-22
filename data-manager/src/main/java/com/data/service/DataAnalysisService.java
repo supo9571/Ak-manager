@@ -62,6 +62,13 @@ public interface DataAnalysisService {
     List<PlayerReportVO> getPlayerReportList(PlayerReportParam param);
 
     /**
+     * 玩家报表-求和
+     * @param param
+     * @return
+     */
+    List<PlayerReportVO> getPlayerReportSum(PlayerReportParam param);
+
+    /**
      * 玩家报表-游戏明细
      * @param param
      * @return

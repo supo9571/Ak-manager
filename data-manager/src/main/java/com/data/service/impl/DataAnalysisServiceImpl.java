@@ -164,6 +164,11 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
     }
 
     @Override
+    public List<PlayerReportVO> getPlayerReportSum(PlayerReportParam param) {
+        return mapper.getPlayerReportSum(param);
+    }
+
+    @Override
     public List<PlayerGameReportVO> getPlayerGameReportList(PlayerReportParam param) {
         List<PlayerGameReportVO> list = mapper.getPlayerGameReportList(param);
         return list;

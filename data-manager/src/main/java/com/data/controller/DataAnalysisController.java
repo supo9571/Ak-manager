@@ -7,6 +7,7 @@ import com.manager.common.core.domain.model.param.PlayerReportParam;
 import com.manager.common.core.domain.model.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,14 +78,19 @@ public class DataAnalysisController extends BaseController {
     @ApiModelProperty("玩家报表-主功能")
     @PostMapping("/player/List")
     public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
-        param.setPage2(getHandlePage(param.getPage(),param.getSize()));
+        param.setPage2(getHandlePage(param.getPage(), (param.getSize() - 1)));
         Map result = new HashMap();
         int count = dataAnalysisService.getPlayerReportCount(param);
+        param.setSize(param.getSize() - 1);
         List<PlayerReportVO> list = dataAnalysisService.getPlayerReportList(param);
-        result.put("data",list);
-        result.put("page",param.getPage());
-        result.put("size",param.getSize());
-        result.put("total",count);
+        if (!CollectionUtils.isEmpty(list)) {
+            List<PlayerReportVO> sumList = dataAnalysisService.getPlayerReportSum(param);
+            list.addAll(sumList);
+        }
+        result.put("data", list);
+        result.put("page", param.getPage());
+        result.put("size", param.getSize() + 1);
+        result.put("total", count);
         return AjaxResult.success("查询成功", result);
     }
 
