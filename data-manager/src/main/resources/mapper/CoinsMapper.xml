@@ -80,6 +80,6 @@
                 and substring(replace(c.key,'_',''),8) = #{key}
             </if>
         </where>
-
+        limit 1
     </select>
 </mapper>
