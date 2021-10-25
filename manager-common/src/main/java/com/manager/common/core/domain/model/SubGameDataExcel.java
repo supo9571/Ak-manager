@@ -17,6 +17,12 @@ public class SubGameDataExcel {
     @Excel(name = "游戏名")
     private String gameName;
 
+    @Excel(name = "赢钱人数",isStatistics=true)
+    private int winCount;
+
+    @Excel(name = "赢家占比",isStatistics=true)
+    private Double winCountRatio;
+
     @Excel(name = "参与人数",isStatistics=true)
     private int parCount;
 

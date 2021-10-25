@@ -39,6 +39,26 @@
         GROUP BY g.game_id
     </select>
 
+    <select id="getWinCount" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
+        SELECT
+            g.game_id gameId,
+            g.game_name gameName,
+            count(w.reward - c.bet_coins > 0) as winCount
+        FROM
+            data_card_user c
+        LEFT JOIN config_game g ON
+            c.game_type = g.game_id
+        LEFT JOIN data_water w ON
+            g.game_id = w.table_type
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            AND c.mstime BETWEEN #{beginms} AND #{endms}
+            AND g.parent_id = '0'
+        <if test="gameId!=null and gameId!=0">
+            and g.game_id = #{gameId}
+        </if>
+        GROUP BY g.game_id
+    </select>
+
     <select id="getTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
         SELECT g.game_id gameId,
         g.game_name gameName,
@@ -66,6 +86,23 @@
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         AND c.mstime BETWEEN #{beginms} AND #{endms}
         AND g.parent_id = #{gameId}
+        GROUP BY g.game_id
+    </select>
+
+    <select id="getWinTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
+        SELECT
+            g.game_id gameId,
+            g.game_name gameName,
+            count(w.reward - c.bet_coins > 0) as winCount
+        FROM
+            data_card_user c
+        LEFT JOIN config_game g ON
+            c.game_type = g.game_id
+        LEFT JOIN data_water w ON
+            g.game_id = w.table_type
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            AND c.mstime BETWEEN #{beginms} AND #{endms}
+            AND g.game_id = #{gameId}
         GROUP BY g.game_id
     </select>
 </mapper>

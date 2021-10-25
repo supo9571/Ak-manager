@@ -25,7 +25,15 @@ public interface SubGameDataMapper {
      */
     List<SubGameDataExcel> getHumBurCount(SubGameData subGameActualData);
 
+    /**
+     * 赢钱人数
+     */
+    List<SubGameDataExcel> getWinCount(SubGameData subGameActualData);
+
+
     List<SubGameDataExcel> getTableDate(SubGameData subGameData);
 
     List<SubGameDataExcel> getHumBurTableDate(SubGameData subGameData);
+
+    List<SubGameDataExcel> getWinTableDate(SubGameData subGameData);
 }
