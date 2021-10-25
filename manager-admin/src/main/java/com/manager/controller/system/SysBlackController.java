@@ -43,7 +43,7 @@ public class SysBlackController extends BaseController {
     /**
      * 查询黑名单策略
      */
-    @PreAuthorize("@ss.hasPermi('system:black:add')")
+    @PreAuthorize("@ss.hasPermi('system:black:list')")
     @ApiOperation(value = "查询黑名单策略")
     @PostMapping("/list")
     public AjaxResult list(SysBlack sysBlack) {
@@ -55,7 +55,7 @@ public class SysBlackController extends BaseController {
     /**
      * 删除黑名单策略
      */
-    @PreAuthorize("@ss.hasPermi('system:black:add')")
+    @PreAuthorize("@ss.hasPermi('system:black:del')")
     @ApiOperation(value = "删除黑名单策略")
     @Log(title = "删除黑名单策略", businessType = BusinessType.DELETE)
     @GetMapping("/del")

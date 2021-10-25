@@ -7,7 +7,6 @@ import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.SysMenu;
 import com.manager.common.core.domain.entity.SysRole;
 import com.manager.common.core.domain.entity.SysUser;
-import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.StringUtils;

@@ -1,19 +1,16 @@
 package com.manager.controller.system;
 
-import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.page.TableDataInfo;
-import com.manager.common.enums.BusinessType;
-import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.system.domain.SysOperLog;
 import com.manager.system.service.ISysOperLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

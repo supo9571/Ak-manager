@@ -6,8 +6,6 @@ import com.manager.common.core.domain.model.SubGameDataExcel;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.openFegin.SubGameDataService;
-import com.manager.system.domain.SysLogininfor;
-import com.manager.system.service.ISysLogininforService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package com.manager.controller.data;
 
 import com.manager.common.core.domain.AjaxResult;
-import com.manager.common.core.domain.model.SubGameDataExcel;
 import com.manager.common.core.domain.model.Summarize;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
