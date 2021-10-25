@@ -14,6 +14,7 @@ import com.manager.openFegin.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ public class DataAnalysisController extends BaseController {
     @Resource
     private DataService dataService;
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:withdraw:list')")
     @ApiOperation(value = "提现top100")
     @PostMapping("/withdraw/top/List")
     public AjaxResult withdrawTopList(@RequestBody DataAnalysisParam param) {
@@ -42,6 +44,7 @@ public class DataAnalysisController extends BaseController {
         return dataService.withdrawTopList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:withdraw:list')")
     @ApiOperation(value = "提现top100导出")
     @Log(title = "提现top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -55,6 +58,7 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:water:list')")
     @ApiOperation(value = "流水top100")
     @PostMapping("/water/top/List")
     public AjaxResult getDataWaterTopList(@RequestBody DataAnalysisParam param) {
@@ -62,6 +66,7 @@ public class DataAnalysisController extends BaseController {
         return dataService.getDataWaterTopList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:water:list')")
     @ApiOperation(value = "流水top100导出")
     @Log(title = "提现top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/water/top/export")
@@ -76,6 +81,7 @@ public class DataAnalysisController extends BaseController {
     }
 
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:recharge:list')")
     @ApiOperation(value = "充值top100")
     @PostMapping("/recharge/top/List")
     public AjaxResult getRechargeTopList(@RequestBody DataAnalysisParam param) {
@@ -83,6 +89,7 @@ public class DataAnalysisController extends BaseController {
         return dataService.getRechargeTopList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:recharge:list')")
     @ApiOperation(value = "充值top100导出")
     @Log(title = "充值top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/recharge/top/export")
@@ -97,18 +104,20 @@ public class DataAnalysisController extends BaseController {
     }
 
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:earnings:list')")
     @ApiOperation(value = "净盈利top100")
     @PostMapping("/earnings/top/List")
     public AjaxResult getEarningsTopList(@RequestBody DataAnalysisParam param) {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         return dataService.getEarningsTopList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:earnings:list')")
     @ApiOperation(value = "净盈利top100导出")
     @Log(title = "净盈利top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/earnings/top/export")
     public void getEarningsTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getEarningsTopList(param);
         ExcelUtil<EarningsTopVO> util = new ExcelUtil(EarningsTopVO.class);
         String fileName = "净盈利top100导出";
@@ -117,18 +126,20 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:agent:list')")
     @ApiOperation(value = "全民代理top100")
     @PostMapping("/agent/top/List")
     public AjaxResult getAgentTopList(@RequestBody DataAnalysisParam param) {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         return dataService.getAgentTopList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:agent:list')")
     @ApiOperation(value = "全民代理top100导出")
     @Log(title = "全民代理top100导出", businessType = BusinessType.EXPORT)
     @PostMapping("/agent/top/export")
     public void getAgentTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getAgentTopList(param);
         ExcelUtil<AgentTopVO> util = new ExcelUtil(AgentTopVO.class);
         String fileName = "全民代理top100导出";
@@ -137,18 +148,20 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:pay:list')")
     @ApiOperation(value = "付费习惯")
     @PostMapping("/pay/top/List")
     public AjaxResult getPayInfoList(@RequestBody DataAnalysisParam param) {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         return dataService.getPayInfoList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:pay:list')")
     @ApiOperation(value = "付费习惯导出")
     @Log(title = "付费习惯导出", businessType = BusinessType.EXPORT)
     @PostMapping("/pay/top/export")
     public void getPayInfoListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
-        //param.setCurrentUserId(SecurityUtils.getUserId());
+        param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getPayInfoList(param);
         ExcelUtil<PayInfoVO> util = new ExcelUtil(PayInfoVO.class);
         String fileName = "付费习惯导出";
@@ -157,12 +170,14 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表")
     @PostMapping("/player/List")
     public AjaxResult getPlayerReportList(@RequestBody PlayerReportParam param) {
         return dataService.getPlayerReportList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表导出")
     @Log(title = "玩家报表导出", businessType = BusinessType.EXPORT)
     @PostMapping("/player/export")
@@ -175,12 +190,14 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表-游戏列表")
     @PostMapping("/player/game/List")
     public AjaxResult getPlayerGameReportList(@RequestBody PlayerReportParam param) {
         return dataService.getPlayerGameReportList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表-游戏导出")
     @Log(title = "玩家报表-游戏导出", businessType = BusinessType.EXPORT)
     @PostMapping("/player/game/export")
@@ -193,12 +210,14 @@ public class DataAnalysisController extends BaseController {
         util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表-日期明细")
     @PostMapping("/player/day/List")
     public AjaxResult getPlayerDayReportList(@RequestBody PlayerReportParam param) {
         return dataService.getPlayerDayReportList(param);
     }
 
+    @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
     @ApiOperation(value = "玩家报表-日期明细导出")
     @Log(title = "玩家报表-日期明细导出", businessType = BusinessType.EXPORT)
     @PostMapping("/player/game/day/export")
