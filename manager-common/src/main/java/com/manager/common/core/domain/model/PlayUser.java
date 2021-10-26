@@ -68,4 +68,43 @@ public class PlayUser extends BaseEntity {
 
     @ApiModelProperty("登录密码")
     private String password;
+
+    @ApiModelProperty("今日充值")
+    private String todayAdd;
+
+    @ApiModelProperty("今日提现")
+    private String todayRed;
+
+    @ApiModelProperty("今日赠送")
+    private String todayGive;
+
+    @ApiModelProperty("今日流水")
+    private String todayWater;
+
+    @ApiModelProperty("今日输赢")
+    private String todayWin;
+
+    @ApiModelProperty("累计充值")
+    private String totalAdd;
+
+    @ApiModelProperty("累计提现")
+    private String totalRed;
+
+    @ApiModelProperty("累计赠送")
+    private String totalGive;
+
+    @ApiModelProperty("累计充值笔数")
+    private String countAdd;
+
+    @ApiModelProperty("累计输赢")
+    private String totalWin;
+
+    @ApiModelProperty("累计流水")
+    private String totalWater;
+
+    @ApiModelProperty("首充金额")
+    private String oneRecharge;
+
+    @ApiModelProperty("归属总代")
+    private String sumChannel;
 }

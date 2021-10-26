@@ -3,7 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.data.mapper.PlayerMapper">
 
-    <select id="selectPlayer" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.PlayUser">
+    <select id="selectPlayer" resultType="com.manager.common.core.domain.model.PlayUser"
+            parameterType="com.manager.common.core.domain.model.PlayUser">
         select uid,name,FROM_UNIXTIME(time) time,channel,agent_id agentId,
         device_id deviceId,register_ip registerIp,device_brand deviceBrand,
         register_machine registerMachine,
@@ -16,7 +17,16 @@
         today_add todayAdd,today_red todayRed,today_give todayGive,
         today_water todayWater,today_win todayWin,total_add totalAdd,
         total_red totalRed,total_give totalGive,count_add countAdd,
-        total_win totalWin,total_water totalWater
+        total_win totalWin,total_water totalWater,
+        (
+        SELECT cro.recharge_amount from config_recharge_order cro where cro.uid = uid
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
+            order by finish_time asc limit 1
+        ) as oneRecharge,
+        (
+            SELECT st.t_name from sys_tenant st where st.t_type = '1' and
+                st.t_id = (SELECT st.parent_id from sys_tenant st where st.t_id = 10001 limit 1) limit 1
+        ) as sumChannel
         from data_register
         <where>
             <if test="uid!=null and uid !=''">
@@ -59,7 +69,7 @@
     </update>
 
     <update id="updateBank">
-        update data_register
+        update user_exchange
         <set>
             <if test="type != null and type != ''">type = #{type},</if>
             <if test="name != null and name != ''">name = #{name},</if>
