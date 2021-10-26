@@ -95,7 +95,13 @@ public class UserController extends BaseController {
                     }
                 } else if (checkWay == 8) {//密码注册
                     String ip = getHeader("HTTP-CLIENT-IP");
-                    DataUser dataUser = new DataUser(phoneNumber, DigestUtils.md5Hex(password), ip, matchineToken, pkgChannel);
+                    DataUser dataUser = userService.findByPhone(phoneNumber);
+                    if (dataUser != null) {
+                        result.put("code", -1);
+                        result.put("desc", "手机号已注册");
+                        return result;
+                    }
+                    dataUser = new DataUser(phoneNumber, DigestUtils.md5Hex(password), ip, matchineToken, pkgChannel);
                     int n = userService.insertToDataUser(dataUser);
                     if (n > 0) {
                         result.put("code", 0);
@@ -108,7 +114,13 @@ public class UserController extends BaseController {
                     }
                 } else if (checkWay == 9) {//游客绑定手机
                     String accountId = getHeader("account-id");
-                    DataUser dataUser = new DataUser(Long.valueOf(accountId), phoneNumber, DigestUtils.md5Hex(password));
+                    DataUser dataUser = userService.findByPhone(phoneNumber);
+                    if (dataUser != null) {
+                        result.put("code", -1);
+                        result.put("desc", "手机号已注册");
+                        return result;
+                    }
+                    dataUser = new DataUser(Long.valueOf(accountId), phoneNumber, DigestUtils.md5Hex(password));
                     int n = userService.updateDataUser(dataUser);
                     if (n > 0) {
                         result.put("code", 0);
