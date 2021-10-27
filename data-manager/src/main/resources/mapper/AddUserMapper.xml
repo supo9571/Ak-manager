@@ -13,9 +13,9 @@
             round(SUM(userRechargeMoney),2) as userRechargeMoney,
             round(SUM(userExchangeMoney),2) as  userExchangeMoney,
             round(SUM(userRechargeMoney) / COUNT(uid),2) as addArpu,
-            SUM(userSumBet) as userSumBet,
-            SUM(userReward) as userReward,
-            SUM(userSumBet) - SUM(userReward) as consumption
+            round(SUM(userSumBet),2) as userSumBet,
+            round(SUM(userReward),2) as userReward,
+            round(SUM(userSumBet) - SUM(userReward),2) as consumption
             from
             (
                 SELECT

@@ -5,6 +5,8 @@ import com.manager.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * 新增用户
  * @author sieGuang 2021/10/08
@@ -32,6 +34,20 @@ public class AddUser extends BaseEntity {
     @Excel(name = "注册玩牌率")
     @ApiModelProperty("注册玩牌率")
     private double cardPlayingRate;
+
+    public double getCardPlayingRate() {
+        return cardPlayingRate;
+    }
+
+    public void setCardPlayingRate(double cardPlayingRate) {
+        // 保留两位小数
+        if(cardPlayingRate != 0){
+            BigDecimal b = new BigDecimal(cardPlayingRate);
+            this.cardPlayingRate = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }else{
+            this.cardPlayingRate = cardPlayingRate;
+        }
+    }
 
     @Excel(name = "新增付费用户数")
     @ApiModelProperty("新增付费用户数")
