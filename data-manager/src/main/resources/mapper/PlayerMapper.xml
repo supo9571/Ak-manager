@@ -19,12 +19,12 @@
         total_red totalRed,total_give totalGive,count_add countAdd,
         total_win totalWin,total_water totalWater,
         (
-        SELECT cro.recharge_amount from config_recharge_order cro where cro.uid = uid
+        SELECT cro.recharge_amount as oneRecharge from config_recharge_order cro where cro.uid = uid
             and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4' or cro.operate_type is null)
             order by finish_time asc limit 1
         ) as oneRecharge,
         (
-            SELECT st.t_name from sys_tenant st where st.t_type = '1' and
+            SELECT st.t_name as sumChannel from sys_tenant st where st.t_type = '1' and
                 st.t_id = (SELECT st.parent_id from sys_tenant st where st.t_id = 10001 limit 1) limit 1
         ) as sumChannel
         from data_register
