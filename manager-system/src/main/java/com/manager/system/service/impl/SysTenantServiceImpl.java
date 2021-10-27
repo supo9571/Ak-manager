@@ -1,5 +1,6 @@
 package com.manager.system.service.impl;
 
+import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.StringUtils;
 import com.manager.system.mapper.SysTenantMapper;
 import com.manager.system.service.SysTenantService;
@@ -24,7 +25,7 @@ public class SysTenantServiceImpl implements SysTenantService {
 
     @Override
     public List selectAllTenant() {
-        return sysTenantMapper.selectAllTenant();
+        return sysTenantMapper.selectAllTenant(SecurityUtils.getUserId());
     }
 
     @Override

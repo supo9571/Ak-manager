@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.mapper.GameMapper;
 import com.data.service.GameService;
-import com.manager.common.core.domain.entity.SysDept;
 import com.manager.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +78,7 @@ public class GameServiceImpl implements GameService {
             if (!tempList.contains(map.get("parentId"))) {
                 recursionFn(list, map);
                 returnList.add(map);
+                return returnList;
             }
         }
         return returnList;
@@ -101,12 +101,12 @@ public class GameServiceImpl implements GameService {
     /**
      * 得到子节点列表
      */
-    private List getChildList(List<SysDept> list, Map t) {
-        List tlist = new ArrayList<SysDept>();
+    private List getChildList(List list, Map t) {
+        List tlist = new ArrayList();
         Iterator it = list.iterator();
         while (it.hasNext()) {
             Map n = (Map) it.next();
-            if (StringUtils.isNotNull(n.get("parentId")) && n.get("parentId") == t.get("gameType")) {
+            if (n.get("parentId").equals(t.get("gameType"))) {
                 tlist.add(n);
             }
         }
