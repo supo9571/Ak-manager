@@ -17,7 +17,7 @@ import java.util.Map;
 @Mapper
 public interface PlayerMapper {
 
-    List selectPlayer(PlayUser playUser);
+    List<PlayUser> selectPlayer(PlayUser playUser);
 
     @Select("select curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
     List<Map> selectPlayerCurr(@Param("uid") Long uid);
