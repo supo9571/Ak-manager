@@ -51,7 +51,7 @@
 
     <select id="selectCoinsCount" resultType="java.lang.Long"
             parameterType="com.manager.common.core.domain.model.Coins">
-        select sum(c.curr)/10000 countCurr
+        select sum(c.value)/10000 countCurr
         from data_coins c
         left join config_game g on c.game_type = g.game_id
         <where>
