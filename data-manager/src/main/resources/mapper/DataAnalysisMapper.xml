@@ -342,7 +342,7 @@
             and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         </if>
         <if test="currentUserId!=null and currentUserId!=''">
-            and ac.channel IN (
+            and     channel IN (
             SELECT t.t_id FROM sys_tenant t
             WHERE t.t_type = '2'
             AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId}))
