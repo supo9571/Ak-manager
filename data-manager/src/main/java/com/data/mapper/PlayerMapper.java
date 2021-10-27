@@ -19,6 +19,10 @@ public interface PlayerMapper {
 
     List<PlayUser> selectPlayer(PlayUser playUser);
 
+    String getOneRecharge(@Param("uid") String uid);
+
+    String getSumChannel(@Param("channel") String channel);
+
     @Select("select curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
     List<Map> selectPlayerCurr(@Param("uid") Long uid);
 
