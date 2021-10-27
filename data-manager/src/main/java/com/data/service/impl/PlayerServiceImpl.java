@@ -32,7 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
         List<PlayUser> list = playerMapper.selectPlayer(playUser);
         list.forEach(playUser1 -> {
             playUser1.setOneRecharge(playerMapper.getOneRecharge(playUser1.getUid()));
-            playUser1.setOneRecharge(playerMapper.getSumChannel(playUser1.getChannel()));
+            playUser1.setSumChannel(playerMapper.getSumChannel(playUser1.getChannel()));
         });
         return list;
     }
