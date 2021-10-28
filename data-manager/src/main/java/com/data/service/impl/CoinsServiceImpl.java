@@ -6,6 +6,7 @@ import com.manager.common.core.domain.model.Coins;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class CoinsServiceImpl implements CoinsService {
     }
 
     @Override
-    public Long selectCoinsCount(Coins coins) {
+    public BigDecimal selectCoinsCount(Coins coins) {
         return coinsMapper.selectCoinsCount(coins);
     }
 }

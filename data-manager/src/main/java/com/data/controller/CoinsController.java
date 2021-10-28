@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class CoinsController extends BaseController {
         startPage(coins.getPage(), coins.getSize(), coins.getOrderByColumn(), coins.getIsAsc());
         List list = coinsService.selectCoins(coins);
         //计算总计
-        Long count = coinsService.selectCoinsCount(coins);
+        BigDecimal count = coinsService.selectCoinsCount(coins);
         Map result = new HashMap();
         result.put("list", getDataTable(list));
         result.put("count", count);

@@ -49,7 +49,7 @@
         </where>
     </select>
 
-    <select id="selectCoinsCount" resultType="java.lang.Long"
+    <select id="selectCoinsCount" resultType="java.math.BigDecimal"
             parameterType="com.manager.common.core.domain.model.Coins">
         select sum(c.value)/10000 countCurr
         from data_coins c

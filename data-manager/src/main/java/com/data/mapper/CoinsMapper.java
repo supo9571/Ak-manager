@@ -3,6 +3,7 @@ package com.data.mapper;
 import com.manager.common.core.domain.model.Coins;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ public interface CoinsMapper {
 
     List<Coins> selectCoins(Coins coins);
 
-    Long selectCoinsCount(Coins coins);
+    BigDecimal selectCoinsCount(Coins coins);
 }

@@ -2,6 +2,7 @@ package com.data.service;
 
 import com.manager.common.core.domain.model.Coins;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,5 +11,5 @@ import java.util.List;
 public interface CoinsService {
     List selectCoins(Coins coins);
 
-    Long selectCoinsCount(Coins coins);
+    BigDecimal selectCoinsCount(Coins coins);
 }
