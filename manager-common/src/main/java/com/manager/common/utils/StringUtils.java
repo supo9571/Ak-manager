@@ -474,7 +474,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
                 Object v = entry.getValue();
                 String k = entry.getKey();
-                if (v instanceof String || v instanceof Integer || v instanceof Boolean) {
+                if (v instanceof String || v instanceof Integer || v instanceof Long || v instanceof Boolean) {
                     if (StringUtils.isNumeric(k)) {
                         sb.append("[".concat(entry.getKey()).concat("]"));
                     } else {
