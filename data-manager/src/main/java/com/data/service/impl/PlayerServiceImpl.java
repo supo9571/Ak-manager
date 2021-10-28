@@ -29,7 +29,12 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List selectPlayer(PlayUser playUser) {
-        return playerMapper.selectPlayer(playUser);
+        List<PlayUser> list = playerMapper.selectPlayer(playUser);
+        list.forEach(playUser1 -> {
+            playUser1.setOneRecharge(playerMapper.getOneRecharge(playUser1.getUid()));
+            playUser1.setSumChannel(playerMapper.getSumChannel(playUser1.getChannel()));
+        });
+        return list;
     }
 
     @Override
