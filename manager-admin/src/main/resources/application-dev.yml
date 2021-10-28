@@ -106,6 +106,8 @@ manager:
   domain: http://18.142.67.104:6661
   #发送游戏相关配置
   gameSend: /upload
+  #操作金币
+  changeCoins: /gm
 
 # 开发环境配置
 server:

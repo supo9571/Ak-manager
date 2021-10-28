@@ -22,6 +22,8 @@ public class ManagerConfig {
 
     private String gameSend;
 
+    //操作金币
+    private String changeCoins;
     /**
      * 版本
      */
