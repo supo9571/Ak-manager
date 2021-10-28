@@ -38,7 +38,7 @@ public class PlayerController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:player:list')")
     @ApiOperation(value = "查询玩家列表")
     @GetMapping("/list")
-    public AjaxResult list(PlayUser playUser) {
+    public AjaxResult list(@RequestBody PlayUser playUser) {
         return dataService.getPlayers(playUser);
     }
 
@@ -59,7 +59,7 @@ public class PlayerController extends BaseController {
     @ApiOperation(value = "修改基础信息")
     @Log(title = "修改玩家基础信息", businessType = BusinessType.UPDATE)
     @GetMapping("/edit")
-    public AjaxResult edit(PlayUser playUser) {
+    public AjaxResult edit(@RequestBody PlayUser playUser) {
         return dataService.updatePlayer(playUser);
     }
 
