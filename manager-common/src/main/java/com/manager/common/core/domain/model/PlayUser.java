@@ -107,4 +107,12 @@ public class PlayUser extends BaseEntity {
 
     @ApiModelProperty("归属总代")
     private String sumChannel;
+
+    @ApiModelProperty("支付宝")
+    private String alipay;
+
+    @ApiModelProperty("银行卡")
+    private String bankCard;
+
+    private Integer page2;
 }

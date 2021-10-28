@@ -12,7 +12,7 @@ import java.util.Map;
  * @author marvin 2021/8/20
  */
 public interface PlayerService {
-    List selectPlayer(PlayUser playUser);
+    Map selectPlayer(PlayUser playUser);
 
     List selectPlayerCurr(Long uid);
 

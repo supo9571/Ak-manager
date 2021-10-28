@@ -17,11 +17,17 @@ import java.util.Map;
 @Mapper
 public interface PlayerMapper {
 
-    List<PlayUser> selectPlayer(PlayUser playUser);
+    List<PlayUser> selectPlayer(@Param("playUser") PlayUser playUser,@Param("count") String count);
 
     String getOneRecharge(@Param("uid") String uid);
 
     String getSumChannel(@Param("channel") String channel);
+
+    /**
+     * type 支付宝：0 银行卡：1
+     */
+    @Select("SELECT uid from user_exchange ue where ue.account = #{value} and ue.type = #{type}")
+    List<String> getAlipayOrBankCard(@Param("value") String value,@Param("type") Integer type);
 
     @Select("select curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
     List<Map> selectPlayerCurr(@Param("uid") Long uid);
@@ -31,7 +37,7 @@ public interface PlayerMapper {
     @Select("select phone from data_register where uid = #{uid}")
     String getPhone(@Param("uid") Long uid);
 
-    @Select("select name,account from user_exchange where uid = #{uid} and type='0' ")
+    @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='0' ")
     Map getBankInfo(@Param("uid") Long uid);
 
     @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='1' ")

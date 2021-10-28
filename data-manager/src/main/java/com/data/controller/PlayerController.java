@@ -32,9 +32,8 @@ public class PlayerController extends BaseController {
 
     @PostMapping("/list")
     public AjaxResult list(@RequestBody PlayUser playUser) {
-        startPage(playUser.getPage(), playUser.getSize(), playUser.getOrderByColumn(), playUser.getIsAsc());
-        List list = playerService.selectPlayer(playUser);
-        return AjaxResult.success(getDataTable(list));
+        playUser.setPage2(getHandlePage(playUser.getPage(),playUser.getSize()));
+        return AjaxResult.success("查询成功", playerService.selectPlayer(playUser));
     }
 
     @PostMapping("/curr")

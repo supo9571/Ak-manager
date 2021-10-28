@@ -20,34 +20,38 @@
         total_win totalWin,total_water totalWater
         from data_register
         <where>
-            <if test="uid!=null and uid !=''">
+            <if test="playUser.uid!=null and playUser.uid !=''">
                 and uid in
-                <foreach item="item" index="index" collection="uid.split(',')" open="(" separator="," close=")">
+                <foreach item="item" index="index" collection="playUser.uid.split(',')" open="(" separator="," close=")">
                     '${item}'
                 </foreach>
             </if>
-            <if test="name!=null and name !=''">
-                and name = #{name}
+            <if test="playUser.name!=null and playUser.name !=''">
+                and name = #{playUser.name}
             </if>
-            <if test="registerIp!=null and registerIp !=''">
-                and register_ip = #{registerIp}
+            <if test="playUser.registerIp!=null and playUser.registerIp !=''">
+                and register_ip = #{playUser.registerIp}
             </if>
-            <if test="registerMachine!=null and registerMachine !=''">
-                and register_machine = #{registerMachine}
+            <if test="playUser.registerMachine!=null and playUser.registerMachine !=''">
+                and register_machine = #{playUser.registerMachine}
             </if>
-            <if test="beginTime!=null and beginTime !=''">
-                and time >= UNIX_TIMESTAMP(#{beginTime})
+            <if test="playUser.beginTime!=null and playUser.beginTime !=''">
+                and time >= UNIX_TIMESTAMP(#{playUser.beginTime})
             </if>
-            <if test="endTime!=null and endTime !=''">
-                and UNIX_TIMESTAMP(#{endTime}) >= time
+            <if test="playUser.endTime!=null and playUser.endTime !=''">
+                and UNIX_TIMESTAMP(#{playUser.endTime}) >= time
             </if>
-            <if test="tid!=null and tid !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            <if test="playUser.tid!=null and playUser.tid !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{playUser.tid}, '%'))
             </if>
-            <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+            <if test="playUser.tenant!=null and playUser.tenant !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{playUser.tenant} )
             </if>
         </where>
+        order by time DESC
+        <if test="count != 'count'">
+            LIMIT #{playUser.page2},#{playUser.size}
+        </if>
     </select>
 
     <select id="getOneRecharge" resultType="String">

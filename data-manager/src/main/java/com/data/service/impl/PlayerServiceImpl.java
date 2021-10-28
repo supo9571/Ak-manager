@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author marvin 2021/8/20
@@ -28,12 +28,44 @@ public class PlayerServiceImpl implements PlayerService {
     private PlayerMapper playerMapper;
 
     @Override
-    public List selectPlayer(PlayUser playUser) {
-        List<PlayUser> list = playerMapper.selectPlayer(playUser);
+    public Map selectPlayer(PlayUser playUser) {
+        // 放回参数
+        Map result = new HashMap();
+        List<PlayUser> list = playerMapper.selectPlayer(playUser,null);
+        List<PlayUser> listCount = playerMapper.selectPlayer(playUser,"count");
+
+        // 增加 首充金额和归属总代 字段
         list.forEach(playUser1 -> {
             playUser1.setOneRecharge(playerMapper.getOneRecharge(playUser1.getUid()));
             playUser1.setSumChannel(playerMapper.getSumChannel(playUser1.getChannel()));
         });
+
+        list = filter(playUser, list);
+        listCount = filter(playUser, listCount);
+
+        result.put("data",list);
+        result.put("page",playUser.getPage());
+        result.put("size",playUser.getSize());
+        result.put("total",listCount.size());
+        return result;
+    }
+
+    // 根据页面的筛选条件过滤数据
+    private List<PlayUser> filter(PlayUser playUser, List<PlayUser> list) {
+        if(list !=null && !list.isEmpty()){
+            String alipay = playUser.getAlipay();
+            String bankCard = playUser.getBankCard();
+            // 过滤支付宝
+            if(alipay != null && !"".equals(alipay)){
+                List<String> alipayUid = playerMapper.getAlipayOrBankCard(alipay,0);
+                list = list.stream().filter(f -> alipayUid.contains(f.getUid())).collect(Collectors.toList());
+            }
+            // 过滤银行卡
+            if(bankCard != null && !"".equals(bankCard)){
+                List<String> bankCardUid = playerMapper.getAlipayOrBankCard(bankCard,1);
+                list = list.stream().filter(f -> bankCardUid.contains(f.getUid())).collect(Collectors.toList());
+            }
+        }
         return list;
     }
 
