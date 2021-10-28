@@ -83,12 +83,12 @@
     </select>
 
     <update id="updatePlayer" parameterType="com.manager.common.core.domain.model.PlayUser">
-        update data_register
+        update data_user
         <set>
             <if test="phone != null and phone != ''">phone = #{phone},</if>
             <if test="password != null and password != ''">password = #{password},</if>
         </set>
-        where uid = #{uid}
+        where account_id = (select account_id from data_register where uid = #{uid} limit 1)
     </update>
 
     <update id="updateBank">
