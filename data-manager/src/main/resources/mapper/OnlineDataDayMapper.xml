@@ -109,16 +109,16 @@
                     and dod.table_type = #{odd.gameId}
                 </if>
                 group by
-                    dod.day,
-                    dod.create_time
+                    day,
+                    create_time
             ) t
         where 1 = 1
         <choose>
             <when test="day == 1">
-                t.day = date_format(now(),'%Y-%m-%d')
+                and day = date_format(now(),'%Y-%m-%d')
             </when>
             <when test="day == 2">
-                t.day = date_format(DATE_SUB(now(), interval 1 day),'%Y-%m-%d')
+                and day = date_format(DATE_SUB(now(), interval 1 day),'%Y-%m-%d')
             </when>
         </choose>
     </select>

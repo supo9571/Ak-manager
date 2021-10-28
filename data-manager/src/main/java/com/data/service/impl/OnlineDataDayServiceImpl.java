@@ -76,6 +76,5 @@ public class OnlineDataDayServiceImpl implements OnlineDataDayService {
         result.put("historyAvgNum",historyAvgNum);
         return result;
     }
-
 }
 
