@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.data.mapper.TenantMapper;
 import com.data.mapper.UserMapper;
 import com.data.service.UserService;
 import com.manager.common.core.domain.entity.DataUser;
@@ -64,6 +65,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map becomeAgent(String accountId) {
         return userMapper.becomeAgent(accountId);
+    }
+
+    @Autowired
+    private TenantMapper tenantMapper;
+
+    @Override
+    public int checkBlack(String uid, String matchineId, String ip,String channel) {
+        Integer tid = tenantMapper.getTidByCid(channel);
+        //查询是否 符合黑名单
+        Map blackMap = userMapper.checkBlack(uid,matchineId,ip);
+        if(blackMap!=null){
+            userMapper.saveBlackInfo(tid,uid,blackMap.get("blackType"),blackMap.get("blackNum"),blackMap.get("handleType"));
+            if(1 ==(Integer) blackMap.get("handleType")){//预警
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+        return 0;
     }
 
 }

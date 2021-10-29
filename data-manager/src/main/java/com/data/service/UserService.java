@@ -28,4 +28,6 @@ public interface UserService {
     Map selectLock(String uid);
 
     Map becomeAgent(String accountId);
+
+    int checkBlack(String uid, String matchineId, String ip,String channel);
 }

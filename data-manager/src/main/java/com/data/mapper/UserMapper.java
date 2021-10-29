@@ -41,4 +41,8 @@ public interface UserMapper {
     @Select("SELECT u.phone,u.package_channel channel,r.register_ip,device_id dev_code FROM data_user u LEFT JOIN data_register r " +
             "ON r.account_id = u.account_id WHERE u.account_id = #{accountId} ")
     Map becomeAgent(@Param("accountId")String accountId);
+
+    Map checkBlack(@Param("uid")String uid,@Param("matchineId") String matchineId,@Param("ip") String ip);
+
+    void saveBlackInfo(@Param("tid")Integer tid, @Param("uid")String uid,@Param("blackType") Object blackType,@Param("blackNum") Object blackNum,@Param("handleType") Object handleType);
 }

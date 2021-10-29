@@ -207,6 +207,9 @@ public class UserController extends BaseController {
     @PostMapping("/user/forbidden")
     public JSONObject forbidden(@RequestBody JSONObject param) {
         String uid = param.getString("uid");
+        String matchineId = param.getString("device_id");
+        String ip = param.getString("ip");
+        String channel = param.getString("channel");
         JSONObject relust = new JSONObject();
         Map map = userService.selectLock(uid);
         if(map!=null){
@@ -214,7 +217,15 @@ public class UserController extends BaseController {
             relust.put("reason",map.get("lockMark"));
             relust.put("end_time",map.get("endTime"));
         }else {
-            relust.put("is_forbidden",false);
+            //查询黑名单策略
+            int i = userService.checkBlack(uid,matchineId,ip,channel);
+            if(i>0){
+                relust.put("is_forbidden",true);
+                relust.put("reason","黑名单");
+                relust.put("end_time","");
+            }else {
+                relust.put("is_forbidden",false);
+            }
         }
         return relust;
     }

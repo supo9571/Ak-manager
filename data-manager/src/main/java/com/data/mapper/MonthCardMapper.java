@@ -73,5 +73,5 @@ public interface MonthCardMapper {
 
     Map checkBlack(ExchangeOrder exchangeOrder);
 
-    void saveBlackInfo(Integer tid, String uid, Object blackType, Object blackNum);
+    void saveBlackInfo(@Param("tid")Integer tid, @Param("uid")String uid,@Param("blackType") Object blackType,@Param("blackNum") Object blackNum);
 }
