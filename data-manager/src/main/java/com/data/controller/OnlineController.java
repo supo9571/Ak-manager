@@ -1,8 +1,11 @@
 package com.data.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.service.OnlineService;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.OnlinePlayer;
+import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,5 +32,27 @@ public class OnlineController extends BaseController {
         startPage(onlinePlayer.getPage(), onlinePlayer.getSize(), onlinePlayer.getOrderByColumn(), onlinePlayer.getIsAsc());
         List list = onlineService.selectOnline(onlinePlayer);
         return AjaxResult.success("查询成功", getDataTable(list));
+    }
+
+    @Autowired
+    private GlobalConfig globalConfig;
+    /**
+     * 下线
+     */
+    @PostMapping("/forbidden")
+    public AjaxResult forbidden(Long uid) {
+        JSONObject param = new JSONObject();
+        param.put("cmd", "forbidden");//"addcoins"=加金币 “reducecoins”=减金币 “forbidden”=踢人
+        param.put("reason", "");
+        param.put("uid", uid);
+        //操作 用户金币
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                "data=" + param.toJSONString());
+        JSONObject resultJson = JSONObject.parseObject(result);
+        if (resultJson != null && resultJson.getInteger("code") == 0) {
+            //返回操作后金额
+            return AjaxResult.success("操作成功");
+        }
+        return AjaxResult.error();
     }
 }
