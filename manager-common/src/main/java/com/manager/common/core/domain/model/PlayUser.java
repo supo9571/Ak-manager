@@ -114,5 +114,8 @@ public class PlayUser extends BaseEntity {
     @ApiModelProperty("银行卡")
     private String bankCard;
 
+    @ApiModelProperty("携带余额")
+    private String curr;
+
     private Integer page2;
 }
