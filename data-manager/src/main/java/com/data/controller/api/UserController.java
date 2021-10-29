@@ -7,7 +7,6 @@ import com.data.controller.BaseController;
 import com.data.service.UserService;
 import com.data.utils.RequestUtils;
 import com.data.utils.Verification;
-import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.entity.DataUser;
 import com.manager.common.core.domain.entity.ResponeSms;
 import com.manager.common.utils.uuid.IdUtils;
@@ -16,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -33,9 +31,6 @@ public class UserController extends BaseController {
 
     @Autowired
     private RedisCache redisCache;
-
-    @Autowired
-    private RequestUtils requestUtils;
 
     @Autowired
     private GlobalConfig globalConfig;
@@ -141,26 +136,6 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 登录接口
-     *
-     * @param dataUser
-     * @return
-     */
-    @PostMapping("/user/login")
-    public AjaxResult login(DataUser dataUser) {
-        String pwd = DigestUtils.md5Hex(dataUser.getPassword());
-        dataUser.setPassword(pwd);
-        int n = userService.loadDataUserName(dataUser);
-        if (n > 0) {
-            String str = requestUtils.getMD5Str(dataUser);
-            Map map = new HashMap();
-            map.put("token", str);
-            return AjaxResult.success(map);
-        }
-        return AjaxResult.error("登录失败");
-    }
-
-    /**
      * 权限校验
      *
      * @return
@@ -206,13 +181,13 @@ public class UserController extends BaseController {
                 //查询游客 之前是否登录过
                 DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
                 if (user != null) {
-                    redisCache.setCacheObject(token, user.getAccountId(), 15, TimeUnit.DAYS);
+                    redisCache.setCacheObject("tourist."+token, user.getAccountId(), 15, TimeUnit.DAYS);
                     relust.put("code", 0);
                     relust.put("account_id", user.getAccountId());
                 } else {
                     int n = userService.insertToDataUser(dataUser);
                     if (n > 0) {
-                        redisCache.setCacheObject(token, dataUser.getAccountId(), 15, TimeUnit.DAYS);
+                        redisCache.setCacheObject("tourist."+token, dataUser.getAccountId(), 15, TimeUnit.DAYS);
                         relust.put("code", 0);
                         relust.put("account_id", dataUser.getAccountId());
                     } else {
@@ -259,7 +234,7 @@ public class UserController extends BaseController {
 
     private String setToken(Long accountId) {
         String token = IdUtils.fastSimpleUUID();
-        redisCache.setCacheObject(token, accountId, 15, TimeUnit.DAYS);
+        redisCache.setCacheObject("phone."+token, accountId, 15, TimeUnit.DAYS);
         return token;
     }
 }

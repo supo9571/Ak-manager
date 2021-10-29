@@ -59,6 +59,9 @@ public class ExchangeOrder {
     //申请时间
     private Date createTime;
 
+    //申请时间
+    private String matchineId;
+
     public ExchangeOrder() {
     }
 

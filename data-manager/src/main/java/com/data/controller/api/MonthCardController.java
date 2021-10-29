@@ -123,6 +123,7 @@ public class MonthCardController extends BaseController {
         String type = param.getString("type");
         Long currentAmount = param.getLong("currentAmount");
         Long withdrawAmount = param.getLong("withdrawAmount");
+        String matchineId = param.getString("matchineId"); // 机器码
         JSONObject result = new JSONObject();
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
@@ -130,6 +131,7 @@ public class MonthCardController extends BaseController {
         //添加 提现记录
         ExchangeOrder exchangeOrder = new ExchangeOrder(uid, new BigDecimal(withdrawAmount).divide(new BigDecimal(10000)),
                 new BigDecimal(currentAmount).divide(new BigDecimal(10000)), channel, ip, type);
+        exchangeOrder.setMatchineId(matchineId);
         Integer i = monthCardService.saveWithdraw(exchangeOrder);
         if (i > 0) {
             result.put("code", "200");

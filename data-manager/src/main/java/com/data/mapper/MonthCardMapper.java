@@ -70,4 +70,8 @@ public interface MonthCardMapper {
 
     @Select("select poundage from config_exchange where tid = #{tid} and method = #{type} ")
     Integer getPoundage(@Param("type") String type, @Param("tid") Integer tid);
+
+    Map checkBlack(ExchangeOrder exchangeOrder);
+
+    void saveBlackInfo(Integer tid, String uid, Object blackType, Object blackNum);
 }

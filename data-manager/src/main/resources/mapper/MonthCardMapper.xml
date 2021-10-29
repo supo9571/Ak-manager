@@ -14,4 +14,20 @@
                 #{registerIp}, #{withdrawType}, #{exaaStatus}, sysdate())
     </insert>
 
+    <select id="checkBlack" resultType="java.util.Map">
+        SELECT black_type blackType,
+               black_num blackNum
+        FROM sys_black
+        WHERE (black_type ='1'  AND black_num LIKE CONCAT('%',#{withdrawIp},'%'))
+           OR (black_type ='2'  AND black_num LIKE CONCAT('%',(select account from user_exchange where uid = #{uid} and type='0'),'%'))
+           OR (black_type ='3'  AND black_num LIKE CONCAT('%',(select account from user_exchange where uid = #{uid} and type='1'),'%'))
+           OR (black_type ='4'  AND black_num LIKE CONCAT('%',#{matchineId},'%'))
+           and handle_type = '2'
+        limit 0,1
+    </select>
+
+    <insert id="saveBlackInfo">
+        insert into sys_black_info(uid, tid, black_type, black_num, handle_type)
+        values (#{uid}, #{tid}, #{blackType}, #{blackNum}, 2)
+    </insert>
 </mapper>

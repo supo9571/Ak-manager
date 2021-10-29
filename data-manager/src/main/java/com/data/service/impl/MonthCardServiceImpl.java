@@ -120,6 +120,12 @@ public class MonthCardServiceImpl implements MonthCardService {
         } else {
             exchangeOrder.setWithdrawType("1");
         }
+
+        //查询是否 符合黑名单
+        Map blackMap = monthCardMapper.checkBlack(exchangeOrder);
+        if(blackMap!=null){//符合黑名单策略
+            monthCardMapper.saveBlackInfo(tid,exchangeOrder.getUid(),blackMap.get("blackType"),blackMap.get("blackNum"));
+        }
         Map map = monthCardMapper.findUserByid(exchangeOrder.getUid());
         BigDecimal b = new BigDecimal(10000);
         exchangeOrder.setAccumulateWater(new BigDecimal((Long) map.get("totalWater")).divide(b));//累计流水
