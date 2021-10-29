@@ -37,7 +37,8 @@ public class ActivityReportController extends BaseController {
      */
     @PostMapping("/day")
     public AjaxResult day(@RequestBody Activity activity) {
+        startPage(activity.getPage(), activity.getSize(), activity.getOrderByColumn(), activity.getIsAsc());
         List list = activityReportService.selectActivityDay(activity);
-        return AjaxResult.success("查询成功", list);
+        return AjaxResult.success("查询成功", getDataTable(list));
     }
 }
