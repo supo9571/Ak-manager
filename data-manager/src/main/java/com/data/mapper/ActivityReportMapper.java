@@ -1,6 +1,5 @@
 package com.data.mapper;
 
-import com.manager.common.core.domain.entity.Activity;
 import com.manager.common.core.domain.model.Coins;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,6 +17,4 @@ public interface ActivityReportMapper {
      */
     List selectActivityList(Coins coins);
 
-
-    List selectActivityDay(Activity activity);
 }
