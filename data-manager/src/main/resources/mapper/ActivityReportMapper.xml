@@ -24,15 +24,18 @@
     </select>
 
     <select id="selectActivityDay" resultType="java.util.Map" parameterType="com.manager.common.core.domain.entity.Activity">
-        SELECT
-            DATE_FORMAT(FROM_UNIXTIME(TIME), '%Y-%m-%d'),
-            SUM(VALUE),
+        SELECT DATE_FORMAT(FROM_UNIXTIME(TIME), '%Y-%m-%d') day,
+            SUM(VALUE)/10000 value,
             COUNT(DISTINCT uid) nums
-        FROM data_coins
-        WHERE r = ${activityType}
-        <if test="beginTime!=null and beginTime !=''">
-            and  mstime between #{beginms} and #{endms}
-        </if>
+            FROM data_coins
+            WHERE r in
+            <foreach item="item" index="index" collection="activityType.split(',')" open="(" separator="," close=")">
+                '${item}'
+            </foreach>
+            <if test="beginTime!=null and beginTime !=''">
+                and mstime between #{beginms} and #{endms}
+            </if>
+            and channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tenant} AND t_type = '2')
         GROUP BY DATE_FORMAT(FROM_UNIXTIME(TIME), '%Y-%m-%d')
     </select>
 
