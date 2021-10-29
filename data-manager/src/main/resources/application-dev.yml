@@ -63,7 +63,7 @@ global-config:
   profile: /home/manager/package/apk
   #游戏服 地址
   domain: http://18.142.67.104:6661
-  #  domain: http://10.39.1.88:6661
+#  domain: http://10.39.1.88:6661
   #发送游戏配置
   gameSend: /upload
 
