@@ -6,8 +6,8 @@
     <select id="selectOnline" resultType="java.util.Map"
             parameterType="com.manager.common.core.domain.model.OnlinePlayer">
         select o.uid,o.name,g.game_name gameName,
-        o.coins,r.safe_box safeBox,r.today_add todayAdd,
-        r.today_red todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
+        o.coins/10000 coins,r.safe_box/10000 safeBox,r.today_add/10000 todayAdd,
+        r.today_red/10000 todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
         r.register_ip registerIp,r.login_ip loginIp,r.login_device_id loginDeviceId
         from data_online o
         left join data_register r on o.uid = r.uid
