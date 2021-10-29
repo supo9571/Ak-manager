@@ -117,6 +117,7 @@ public class InsertHandler {
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
                 if (!"true".equals(cardUser.getIsRobot())) {
+                    uid.append(cardUser.getUid() + ",");
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
                 }
@@ -130,7 +131,7 @@ public class InsertHandler {
                     }
                 }
                 betCoins += cardUser.getBetCoins();
-                uid.append(cardUser.getUid() + ",");
+
                 if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
                     channel = channel.concat(cardUser.getChannel()+",");
                 }
@@ -144,6 +145,7 @@ public class InsertHandler {
                 cardUser.setCardInfo(card);
                 list.add(cardUser);
                 if (!"true".equals(cardUser.getIsRobot())) {
+                    uid.append(cardUser.getUid() + ",");
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
                 }
@@ -157,7 +159,6 @@ public class InsertHandler {
                     }
                 }
                 betCoins += cardUser.getBetCoins();
-                uid.append(cardUser.getUid() + ",");
                 if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
                     channel = channel.concat(cardUser.getChannel()+",");
                 }
