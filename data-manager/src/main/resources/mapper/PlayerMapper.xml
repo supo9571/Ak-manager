@@ -15,9 +15,9 @@
         phone,safe_box safeBox,
         FROM_UNIXTIME(login_time) loginTime,
         today_add todayAdd,today_red todayRed,today_give todayGive,
-        today_water todayWater,today_win todayWin,total_add totalAdd,
+        today_water / 10000 todayWater,today_win todayWin,total_add totalAdd,
         total_red totalRed,total_give totalGive,count_add countAdd,
-        total_win totalWin,total_water totalWater
+        total_win totalWin,total_water / 10000 totalWater,curr / 10000 curr
         from data_register
         <where>
             <if test="playUser.uid!=null and playUser.uid !=''">
@@ -46,6 +46,12 @@
             </if>
             <if test="playUser.tenant!=null and playUser.tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{playUser.tenant} )
+            </if>
+            <if test="playUser.loginIp!=null and playUser.loginIp !=''">
+                and login_ip = #{playUser.loginIp}
+            </if>
+            <if test="playUser.loginDeviceId!=null and playUser.loginDeviceId !=''">
+                and login_device_id = #{playUser.loginDeviceId}
             </if>
         </where>
         order by time DESC
