@@ -23,6 +23,18 @@
         GROUP BY r_id,r_name
     </select>
 
+    <select id="selectActivityDay" resultType="java.util.Map" parameterType="com.manager.common.core.domain.entity.Activity">
+        SELECT
+            DATE_FORMAT(FROM_UNIXTIME(TIME), '%Y-%m-%d'),
+            SUM(VALUE),
+            COUNT(DISTINCT uid) nums
+        FROM data_coins
+        WHERE r = ${activityType}
+        <if test="beginTime!=null and beginTime !=''">
+            and  mstime between #{beginms} and #{endms}
+        </if>
+        GROUP BY DATE_FORMAT(FROM_UNIXTIME(TIME), '%Y-%m-%d')
+    </select>
 
 
 </mapper>

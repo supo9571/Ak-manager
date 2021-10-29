@@ -170,7 +170,7 @@ public class UserController extends BaseController {
             relust.put("desc", "签名不合法");
             return relust;
         }
-        String token = IdUtils.fastSimpleUUID();
+        String token = "tourist."+IdUtils.fastSimpleUUID();
         if (StringUtils.isBlank(dataUser.getPackage_channel()) || StringUtils.isBlank(dataUser.getSeed_token())) {
             relust.put("code", -1);
             relust.put("desc", "参数错误");
@@ -181,13 +181,13 @@ public class UserController extends BaseController {
                 //查询游客 之前是否登录过
                 DataUser user = userService.findUserBySeedToken(dataUser.getSeed_token());
                 if (user != null) {
-                    redisCache.setCacheObject("tourist."+token, user.getAccountId(), 15, TimeUnit.DAYS);
+                    redisCache.setCacheObject(token, user.getAccountId(), 10, TimeUnit.MINUTES);
                     relust.put("code", 0);
                     relust.put("account_id", user.getAccountId());
                 } else {
                     int n = userService.insertToDataUser(dataUser);
                     if (n > 0) {
-                        redisCache.setCacheObject("tourist."+token, dataUser.getAccountId(), 15, TimeUnit.DAYS);
+                        redisCache.setCacheObject(token, dataUser.getAccountId(), 10, TimeUnit.MINUTES);
                         relust.put("code", 0);
                         relust.put("account_id", dataUser.getAccountId());
                     } else {
@@ -244,8 +244,8 @@ public class UserController extends BaseController {
     }
 
     private String setToken(Long accountId) {
-        String token = IdUtils.fastSimpleUUID();
-        redisCache.setCacheObject("phone."+token, accountId, 15, TimeUnit.DAYS);
+        String token = "phone."+IdUtils.fastSimpleUUID();
+        redisCache.setCacheObject(token, accountId, 10, TimeUnit.MINUTES);
         return token;
     }
 }

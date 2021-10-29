@@ -2,6 +2,7 @@ package com.data.service.impl;
 
 import com.data.mapper.ActivityReportMapper;
 import com.data.service.ActivityReportService;
+import com.manager.common.core.domain.entity.Activity;
 import com.manager.common.core.domain.model.Coins;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,11 @@ public class ActivityReportServiceImpl implements ActivityReportService {
     @Override
     public List selectActivityList(Coins coins) {
         return mapper.selectActivityList(coins);
+    }
+
+    @Override
+    public List selectActivityDay(Activity activity) {
+        return mapper.selectActivityDay(activity);
     }
 
 

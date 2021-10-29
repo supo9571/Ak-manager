@@ -2,6 +2,7 @@ package com.data.controller;
 
 import com.data.service.ActivityReportService;
 import com.manager.common.core.domain.AjaxResult;
+import com.manager.common.core.domain.entity.Activity;
 import com.manager.common.core.domain.model.Coins;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,5 +32,12 @@ public class ActivityReportController extends BaseController {
         return AjaxResult.success("查询成功", list);
     }
 
-
+    /**
+     * 活动日报
+     */
+    @PostMapping("/day")
+    public AjaxResult day(@RequestBody Activity activity) {
+        List list = activityReportService.selectActivityDay(activity);
+        return AjaxResult.success("查询成功", list);
+    }
 }

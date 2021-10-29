@@ -40,7 +40,7 @@
                 bet_count betCount
         from data_total_day
         where day >= #{beginTime} and #{endTime} >= day
-        and channel = #{channel}
+        <if test="channel!=null and channel!=0"> and channel = #{channel}</if>
     </select>
 
     <select id="getLeft" resultType="java.util.Map">
