@@ -78,7 +78,7 @@
             (#{item.day},#{item.uid},#{item.teamNum},#{item.subNum},#{item.otherNum})
         </foreach>
         ON DUPLICATE KEY
-        team_num=values(team_num),
+        UPDATE team_num=values(team_num),
         sub_num=values(sub_num),
         other_num=values(other_num);
     </insert>
