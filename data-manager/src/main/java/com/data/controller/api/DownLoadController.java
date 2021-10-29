@@ -48,6 +48,7 @@ public class DownLoadController {
             String url = request.getRequestURI().replaceAll("/profile/hotpackage/", "");
             String filePath = globalConfig.getProfile() + "/hotpackage/" + url;
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            response.setHeader("Content-Length", new File(filePath).length() + "");
             FileUtils.setAttachmentResponseHeader(response, url);
             FileUtils.writeBytes(filePath, response.getOutputStream());
         } catch (Exception e) {
