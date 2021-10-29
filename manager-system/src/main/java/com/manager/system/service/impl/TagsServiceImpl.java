@@ -62,8 +62,7 @@ public class TagsServiceImpl implements TagsService {
             tagMap.put(map.get("id")+"",new JSONObject(map));
         });
         param.put("tag_list",new JSONObject(tagMap));
-        String resultStr = StringUtils.jsonToLua(param);
-        result.put("strategy_tags_config.lua", "return {" + resultStr + "}");
+        result.put("strategy_tags_config.json", param.toJSONString());
         return result.toJSONString();
     }
 }

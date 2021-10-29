@@ -41,8 +41,7 @@ public class PersonPropertyServiceImpl implements PersonPropertyService {
             propertyMap.put(map.get("property_id")+"",new JSONObject(map));
         });
         param.put("property_list",new JSONObject(propertyMap));
-        String resultStr = StringUtils.jsonToLua(param);
-        result.put("strategy_game_store.lua", "return {" + resultStr + "}");
+        result.put("strategy_game_store.json", param.toJSONString());
         return result.toJSONString();
     }
 }

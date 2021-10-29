@@ -37,10 +37,25 @@ public class PlatformStoreServiceImpl implements PlatformStoreService {
         JSONObject param = new JSONObject();
         List<Map> platformList = platformStoreMapper.getPlatformStrategyList();
         Map platformMap = new HashMap();
-        platformList.forEach(map -> platformMap.put(map.get("platform_id")+"",new JSONObject(map)));
+        platformList.forEach(map -> {
+            String person_store_list = (String) map.get("person_store_list");
+            String game_store_list = (String) map.get("game_store_list");
+            String[] s = person_store_list.replaceAll("\\[","").replaceAll("]","").split(",");
+            String[] g = game_store_list.replaceAll("\\[","").replaceAll("]","").split(",");
+            int[] ints = new int[s.length];
+            int[] intg = new int[g.length];
+            for (int i = 0; i < s.length; i++) {
+                ints[i] = Integer.valueOf(s[i]);
+            }
+            for (int i = 0; i < g.length; i++) {
+                intg[i] = Integer.valueOf(g[i]);
+            }
+            map.put("person_store_list",ints);
+            map.put("game_store_list",intg);
+            platformMap.put(map.get("platform_id")+"",new JSONObject(map));
+        });
         param.put("plateform_list",new JSONObject(platformMap));
-        String resultStr = StringUtils.jsonToLua(param);
-        result.put("strategy_platform_config.lua", "return {" + resultStr + "}");
+        result.put("strategy_platform_config.json", param.toJSONString());
         return result.toJSONString();
     }
 }

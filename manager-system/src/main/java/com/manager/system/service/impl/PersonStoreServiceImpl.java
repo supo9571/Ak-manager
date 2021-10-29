@@ -50,8 +50,7 @@ public class PersonStoreServiceImpl implements PersonStoreService {
             personMap.put(map.get("strategy_id")+"",new JSONObject(map));
         });
         param.put("strategy_list",new JSONObject(personMap));
-        String resultStr = StringUtils.jsonToLua(param);
-        result.put("strategy_person_store.lua", "return {" + resultStr + "}");
+        result.put("strategy_person_store.json", param.toJSONString());
         return result.toJSONString();
     }
 }

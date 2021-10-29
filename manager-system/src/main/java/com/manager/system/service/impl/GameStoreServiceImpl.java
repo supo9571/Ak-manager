@@ -55,8 +55,7 @@ public class GameStoreServiceImpl implements GameStoreService {
             strategyMap.put(map.get("strategy_id")+"",new JSONObject(map));
         });
         param.put("strategyList",new JSONObject(strategyMap));
-        String resultStr = StringUtils.jsonToLua(param);
-        result.put("strategy_game_store.lua", "return {" + resultStr + "}");
+        result.put("strategy_game_store.json", param.toJSONString());
         return result.toJSONString();
     }
 }
