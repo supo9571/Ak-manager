@@ -144,10 +144,10 @@
 
     <select id="waterInfo" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.PlayWater">
         select
-        c.curr,
+        c.curr/10000 curr,
         FROM_UNIXTIME(c.`time`) `time`,
-        c.`value`,
-        c.`before`,
+        c.`value`/10000 `value` ,
+        c.`before`/10000 `before`,
         c.game_type gameType,
         c.r
         from data_coins c
