@@ -52,37 +52,37 @@
         ) ceo ON dr.uid = ceo.uid
         <where>
             <if test="playUser.uid!=null and playUser.uid !=''">
-                and uid in
+                and dr.uid in
                 <foreach item="item" index="index" collection="playUser.uid.split(',')" open="(" separator="," close=")">
                     '${item}'
                 </foreach>
             </if>
             <if test="playUser.name!=null and playUser.name !=''">
-                and name = #{playUser.name}
+                and dr.name = #{playUser.name}
             </if>
             <if test="playUser.registerIp!=null and playUser.registerIp !=''">
-                and register_ip = #{playUser.registerIp}
+                and dr.register_ip = #{playUser.registerIp}
             </if>
             <if test="playUser.registerMachine!=null and playUser.registerMachine !=''">
-                and register_machine = #{playUser.registerMachine}
+                and dr.register_machine = #{playUser.registerMachine}
             </if>
             <if test="playUser.beginTime!=null and playUser.beginTime !=''">
-                and time >= UNIX_TIMESTAMP(#{playUser.beginTime})
+                and dr.time >= UNIX_TIMESTAMP(#{playUser.beginTime})
             </if>
             <if test="playUser.endTime!=null and playUser.endTime !=''">
                 and UNIX_TIMESTAMP(#{playUser.endTime}) >= time
             </if>
             <if test="playUser.tid!=null and playUser.tid !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{playUser.tid}, '%'))
+                and dr.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{playUser.tid}, '%'))
             </if>
             <if test="playUser.tenant!=null and playUser.tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{playUser.tenant} )
+                and dr.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{playUser.tenant} )
             </if>
             <if test="playUser.loginIp!=null and playUser.loginIp !=''">
-                and login_ip = #{playUser.loginIp}
+                and dr.login_ip = #{playUser.loginIp}
             </if>
             <if test="playUser.loginDeviceId!=null and playUser.loginDeviceId !=''">
-                and login_device_id = #{playUser.loginDeviceId}
+                and dr.login_device_id = #{playUser.loginDeviceId}
             </if>
         </where>
         order by time DESC
