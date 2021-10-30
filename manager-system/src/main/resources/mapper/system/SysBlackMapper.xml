@@ -25,13 +25,11 @@
             <if test="endTime !=null and endTime !=''">
                 and #{endTime} >=b.create_time
             </if>
-            <if test="blackType !=null and blackType !=''">
-                and b.black_type = #{blackType}
-            </if>
             <if test="handleType !=null and handleType !=''">
                 and b.handle_type = #{handleType}
             </if>
             <if test="blackNum !=null and blackNum !=''">
+                and b.black_type = #{blackType}
                 and b.black_num = #{blackNum}
             </if>
         </where>
