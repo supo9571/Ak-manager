@@ -35,7 +35,8 @@ public class DownLoadController {
                 String realPath = filePath.split("_")[0]+".apk";
                 String channel = filePath.split("_")[1].split(".a")[0];
                 String jarParh = globalConfig.getProfile() + "/walle-cli-all.jar";
-                Process process = Runtime.getRuntime().exec("java -jar "+jarParh+" put -c "+channel+" "+realPath);
+                Runtime.getRuntime().exec("sudo su");
+                Runtime.getRuntime().exec("java -jar "+jarParh+" put -c "+channel+" "+realPath);
             }
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setHeader("Content-Length", new File(filePath).length() + "");
