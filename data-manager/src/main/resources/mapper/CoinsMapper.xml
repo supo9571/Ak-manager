@@ -29,10 +29,8 @@
                 and substring(replace(c.key,'_',''),8) = #{key}
             </if>
             <if test="gameType!=null and gameType !=''">
-                and c.game_type in
-                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-                    '${item}'
-                </foreach>
+                and (c.game_type = #{gameType}
+                or c.table_type = #{gameType})
             </if>
             <if test="r!=null and r !=''">
                 and c.r in
@@ -65,7 +63,8 @@
                 </foreach>
             </if>
             <if test="gameType!=null and gameType !=''">
-                and c.game_type = #{gameType}
+                and (c.game_type = #{gameType}
+                or c.table_type = #{gameType})
             </if>
             <if test="tid!=null and tid !=''">
                 and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
