@@ -34,9 +34,9 @@ public class PlayerServiceImpl implements PlayerService {
         List<PlayUser> list = playerMapper.selectPlayer(playUser,null);
         List<PlayUser> listCount = playerMapper.selectPlayer(playUser,"count");
 
-        // 增加 首充金额和归属总代 字段
+        // 增加 归属总代字段
         list.forEach(playUser1 -> {
-            playUser1.setOneRecharge(playerMapper.getOneRecharge(playUser1.getUid()));
+            // playUser1.setOneRecharge(playerMapper.getOneRecharge(playUser1.getUid()));
             playUser1.setSumChannel(playerMapper.getSumChannel(playUser1.getChannel()));
         });
 
