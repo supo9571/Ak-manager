@@ -38,6 +38,7 @@ public class DownLoadController {
                 String javaParh = "/usr/local/java/jdk1.8.0_301/bin/java";
                 Runtime.getRuntime().exec(javaParh+" -jar "+jarParh+" put -c "+channel+" "+realPath);
             }
+            Thread.sleep(100);
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setHeader("Content-Length", new File(filePath).length() + "");
             FileUtils.setAttachmentResponseHeader(response, url);
