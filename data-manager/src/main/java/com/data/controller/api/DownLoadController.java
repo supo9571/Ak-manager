@@ -30,6 +30,13 @@ public class DownLoadController {
     public void downLoad(HttpServletResponse response, @PathVariable(value = "url", required = false) String url) {
         try {
             String filePath = globalConfig.getProfile() + "/" + url;
+            Long length = new File(filePath).length();
+            if(length<=0){
+                String realPath = filePath.split("_")[0]+".apk";
+                String channel = filePath.split("_")[1].split(".a")[0];
+                String jarParh = globalConfig.getProfile() + "/walle-cli-all.jar";
+                Process process = Runtime.getRuntime().exec("java -jar "+jarParh+" put -c "+channel+" "+realPath);
+            }
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setHeader("Content-Length", new File(filePath).length() + "");
             FileUtils.setAttachmentResponseHeader(response, url);

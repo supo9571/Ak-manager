@@ -57,6 +57,7 @@ public class HotUpdateController extends BaseController {
         //添加 整包更新信息
         String updateUrl = updateService.selectAllupdate(channelId, versionId);
         if (StringUtils.isNotBlank(updateUrl)) {
+            updateUrl.replaceAll(".apk","_"+channelId+".apk");
             JSONObject appupdate = new JSONObject();
             appupdate.put("update_url", globalConfig.getResourcesUrl() + updateUrl);
             data.put("appupdate", appupdate);
