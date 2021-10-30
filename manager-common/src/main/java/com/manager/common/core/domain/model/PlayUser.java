@@ -4,6 +4,8 @@ import com.manager.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author marvin 2021/8/17
  */
@@ -103,7 +105,7 @@ public class PlayUser extends BaseEntity {
     private String totalWater;
 
     @ApiModelProperty("首充金额")
-    private String oneRecharge;
+    private BigDecimal oneRecharge;
 
     @ApiModelProperty("归属总代")
     private String sumChannel;

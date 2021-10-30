@@ -5,20 +5,51 @@
 
     <select id="selectPlayer" resultType="com.manager.common.core.domain.model.PlayUser"
             parameterType="com.manager.common.core.domain.model.PlayUser">
-        select uid,name,FROM_UNIXTIME(time) time,channel,agent_id agentId,
-        device_id deviceId,register_ip registerIp,device_brand deviceBrand,
-        register_machine registerMachine,
-        login_ip loginIp,
-        login_device_id loginDeviceId,
-        login_device_brand loginDeviceBrand,
-        vip_level vipLevel,
-        phone,safe_box safeBox,
-        FROM_UNIXTIME(login_time) loginTime,
-        today_add todayAdd,today_red todayRed,today_give todayGive,
-        today_water / 10000 todayWater,today_win todayWin,total_add totalAdd,
-        total_red totalRed,total_give totalGive,count_add countAdd,
-        total_win totalWin,total_water / 10000 totalWater,curr / 10000 curr
-        from data_register
+        select dr.uid,
+            name,
+            FROM_UNIXTIME(time) time,
+            dr.channel,
+            agent_id agentId,
+            device_id deviceId,
+            register_ip registerIp,
+            device_brand deviceBrand,
+            register_machine registerMachine,
+            login_ip loginIp,
+            login_device_id loginDeviceId,
+            login_device_brand loginDeviceBrand,
+            vip_level vipLevel,
+            phone,
+            safe_box / 10000 safeBox,
+            FROM_UNIXTIME(login_time) loginTime,
+            today_red todayRed,
+            today_give todayGive,
+            today_water / 10000 todayWater,
+            today_win todayWin,
+            total_add totalAdd,
+            total_red totalRed,
+            total_give totalGive,
+            count_add countAdd,
+            total_win totalWin,
+            total_water / 10000 totalWater,
+            curr / 10000 curr,
+            cr.recharge_amount as oneRecharge,
+            cro.todayAdd,
+            ceo.todayRed
+        from data_register dr
+        LEFT JOIN (
+            SELECT * from config_recharge_order a where id in (SELECT min(id) FROM config_recharge_order b GROUP BY uid)
+            and (a.operate_type <![CDATA[<>]]> '3' and a.operate_type <![CDATA[<>]]> '4'or a.operate_type is null)
+        ) cr ON dr.uid = cr.uid
+        LEFT JOIN (
+            SELECT SUM(cro.recharge_amount) as todayAdd,cro.uid from config_recharge_order cro
+            where date_format(cro.finish_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+            and (cro.operate_type <![CDATA[<>]]> '3' and cro.operate_type <![CDATA[<>]]> '4'or cro.operate_type is null) GROUP BY uid
+        ) cro ON dr.uid = cro.uid
+        LEFT JOIN (
+            SELECT SUM(ceo.withdraw_money) as todayRed,ceo.uid from config_exchange_order ceo
+            where date_format(ceo.update_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+            and ceo.exaa_status = '5' GROUP BY uid
+        ) ceo ON dr.uid = ceo.uid
         <where>
             <if test="playUser.uid!=null and playUser.uid !=''">
                 and uid in
