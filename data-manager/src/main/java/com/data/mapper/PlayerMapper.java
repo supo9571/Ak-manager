@@ -29,7 +29,7 @@ public interface PlayerMapper {
     @Select("SELECT uid from user_exchange ue where ue.account = #{value} and ue.type = #{type}")
     List<String> getAlipayOrBankCard(@Param("value") String value,@Param("type") Integer type);
 
-    @Select("select curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
+    @Select("select curr/10000 curr,FROM_UNIXTIME(time) time from data_coins where uid = #{uid}")
     List<Map> selectPlayerCurr(@Param("uid") Long uid);
 
     Integer updatePlayer(PlayUser playUser);
