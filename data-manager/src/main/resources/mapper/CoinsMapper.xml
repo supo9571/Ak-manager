@@ -12,7 +12,7 @@
         c.`before`/10000 `before` ,c.channel,
         c.table_type tableType,
         c.device_brand deviceBrand,
-        c.game_type gameType,
+        if(c.game_type is null,0,c.game_type) gameType,
         c.r
         from data_coins c
         <where>
@@ -28,9 +28,11 @@
             <if test="key!=null and key !=''">
                 and substring(replace(c.key,'_',''),8) = #{key}
             </if>
-            <if test="gameType!=null and gameType !=''">
-                and (c.game_type = #{gameType}
-                or c.table_type = #{gameType})
+            <if test="gameType!=null and gameType!=0">
+                and (c.game_type = #{gameType} or c.table_type = #{gameType})
+            </if>
+            <if test="gameType!=null and gameType==0">
+                and (c.game_type = '0' or c.game_type is null)
             </if>
             <if test="r!=null and r !=''">
                 and c.r in
@@ -62,9 +64,11 @@
                     '${item}'
                 </foreach>
             </if>
-            <if test="gameType!=null and gameType !=''">
-                and (c.game_type = #{gameType}
-                or c.table_type = #{gameType})
+            <if test="gameType!=null and gameType!=0">
+                and (c.game_type = #{gameType} or c.table_type = #{gameType})
+            </if>
+            <if test="gameType!=null and gameType==0">
+                and (c.game_type = '0' or c.game_type is null)
             </if>
             <if test="tid!=null and tid !=''">
                 and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
@@ -73,7 +77,10 @@
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
             <if test="r!=null and r !=''">
-                and c.r = #{r}
+                and c.r in
+                <foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
             </if>
             <if test="key!=null and key !=''">
                 and substring(replace(c.key,'_',''),8) = #{key}

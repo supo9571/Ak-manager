@@ -47,7 +47,8 @@
         u.add_score/10000 addScore,
         u.pay_fee/10000 payFee,
         u.bet_coins/10000 betCoins,
-        c.ai_num aiNum,c.side_list sideList
+        c.ai_num aiNum,c.side_list sideList,
+        u.uid
         from data_card_user u
         left join data_card c on u.table_gid = c.table_gid
         <where>
