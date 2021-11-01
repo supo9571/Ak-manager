@@ -3,6 +3,7 @@ package com.manager.framework.web.service;
 import javax.annotation.Resource;
 
 import com.manager.common.core.domain.entity.SysUser;
+import com.manager.common.utils.StringUtils;
 import com.manager.common.utils.google.GoogleAuth;
 import com.manager.framework.manager.AsyncManager;
 import com.manager.system.service.SysIpWhiteService;
@@ -80,8 +81,13 @@ public class SysLoginService {
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //验证google验证码
-        if (loginUser.getUser().isSwitchOpen() && !GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(), googleCode)) {
-            throw new CustomException("google验证码错误");
+        if (loginUser.getUser().isSwitchOpen()) {
+            if(StringUtils.isBlank(googleCode)){
+                throw new CustomException("google验证码为空");
+            }
+            if(!GoogleAuth.isPattern(loginUser.getUser().getGoogleKey(), googleCode)){
+                throw new CustomException("google验证码错误");
+            }
         }
         //验证ip
         String ips = sysIpWhiteService.selectIpByUserId(loginUser.getUser().getUserId() + "");
