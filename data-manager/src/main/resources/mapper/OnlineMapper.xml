@@ -28,12 +28,6 @@
             <if test="uid!=null and uid !=''">
                 and o.uid = #{uid}
             </if>
-            <if test="gameType!=null and gameType !=''">
-                and g.game_id in
-                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-                    '${item}'
-                </foreach>
-            </if>
         </where>
     </select>
 
@@ -45,11 +39,11 @@
     </insert>
 
     <select id="selectOnlineCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.OnlinePlayer">
-        select SUM(IF(game_type=0,uid/uid,0)) room,
-            SUM(IF(game_type!=0,uid/uid,0)) gameRoom
+        select SUM(IF(game_id=0,uid/uid,0)) room,
+            SUM(IF(game_id!=0,uid/uid,0)) gameRoom
         from(
-            select o.uid,o.name,g.game_name gameName,
-            o.coins/10000 coins,r.safe_box/10000 safeBox,r.today_add/10000 todayAdd,
+            select o.uid,o.name,g.game_name gameName,g.game_id,
+        o.coins/10000 coins,r.safe_box/10000 safeBox,r.today_add/10000 todayAdd,
             r.today_red/10000 todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
             r.register_ip registerIp,r.login_ip loginIp,r.login_device_id loginDeviceId
             from data_online o
@@ -72,12 +66,7 @@
                 <if test="uid!=null and uid !=''">
                     and o.uid = #{uid}
                 </if>
-                <if test="gameType!=null and gameType !=''">
-                    and g.game_id in
-                    <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-                        '${item}'
-                    </foreach>
-                </if>
+
             </where>
         ) t
     </select>
