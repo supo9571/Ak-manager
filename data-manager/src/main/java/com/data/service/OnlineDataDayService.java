@@ -12,7 +12,7 @@ import java.util.Map;
 public interface OnlineDataDayService {
 
     /**
-     * 查询
+     * 在线玩家数据（图）
      */
     Map getOnlineUserData(OnlineDataDay onlineDataDay);
 
