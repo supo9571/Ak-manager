@@ -179,10 +179,10 @@ public class MonthCardServiceImpl implements MonthCardService {
         JSONObject result = new JSONObject();
         result.put("code", 200);
         result.put("msg", "ok");
-        List list = redisCache.getCacheObject("BankList");
+        List list = redisCache.getCacheObject("Bank_List");
         if(list==null || list.size()<0 ){
             list = monthCardMapper.getBankList();
-            redisCache.setCacheObject("BankList",list);
+            redisCache.setCacheObject("Bank_List",list);
         }
         result.put("result", monthCardMapper.getBankList());
         return result;

@@ -36,4 +36,49 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertOnline">
+        insert into data_online(uid, name,game_type,table_type,coins,channel) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.uid},#{item.name},#{item.gameType},#{item.tableType},#{item.coins},#{item.channel})
+        </foreach>
+    </insert>
+
+    <select id="selectOnlineCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.OnlinePlayer">
+        select SUM(IF(game_type=0,uid/uid,0)) room,
+            SUM(IF(game_type!=0,uid/uid,0)) gameRoom
+        from(
+            select o.uid,o.name,g.game_name gameName,
+            o.coins/10000 coins,r.safe_box/10000 safeBox,r.today_add/10000 todayAdd,
+            r.today_red/10000 todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
+            r.register_ip registerIp,r.login_ip loginIp,r.login_device_id loginDeviceId
+            from data_online o
+            left join data_register r on o.uid = r.uid
+            left join config_game g on o.game_type = g.game_id
+            <where>
+                <if test="gameType!=null and gameType !=''">
+                    and g.game_id = #{gameType}
+                </if>
+                <if test="loginIp!=null and loginIp !=''">
+                    and r.login_ip = #{loginIp}
+                </if>
+                <if test="tid!=null and tid !=''">
+                    and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid},
+                    '%'))
+                </if>
+                <if test="tenant!=null and tenant !=''">
+                    and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+                </if>
+                <if test="uid!=null and uid !=''">
+                    and o.uid = #{uid}
+                </if>
+                <if test="gameType!=null and gameType !=''">
+                    and g.game_id in
+                    <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
+                        '${item}'
+                    </foreach>
+                </if>
+            </where>
+        ) t
+    </select>
 </mapper>

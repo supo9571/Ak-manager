@@ -66,7 +66,7 @@ global-config:
 #  domain: http://10.39.1.88:6661
   #发送游戏配置
   gameSend: /upload
-
+  onlinePlay: http://18.142.67.104:8888/get_play_info
   #游戏服 通讯地址
   reportDomain: http://18.142.67.104:8888
   #操作金币
