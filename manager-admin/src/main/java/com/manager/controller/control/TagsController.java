@@ -41,6 +41,7 @@ public class TagsController extends BaseController {
     @ApiOperation(value = "标签列表")
     @GetMapping("/list")
     public AjaxResult getTags(@RequestParam(defaultValue = "0") Integer tagType) {
+        startOrderBy();
         return AjaxResult.success(tagsService.getTags(tagType));
     }
 
