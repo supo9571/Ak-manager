@@ -26,8 +26,14 @@
             <if test="ip!=null and ip!=''">
                 and ip_address = #{ip}
             </if>
-            <if test="deviceBrand!=null and deviceBrand!=''">
-                and device_brand = #{deviceBrand}
+            <if test="deviceBrand!=null and deviceBrand==0">
+                and device_brand = 'ios'
+            </if>
+            <if test="deviceBrand!=null and deviceBrand==1">
+                and device_brand = 'android'
+            </if>
+            <if test="deviceBrand!=null and deviceBrand==2">
+                and device_brand != 'ios' and device_brand != 'android'
             </if>
             <if test="deviceId!=null and deviceId!=''">
                 and device_id = #{deviceId}
