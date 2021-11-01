@@ -25,8 +25,11 @@
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
             </if>
-            <if test="tid!=null and tid !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            <if test="tid!=null and tid !=0">
+                and
+                <foreach item="item" index="index" collection="channel.split(',')" open="(" separator="or" close=")">
+                    c.channel like concat('%',#{item},'%')
+                </foreach>
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
@@ -83,8 +86,11 @@
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
             </if>
-            <if test="tid!=null and tid !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+            <if test="tid!=null and tid !=0">
+                and
+                <foreach item="item" index="index" collection="channel.split(',')" open="(" separator="or" close=")">
+                    c.channel like concat('%',#{item},'%')
+                </foreach>
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )

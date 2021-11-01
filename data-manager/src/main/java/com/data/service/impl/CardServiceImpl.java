@@ -20,6 +20,10 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List selectCard(Card card) {
+        String tid = card.getTid();
+        if(!"0".equals(tid)){
+            card.setChannel(cardMapper.getChannel(tid));
+        }
         return cardMapper.selectCard(card);
     }
 
@@ -30,6 +34,10 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Map selectCardCount(Card card) {
+        String tid = card.getTid();
+        if(!"0".equals(tid)){
+            card.setChannel(cardMapper.getChannel(tid));
+        }
         return cardMapper.selectCardCount(card);
     }
 

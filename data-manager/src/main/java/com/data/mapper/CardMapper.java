@@ -3,6 +3,7 @@ package com.data.mapper;
 import com.manager.common.core.domain.model.Card;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,7 @@ public interface CardMapper {
     Map findList(@Param("tableGid") String tableGid);
 
     List<Map> findUserInfo(@Param("tableGid") String tableGid);
+
+    @Select("SELECT GROUP_CONCAT(t_id SEPARATOR ',') FROM sys_tenant WHERE t_type = '2' AND ancestors LIKE CONCAT('%', #{tid}, '%')")
+    String getChannel(@Param("tid") String tid);
 }
