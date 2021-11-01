@@ -19,6 +19,7 @@
         <where>
             <if test="tagType != null and tagType != 0 "> tag_type = #{tagType} </if>
         </where>
+        order by create_time desc
     </select>
 
     <insert id="addTags" parameterType="com.manager.common.core.domain.entity.Tags">
