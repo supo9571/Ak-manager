@@ -37,10 +37,10 @@ public interface PlayerMapper {
     @Select("select u.phone from data_register r left join data_user u on r.account_id = u.account_id where r.uid = #{uid} limit 0,1")
     String getPhone(@Param("uid") Long uid);
 
-    @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='0' limit 0,1")
+    @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='1' limit 0,1")
     Map getBankInfo(@Param("uid") Long uid);
 
-    @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='1' limit 0,1")
+    @Select("select name,account,origin_bank originBank from user_exchange where uid = #{uid} and type='0' limit 0,1")
     Map getAlipayInfo(@Param("uid") Long uid);
 
     Integer updateBank(UserExchange userExchange);
