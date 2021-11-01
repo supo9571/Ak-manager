@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ import java.util.Map;
 @RestController
 @Api(tags = "数据分析-活动列表")
 @RequestMapping("/data/activity/report")
-public class ActivityReportController  extends BaseController {
+public class ActivityReportController extends BaseController {
 
     @Autowired
     private DataService dataService;
@@ -42,11 +43,15 @@ public class ActivityReportController  extends BaseController {
     @PostMapping("/export")
     public void export(@RequestBody Coins coins, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getActivityList(coins);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil util = new ExcelUtil(Map.class);
         String fileName = "活动列表导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
 }
