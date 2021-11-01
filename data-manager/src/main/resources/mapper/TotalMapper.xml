@@ -44,7 +44,9 @@
     </select>
 
     <select id="getLeft" resultType="java.util.Map">
-        select sum(new_num) newNum,SUM(new_recharge_num) newRechargeNum,sum(balance_count) balanceCount
+        select IF(sum(new_num) IS NULL,0,sum(new_num)) newNum,
+                IF(sum(new_recharge_num) IS NULL,0,sum(new_recharge_num)) newRechargeNum,
+                IF(sum(balance_count) IS NULL,0,sum(balance_count)) balanceCount
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
@@ -53,7 +55,7 @@
     </select>
 
     <select id="getYesterdayBalance" resultType="java.math.BigDecimal">
-        select sum(balance_count) balanceCount
+        select IF(SUM(balance_count) IS NULL,0,SUM(balance_count)) balanceCount
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
