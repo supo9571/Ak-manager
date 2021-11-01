@@ -34,4 +34,7 @@ public class Card extends BaseEntity {
 
     @ApiModelProperty("玩家id")
     private String uid;
+
+    @ApiModelProperty(hidden = true)
+    private String channel;
 }

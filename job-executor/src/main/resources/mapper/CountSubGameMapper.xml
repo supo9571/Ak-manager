@@ -44,6 +44,7 @@
                  LEFT JOIN config_game g2
                            ON g.parent_id = g2.game_id
         where w.mstime between #{beginTime} and #{endTime}
+            and w.channel is not null
         GROUP BY table_type, channel
     </select>
 

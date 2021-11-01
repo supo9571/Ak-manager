@@ -28,11 +28,27 @@
             <if test="uid!=null and uid !=''">
                 and o.uid = #{uid}
             </if>
-            <if test="gameType!=null and gameType !=''">
-                and g.game_id in
-                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-                    '${item}'
-                </foreach>
+        </where>
+    </select>
+
+    <insert id="insertOnline">
+        insert into data_online(uid, name,game_type,table_type,coins,channel) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.uid},#{item.name},#{item.gameType},#{item.tableType},#{item.coins},#{item.channel})
+        </foreach>
+    </insert>
+
+    <select id="selectOnlineCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.OnlinePlayer">
+        select SUM(IF(game_type=0,uid/uid,0)) room,
+            SUM(IF(game_type!=0,uid/uid,0)) gameRoom
+        from data_online
+        <where>
+            <if test="tid!=null and tid !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%',
+                #{tid},'%'))
+            </if>
+            <if test="tenant!=null and tenant !=''">
+                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
         </where>
     </select>

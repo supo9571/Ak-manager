@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author marvin 2021/8/19
@@ -31,7 +34,12 @@ public class OnlineController extends BaseController {
     public AjaxResult list(@RequestBody OnlinePlayer onlinePlayer) {
         startPage(onlinePlayer.getPage(), onlinePlayer.getSize(), onlinePlayer.getOrderByColumn(), onlinePlayer.getIsAsc());
         List list = onlineService.selectOnline(onlinePlayer);
-        return AjaxResult.success("查询成功", getDataTable(list));
+        //计算总计
+        Map count = onlineService.selectOnlineCount(onlinePlayer);
+        Map result = new HashMap();
+        result.put("list", getDataTable(list));
+        result.put("count", count);
+        return AjaxResult.success("查询成功", result);
     }
 
     @Autowired
