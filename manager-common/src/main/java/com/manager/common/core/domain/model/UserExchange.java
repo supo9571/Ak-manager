@@ -25,4 +25,9 @@ public class UserExchange {
     @ApiModelProperty("银行编码")
     private String originBank;
 
+    @ApiModelProperty(hidden = true)
+    private int tid;
+
+    @ApiModelProperty(hidden = true)
+    private String channel;
 }

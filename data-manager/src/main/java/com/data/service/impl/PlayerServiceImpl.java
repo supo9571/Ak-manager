@@ -96,6 +96,8 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Integer updateBank(UserExchange userExchange) {
+        userExchange.setChannel(playerMapper.getChannel(userExchange.getUid()));
+        userExchange.setTid(playerMapper.getTid(userExchange.getChannel()));
         return playerMapper.updateBank(userExchange);
     }
 

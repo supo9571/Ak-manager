@@ -132,16 +132,14 @@
         where account_id = (select account_id from data_register where uid = #{uid} limit 1)
     </update>
 
-    <update id="updateBank">
-        update user_exchange
-        <set>
-            <if test="type != null and type != ''">type = #{type},</if>
-            <if test="name != null and name != ''">name = #{name},</if>
-            <if test="account != null and account != ''">account = #{account},</if>
-            <if test="originBank != null and originBank != ''">origin_bank = #{originBank},</if>
-        </set>
-        where uid = #{uid}
-    </update>
+    <insert id="updateBank">
+        insert into user_exchange(uid, type, name, account, origin_bank,tid,channel,create_time)
+        values (#{uid}, #{type}, #{name}, #{account}, #{originBank},#{tid},#{channel},sysdate())
+        ON DUPLICATE KEY
+        UPDATE name=values (name),
+            account=values (account),
+            origin_bank=values (origin_bank);
+    </insert>
 
     <select id="getRecAndexc" resultType="java.util.Map">
         select today_add todayAdd, today_give todayGive, today_red todayRed,

@@ -66,4 +66,10 @@ public interface PlayerMapper {
 
     @Select("select curr from data_register where uid = #{uid}")
     Long getUsercurr(@Param("uid") String uid);
+
+    @Select("select channel from data_register where uid = #{uid}")
+    String getChannel(@Param("uid")String uid);
+
+    @Select("select tenant from sys_tenant where t_id = #{channel} limit 0,1 ")
+    int getTid(@Param("channel") String channel);
 }
