@@ -53,9 +53,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.withdrawTopList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<DataAnalysisVO> util = new ExcelUtil(DataAnalysisVO.class);
         String fileName = "提现top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -79,9 +76,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getDataWaterTopList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<DataWaterTopVO> util = new ExcelUtil(DataWaterTopVO.class);
         String fileName = "流水top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -106,9 +100,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getRechargeTopList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<RechargeTopVO> util = new ExcelUtil(RechargeTopVO.class);
         String fileName = "充值top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -133,9 +124,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getEarningsTopList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<EarningsTopVO> util = new ExcelUtil(EarningsTopVO.class);
         String fileName = "净盈利top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -159,9 +147,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getAgentTopList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<AgentTopVO> util = new ExcelUtil(AgentTopVO.class);
         String fileName = "全民代理top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -185,9 +170,6 @@ public class DataAnalysisController extends BaseController {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getPayInfoList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<PayInfoVO> util = new ExcelUtil(PayInfoVO.class);
         String fileName = "付费习惯导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -209,9 +191,6 @@ public class DataAnalysisController extends BaseController {
     public void getPlayerReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerReportExport(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<PlayerReportVO> util = new ExcelUtil(PlayerReportVO.class);
         String fileName = "玩家报表导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -233,9 +212,6 @@ public class DataAnalysisController extends BaseController {
     public void getPlayerGameReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerGameReportList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<PlayerGameReportVO> util = new ExcelUtil(PlayerGameReportVO.class);
         String fileName = "玩家报表-游戏导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -257,9 +233,6 @@ public class DataAnalysisController extends BaseController {
     public void getPlayerDayReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerDayReportList(param);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil<PlayerDayReportVO> util = new ExcelUtil(PlayerDayReportVO.class);
         String fileName = "日期明细导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
