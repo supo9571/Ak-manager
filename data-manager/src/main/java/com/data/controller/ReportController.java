@@ -39,7 +39,7 @@ public class ReportController {
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
             //返回操作后金额
-            return AjaxResult.success("操作成功", resultJson.getLong("curr"));
+            return AjaxResult.success("操作成功", resultJson.getJSONObject("ret").getLong("curr"));
         }
         log.error("操作用户金币失败;参数:{};返回值:{}", param, result);
         return AjaxResult.error();
