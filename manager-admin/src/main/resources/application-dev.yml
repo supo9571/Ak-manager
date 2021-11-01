@@ -108,7 +108,7 @@ manager:
   #发送游戏相关配置
   gameSend: /upload
   #操作金币
-  changeCoins: /gm
+  changeCoins: /notify_payment
 
 # 开发环境配置
 server:

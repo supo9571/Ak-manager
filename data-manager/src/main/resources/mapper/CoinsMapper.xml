@@ -73,7 +73,10 @@
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
             <if test="r!=null and r !=''">
-                and c.r = #{r}
+                and c.r in
+                <foreach item="item" index="index" collection="r.split(',')" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
             </if>
             <if test="key!=null and key !=''">
                 and substring(replace(c.key,'_',''),8) = #{key}

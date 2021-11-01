@@ -70,7 +70,7 @@ global-config:
   #游戏服 通讯地址
   reportDomain: http://18.142.67.104:8888
   #操作金币
-  changeCoins: /gm
+  changeCoins: /notify_payment
   #发邮件
   mail: /mail
 
