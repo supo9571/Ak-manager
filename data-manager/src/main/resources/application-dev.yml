@@ -71,6 +71,8 @@ global-config:
   reportDomain: http://18.142.67.104:8888
   #操作金币
   changeCoins: /notify_payment
+  #驳回提现请求用户返金币
+  returnBack: /returnback
   #发邮件
   mail: /mail
 

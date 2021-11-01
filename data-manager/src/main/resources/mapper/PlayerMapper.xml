@@ -106,7 +106,7 @@
 
     <select id="getSumChannel" resultType="String">
         SELECT
-            st.t_name as sumChannel
+            st.t_id as sumChannel
         from
             sys_tenant st
         where

@@ -37,6 +37,8 @@ public class GlobalConfig {
     private String changeCoins;
     //发邮件
     private String mail;
+    //驳回提现请求用户返金币
+    private String returnBack;
 
     private String onlinePlay;
 }

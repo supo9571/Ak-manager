@@ -24,18 +24,24 @@ public class OnlineDataDayController extends BaseController {
     private OnlineDataDayService onlineDataDayService;
 
     /**
-     * 查询
+     * 在线玩家数据（图）
      */
     @PostMapping("/getOnlineUserData")
     public AjaxResult getOnlineUserData(@RequestBody OnlineDataDay onlineDataDay) {
         return AjaxResult.success("查询成功", onlineDataDayService.getOnlineUserData(onlineDataDay));
     }
 
+    /**
+     * PCU周期数据分析
+     */
     @PostMapping("/getPcuData")
     public AjaxResult getPcuData(@RequestBody OnlineDataDay onlineDataDay) {
         return AjaxResult.success("查询成功", onlineDataDayService.getPcuData(onlineDataDay));
     }
 
+    /**
+     * 在线玩家数据（表格）
+     */
     @PostMapping("/getOnlineUserNum")
     public AjaxResult getOnlineUserNum(@RequestBody OnlineDataDay onlineDataDay) {
         return AjaxResult.success("查询成功", onlineDataDayService.getOnlineUserNum(onlineDataDay));

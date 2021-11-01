@@ -88,4 +88,28 @@ public class ReportController {
         return AjaxResult.error();
     }
 
+    /**
+     * 驳回提现请求用户返金币
+     * @param uid 用户uid
+     * @param coins 加多少钱
+     */
+    @PostMapping("/returnBack")
+    public AjaxResult returnBack(Integer uid, Integer coins) {
+        JSONObject param = new JSONObject();
+        param.put("uid", uid);
+        param.put("coins", coins);
+
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getReturnBack(),
+                "data=" + param.toJSONString());
+        JSONObject resultJson = JSONObject.parseObject(result);
+        if (resultJson != null && resultJson.getInteger("code") == 0) {
+            return AjaxResult.success();
+        }else if(resultJson != null && resultJson.getInteger("code") == -11){
+            log.error("用户不存在;参数:{};返回值:{}", param, result);
+            return AjaxResult.success();
+        }
+        log.error("失败;参数:{};返回值:{}", param, result);
+        return AjaxResult.error();
+    }
+
 }

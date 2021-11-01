@@ -27,7 +27,7 @@ public class OnlineDataDayHandle {
 
 
     @XxlJob("online_data_day")
-    @PostConstruct
+    //@PostConstruct
     public void onlineDataDay() {
         String day = DateUtil.formatDate(new Date());// 当天日期
 
