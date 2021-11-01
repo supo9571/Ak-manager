@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -51,11 +52,15 @@ public class DataAnalysisController extends BaseController {
     public void export(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.withdrawTopList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<DataAnalysisVO> util = new ExcelUtil(DataAnalysisVO.class);
         String fileName = "提现top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:water:list')")
@@ -73,11 +78,15 @@ public class DataAnalysisController extends BaseController {
     public void dataWaterTopExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getDataWaterTopList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<DataWaterTopVO> util = new ExcelUtil(DataWaterTopVO.class);
         String fileName = "流水top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
 
@@ -96,11 +105,15 @@ public class DataAnalysisController extends BaseController {
     public void getRechargeTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getRechargeTopList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<RechargeTopVO> util = new ExcelUtil(RechargeTopVO.class);
         String fileName = "充值top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
 
@@ -119,11 +132,15 @@ public class DataAnalysisController extends BaseController {
     public void getEarningsTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getEarningsTopList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<EarningsTopVO> util = new ExcelUtil(EarningsTopVO.class);
         String fileName = "净盈利top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:agent:list')")
@@ -141,11 +158,15 @@ public class DataAnalysisController extends BaseController {
     public void getAgentTopListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getAgentTopList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<AgentTopVO> util = new ExcelUtil(AgentTopVO.class);
         String fileName = "全民代理top100导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:pay:list')")
@@ -163,11 +184,15 @@ public class DataAnalysisController extends BaseController {
     public void getPayInfoListExport(@RequestBody DataAnalysisParam param, HttpServletResponse response) throws IOException {
         param.setCurrentUserId(SecurityUtils.getUserId());
         AjaxResult ajaxResult = dataService.getPayInfoList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<PayInfoVO> util = new ExcelUtil(PayInfoVO.class);
         String fileName = "付费习惯导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
@@ -183,11 +208,15 @@ public class DataAnalysisController extends BaseController {
     @PostMapping("/player/export")
     public void getPlayerReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerReportExport(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<PlayerReportVO> util = new ExcelUtil(PlayerReportVO.class);
         String fileName = "玩家报表导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
@@ -203,11 +232,15 @@ public class DataAnalysisController extends BaseController {
     @PostMapping("/player/game/export")
     public void getPlayerGameReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerGameReportList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<PlayerGameReportVO> util = new ExcelUtil(PlayerGameReportVO.class);
         String fileName = "玩家报表-游戏导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
     @PreAuthorize("@ss.hasPermi('data:analysis:player:list')")
@@ -223,11 +256,15 @@ public class DataAnalysisController extends BaseController {
     @PostMapping("/player/game/day/export")
     public void getPlayerDayReportListExport(@RequestBody PlayerReportParam param, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getPlayerDayReportList(param);
+        List list = (List) ajaxResult.get("data");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         ExcelUtil<PlayerDayReportVO> util = new ExcelUtil(PlayerDayReportVO.class);
         String fileName = "日期明细导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");
-        util.downloadExcel((List) ajaxResult.get("data"), fileName, response.getOutputStream());
+        util.downloadExcel(list, fileName, response.getOutputStream());
     }
 
 
