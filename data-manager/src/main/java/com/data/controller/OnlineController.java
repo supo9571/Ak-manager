@@ -50,15 +50,13 @@ public class OnlineController extends BaseController {
     @PostMapping("/forbidden")
     public AjaxResult forbidden(Long uid) {
         JSONObject param = new JSONObject();
-        param.put("cmd", "forbidden");//"addcoins"=加金币 “reducecoins”=减金币 “forbidden”=踢人
+        param.put("cmd", "forbidden");
         param.put("reason", "");
         param.put("uid", uid);
-        //操作 用户金币
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
-            //返回操作后金额
             return AjaxResult.success("操作成功");
         }
         return AjaxResult.error();
