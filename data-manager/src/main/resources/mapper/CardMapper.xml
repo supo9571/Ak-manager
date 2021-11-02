@@ -35,6 +35,7 @@
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
         </where>
+        order by c.end_time desc
     </select>
 
     <select id="selectCardUser" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">

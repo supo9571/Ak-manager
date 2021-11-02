@@ -42,7 +42,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Map selectCardUserCount(Card card) {
+    public List selectCardUserCount(Card card) {
         return cardMapper.selectCardUserCount(card);
     }
 

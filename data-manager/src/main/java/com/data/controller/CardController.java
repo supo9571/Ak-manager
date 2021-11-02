@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +31,29 @@ public class CardController extends BaseController {
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Card card) {
-        startPage(card.getPage(), card.getSize(), card.getOrderByColumn(), card.getIsAsc());
+        startPage(card.getPage(), card.getSize(), null, null);
         List list;
-        Map map;
+        Map map = new HashMap();
         if (StringUtils.isBlank(card.getUid())) {
             list = cardService.selectCard(card);
             map = cardService.selectCardCount(card);
         } else {
             list = cardService.selectCardUser(card);
-            map = cardService.selectCardUserCount(card);
+            List<Map> cardUserCount = cardService.selectCardUserCount(card);
+            BigDecimal countScore = new BigDecimal(0);
+            BigDecimal countPayfee = new BigDecimal(0);
+            BigDecimal countBetCoins = new BigDecimal(0);
+            for (int i = 0; i < cardUserCount.size(); i++) {
+                Map m = cardUserCount.get(i);
+                if(m!=null){
+                    countScore = countScore.add((BigDecimal) m.get("countScore"));
+                    countPayfee = countPayfee.add((BigDecimal) m.get("countPayfee"));
+                    countBetCoins = countBetCoins.add((BigDecimal) m.get("countBetCoins"));
+                }
+            }
+            map.put("countScore",countScore);
+            map.put("countPayfee",countPayfee);
+            map.put("countBetCoins",countBetCoins);
         }
         Map result = new HashMap();
         result.put("list", getDataTable(list));

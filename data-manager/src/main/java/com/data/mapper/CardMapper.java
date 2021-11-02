@@ -20,7 +20,7 @@ public interface CardMapper {
 
     Map selectCardCount(Card card);
 
-    Map selectCardUserCount(Card card);
+    List selectCardUserCount(Card card);
 
     Map findList(@Param("tableGid") String tableGid);
 
