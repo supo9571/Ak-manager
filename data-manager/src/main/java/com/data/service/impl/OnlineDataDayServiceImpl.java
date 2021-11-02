@@ -50,22 +50,22 @@ public class OnlineDataDayServiceImpl implements OnlineDataDayService {
         String historyAvgNum = "0";
 
         // 当天最大值 和 平均值
-        Map<String,String> today = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,1);
+        OnlineDataDay today = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,1);
         if(today != null){
-            todayMaxNum = today.get("maxNum");
-            todayAvgNum = today.get("avgNum");
+            todayMaxNum = today.getMaxNum();
+            todayAvgNum = today.getAvgNum();
         }
         // 昨天最大值 和 平均值
-        Map<String,String> yesterday = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,2);
+        OnlineDataDay yesterday = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,2);
         if(yesterday != null){
-            yesterdayMaxNum = yesterday.get("maxNum");
-            yesterdayAvgNum = yesterday.get("avgNum");
+            yesterdayMaxNum = yesterday.getMaxNum();
+            yesterdayAvgNum = yesterday.getAvgNum();
         }
         // 历史最大值 和 平均值
-        Map<String,String> history = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,3);
+        OnlineDataDay history = onlineDataDayMapper.getMaxAndAvg(onlineDataDay,3);
         if(history != null){
-            historyMaxNum = history.get("maxNum");
-            historyAvgNum = history.get("avgNum");
+            historyMaxNum = history.getMaxNum();
+            historyAvgNum = history.getAvgNum();
         }
 
         result.put("todayMaxNum",todayMaxNum);

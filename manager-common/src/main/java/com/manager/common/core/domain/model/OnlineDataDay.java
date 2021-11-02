@@ -30,4 +30,8 @@ public class OnlineDataDay {
     @ApiModelProperty("创建时间")
     private String createTime;
 
+    // 最大值 和 平均值
+    private String maxNum = "0";
+    private String avgNum = "0";
+
 }

@@ -29,6 +29,6 @@ public interface OnlineDataDayMapper {
     /**
      * @param day : 1.当天 2.昨天 空：历史
      */
-    Map<String,String> getMaxAndAvg(@Param("odd") OnlineDataDay odd, @Param("day") Integer day);
+    OnlineDataDay getMaxAndAvg(@Param("odd") OnlineDataDay odd, @Param("day") Integer day);
 
 }

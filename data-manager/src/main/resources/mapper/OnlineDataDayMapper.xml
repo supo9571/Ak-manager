@@ -85,9 +85,9 @@
         group by day
     </select>
 
-    <select id="getMaxAndAvg" resultType="java.util.Map">
+    <select id="getMaxAndAvg" resultType="com.manager.common.core.domain.model.OnlineDataDay">
         SELECT
-            MAX(t.userCount) as maxCNum,
+            MAX(t.userCount) as maxNum,
             round(avg(t.userCount),0) as avgNum
         from
             (
