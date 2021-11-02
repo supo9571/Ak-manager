@@ -35,7 +35,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", controlPlayer.getType());
         param.put("risk_power", controlPlayer.getRiskPower());
-        param.put("send_level", controlPlayer.getSendLevel());
+        param.put("level", controlPlayer.getSendLevel());
         param.put("uid", controlPlayer.getUid());
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
@@ -100,7 +100,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", controlPlayer.getType());
         param.put("risk_power", controlPlayer.getRiskPower());
-        param.put("send_level", controlPlayer.getSendLevel());
+        param.put("level", controlPlayer.getSendLevel());
         param.put("uid", controlPlayer.getUid());
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
