@@ -44,9 +44,6 @@ public class ActivityReportController extends BaseController {
     public void export(@RequestBody Coins coins, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getActivityList(coins);
         List list = (List) ajaxResult.get("data");
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
         ExcelUtil util = new ExcelUtil(Map.class);
         String fileName = "活动列表导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
