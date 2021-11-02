@@ -144,7 +144,7 @@ public class PlayerServiceImpl implements PlayerService {
             param.put("cmd", "forbidden");
             param.put("reason", userLock.getLockMark());
             param.put("uid", Long.valueOf(userLock.getUid()));
-            HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+            HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                     "data=" + param.toJSONString());
         }
         if(userLock.getLockType()==1){// 清币
@@ -154,7 +154,7 @@ public class PlayerServiceImpl implements PlayerService {
             param.put("uid", Long.valueOf(userLock.getUid()));
             String url = globalConfig.getReportDomain() + globalConfig.getChangeCoins();
             //踢人
-            HttpUtils.sendPost(url,"data=" + param.toJSONString());
+            HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm","data=" + param.toJSONString());
             //查询玩家余额
             Long curr = playerMapper.getUsercurr(userLock.getUid());
             //清币
