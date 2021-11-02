@@ -4,6 +4,7 @@ import com.manager.common.annotation.Log;
 import com.manager.common.core.controller.BaseController;
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Coins;
+import com.manager.common.core.domain.model.vo.ActivityReportVO;
 import com.manager.common.enums.BusinessType;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
@@ -44,7 +45,7 @@ public class ActivityReportController extends BaseController {
     public void export(@RequestBody Coins coins, HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = dataService.getActivityList(coins);
         List list = (List) ajaxResult.get("data");
-        ExcelUtil util = new ExcelUtil(Map.class);
+        ExcelUtil<ActivityReportVO> util = new ExcelUtil(ActivityReportVO.class);
         String fileName = "活动列表导出";
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.setAttachmentResponseHeader(response, fileName + ".xlsx");

@@ -1,6 +1,7 @@
 package com.data.mapper;
 
 import com.manager.common.core.domain.model.Coins;
+import com.manager.common.core.domain.model.vo.ActivityReportVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,6 +16,6 @@ public interface ActivityReportMapper {
     /**
      *
      */
-    List selectActivityList(Coins coins);
+    List<ActivityReportVO> selectActivityList(Coins coins);
 
 }
