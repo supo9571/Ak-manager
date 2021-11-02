@@ -37,7 +37,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("risk_power", controlPlayer.getRiskPower());
         param.put("send_level", controlPlayer.getSendLevel());
         param.put("uid", controlPlayer.getUid());
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
@@ -102,7 +102,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("risk_power", controlPlayer.getRiskPower());
         param.put("send_level", controlPlayer.getSendLevel());
         param.put("uid", controlPlayer.getUid());
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
@@ -165,7 +165,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", 0);
         param.put("uid", controlPlayer.getUid());
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
