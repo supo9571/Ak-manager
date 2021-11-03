@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.mapper.ConfigAgentMapper;
@@ -197,4 +198,71 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         return result;
     }
 
+    @Override
+    public List getActList(String channelId) {
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        return configAgentMapper.getActList(tid);
+    }
+
+    @Override
+    public JSONObject getMenu(String channelId) {
+        JSONObject result = new JSONObject();
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        List<Integer> list = configAgentMapper.getActivitys(tid);
+        JSONArray func = new JSONArray();
+        JSONArray top = new JSONArray();
+        //特殊活动
+        list.forEach(i->{
+            if(i == 113114){
+                top.add(1026);
+            }
+            if(i == 109){
+                top.add(1030);
+            }
+            if(i == 123){
+                top.add(1032);
+            }
+            if(i == 122){
+                top.add(1027);
+            }
+            if(i == 115){
+                top.add(1029);
+            }
+            if(i == 112){
+                top.add(1031);
+            }
+            if(i == 111){
+                func.add(1022);
+            }
+        });
+        //月卡
+        int i = configAgentMapper.getMonthConfig(tid);
+        if(i>0){
+            func.add(1024);
+        }
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("func",func);
+        resultJson.put("top",top);
+        result.put("result",resultJson);
+        return result;
+    }
+
+    /**
+     * 活动类型 113114充值红包 109每日首充 123首充返利 122流水返利 115全民推广 112摇钱树 111救济金
+     * {
+     *     BROAD_CAST = 9000, --广播
+     *     BTN_MONTH_CARD = 1024, -- 月卡
+     *     BTN_RESCUE = 1022, -- 救济金
+     * }
+     *   --活动按钮配置
+     * {
+     *     BTN_REDBOX_DAY = 1026, --充值礼包
+     *     BTN_REBATE = 1027, -- 游戏返金
+     *     BTN_TURNTABLE = 1028, -- 转盘
+     *     BTN_SPREAD_ACT = 1029, -- 推广红包
+     *     BTN_DAILYFIRSTCHARGE = 1030, -- 每日首冲返利
+     *     BTN_CASHCOW = 1031, -- 摇钱树
+     *     BTN_FIRESTPAY_NEW = 1032, -- 首冲赠金
+     * }
+     */
 }

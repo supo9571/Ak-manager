@@ -75,4 +75,14 @@ public interface ConfigAgentMapper {
 
     @Update("update agent_commission_day set cash_income = cash_income+#{cash},wait_income = wait_income-#{cash} where uid = #{uid} and day = #{day} ")
     void updateWaitIncome(@Param("uid") String uid, @Param("cash") BigDecimal cash, @Param("day") String day);
+
+    @Select("SELECT begin_time act_begin_time,end_time act_end_time,id act_id,title act_name,'101' act_type,'true' open_state,'true' show_icon," +
+            "IF(`type`=1,'',content) bg_url,IF(`type`=2,'',content) act_desc,sort sort_index FROM sys_propaganda WHERE state = '2' and tid = #{tid} ")
+    List<Map> getActList(@Param("tid") Integer tid);
+
+    @Select("select distinct activity_type from config_activity where activity_begin <=sysdate() <= activity_end and tid = #{tid} ")
+    List<Integer> getActivitys(@Param("tid") Integer tid);
+
+    @Select("select count(1) from config_month_recharge where status = '1' and tid = #{tid}")
+    int getMonthConfig(@Param("tid") Integer tid);
 }

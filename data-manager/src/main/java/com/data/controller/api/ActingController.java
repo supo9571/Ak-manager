@@ -111,4 +111,26 @@ public class ActingController extends BaseController {
         BigDecimal cash = param.getBigDecimal("cash");//领取金额
         return configAgenService.getWithdraw(uid, cash);
     }
+
+    /**
+     * 轮播图配置接口
+     */
+    @PostMapping("/act/get_act_list")
+    public JSONObject getActList(){
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        List list = configAgenService.getActList(channelId);
+        JSONObject result = new JSONObject();
+        result.put("code", 200);
+        result.put("result", list);
+        return result;
+    }
+
+    /**
+     * 大厅活动按钮配置
+     */
+    @PostMapping("/onebyone/get_menu")
+    public JSONObject getMenu(){
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        return configAgenService.getMenu(channelId);
+    }
 }
