@@ -107,7 +107,6 @@ public class InsertHandler {
         Long addScore = 0l;
         Long payFee = 0l;
         Long betCoins = 0l;
-        Long waterCoins = 0l;
         String channel = "";
         StringBuilder uid = new StringBuilder();
         if (!"{}".equals(card.getLoserList())) {
