@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.mapper.TenantMapper;
@@ -43,11 +44,9 @@ public class UpdateServiceImpl implements UpdateService {
         List<Map> list = updateMapper.selectConsumer();
         list.forEach(m -> {
             try {
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject = JSONObject.parseObject((String) m.get("info"));
-                if (jsonObject != null) {
-                    jsonArray.add(jsonObject);
-                    m.put("info", jsonArray);
+                Object object = JSON.parse((String) m.get("info"));
+                if (object != null) {
+                    m.put("info", object);
                 } else {
                     m.remove("info");
                 }
