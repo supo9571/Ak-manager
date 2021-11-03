@@ -123,8 +123,7 @@ public class InsertHandler {
                     aiNum -= 1;
                     addScore += cardUser.getAddScore();
                     payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
-                    betCoins += cardUser.getBetCoins();
-                    waterCoins += cardUser.getWaterCoins();
+                    betCoins += cardUser.getWaterCoins();
                     if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
                         channel = channel.concat(cardUser.getChannel()+",");
                     }
@@ -144,8 +143,7 @@ public class InsertHandler {
                     aiNum -= 1;
                     addScore += cardUser.getAddScore();
                     payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
-                    betCoins += cardUser.getBetCoins();
-                    waterCoins += cardUser.getWaterCoins();
+                    betCoins += cardUser.getWaterCoins();
                     if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
                         channel = channel.concat(cardUser.getChannel()+",");
                     }
@@ -156,7 +154,6 @@ public class InsertHandler {
         card.setAddScore(addScore);
         card.setPayFee(payFee);
         card.setBetCoins(betCoins);
-        card.setWaterCoins(waterCoins);
         card.setUid(uid.substring(0, uid.length() - 1));
         if(!StringUtils.isEmpty(channel)){
             card.setChannel(channel.substring(0, channel.length() - 1));
