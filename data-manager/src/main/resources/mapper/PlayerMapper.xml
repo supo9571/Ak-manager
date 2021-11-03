@@ -196,11 +196,11 @@
             <if test="beginTime!=null and beginTime !=''">
                 and c.mstime between #{beginms} and #{endms}
             </if>
-            <if test="gameType!=null and gameType !=''">
-                and c.game_type in
-                <foreach item="item" index="index" collection="gameType.split(',')" open="(" separator="," close=")">
-                    '${item}'
-                </foreach>
+            <if test="gameType!=null and gameType !=0">
+                and c.game_type = #{gameType}
+            </if>
+            <if test="gameType!=null and gameType ==0">
+                and (c.game_type = #{gameType} or c.game_type is null)
             </if>
             <if test="r!=null and r !=''">
                 and c.r in
