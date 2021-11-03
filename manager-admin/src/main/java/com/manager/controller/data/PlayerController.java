@@ -12,6 +12,7 @@ import com.manager.common.utils.SecurityUtils;
 import com.manager.openFegin.AgentService;
 import com.manager.openFegin.DataService;
 import com.manager.system.service.BankService;
+import com.manager.system.service.PlayerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class PlayerController extends BaseController {
     private DataService dataService;
 
     @Autowired
-    private AgentService agentService;
+    private PlayerService playerService;
 
     /**
      * 获取用户列表
@@ -120,8 +121,9 @@ public class PlayerController extends BaseController {
     @PreAuthorize("@ss.hasPermi('data:player:list')")
     @ApiOperation(value = "推广记录")
     @PostMapping("/popularize")
-    public AjaxResult popularize(String uid, Integer page, Integer size, String orderByColumn, String isAsc) {
-        return agentService.getPopularizes(uid, page, size, orderByColumn, isAsc);
+    public AjaxResult popularize(String uid) {
+        startPage();
+        return AjaxResult.success("查询成功",getDataTable(playerService.getPopularizes(uid)));
     }
 
     /**
