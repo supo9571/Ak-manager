@@ -20,7 +20,7 @@ public interface UserMapper {
 
     Integer loadDataUserName(DataUser dataUser);
 
-    @Select("select account_id accountId from data_user where seed_token = #{seedToken}")
+    @Select("select account_id accountId from data_user where seed_token = #{seedToken} and phone is null")
     DataUser findUserBySeedToken(@Param("seedToken") String seedToken);
 
     @Select("select account_id accountId from data_user where phone = #{phoneNumber} and password = #{password} limit 0,1")
