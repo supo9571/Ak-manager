@@ -186,7 +186,7 @@
         FROM_UNIXTIME(c.`time`) `time`,
         c.`value`/10000 `value` ,
         c.`before`/10000 `before`,
-        c.game_type gameType,
+        if(c.game_type is null,0,c.game_type) gameType,
         c.r
         from data_coins c
         <where>
