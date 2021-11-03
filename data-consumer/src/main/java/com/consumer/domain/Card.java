@@ -30,6 +30,7 @@ public class Card {
     private Long addScore;
     private Long payFee;
     private Long betCoins;
+    private Long waterReward;
 
     private String uid;
     private int aiNum;

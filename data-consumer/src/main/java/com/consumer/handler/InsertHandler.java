@@ -107,6 +107,7 @@ public class InsertHandler {
         Long addScore = 0l;
         Long payFee = 0l;
         Long betCoins = 0l;
+        Long waterReward = 0l;
         String channel = "";
         StringBuilder uid = new StringBuilder();
         if (!"{}".equals(card.getLoserList())) {
@@ -123,6 +124,7 @@ public class InsertHandler {
                     addScore += cardUser.getAddScore();
                     payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
                     betCoins += cardUser.getWaterCoins();
+                    waterReward += cardUser.getWaterReward();
                     if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
                         channel = channel.concat(cardUser.getChannel()+",");
                     }
@@ -143,6 +145,7 @@ public class InsertHandler {
                     addScore += cardUser.getAddScore();
                     payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
                     betCoins += cardUser.getWaterCoins();
+                    waterReward += cardUser.getWaterReward();
                     if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
                         channel = channel.concat(cardUser.getChannel()+",");
                     }
@@ -153,6 +156,7 @@ public class InsertHandler {
         card.setAddScore(addScore);
         card.setPayFee(payFee);
         card.setBetCoins(betCoins);
+        card.setWaterReward(waterReward);
         card.setUid(uid.substring(0, uid.length() - 1));
         if(!StringUtils.isEmpty(channel)){
             card.setChannel(channel.substring(0, channel.length() - 1));

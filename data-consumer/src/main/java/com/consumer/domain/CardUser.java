@@ -21,6 +21,7 @@ public class CardUser {
     private Long payFee;
     private Long betCoins;
     private Long waterCoins;
+    private Long waterReward;
     private Long leftScore;
     private String isRobot;
 
