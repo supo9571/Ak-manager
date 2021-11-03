@@ -107,6 +107,7 @@ public class InsertHandler {
         Long addScore = 0l;
         Long payFee = 0l;
         Long betCoins = 0l;
+        Long waterCoins = 0l;
         String channel = "";
         StringBuilder uid = new StringBuilder();
         if (!"{}".equals(card.getLoserList())) {
@@ -120,20 +121,13 @@ public class InsertHandler {
                     uid.append(cardUser.getUid() + ",");
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
-                }
-                addScore += cardUser.getAddScore();
-                payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
-                if (cardUser.getBetCoins() == null) {
-                    if (cardUser.getWaterCoins() == null) {
-                        cardUser.setBetCoins(cardUser.getAddScore());
-                    } else {
-                        cardUser.setBetCoins(cardUser.getWaterCoins());
+                    addScore += cardUser.getAddScore();
+                    payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
+                    betCoins += cardUser.getBetCoins();
+                    waterCoins += cardUser.getWaterCoins();
+                    if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
+                        channel = channel.concat(cardUser.getChannel()+",");
                     }
-                }
-                betCoins += cardUser.getBetCoins();
-
-                if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
-                    channel = channel.concat(cardUser.getChannel()+",");
                 }
             }
         }
@@ -148,19 +142,13 @@ public class InsertHandler {
                     uid.append(cardUser.getUid() + ",");
                     cardUser.setIsRobot("false");
                     aiNum -= 1;
-                }
-                addScore += cardUser.getAddScore();
-                payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
-                if (cardUser.getBetCoins() == null) {
-                    if (cardUser.getWaterCoins() == null) {
-                        cardUser.setBetCoins(cardUser.getAddScore());
-                    } else {
-                        cardUser.setBetCoins(cardUser.getWaterCoins());
+                    addScore += cardUser.getAddScore();
+                    payFee += cardUser.getPayFee() == null ? 0 : cardUser.getPayFee();
+                    betCoins += cardUser.getBetCoins();
+                    waterCoins += cardUser.getWaterCoins();
+                    if(cardUser.getChannel()!=null && "0".equals(cardUser.getChannel()) && !channel.contains(cardUser.getChannel())){
+                        channel = channel.concat(cardUser.getChannel()+",");
                     }
-                }
-                betCoins += cardUser.getBetCoins();
-                if(cardUser.getChannel()!=null && !channel.contains(cardUser.getChannel())){
-                    channel = channel.concat(cardUser.getChannel()+",");
                 }
             }
         }
@@ -168,6 +156,7 @@ public class InsertHandler {
         card.setAddScore(addScore);
         card.setPayFee(payFee);
         card.setBetCoins(betCoins);
+        card.setWaterCoins(waterCoins);
         card.setUid(uid.substring(0, uid.length() - 1));
         if(!StringUtils.isEmpty(channel)){
             card.setChannel(channel.substring(0, channel.length() - 1));

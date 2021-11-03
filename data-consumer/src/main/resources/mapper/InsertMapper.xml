@@ -66,20 +66,20 @@
         insert into data_card (`key`, `op`, `time`, `mstime`, `address`,
                                `begin_time`, `end_time`, `game_type`, `table_gid`, `table_type`, `side_list`, `exinfo`,
                                `total_num`, `system_win`,
-                               `add_score`, `pay_fee`, `bet_coins`, `uid`, `ai_num`, `channel`)
+                               `add_score`, `pay_fee`, `bet_coins`, `uid`, `ai_num`, `channel`,`water_coins`)
         values (#{key}, #{op}, #{time}, #{mstime}, #{address},
                 #{beginTime}, #{endTime}, #{gameType}, #{tableGid}, #{tableType}, #{sideList}, #{exinfo}, #{totalNum},
                 #{systemWin},
-                #{addScore}, #{payFee}, #{betCoins}, #{uid}, #{aiNum}, #{channel})
+                #{addScore}, #{payFee}, #{betCoins}, #{uid}, #{aiNum}, #{channel},#{waterCoins})
     </insert>
 
     <insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
         insert into data_card_user (`table_gid`,`uid`,`mstime`,`begin_time`,`end_time`,
-        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`)
+        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`,`water_coins`)
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
-            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.betCoins},#{item.leftScore},#{item.isRobot},#{item.channel})
+            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.betCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterCoins})
         </foreach>
     </insert>
 
