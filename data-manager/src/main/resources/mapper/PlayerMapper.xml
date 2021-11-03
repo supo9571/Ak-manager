@@ -60,6 +60,9 @@
             <if test="playUser.name!=null and playUser.name !=''">
                 and dr.name = #{playUser.name}
             </if>
+            <if test="playUser.phone!=null and playUser.phone !=''">
+                and dr.phone = #{playUser.phone}
+            </if>
             <if test="playUser.registerIp!=null and playUser.registerIp !=''">
                 and dr.register_ip = #{playUser.registerIp}
             </if>
