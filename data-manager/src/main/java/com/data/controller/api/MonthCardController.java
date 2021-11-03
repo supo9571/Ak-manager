@@ -104,10 +104,10 @@ public class MonthCardController extends BaseController {
         Integer i = monthCardService.saveExchange(channel, uid, type, name, account, originBank);
         JSONObject jsonObject = new JSONObject();
         if (i > 0) {
-            jsonObject.put("code", "200");
+            jsonObject.put("code", 200);
             jsonObject.put("msg", "绑定成功");
         } else {
-            jsonObject.put("code", "500");
+            jsonObject.put("code", 500);
         }
         return jsonObject;
     }
