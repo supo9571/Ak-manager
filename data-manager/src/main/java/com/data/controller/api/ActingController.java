@@ -133,4 +133,13 @@ public class ActingController extends BaseController {
         String channelId = getHeader("Client-ChannelId");//渠道id
         return configAgenService.getMenu(channelId);
     }
+
+    /**
+     * 官网配置
+     */
+    @PostMapping("/beifen")
+    public JSONObject getBeifen(){
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        return configAgenService.getBeifen(channelId);
+    }
 }

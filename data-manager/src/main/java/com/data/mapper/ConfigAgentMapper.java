@@ -85,4 +85,7 @@ public interface ConfigAgentMapper {
 
     @Select("select count(1) from config_month_recharge where status = '1' and tid = #{tid}")
     int getMonthConfig(@Param("tid") Integer tid);
+
+    @Select("SELECT promotion_domain FROM config_agent where tid = #{tid} limit 0,1")
+    String getBeifen(@Param("tid") Integer tid);
 }

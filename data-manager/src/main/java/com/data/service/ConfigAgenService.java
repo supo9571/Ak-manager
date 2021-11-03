@@ -27,4 +27,6 @@ public interface ConfigAgenService {
     List getActList(String channelId);
 
     JSONObject getMenu(String channelId);
+
+    JSONObject getBeifen(String channelId);
 }

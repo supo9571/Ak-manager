@@ -265,4 +265,12 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
      *     BTN_FIRESTPAY_NEW = 1032, -- 首冲赠金
      * }
      */
+
+
+    @Override
+    public JSONObject getBeifen(String channelId) {
+        JSONObject result = new JSONObject();
+        result.put("downloadurl",configAgentMapper.getBeifen(tenantMapper.getTidByCid(channelId)));
+        return result;
+    }
 }
