@@ -61,7 +61,7 @@ public interface PlayerMapper {
 
     void saveUserLockLog(UserLock userLock);
 
-    @Select("SELECT uid,create_time createTime,lock_type lockDay,lock_day lockDay,lock_mark lockMark,create_by createBy FROM data_lock_log where uid = #{uid} order by create_time desc ")
+    @Select("SELECT uid,create_time createTime,lock_type lockType,lock_day lockDay,lock_mark lockMark,create_by createBy FROM data_lock_log where uid = #{uid} order by create_time desc ")
     List<Map> getLockLog(@Param("uid") Long uid);
 
     @Select("select curr from data_register where uid = #{uid}")
