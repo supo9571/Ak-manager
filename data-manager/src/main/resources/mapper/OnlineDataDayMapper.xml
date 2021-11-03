@@ -19,7 +19,7 @@
             and dod.channel = #{channel}
         </if>
         <if test="gameId!=null and gameId!=''">
-            and dod.table_type = #{gameId}
+            and dod.game_type = #{gameId}
         </if>
         group by
             dod.create_time
@@ -45,7 +45,7 @@
                 and dod.channel = #{channel}
             </if>
             <if test="gameId!=null and gameId!=''">
-                and dod.table_type = #{gameId}
+                and dod.game_type = #{gameId}
             </if>
             group by
                 dod.create_time
@@ -72,7 +72,7 @@
                 and dod.channel = #{channel}
             </if>
             <if test="gameId!=null and gameId!=''">
-                and dod.table_type = #{gameId}
+                and dod.game_type = #{gameId}
             </if>
             group by
                 dod.day,
