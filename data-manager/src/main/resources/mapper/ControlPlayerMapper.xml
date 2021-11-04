@@ -26,21 +26,24 @@
     </select>
 
     <select id="list" resultType="com.manager.common.core.domain.model.ControlPlayer">
-        select uid,
-               type,
-               risk_power riskPower,
-               send_level sendLevel,
-               mark,
-               create_by createBy,
-               create_time createTime
+        select  c.uid,
+                r.name,
+                c.type,
+                c.risk_power riskPower,
+                c.send_level sendLevel,
+                c.mark,
+                c.create_by createBy,
+                c.create_time createTime
         from
-        control_player_config
+        control_player_config c
+        left join data_register r
+        on c.uid = r.uid
         <where>
-            <if test="tid!=null and tid!=0"> tid = #{tid}</if>
-            <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
-            <if test="type!=null and type!=0"> and type = #{type}</if>
-            <if test="beginTime!=null and beginTime!=''"> and create_time >= #{beginTime}</if>
-            <if test="endTime!=null and endTime!=''"> and #{endTime} >= create_time</if>
+            <if test="tid!=null and tid!=0"> c.tid = #{tid}</if>
+            <if test="uid!=null and uid!=''"> and c.uid = #{uid}</if>
+            <if test="type!=null and type!=0"> and c.type = #{type}</if>
+            <if test="beginTime!=null and beginTime!=''"> and c.create_time >= #{beginTime}</if>
+            <if test="endTime!=null and endTime!=''"> and #{endTime} >= c.create_time</if>
         </where>
     </select>
 

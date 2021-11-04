@@ -62,7 +62,7 @@ public class MailServiceImpl implements MailService {
             paramJson.put("value", coins.multiply(new BigDecimal(10000)));
             paramJson.put("uid", uid);
             //操作 用户金币
-            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                     "data=" + paramJson.toJSONString());
             JSONObject resultJson = JSONObject.parseObject(resultStr);
             if (resultJson != null && resultJson.getInteger("code") == 0) {

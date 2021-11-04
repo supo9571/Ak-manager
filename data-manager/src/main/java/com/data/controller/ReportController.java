@@ -57,7 +57,7 @@ public class ReportController {
         param.put("reason", reason);
         param.put("uid", uid);
         //操作 用户金币
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {

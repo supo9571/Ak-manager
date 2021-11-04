@@ -147,6 +147,14 @@ public class PlayerController extends BaseController {
     }
 
     /**
+     * 封号解封状态
+     */
+    @PostMapping("/lockType")
+    public AjaxResult lockType(Long uid) {
+        return AjaxResult.success("查询成功",playerService.getLockType(uid));
+    }
+
+    /**
      * 封号解封记录
      */
     @PostMapping("/lockLog")

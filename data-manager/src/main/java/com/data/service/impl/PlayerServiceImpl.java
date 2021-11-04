@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.mapper.PlayerMapper;
 import com.data.service.PlayerService;
-import com.data.utils.IpUtils;
-import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.PlayUser;
 import com.manager.common.core.domain.model.PlayWater;
 import com.manager.common.core.domain.model.UserExchange;
@@ -16,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -152,7 +153,7 @@ public class PlayerServiceImpl implements PlayerService {
             param.put("cmd", "forbidden");
             param.put("reason", userLock.getLockMark());
             param.put("uid", Long.valueOf(userLock.getUid()));
-            String url = globalConfig.getReportDomain() + globalConfig.getChangeCoins();
+            String url = globalConfig.getReportDomain() + "/gm";
             //踢人
             HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm","data=" + param.toJSONString());
             //查询玩家余额
@@ -171,5 +172,22 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List getLockLog(Long uid) {
         return playerMapper.getLockLog(uid);
+    }
+
+    @Override
+    public Integer getLockType(Long uid) {
+        Map map = playerMapper.getLockType(uid);
+        if(map ==null){
+            return 2;
+        }
+        Integer lockType = (Integer) map.get("lockType");
+        Integer lockDay = (Integer) map.get("lockDay");
+        Timestamp updateTime = (Timestamp) map.get("updateTime");
+        Long times = updateTime.getTime();
+        Long now = System.currentTimeMillis();
+        if(lockType!=2 && now<times+lockDay*60*60*24*1000){
+            return lockType;
+        }
+        return 2;
     }
 }

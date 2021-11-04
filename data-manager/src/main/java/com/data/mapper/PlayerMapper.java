@@ -72,4 +72,7 @@ public interface PlayerMapper {
 
     @Select("select tenant from sys_tenant where t_id = #{channel} limit 0,1 ")
     int getTid(@Param("channel") String channel);
+
+    @Select("select lock_type lockType,lock_day lockDay,update_time updateTime from data_user_lock where uid = #{uid} limit 0,1")
+    Map getLockType(Long uid);
 }

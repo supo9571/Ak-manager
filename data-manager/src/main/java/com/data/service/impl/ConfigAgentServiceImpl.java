@@ -177,7 +177,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
                 param.put("value", cash.multiply(new BigDecimal(10000)));
                 param.put("uid", Long.valueOf(uid));
                 //操作 用户金币
-                String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoins(),
+                String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                         "data=" + param.toJSONString());
                 JSONObject resultJson = JSONObject.parseObject(resultStr);
                 if (resultJson != null && resultJson.getInteger("code") == 0) {

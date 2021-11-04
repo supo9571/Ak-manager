@@ -41,4 +41,6 @@ public interface PlayerService {
     void saveUserLock(UserLock userLock);
 
     List getLockLog(Long uid);
+
+    Integer getLockType(Long uid);
 }
