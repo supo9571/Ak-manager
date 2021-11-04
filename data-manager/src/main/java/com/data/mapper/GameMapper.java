@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 public interface GameMapper {
 
-    List<Map> getGames(Long tid);
+    List<Map> getGames(@Param("tid") Integer tid);
 
     @Insert("insert into config_ip(ip,create_by,create_time) values (#{ip},#{createBy},sysdate())")
     void saveIp(@Param("ip") String ip, @Param("createBy") String createBy);
