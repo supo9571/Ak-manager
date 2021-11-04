@@ -36,7 +36,7 @@
         <if test="gameId!=null and gameId!=0">
             and g.game_id = #{gameId}
         </if>
-        GROUP BY g.game_id
+        GROUP BY g.game_id,g.game_name
     </select>
 
     <select id="getWinCount" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
@@ -56,7 +56,7 @@
         <if test="gameId!=null and gameId!=0">
             and g.game_id = #{gameId}
         </if>
-        GROUP BY g.game_id
+        GROUP BY g.game_id,g.game_name
     </select>
 
     <select id="getTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
@@ -86,7 +86,7 @@
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
         AND c.mstime BETWEEN #{beginms} AND #{endms}
         AND g.parent_id = #{gameId}
-        GROUP BY g.game_id
+        GROUP BY g.game_id,g.game_name
     </select>
 
     <select id="getWinTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
@@ -103,6 +103,6 @@
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
             AND c.mstime BETWEEN #{beginms} AND #{endms}
             AND g.game_id = #{gameId}
-        GROUP BY g.game_id
+        GROUP BY g.game_id,g.game_name
     </select>
 </mapper>
