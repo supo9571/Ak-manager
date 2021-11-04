@@ -232,4 +232,11 @@
         insert into data_lock_log(uid, lock_type, lock_day, lock_mark, create_time, create_by)
         values (#{uid}, #{lockType}, #{lockDay}, #{lockMark}, sysdate(), #{createBy})
     </insert>
+
+    <select id="selectPlayerCurr" resultType="java.util.Map">
+       select curr/10000 curr,FROM_UNIXTIME(time) time from data_coins
+       where uid = #{uid}
+        <if test="beginTime!=null and beginTime!=''"> and FROM_UNIXTIME(time) >=#{beginTime} </if>
+        <if test="endTime!=null and endTime!=''">  and #{endTime}>= FROM_UNIXTIME(time) </if>
+    </select>
 </mapper>

@@ -14,7 +14,7 @@ import java.util.Map;
 public interface PlayerService {
     Map selectPlayer(PlayUser playUser);
 
-    List selectPlayerCurr(Long uid);
+    List selectPlayerCurr(Long uid,String beginTime,String endTime);
 
     Integer updatePlayer(PlayUser playUser);
 

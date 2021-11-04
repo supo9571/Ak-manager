@@ -37,8 +37,8 @@ public class PlayerController extends BaseController {
     }
 
     @PostMapping("/curr")
-    public AjaxResult curr(Long uid) {
-        List list = playerService.selectPlayerCurr(uid);
+    public AjaxResult curr(Long uid,String beginTime,String endTime) {
+        List list = playerService.selectPlayerCurr(uid,beginTime,endTime);
         return AjaxResult.success(list);
     }
 

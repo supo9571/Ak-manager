@@ -71,8 +71,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List selectPlayerCurr(Long uid) {
-        return playerMapper.selectPlayerCurr(uid);
+    public List selectPlayerCurr(Long uid,String beginTime,String endTime) {
+        return playerMapper.selectPlayerCurr(uid,beginTime,endTime);
     }
 
     @Override
