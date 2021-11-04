@@ -24,7 +24,7 @@ public interface MailMapper {
     @Update("update sys_mail_record set mail_state='1',update_time = sysdate() where id = #{id} ")
     void readMail(@Param("id") String id);
 
-    @Select("select mail_prop coins,addressee uid from sys_mail_record where id = #{id} ")
+    @Select("select mail_prop coins,addressee uid from sys_mail_record where id = #{id} and mail_state NOT IN ('3','6') ")
     Map receiveMail(@Param("id") String id);
 
     @Update("update sys_mail_record set mail_state='3',update_time = sysdate() where id = #{id} ")

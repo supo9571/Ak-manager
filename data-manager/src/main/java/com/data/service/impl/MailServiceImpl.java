@@ -53,33 +53,35 @@ public class MailServiceImpl implements MailService {
     public JSONObject receiveMail(String id) {
         JSONObject result = new JSONObject();
         Map map = mailMapper.receiveMail(id);
-        BigDecimal coins = new BigDecimal((String) map.get("coins"));
-        String uid = (String) map.get("uid");
-        if (coins.compareTo(new BigDecimal(0)) >= 0) {
-            JSONObject paramJson = new JSONObject();
-            paramJson.put("cmd", "takeattach");
-            JSONObject record_list = new JSONObject();
-            record_list.put("uid",Long.valueOf(uid));
-            record_list.put("reason",100022);
-            record_list.put("coins",coins.multiply(new BigDecimal(10000)).longValue());
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.add(record_list);
-            paramJson.put("record_list", jsonArray);
-            //操作 用户金币
-            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/mail",
-                    "data=" + paramJson.toJSONString());
-            JSONObject resultJson = JSONObject.parseObject(resultStr);
-            if (resultJson != null && resultJson.getInteger("code") == 0) {
-                //修改状态 已领取
-                mailMapper.updateMailState(id);
-                result.put("code", 200);
-                result.put("msg", "OK");
-                result.put("read_id", id);
-                Map resultMap = new HashMap();
-                resultMap.put("coins", coins);
-                resultMap.put("reason", 0);
-                result.put("result", resultMap);
-                return result;
+        if (map != null) {
+            BigDecimal coins = new BigDecimal((String) map.get("coins"));
+            String uid = (String) map.get("uid");
+            if (coins.compareTo(new BigDecimal(0)) >= 0) {
+                JSONObject paramJson = new JSONObject();
+                paramJson.put("cmd", "takeattach");
+                JSONObject record_list = new JSONObject();
+                record_list.put("uid", Long.valueOf(uid));
+                record_list.put("reason", 100022);
+                record_list.put("coins", coins.multiply(new BigDecimal(10000)).longValue());
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.add(record_list);
+                paramJson.put("record_list", jsonArray);
+                //操作 用户金币
+                String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/mail",
+                        "data=" + paramJson.toJSONString());
+                JSONObject resultJson = JSONObject.parseObject(resultStr);
+                if (resultJson != null && resultJson.getInteger("code") == 0) {
+                    //修改状态 已领取
+                    mailMapper.updateMailState(id);
+                    result.put("code", 200);
+                    result.put("msg", "OK");
+                    result.put("read_id", id);
+                    Map resultMap = new HashMap();
+                    resultMap.put("coins", coins);
+                    resultMap.put("reason", 0);
+                    result.put("result", resultMap);
+                    return result;
+                }
             }
         }
         result.put("code", 500);
