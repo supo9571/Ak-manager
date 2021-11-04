@@ -31,4 +31,12 @@ public class PayServiceImpl implements PayService {
     public Integer saveBankReg(String uid, String name, Integer money, String channel) {
         return payMapper.saveBankReg(uid, name, money, channel, IdUtils.getOrderId(), tenantMapper.getTidByCid(channel));
     }
+
+    /**
+     *
+     */
+    @Override
+    public Integer isNoRepeat(String uid) {
+        return payMapper.isNoRepeat(uid);
+    }
 }
