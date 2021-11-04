@@ -20,7 +20,7 @@
             (
                 SELECT
                 FROM_UNIXTIME(dr.time, '%Y-%m-%d') as day,
-                SUM(FROM_UNIXTIME(dr.agent_time / 1000, '%Y-%m-%d') = FROM_UNIXTIME(dr.time, '%Y-%m-%d')) as agentTime,
+                COUNT(u.phone) as agentTime,
                 dr.uid as uid,
                 (
                 SELECT COUNT(distinct uid) from
@@ -60,7 +60,9 @@
                 and FROM_UNIXTIME(dr.time, '%Y-%m-%d') = FROM_UNIXTIME(dw.time, '%Y-%m-%d')
                 ) as userReward
                 from
-                data_register dr where  1=1
+                data_register dr
+                left join data_user u on (dr.account_id = u.account_id)
+                where  1=1
                 <choose>
                     <when test="channel !=null and channel !=''">
                         and dr.channel = #{channel}
