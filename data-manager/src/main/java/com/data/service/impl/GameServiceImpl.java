@@ -22,8 +22,8 @@ public class GameServiceImpl implements GameService {
     private GameMapper gameMapper;
 
     @Override
-    public List getGames() {
-        return buildTree(gameMapper.getGames());
+    public List getGames(Long tid) {
+        return buildTree(gameMapper.getGames(tid));
     }
 
     @Override

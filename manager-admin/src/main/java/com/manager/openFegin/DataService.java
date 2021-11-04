@@ -48,7 +48,7 @@ public interface DataService {
     AjaxResult findCardInfo(@RequestParam("tableGid") String tableGid);
 
     @PostMapping(value = "/data/game/option")
-    AjaxResult getGames();
+    AjaxResult getGames(@RequestParam("tid")Long tid);
 
     @PostMapping(value = "/data/game/send")
     AjaxResult send();

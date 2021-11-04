@@ -21,4 +21,12 @@
         </where>
     </select>
 
+    <select id="getGames" resultType="java.util.Map">
+        select distinct game_id gameType,game_name gameName,parent_id parentId
+        from config_game
+        <where>
+            <if test="tid!=0"> and tid = #{tid}</if>
+        </where>
+
+    </select>
 </mapper>
