@@ -21,7 +21,6 @@
             phone,
             safe_box / 10000 safeBox,
             FROM_UNIXTIME(login_time) loginTime,
-            today_red todayRed,
             today_give todayGive,
             today_water / 10000 todayWater,
             today_win todayWin,
