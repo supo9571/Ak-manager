@@ -79,7 +79,7 @@
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
-            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.betCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward})
+            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.waterCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward})
         </foreach>
     </insert>
 
