@@ -15,6 +15,9 @@ public class ControlPlayer extends BaseEntity {
     @ApiModelProperty("玩家id")
     private Long uid;
 
+    @ApiModelProperty("玩家昵称")
+    private String name;
+
     @ApiModelProperty("风控类型 1=杀,2=送")
     private Integer type;
 
