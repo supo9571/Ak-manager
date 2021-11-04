@@ -41,6 +41,15 @@ public class PayController extends BaseController {
         Integer money = param.getInteger("money");
         String channel = param.getString("channel");
         JSONObject result = new JSONObject();
+
+        // 判断是否重复
+        Integer isNoRepeat = payService.isNoRepeat(uid);
+        if (isNoRepeat > 0) {
+            result.put("code", 500);
+            result.put("msg", "上一单还未处理完毕，请稍后再提交");
+            return result;
+        }
+
         Integer i = payService.saveBankReg(uid, name, money, channel);
         if (i > 0) {
             result.put("code", 200);
