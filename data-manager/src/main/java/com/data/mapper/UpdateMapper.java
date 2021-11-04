@@ -16,7 +16,7 @@ import java.util.Map;
 @Mapper
 public interface UpdateMapper {
 
-    List<Map> selectPackage(@Param("ip") String ip, @Param("channelId") String channelId, @Param("versionId") String versionId, @Param("platform") String platform);
+    List<Map> selectPackage(@Param("ip") String ip, @Param("tid") int tid, @Param("versionId") String versionId, @Param("platform") String platform);
 
     @Select("select accord_addr,info,live_url,open_type from config_consumer where status = '1'")
     List<Map> selectConsumer();

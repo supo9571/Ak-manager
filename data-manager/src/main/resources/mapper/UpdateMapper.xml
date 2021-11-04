@@ -8,8 +8,8 @@
         from config_package
         where platform like CONCAT('%', #{platform}, '%')
           and (is_public = '*' or is_public like CONCAT('%', #{ip}, '%'))
-          and (allow_channel = '*' or allow_channel like CONCAT('%', #{channelId}, '%'))
-          and deny_channel not like CONCAT('%', #{channelId}, '%')
+          and (allow_channel = '*' or allow_channel like CONCAT('%', #{tid}, '%'))
+          and deny_channel not like CONCAT('%', #{tid}, '%')
           and (allow_version = '*' or allow_version like CONCAT('%', #{versionId}, '%'))
           and deny_version not like CONCAT('%', #{versionId}, '%')
           and status = '1'

@@ -80,7 +80,7 @@ public interface ConfigAgentMapper {
             "IF(`type`=1,'',content) bg_url,IF(`type`=2,'',content) act_desc,sort sort_index FROM sys_propaganda WHERE state = '2' and tid = #{tid} ")
     List<Map> getActList(@Param("tid") Integer tid);
 
-    @Select("select distinct activity_type from config_activity where activity_begin<=sysdate() AND sysdate()<=activity_end and tid = #{tid} ")
+    @Select("select activity_type from config_activity where activity_begin<=sysdate() AND sysdate()<=activity_end and tid = #{tid} order by sort ")
     List<Integer> getActivitys(@Param("tid") Integer tid);
 
     @Select("select count(1) from config_month_recharge where status = '1' and tid = #{tid}")

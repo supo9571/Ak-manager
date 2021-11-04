@@ -36,7 +36,7 @@ public class UpdateServiceImpl implements UpdateService {
         } else {
             platform = "3";
         }
-        return updateMapper.selectPackage(ip, channelId, versionId, platform);
+        return updateMapper.selectPackage(ip, tenantMapper.getTidByCid(channelId), versionId, platform);
     }
 
     @Override
