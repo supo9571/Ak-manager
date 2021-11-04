@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.mapper.MailMapper;
@@ -56,13 +57,16 @@ public class MailServiceImpl implements MailService {
         String uid = (String) map.get("uid");
         if (coins.compareTo(new BigDecimal(0)) >= 0) {
             JSONObject paramJson = new JSONObject();
-            paramJson.put("cmd", "addcoins");
-            paramJson.put("reason", 100022);
-            paramJson.put("type", 1);
-            paramJson.put("value", coins.multiply(new BigDecimal(10000)));
-            paramJson.put("uid", uid);
+            paramJson.put("cmd", "takeattach");
+            JSONObject record_list = new JSONObject();
+            record_list.put("uid",uid);
+            record_list.put("reason",100022);
+            record_list.put("coins",coins.multiply(new BigDecimal(10000)).longValue());
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(record_list);
+            paramJson.put("record_list", jsonArray);
             //操作 用户金币
-            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
+            String resultStr = HttpUtils.sendPost(globalConfig.getReportDomain() + "/mail",
                     "data=" + paramJson.toJSONString());
             JSONObject resultJson = JSONObject.parseObject(resultStr);
             if (resultJson != null && resultJson.getInteger("code") == 0) {
