@@ -59,7 +59,7 @@ public class MailServiceImpl implements MailService {
             JSONObject paramJson = new JSONObject();
             paramJson.put("cmd", "takeattach");
             JSONObject record_list = new JSONObject();
-            record_list.put("uid",uid);
+            record_list.put("uid",Long.valueOf(uid));
             record_list.put("reason",100022);
             record_list.put("coins",coins.multiply(new BigDecimal(10000)).longValue());
             JSONArray jsonArray = new JSONArray();
