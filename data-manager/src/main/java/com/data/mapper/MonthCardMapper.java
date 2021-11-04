@@ -25,7 +25,7 @@ public interface MonthCardMapper {
     @Select("select id,cname,pay_channel,pay_type,recharge_give recharge_to_give,sort sort_id,pay_channel pay_name from config_pay where status = '1' and tid = #{tid} ")
     List<Map> selectConfigPay(@Param("tid") Integer tid);
 
-    @Select("SELECT open_type,recharge_other_type,recharge_type,IF(open_type = '1',live_addr,url)url,img_type vip_img,vip_name,QQ,wechat FROM config_vip_recharge " +
+    @Select("SELECT open_type,recharge_other_type,recharge_type,IF(open_type = '1',live_addr,url)url,img_type vip_img,vip_name,QQ,wechat,order_num `index` FROM config_vip_recharge " +
             " WHERE pay_id = #{id} AND status = '1' and tid = #{tid} ")
     List<Map> selectVipconfig(@Param("id") Integer id, @Param("tid") Integer tid);
 
