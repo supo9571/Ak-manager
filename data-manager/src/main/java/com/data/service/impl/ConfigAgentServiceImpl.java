@@ -130,7 +130,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
             map = new HashMap();
         }
         String spreadUrl = configAgentMapper.getSpreatUrl(tenantMapper.getTidByCid(channelId));
-        map.put("spread_url", spreadUrl.concat("?ch=" + channelId + "&uid" + uid));
+        map.put("spread_url", spreadUrl.concat("?ch=" + channelId + "&uid=" + uid));
         result.put("result", map);
         return result;
     }
