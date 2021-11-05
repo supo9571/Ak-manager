@@ -28,7 +28,7 @@ public class GameController extends BaseController {
      * 获取游戏下拉选项
      */
     @PostMapping("/option")
-    public AjaxResult list(Long tid) {
+    public AjaxResult list(Integer tid) {
         return AjaxResult.success("查询成功", gameService.getGames(tid));
     }
 

@@ -22,7 +22,7 @@ public class GameServiceImpl implements GameService {
     private GameMapper gameMapper;
 
     @Override
-    public List getGames(Long tid) {
+    public List getGames(Integer tid) {
         return buildTree(gameMapper.getGames(tid));
     }
 

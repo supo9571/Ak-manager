@@ -66,7 +66,7 @@ public class SysUserController extends BaseController {
      * 新增用户
      */
     @PreAuthorize("@ss.hasPermi('system:user:add')")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @Log(title = "账号管理", businessType = BusinessType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/add")
     public AjaxResult add(@Validated @RequestBody SysUser user) {
@@ -101,7 +101,7 @@ public class SysUserController extends BaseController {
      * 修改用户
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "账号管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "修改用户")
     @PostMapping("/edit")
     public AjaxResult edit(@Validated @RequestBody SysUser user) {
@@ -144,7 +144,7 @@ public class SysUserController extends BaseController {
      * 状态修改
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "账号管理", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "状态启停")
     @PostMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUser user) {
@@ -172,7 +172,7 @@ public class SysUserController extends BaseController {
      * 用户授权角色
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @Log(title = "账号管理", businessType = BusinessType.GRANT)
     @ApiOperation(value = "用户权限授权")
     @PostMapping("/authRole")
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {

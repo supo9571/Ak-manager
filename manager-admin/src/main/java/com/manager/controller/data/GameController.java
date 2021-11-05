@@ -33,7 +33,7 @@ public class GameController {
     @ApiOperation(value = "获取游戏下拉列表")
     @GetMapping("/option")
     public AjaxResult option() {
-        return dataService.getGames(0l);
+        return dataService.getGames(0);
     }
 
     /**

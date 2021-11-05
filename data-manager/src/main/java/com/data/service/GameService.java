@@ -6,7 +6,7 @@ import java.util.List;
  * @author marvin 2021/8/27
  */
 public interface GameService {
-    List getGames(Long tid);
+    List getGames(Integer tid);
 
     void saveIp(String ip, String createBy);
 
