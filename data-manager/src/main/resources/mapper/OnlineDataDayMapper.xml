@@ -79,8 +79,11 @@
                 dod.create_time
             ) t
         where 1 = 1
-        <if test="day !=null and day !=''">
-            and t.day = #{day}
+        <if test="day1 !=null and day1 !=''">
+            and t.day >= #{day1}
+        </if>
+        <if test="day2 !=null and day2 !=''">
+            and t.day <![CDATA[<=]]> #{day2}
         </if>
         group by day
     </select>
