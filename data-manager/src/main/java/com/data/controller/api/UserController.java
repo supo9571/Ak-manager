@@ -63,7 +63,7 @@ public class UserController extends BaseController {
         String pkgChannel = getHeader("Client-ChannelId") == null ? "" : getHeader("Client-ChannelId");
 
         if (checkWay == 6) { //登录
-            DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password));
+            DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password),pkgChannel);
             if (dataUser == null) {
                 result.put("code", -1);
                 result.put("desc", "用户名密码错误");

@@ -17,6 +17,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TenantMapper tenantMapper;
+
     @Override
     public Integer findByphone(String phone) {
         return userMapper.findByphone(phone);
@@ -38,8 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DataUser findByPassword(String phoneNumber, String password) {
-        return userMapper.findByPassword(phoneNumber, password);
+    public DataUser findByPassword(String phoneNumber, String password,String channel) {
+        return userMapper.findByPassword(phoneNumber, password,tenantMapper.getTidByCid(channel));
     }
 
     @Override
@@ -66,9 +69,6 @@ public class UserServiceImpl implements UserService {
     public Map becomeAgent(String accountId) {
         return userMapper.becomeAgent(accountId);
     }
-
-    @Autowired
-    private TenantMapper tenantMapper;
 
     @Override
     public int checkBlack(String uid, String matchineId, String ip,String channel) {

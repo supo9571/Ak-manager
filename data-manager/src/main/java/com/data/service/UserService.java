@@ -17,7 +17,7 @@ public interface UserService {
 
     DataUser findUserBySeedToken(String seedToken);
 
-    DataUser findByPassword(String phoneNumber, String password);
+    DataUser findByPassword(String phoneNumber, String password,String channel);
 
     DataUser findByPhone(String phoneNumber);
 
