@@ -33,7 +33,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         Integer tid = tenantMapper.getTidByCid(cid);
         JSONObject result = new JSONObject();
         Map map = monthCardMapper.getMonthConfig(tid);
-        result.put("code", "200");
+        result.put("code", 200);
         result.put("result", map);
         return result;
     }

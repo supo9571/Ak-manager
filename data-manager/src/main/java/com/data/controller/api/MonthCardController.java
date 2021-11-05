@@ -134,10 +134,10 @@ public class MonthCardController extends BaseController {
         exchangeOrder.setMatchineId(matchineId);
         Integer i = monthCardService.saveWithdraw(exchangeOrder);
         if (i > 0) {
-            result.put("code", "200");
+            result.put("code", 200);
             result.put("msg", "成功");
         } else {
-            result.put("code", "500");
+            result.put("code", 500);
             result.put("msg", "添加提现记录失败");
             log.error("添加提现记录失败，参数：{}", param);
         }
