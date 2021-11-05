@@ -36,7 +36,7 @@ spring:
 
   # kafka配置
   kafka:
-    bootstrap-servers: 54.179.46.149:9092
+    bootstrap-servers: 54.179.83.50:9092
     consumer:
       enable-auto-commit: false # 消息的签收机制：手工签收
       # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：

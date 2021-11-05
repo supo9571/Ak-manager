@@ -48,9 +48,9 @@ global-config:
   #接口地址
   apiUrl: http://54.179.46.149:8030
   #错误日志上传地址
-  errUploadUrl: http://54.179.46.149:6661/starry/logs/upload
+  errUploadUrl: http://3.0.203.84:6661/starry/logs/upload
   #头像下载地址
-  headUrl: http://54.179.46.149:13003/upload
+  headUrl: http://3.0.203.84:13003/upload
   #更新包下载地址
   resourcesUrl: http://54.179.46.149:8030
   #游戏配置
@@ -61,13 +61,13 @@ global-config:
   #  profile: D:/package/apk
   profile: /home/manager/package/apk
   #游戏服 地址
-  domain: http://54.179.46.149:6661
+  domain: http://3.0.203.84:6661
   #发送游戏配置
   gameSend: /upload
 
-  onlinePlay: http://54.179.46.149:8888/get_play_info
+  onlinePlay: http://3.0.203.84:8888/get_play_info
   #游戏服 通讯地址
-  reportDomain: http://54.179.46.149:8888
+  reportDomain: http://3.0.203.84:8888
   #操作金币
   changeCoins: /notify_payment
   #驳回提现请求用户返金币

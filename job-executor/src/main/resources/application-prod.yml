@@ -20,5 +20,5 @@ mybatis:
 
 #接口地址
 global-config:
-  domain: http://18.142.67.104:8888
+  domain: http://3.0.203.84:8888
   onlinePlay: /get_play_info

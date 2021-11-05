@@ -57,7 +57,7 @@ public class SysIpController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:ip:list')")
     @ApiOperation(value = "查询白名单")
     @GetMapping("/white/list")
-    public AjaxResult list(String tid, String userId, String ip, String userName) {
+    public AjaxResult list(String userId, String ip, String userName) {
         startPage();
         List list = sysIpWhiteService.selectIpWhiteList(userId, ip, userName);
         return AjaxResult.success("查询白名单成功", getDataTable(list));

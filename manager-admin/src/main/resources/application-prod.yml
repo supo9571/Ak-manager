@@ -102,7 +102,7 @@ manager:
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
   #游戏服 地址
-  domain: http://18.142.67.104:6661
+  domain: http://3.0.203.84:6661
   #发送游戏相关配置
   gameSend: /upload
   #操作金币
