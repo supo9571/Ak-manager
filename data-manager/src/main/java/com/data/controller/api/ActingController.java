@@ -113,12 +113,13 @@ public class ActingController extends BaseController {
     }
 
     /**
-     * 轮播图配置接口
+     * 活动列表配置
      */
     @PostMapping("/act/get_act_list")
     public JSONObject getActList(){
         String channelId = getHeader("Client-ChannelId");//渠道id
-        List list = configAgenService.getActList(channelId);
+        String uid = getHeader("uid");
+        List list = configAgenService.getActList(channelId,uid);
         JSONObject result = new JSONObject();
         result.put("code", 200);
         result.put("result", list);

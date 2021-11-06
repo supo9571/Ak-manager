@@ -60,7 +60,7 @@ public class UserController extends BaseController {
         Integer checkWay = param.getInteger("check_way");
         String password = param.getString("password");
         String requestId = param.getString("requestId");
-        String pkgChannel = getHeader("Client-ChannelId") == null ? "" : getHeader("Client-ChannelId");
+        String pkgChannel = param.getString("package_channel");
 
         if (checkWay == 6) { //登录
             DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password),pkgChannel);

@@ -77,8 +77,9 @@ public interface ConfigAgentMapper {
     void updateWaitIncome(@Param("uid") String uid, @Param("cash") BigDecimal cash, @Param("day") String day);
 
     @Select("SELECT begin_time act_begin_time,end_time act_end_time,id act_id,title act_name,IF(`type`=1,122,123) act_type,'true' open_state,'true' show_icon," +
-            "IF(`type`=1,'',content) bg_url,IF(`type`=2,'',content) act_desc,sort sort_index FROM sys_propaganda WHERE state = '2' and tid = #{tid} ")
-    List<Map> getActList(@Param("tid") Integer tid);
+            "IF(`type`=1,'',content) bg_url,IF(`type`=2,'',content) act_desc,sort sort_index FROM sys_propaganda WHERE state = '2' and tid = #{tid} " +
+            "and (addressee_type=1 or (addressee_type=2 and addressee like concat('%',#{channel},'%')) or(addressee_type=3 and addressee like concat('%',#{uid},'%')))")
+    List<Map> getActList(@Param("tid") Integer tid,@Param("channel")String channel,@Param("uid")String uid);
 
     @Select("select activity_type from config_activity where activity_begin<=sysdate() AND sysdate()<=activity_end and tid = #{tid} order by sort ")
     List<Integer> getActivitys(@Param("tid") Integer tid);

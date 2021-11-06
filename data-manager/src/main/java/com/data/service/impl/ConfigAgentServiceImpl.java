@@ -202,9 +202,9 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     }
 
     @Override
-    public List getActList(String channelId) {
+    public List getActList(String channelId,String uid) {
         Integer tid = tenantMapper.getTidByCid(channelId);
-        return configAgentMapper.getActList(tid);
+        return configAgentMapper.getActList(tid,channelId,uid);
     }
 
     @Override
