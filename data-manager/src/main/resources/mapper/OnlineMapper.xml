@@ -20,7 +20,7 @@
                 and r.login_ip = #{loginIp}
             </if>
             <if test="tid!=null and tid !=''">
-                and o.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+                and o.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') OR t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
                 and o.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
@@ -44,8 +44,7 @@
         from data_online
         <where>
             <if test="tid!=null and tid !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%',
-                #{tid},'%'))
+                and channel in (select t_id from sys_tenant where t_type = '2' (ancestors like CONCAT('%', #{tid}, '%') OR t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
