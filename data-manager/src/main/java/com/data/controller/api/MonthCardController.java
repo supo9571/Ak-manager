@@ -101,8 +101,14 @@ public class MonthCardController extends BaseController {
         }
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
-        Integer i = monthCardService.saveExchange(channel, uid, type, name, account, originBank);
+        int count = monthCardService.getAccountCount(type, account);
         JSONObject jsonObject = new JSONObject();
+        if (count >= 2) {
+            jsonObject.put("code", 500);
+            jsonObject.put("msg", type.equals("0") ? " 此支付宝号已被绑定" : "此银行卡号已被绑定");
+            return jsonObject;
+        }
+        Integer i = monthCardService.saveExchange(channel, uid, type, name, account, originBank);
         if (i > 0) {
             jsonObject.put("code", 200);
             jsonObject.put("msg", "绑定成功");

@@ -16,6 +16,15 @@ public interface UserMapper {
     @Select("select count(phone) from data_user where phone = #{phone}")
     Integer findByphone(@Param("phone") String phone);
 
+    @Select("select ip_num ipNum,device_num deviceNum from config_register_constraint where  tid = #{tid} limit 0,1")
+    Map getConfigRegisterConstraint(Integer tid);
+
+    @Select("select count(account_id) from data_user where tenant = #{tid} and client_ip=#{ip}")
+    int getIpUserCount(@Param("tid") Integer tid, @Param("ip") String ip);
+
+    @Select("select count(account_id) from data_user where tenant = #{tid} and seed_token = #{seedToken}")
+    int getSeedTokenUserCount(@Param("tid") Integer tid, @Param("seedToken") String seedToken);
+
     Integer insertToDataUser(DataUser dataUser);
 
     Integer loadDataUserName(DataUser dataUser);

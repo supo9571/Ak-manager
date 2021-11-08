@@ -95,9 +95,16 @@ public class MonthCardServiceImpl implements MonthCardService {
     }
 
     @Override
+    public int getAccountCount(String type, String account) {
+        return monthCardMapper.getAccountCount(type, account);
+    }
+
+    @Override
     public Integer getBankGive(String channelId) {
         return monthCardMapper.getBankGive(tenantMapper.getTidByCid(channelId));
     }
+
+
 
     /**
      * 绑定 提现支付宝/银行卡

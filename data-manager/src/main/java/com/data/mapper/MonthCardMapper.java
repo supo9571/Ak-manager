@@ -40,7 +40,12 @@ public interface MonthCardMapper {
     Integer getVipGive(@Param("tid") Integer tid);
 
     @Select("select recharge_give from config_pay where pay_type = '3' and status = '1' and tid = #{tid} limit 0,1")
-    Integer getBankGive(Integer tidByCid);
+    Integer getBankGive(Integer tid);
+
+
+
+    @Select("select count(*) user_exchange where type = #{type} and account = #{account} ")
+    int getAccountCount(@Param("type") String type, @Param("account") String account);
 
     @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel,create_time) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel},sysdate())")
     Integer saveExchange(@Param("channel") String channel, @Param("tid") Integer tid, @Param("uid") String uid,

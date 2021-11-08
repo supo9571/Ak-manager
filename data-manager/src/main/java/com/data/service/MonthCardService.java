@@ -2,6 +2,7 @@ package com.data.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.core.domain.model.ExchangeOrder;
+import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 
@@ -15,6 +16,9 @@ public interface MonthCardService {
     JSONObject getBookConfig(JSONObject param, String cid);
 
     Integer getVipGive(String channelId);
+
+
+    int getAccountCount(String type, String account);
 
     Integer saveExchange(String channel, String uid, String type, String name, String account, String originBank);
 

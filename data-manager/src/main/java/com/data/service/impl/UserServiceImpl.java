@@ -26,6 +26,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map getConfigRegisterConstraint(Integer tid) {
+        return userMapper.getConfigRegisterConstraint(tid);
+    }
+
+
+    @Override
+    public int getIpUserCount(Integer tid, String ip) {
+        return userMapper.getIpUserCount(tid, ip);
+    }
+
+    @Override
+    public int getSeedTokenUserCount(Integer tid, String seedToken) {
+        return userMapper.getSeedTokenUserCount(tid, seedToken);
+    }
+
+    @Override
     public Integer insertToDataUser(DataUser dataUser) {
         return userMapper.insertToDataUser(dataUser);
     }
