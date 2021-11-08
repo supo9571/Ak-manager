@@ -49,7 +49,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         String phoneType = param.getString("phone_type");
         if ("ios".equals(phoneType)) {
             phoneType = "1";
-        } else if ("Android".equals(phoneType)) {
+        } else if ("android".equals(phoneType)) {
             phoneType = "2";
         } else {
             phoneType = "3";

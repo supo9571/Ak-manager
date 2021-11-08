@@ -181,8 +181,9 @@ public class AgentHandle {
         List<Long> list = agentMapper.selectSubUid(uid);
         if (list != null) {
             list.forEach(id -> {
-                Long ratio = getSubRatio(id, beginTime, endTime);
-                i.updateAndGet(v -> v + ratio);
+                Long subRatio = getSubRatio(id, beginTime, endTime);
+                Long otherRatio = getOtherRatio(id, beginTime, endTime);
+                i.updateAndGet(v -> v + subRatio+otherRatio);
             });
         }
         return i.get();
