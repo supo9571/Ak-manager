@@ -6,6 +6,7 @@ import com.data.config.GlobalConfig;
 import com.data.mapper.MailMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MailService;
+import com.manager.common.core.domain.model.MailRecord;
 import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,5 +109,12 @@ public class MailServiceImpl implements MailService {
         if (list != null && list.size() > 0) {
             mailMapper.saveMailRecord(list, uid);
         }
+    }
+
+    /**
+     * 发送邮件
+     */
+    private void sendOutMail(MailRecord mail) {
+        mailMapper.sendOutMail(mail);
     }
 }

@@ -1,5 +1,6 @@
 package com.data.mapper;
 
+import com.manager.common.core.domain.model.MailRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -21,6 +22,7 @@ public interface MailMapper {
 
     void saveMailRecord(@Param("list") List list, @Param("uid") String uid);
 
+    void sendOutMail(MailRecord mail);
     @Update("update sys_mail_record set mail_state='1',update_time = sysdate() where id = #{id} ")
     void readMail(@Param("id") String id);
 
