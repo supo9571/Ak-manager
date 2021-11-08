@@ -45,10 +45,14 @@ public class PlatformStoreServiceImpl implements PlatformStoreService {
             int[] ints = new int[s.length];
             int[] intg = new int[g.length];
             for (int i = 0; i < s.length; i++) {
-                ints[i] = Integer.valueOf(s[i]);
+                if(StringUtils.isNotBlank(s[i])){
+                    ints[i] = Integer.valueOf(s[i]);
+                }
             }
             for (int i = 0; i < g.length; i++) {
-                intg[i] = Integer.valueOf(g[i]);
+                if(StringUtils.isNotBlank(s[i])){
+                    intg[i] = Integer.valueOf(g[i]);
+                }
             }
             map.put("person_store_list",ints);
             map.put("game_store_list",intg);

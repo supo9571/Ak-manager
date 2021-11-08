@@ -35,7 +35,7 @@
             <if test="strategyName != null and strategyName != ''"> strategy_name = #{strategyName}, </if>
             <if test="strategyTagId != null and strategyTagId != ''"> strategy_tag_id = #{strategyTagId}, </if>
             <if test="strategyDesc != null and strategyDesc != ''"> strategy_desc = #{strategyDesc}, </if>
-            <if test="strategyStatus != null and strategyStatus != ''"> strategy_status = #{strategyStatus}, </if>
+            <if test="strategyStatus != null"> strategy_status = #{strategyStatus}, </if>
             <if test="fishMaxRunTimes != null and fishMaxRunTimes != ''"> fish_max_run_times = #{fishMaxRunTimes}, </if>
             <if test="danjiPvpMaxRunTimes != null and danjiPvpMaxRunTimes != ''"> danji_pvp_max_run_times = #{danjiPvpMaxRunTimes}, </if>
             <if test="conditionList != null and conditionList != ''"> condition_list = #{conditionList}, </if>
