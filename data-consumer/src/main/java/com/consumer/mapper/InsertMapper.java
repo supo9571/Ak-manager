@@ -51,8 +51,9 @@ public interface InsertMapper {
     @Update("update data_register set today_water = #{value}+today_water,total_water = #{value}+total_water where uid = #{uid}")
     void updateUserWater(@Param("uid") Long uid, @Param("value") Long value);
 
-    @Select("select id, tid, notice_title, notice_content, notice_signature, send_out_gold from sys_personal_mail where tid = (select tenant from sys_tenant where t_id = #{channel})")
-    List getMailConfig(@Param("channel") String channel);
+    @Select("select id, tid, notice_title, notice_content, notice_signature, send_out_gold from sys_personal_mail where tid = (select tenant from sys_tenant where t_id = #{channel} limit 0,1) " +
+            "AND addressee_type = 4 AND (state = 2 OR (state = '1' AND SYSDATE() >= send_out_time))")
+    List<Map> getMailConfig(@Param("channel") String channel);
 
-    void saveMailRecord(List list, Long uid);
+    void saveMailRecord(@Param("list")List list,@Param("uid") Long uid);
 }
