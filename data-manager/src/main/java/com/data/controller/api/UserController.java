@@ -8,7 +8,6 @@ import com.data.mapper.TenantMapper;
 import com.data.service.UserService;
 import com.data.utils.RequestUtils;
 import com.data.utils.Verification;
-import com.manager.common.config.ManagerConfig;
 import com.manager.common.core.domain.entity.DataUser;
 import com.manager.common.core.domain.entity.ResponeSms;
 import com.manager.common.utils.uuid.IdUtils;
