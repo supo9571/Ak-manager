@@ -38,7 +38,7 @@
         <set>
             <if test="strategyName != null and strategyName != ''"> strategy_name = #{strategyName},</if>
             <if test="strategyTagId != null and strategyTagId != ''"> strategy_tag_id = #{strategyTagId},</if>
-            <if test="strategyStatus != null and strategyStatus != ''"> strategy_status = #{strategyStatus},</if>
+            <if test="strategyStatus != null"> strategy_status = #{strategyStatus},</if>
             <if test="playShaRate != null and playShaRate != ''"> play_sha_rate = #{playShaRate},</if>
             <if test="playSongRate != null and playSongRate != ''"> play_song_rate = #{playSongRate},</if>
             <if test="gameList != null and gameList != ''"> game_list = #{gameList},</if>
