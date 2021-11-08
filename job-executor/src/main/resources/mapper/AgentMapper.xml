@@ -38,7 +38,7 @@
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.day},#{item.uid},#{item.agentId},#{item.channel},#{item.teamNum},#{item.subNum},#{item.subRatio},#{item.subIncome}
-            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},0,#{item.totalIncome})
+            ,#{item.otherNum},#{item.otherRatio},#{item.otherIncome},#{item.totalIncome},0,#{item.subIncome})
         </foreach>
         ON DUPLICATE KEY
         UPDATE agent_id=values(agent_id),
@@ -51,7 +51,7 @@
         other_ratio=values(other_ratio),
         other_income=values(other_income),
         total_income=values(total_income),
-        wait_income=values(total_income)-cash_income;
+        wait_income=values(wait_income)-cash_income;
     </insert>
 
     <select id="selectDayIncome" resultType="com.job.executor.domain.AgentCommission">
