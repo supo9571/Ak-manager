@@ -2,11 +2,14 @@ package com.data.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.data.config.GlobalConfig;
 import com.data.config.redis.RedisCache;
 import com.data.mapper.MonthCardMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MonthCardService;
+import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.ExchangeOrder;
+import com.manager.common.utils.http.HttpUtils;
 import com.manager.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,6 +109,8 @@ public class MonthCardServiceImpl implements MonthCardService {
         return monthCardMapper.saveExchange(channel, tenantMapper.getTidByCid(channel), uid, type, name, account, originBank);
     }
 
+    @Autowired
+    private GlobalConfig globalConfig;
     /**
      * 申请 提现
      *
@@ -120,31 +125,46 @@ public class MonthCardServiceImpl implements MonthCardService {
         } else {
             exchangeOrder.setWithdrawType("1");
         }
+        //请求游戏服 减钱
+        //提现配置
+        List<Map> moneyVal = monthCardMapper.getExchangeConfig(tid);
+        int i = (int) moneyVal.get(0).get("keep_money");
+        JSONObject param = new JSONObject();
+        param.put("uid", exchangeOrder.getUid());
+        param.put("coins", exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(10000)).longValue());// 100070=vip充值  100071=金卡月卡充值 100072=银卡月卡充值 100073=银行卡充值
+        param.put("keep_money", i);
+        //操作 用户金币
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "exchange",
+                "data=" + param.toJSONString());
+        JSONObject resultJson = JSONObject.parseObject(result);
+        if (resultJson != null && resultJson.getInteger("code") == 0) {
+            //查询是否 符合黑名单
+            Map blackMap = monthCardMapper.checkBlack(exchangeOrder);
+            if(blackMap!=null){//符合黑名单策略
+                monthCardMapper.saveBlackInfo(tid,exchangeOrder.getUid(),blackMap.get("blackType"),blackMap.get("blackNum"));
+            }
+            Map map = monthCardMapper.findUserByid(exchangeOrder.getUid());
+            BigDecimal b = new BigDecimal(10000);
+            exchangeOrder.setAccumulateWater(new BigDecimal((Long) map.get("totalWater")).divide(b));//累计流水
+            exchangeOrder.setAccumulateRecharge(new BigDecimal((Long) map.get("totalAdd")).divide(b));//累计充值
+            exchangeOrder.setRechargeExcoins(new BigDecimal((Long) map.get("totalGive")).divide(b));//累计赠送
+            exchangeOrder.setRegisterIp((String) map.get("registerIp"));//注册ip
+            exchangeOrder.setUname((String) map.get("name"));//注册ip
+            exchangeOrder.setExaaStatus("1");//提现状态
+            exchangeOrder.setWithdrawOrderNumber(IdUtils.getExchangeOrderId());//提现订单号
 
-        //查询是否 符合黑名单
-        Map blackMap = monthCardMapper.checkBlack(exchangeOrder);
-        if(blackMap!=null){//符合黑名单策略
-            monthCardMapper.saveBlackInfo(tid,exchangeOrder.getUid(),blackMap.get("blackType"),blackMap.get("blackNum"));
+            //计算手续费
+            String type = "1";
+            if ("2".equals(exchangeOrder.getWithdrawType())) type = "0";
+            Integer poundage = monthCardMapper.getPoundage(type, tid);
+            exchangeOrder.setPoundage(exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(poundage).divide(new BigDecimal(100))));
+            exchangeOrder.setTransferAmount(exchangeOrder.getWithdrawMoney().subtract(exchangeOrder.getPoundage()));
+
+            exchangeOrder.setWithdrawNumber(monthCardMapper.getWithdrawNumber(exchangeOrder.getUid()));//提现次数
+            return monthCardMapper.saveWithdraw(exchangeOrder);
         }
-        Map map = monthCardMapper.findUserByid(exchangeOrder.getUid());
-        BigDecimal b = new BigDecimal(10000);
-        exchangeOrder.setAccumulateWater(new BigDecimal((Long) map.get("totalWater")).divide(b));//累计流水
-        exchangeOrder.setAccumulateRecharge(new BigDecimal((Long) map.get("totalAdd")).divide(b));//累计充值
-        exchangeOrder.setRechargeExcoins(new BigDecimal((Long) map.get("totalGive")).divide(b));//累计赠送
-        exchangeOrder.setRegisterIp((String) map.get("registerIp"));//注册ip
-        exchangeOrder.setUname((String) map.get("name"));//注册ip
-        exchangeOrder.setExaaStatus("1");//提现状态
-        exchangeOrder.setWithdrawOrderNumber(IdUtils.getExchangeOrderId());//提现订单号
 
-        //计算手续费
-        String type = "1";
-        if ("2".equals(exchangeOrder.getWithdrawType())) type = "0";
-        Integer poundage = monthCardMapper.getPoundage(type, tid);
-        exchangeOrder.setPoundage(exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(poundage).divide(new BigDecimal(100))));
-        exchangeOrder.setTransferAmount(exchangeOrder.getWithdrawMoney().subtract(exchangeOrder.getPoundage()));
-
-        exchangeOrder.setWithdrawNumber(monthCardMapper.getWithdrawNumber(exchangeOrder.getUid()));//提现次数
-        return monthCardMapper.saveWithdraw(exchangeOrder);
+        return 0;
     }
 
     /**

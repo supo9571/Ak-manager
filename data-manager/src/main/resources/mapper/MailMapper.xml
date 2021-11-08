@@ -39,7 +39,7 @@
                personal_mail_id                               config_id,
                mail_content                                   content,
                mail_title                                     content_title,
-               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i::%s') create_at,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') create_at,
                2                                              mail_type,
                signature                                      op_user,
                mail_title                                     title,

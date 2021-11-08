@@ -138,7 +138,7 @@ public class MonthCardController extends BaseController {
             result.put("msg", "成功");
         } else {
             result.put("code", 500);
-            result.put("msg", "添加提现记录失败");
+            result.put("msg", "提现申请失败");
             log.error("添加提现记录失败，参数：{}", param);
         }
         return result;
