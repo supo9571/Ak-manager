@@ -32,4 +32,7 @@ public interface MailMapper {
 
     @Update("update sys_mail_record set del_flag='2',update_time = sysdate() where id = #{id} ")
     void delMail(@Param("id") Integer mid);
+
+    @Select("select * from sys_horse_race_lamp")
+    List getAdvert(Integer tid);
 }

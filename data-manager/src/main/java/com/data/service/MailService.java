@@ -19,4 +19,6 @@ public interface MailService {
     JSONObject receiveMail(String id);
 
     void delMail(Integer mid);
+
+    List getAdvert(String channelId);
 }

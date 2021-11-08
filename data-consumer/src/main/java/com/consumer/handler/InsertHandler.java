@@ -22,6 +22,11 @@ public class InsertHandler {
 
     public void insertRegister(JSONObject result) {
         Register register = JSON.toJavaObject(result, Register.class);
+        //判断 是否有新注册邮件
+        List list = insertMapper.getMailConfig(register.getChannel());
+        if(list.size()>0){
+            insertMapper.saveMailRecord(list, register.getUid());
+        }
         insertMapper.insertReg(register);
     }
 

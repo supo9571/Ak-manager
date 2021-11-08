@@ -94,6 +94,12 @@ public class MailServiceImpl implements MailService {
         mailMapper.delMail(mid);
     }
 
+    @Override
+    public List getAdvert(String channelId) {
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        return mailMapper.getAdvert(tid);
+    }
+
     /**
      * 生成邮件记录
      */

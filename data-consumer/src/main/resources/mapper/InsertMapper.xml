@@ -87,4 +87,24 @@
         insert into data_water (`key`, `op`, `time`, `mstime`, `uid`, `r`, `value`, `reward`, `table_type`, `table_gid`, `channel`)
         values (#{key}, #{op}, #{time}, #{mstime}, #{uid}, #{r}, #{value}, #{reward}, #{tableType}, #{tableGid}, #{channel})
     </insert>
+
+    <insert id="saveMailRecord">
+        insert into
+        sys_mail_record(tid,signature,addressee,mail_title,mail_prop,mail_content,mail_state,personal_mail_id,create_time,update_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.tid},
+            #{item.notice_signature},
+            #{uid},
+            #{item.notice_title},
+            #{item.send_out_gold},
+            #{item.notice_content},
+            2,
+            #{item.id},
+            sysdate(),
+            sysdate()
+            )
+        </foreach>
+    </insert>
 </mapper>

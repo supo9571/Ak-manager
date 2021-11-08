@@ -101,6 +101,12 @@ public class MailController extends BaseController {
      */
     @PostMapping("/app/advert")
     public JSONObject advert() {
-        return null;
+        String channelId = getHeader("Client-ChannelId");
+        JSONObject result = new JSONObject();
+        List list = mailService.getAdvert(channelId);
+        result.put("data", list);
+        result.put("code", 200);
+        result.put("msg", "OK");
+        return result;
     }
 }
