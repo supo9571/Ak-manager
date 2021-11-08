@@ -45,7 +45,7 @@ public interface ConfigAgentMapper {
     Integer getWithdrawHistoryCount(@Param("uid") Long uid);
 
     @Select("SELECT d.uid," +
-            "d.agent_id pid," +
+            "r.agent_id pid," +
             "d.team_num team_num_with_new," +
             "d.sub_num first_proxy_num_with_new," +
             "c.total_income commission_all," +
