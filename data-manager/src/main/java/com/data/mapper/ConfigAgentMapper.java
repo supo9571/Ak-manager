@@ -25,13 +25,12 @@ public interface ConfigAgentMapper {
     Integer setAgentId(@Param("agentId") String agentId, @Param("uid") String uid, @Param("time") Long time, @Param("agentTime") Long agentTime);
 
     @Select("SELECT d.uid," +
-            "d.sub_ratio+IF(c.sub_ratio IS NULL,0,c.sub_ratio) sub_water," +
-            "d.other_ratio+IF(c.other_ratio IS NULL,0,c.other_ratio) team_water," +
-            "d.total_income+IF(c.total_income IS NULL,0,c.total_income) commission_all," +
+            "d.sub_ratio sub_water," +
+            "d.other_ratio team_water," +
+            "d.total_income commission_all," +
             "d.total_income today_income," +
             "d.team_num teamNum " +
-            "FROM agent_commission_day d " +
-            "LEFT JOIN agent_commission c ON d.uid = c.uid " +
+            "FROM agent_commission_day d "+
             "WHERE d.agent_id = #{uid} and d.day=#{day} limit #{beginNum},#{limit}")
     List<Map> selectSubinfo(@Param("beginNum") int beginNum, @Param("limit") Integer limit, @Param("uid") String uid, @Param("day") String day);
 
@@ -45,14 +44,19 @@ public interface ConfigAgentMapper {
     @Select("select count(1) from agent_case_income where uid = #{uid}")
     Integer getWithdrawHistoryCount(@Param("uid") Long uid);
 
-    @Select("SELECT d.uid,d.agent_id pid,d.team_num team_num_with_new,d.sub_num first_proxy_num_with_new," +
-            "d.total_income+c.total_income commission_all," +
-            "c.wait_income - d.cash_income commission_pre_all," +
+    @Select("SELECT d.uid," +
+            "d.agent_id pid," +
+            "d.team_num team_num_with_new," +
+            "d.sub_num first_proxy_num_with_new," +
+            "c.total_income commission_all," +
+            "(c.wait_income - d.cash_income)*10000 commission_pre_all," +
             "d.total_income todayRate " +
-            "FROM agent_commission_day d " +
+            "FROM data_register r " +
+            "LEFT JOIN agent_commission_day d " +
+            "ON r.uid = d.uid " +
             "LEFT JOIN agent_commission c " +
             "ON d.uid = c.uid " +
-            "WHERE d.uid = #{uid} AND d.day = #{day}")
+            "WHERE r.uid = #{uid} AND d.day = #{day}")
     Map getInfo(@Param("uid") String uid, @Param("day") String day);
 
     @Select("select promotion_domain from config_agent where tid=#{tid} limit 0,1")

@@ -188,7 +188,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
                     configAgentMapper.saveWithdarw(uid, cash);
                     configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());
                     map.put("rebate", cash);
-                    map.put("commission_pre_all", decimal.subtract(cash));
+                    map.put("commission_pre_all", decimal.subtract(cash).longValue()*10000);
                     result.put("code", 200);
                     result.put("result", map);
                     return result;
