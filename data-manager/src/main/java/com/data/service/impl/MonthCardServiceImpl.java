@@ -128,14 +128,10 @@ public class MonthCardServiceImpl implements MonthCardService {
         //请求游戏服 减钱
         //提现配置
         List<Map> moneyVal = monthCardMapper.getExchangeConfig(tid);
-        int i = (int) moneyVal.get(0).get("keep_money");
-        JSONObject param = new JSONObject();
-        param.put("uid", exchangeOrder.getUid());
-        param.put("coins", exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(10000)).longValue());// 100070=vip充值  100071=金卡月卡充值 100072=银卡月卡充值 100073=银行卡充值
-        param.put("keep_money", i);
+        BigDecimal i = (BigDecimal) moneyVal.get(0).get("keep_money");
         //操作 用户金币
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "exchange",
-                "data=" + param.toJSONString());
+        String result = HttpUtils.sendGet(globalConfig.getReportDomain() + "/exchange","uid="+exchangeOrder.getUid()+"&coins="
+                +exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(10000)).longValue()+"&keep_money="+i.longValue());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
             //查询是否 符合黑名单
