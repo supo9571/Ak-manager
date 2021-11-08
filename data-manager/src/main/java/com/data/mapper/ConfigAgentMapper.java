@@ -64,7 +64,7 @@ public interface ConfigAgentMapper {
 
     @Select("SELECT day date,sub_ratio+other_ratio teamwater," +
             "sub_ratio subwater,other_ratio next_water,total_income count_rebate FROM agent_commission_day " +
-            "WHERE uid = #{uid} limit #{beginNum},#{limit} order by day desc ")
+            "WHERE uid = #{uid} order by day desc limit #{beginNum},#{limit} ")
     List<Map> getIncome(@Param("beginNum") int beginNum, @Param("limit") int limit, @Param("uid") Long uid);
 
     @Select("select count(*) from agent_commission_day where uid = #{uid}")
