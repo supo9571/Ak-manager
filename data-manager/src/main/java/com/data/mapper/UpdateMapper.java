@@ -52,6 +52,6 @@ public interface UpdateMapper {
 
     List findHotupdateById(@Param("id") Integer id);
 
-    @Select("select title,content info,signature inscribe,notice_time from sys_stop_taking_notice where tid=#{tid} and SYSDATE()>begin_time AND end_time>SYSDATE() order by update_time limit 0,1")
+    @Select("select title,content info,signature inscribe,DATE_FORMAT(notice_time,'%Y-%m-%d %H:%i:%s') notice_time from sys_stop_taking_notice where tid=#{tid} and SYSDATE()>begin_time AND end_time>SYSDATE() order by update_time limit 0,1")
     Map selectStopNotice(@Param("tid") Integer tid);
 }

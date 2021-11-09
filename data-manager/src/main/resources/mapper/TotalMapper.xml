@@ -50,7 +50,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            and channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
         </if>
     </select>
 
@@ -59,7 +59,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            and channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
         </if>
     </select>
 
@@ -67,7 +67,7 @@
         select count(1) from
         data_online
         <if test="tid!=null and tid!=0">
-            where channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            where channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
         </if>
     </select>
 
@@ -84,7 +84,7 @@
         WHERE DAY >= #{beginTime}
         AND #{endTime}>=DAY
         <if test="tid!=null and tid!=0">
-            AND channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            AND channel IN (SELECT t_id FROM sys_tenant WHERE ancestors like CONCAT('%', #{tid}, '%') AND t_type = '2')
         </if>
     </select>
 </mapper>
