@@ -40,6 +40,7 @@
         from data_total_day
         where day >= #{beginTime} and #{endTime} >= day
         <if test="channel!=null and channel!=0"> and channel = #{channel}</if>
+        <if test="channel!=null and channel==0"> and channel in (select t_id from sys_tenant where ancestors like CONCAT('%',(select t_id from sys_user where user_id = #{uid}), '%') and t_type = '2')</if>
         group by day
     </select>
 
