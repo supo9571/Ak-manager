@@ -57,7 +57,7 @@ public class ReportController {
      * @return
      */
     @PostMapping("/coins/editGm")
-    public AjaxResult editCoinsGm(String cmd,Long value, String uid, Integer saveflag,Integer reason) {
+    public AjaxResult editCoinsGm(String cmd,Long value, Integer uid, Integer saveflag,Integer reason) {
         JSONObject param = new JSONObject();
         param.put("cmd", cmd);
         param.put("value", value);
@@ -65,7 +65,7 @@ public class ReportController {
         param.put("saveflag", saveflag);
         param.put("reason", reason);
         //操作 用户金币
-        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getChangeCoinsGm(),
+        String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         return getAjaxResult(param, result);
     }
