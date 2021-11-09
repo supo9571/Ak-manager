@@ -11,6 +11,7 @@ import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -46,21 +47,26 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     @Override
     public JSONObject bindAgent(String channelId, String uid, String agentId) {
         JSONObject result = new JSONObject();
-        Integer tid = tenantMapper.getTidByCid(channelId);
-        Long time = configAgentMapper.selectAgent(tid, agentId);
         result.put("code", 200);
         Map map = new HashMap();
-        if (time == null) {
+        if(StringUtils.isEmpty(uid)){
             map.put("status", false);
-            map.put("msg", "请输入正确的推荐人ID!!!");
-        } else {
-            Integer i = configAgentMapper.setAgentId(agentId, uid, time, System.currentTimeMillis());
-            if (i > 0) {
-                map.put("status", true);
-                map.put("msg", "绑定成功!!!");
-            } else {
+            map.put("msg", "推荐人ID不能为空");
+        }else{
+            Integer tid = tenantMapper.getTidByCid(channelId);
+            Long time = configAgentMapper.selectAgent(tid, agentId);
+            if (time == null) {
                 map.put("status", false);
-                map.put("msg", "推荐人注册时间必须早于自己!!!");
+                map.put("msg", "请输入正确的推荐人ID");
+            } else {
+                Integer i = configAgentMapper.setAgentId(agentId, uid, time, System.currentTimeMillis());
+                if (i > 0) {
+                    map.put("status", true);
+                    map.put("msg", "绑定成功");
+                } else {
+                    map.put("status", false);
+                    map.put("msg", "无法绑定比自己注册时间晚的用户");
+                }
             }
         }
         result.put("result", map);
