@@ -53,8 +53,8 @@
                d.day,
                t.create_time caseTime
         from agent_commission_day d
-        left join (SELECT MAX(create_time) create_time,uid FROM agent_case_income GROUP BY uid ) t
-        on d.uid = t.uid
+        left join (SELECT MAX(create_time) create_time,DATE_FORMAT(create_time,'%Y-%m-%d') `date`,uid FROM agent_case_income GROUP BY uid,DATE_FORMAT(create_time,'%Y-%m-%d') ) t
+        on d.uid = t.uid and d.day = t.date
         where d.uid = #{uid}
     </select>
 
