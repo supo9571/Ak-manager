@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.data.mapper.DataAnalysisMapper;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
@@ -47,7 +48,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         List<DataWaterTopVO> list = mapper.getDataWaterTopList(param);
         if (!CollectionUtils.isEmpty(list)) {
             List<Map> userList = mapper.getUserTableList(param);
-            Map<String, Integer> map = userList.stream().collect(Collectors.toMap(v -> String.valueOf(v.get("uid")),
+            Map<Integer, Integer> map = userList.stream().collect(Collectors.toMap(v -> Integer.valueOf(v.get("uid").toString()),
                     v -> Integer.valueOf(v.get("count").toString())));
             for (DataWaterTopVO vo : list) {
                 param.setUid(vo.getUid());

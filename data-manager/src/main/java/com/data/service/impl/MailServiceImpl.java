@@ -114,7 +114,8 @@ public class MailServiceImpl implements MailService {
     /**
      * 发送邮件
      */
-    private void sendOutMail(MailRecord mail) {
+    @Override
+    public void sendOutMail(MailRecord mail) {
         mailMapper.sendOutMail(mail);
     }
 }

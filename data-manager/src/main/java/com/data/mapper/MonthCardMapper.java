@@ -44,7 +44,7 @@ public interface MonthCardMapper {
 
 
 
-    @Select("select count(*) user_exchange where type = #{type} and account = #{account} ")
+    @Select("select count(*) from user_exchange where type = #{type} and account = #{account} ")
     int getAccountCount(@Param("type") String type, @Param("account") String account);
 
     @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel,create_time) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel},sysdate())")
