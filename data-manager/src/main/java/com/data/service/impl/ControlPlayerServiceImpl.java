@@ -144,7 +144,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
                 controlPlayerInfo.setTid(controlPlayer.getTid());
                 controlPlayerMapper.addInfo(controlPlayerInfo);
             }
-            if(oldControl.getMark().equals(controlPlayer.getMark())){
+            if(!oldControl.getMark().equals(controlPlayer.getMark())){
                 ControlPlayerInfo controlPlayerInfo = new ControlPlayerInfo();
                 controlPlayerInfo.setUpdateType(5);
                 controlPlayerInfo.setUpdateBefore(oldControl.getMark());

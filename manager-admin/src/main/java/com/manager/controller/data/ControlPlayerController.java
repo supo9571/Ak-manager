@@ -61,6 +61,7 @@ public class ControlPlayerController {
     @Log(title = "修改玩家风控设置", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     public AjaxResult edit(@RequestBody ControlPlayer controlPlayer) {
+        controlPlayer.setTid(0);
         controlPlayer.setCreateBy(SecurityUtils.getUsername());
         return subGameDataService.edit(controlPlayer);
     }
@@ -73,6 +74,7 @@ public class ControlPlayerController {
     @Log(title = "移除玩家风控设置", businessType = BusinessType.DELETE)
     @PostMapping("/del")
     public AjaxResult del(@RequestBody ControlPlayer controlPlayer) {
+        controlPlayer.setTid(0);
         controlPlayer.setCreateBy(SecurityUtils.getUsername());
         return subGameDataService.del(controlPlayer);
     }
