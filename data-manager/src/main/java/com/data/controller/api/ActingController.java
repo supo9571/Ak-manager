@@ -109,7 +109,7 @@ public class ActingController extends BaseController {
     public JSONObject withdraw(@RequestBody JSONObject param){
         String uid = getHeader("uid");//玩家id
         BigDecimal cash = param.getBigDecimal("cash");//领取金额
-        return configAgenService.getWithdraw(uid, cash);
+        return configAgenService.getWithdraw(uid, cash.divide(new BigDecimal(10000)));
     }
 
     /**
