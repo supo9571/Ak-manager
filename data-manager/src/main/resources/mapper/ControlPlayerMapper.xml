@@ -38,13 +38,13 @@
         control_player_config c
         left join data_register r
         on c.uid = r.uid
-        <where>
-            <if test="tid!=null and tid!=0"> c.tid = #{tid}</if>
+        where
+            c.tid = #{tid}
             <if test="uid!=null and uid!=''"> and c.uid = #{uid}</if>
-            <if test="type!=null and type!=0"> and c.type = #{type}</if>
+            <if test="type!=null"> and c.type = #{type}</if>
             <if test="beginTime!=null and beginTime!=''"> and c.create_time >= #{beginTime}</if>
             <if test="endTime!=null and endTime!=''"> and #{endTime} >= c.create_time</if>
-        </where>
+        order by create_time desc
     </select>
 
     <select id="infoList" resultType="java.util.Map">
@@ -55,15 +55,14 @@
         update_time updateTime,
         update_by updateBy
         from control_player_info
-        <where>
-            <if test="tid!=null and tid!=0"> tid = #{tid}</if>
+        where
+            tid = #{tid}
             <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
             <if test="updateBy!=null and updateBy!=0"> and update_by = #{updateBy}</if>
             <if test="updateType!=null and updateType!=0"> and update_type = #{updateType}</if>
             <if test="beginTime!=null and beginTime!=''"> and update_time >= #{beginTime}</if>
             <if test="endTime!=null and endTime!=''"> and #{endTime} >= update_time</if>
-        </where>
-
+        order by update_time desc
     </select>
 
     <select id="select" resultType="com.manager.common.core.domain.model.ControlPlayer">
