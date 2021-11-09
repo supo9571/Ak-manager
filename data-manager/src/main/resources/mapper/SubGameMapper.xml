@@ -36,7 +36,7 @@
             <if test="userSort!=null and userSort!=''">user_sort = #{userSort},</if>
             updated_time = sysdate()
         </set>
-        where game_id = #{gameId} and tid = #{tId}
+        where game_id = #{gameId} and tid = #{tenant}
     </update>
 
 </mapper>
