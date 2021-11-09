@@ -17,7 +17,7 @@
         select count(1) from data_register
         where uid = #{uid}
         <if test="tenant!=null and tenant!=0">
-            channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tenant}, '%'))
+            and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tenant}, '%'))
         </if>
     </select>
 
