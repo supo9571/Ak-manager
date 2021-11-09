@@ -81,6 +81,7 @@
             create_time,
             update_time,
             mail_content,
+            mail_state,
             del_flag)
         values (
            #{tid},
