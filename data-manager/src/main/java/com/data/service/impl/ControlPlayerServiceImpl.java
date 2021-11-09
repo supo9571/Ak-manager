@@ -165,6 +165,8 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", 0);
         param.put("uid", controlPlayer.getUid());
+        param.put("risk_power", 0);
+        param.put("level", 0);
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);
