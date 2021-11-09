@@ -40,7 +40,9 @@
         from data_total_day
         where day >= #{beginTime} and #{endTime} >= day
         <if test="channel!=null and channel!=0"> and channel = #{channel}</if>
-        <if test="channel!=null and channel==0"> and channel in (select t_id from sys_tenant where ancestors like CONCAT('%',(select t_id from sys_user where user_id = #{uid}), '%') and t_type = '2')</if>
+        <if test="channel!=null and channel==0"> and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%',(select t_id from sys_user where user_id = #{uid}), '%')
+         or t_id =(select t_id from sys_user where user_id = #{uid}) ) and t_type = '2')
+        </if>
         group by day
     </select>
 
@@ -51,7 +53,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
+            and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -60,7 +62,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
+            and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -68,7 +70,7 @@
         select count(1) from
         data_online
         <if test="tid!=null and tid!=0">
-            where channel in (select t_id from sys_tenant where ancestors like CONCAT('%', #{tid}, '%') and t_type = '2')
+            where channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -85,7 +87,7 @@
         WHERE DAY >= #{beginTime}
         AND #{endTime}>=DAY
         <if test="tid!=null and tid!=0">
-            AND channel IN (SELECT t_id FROM sys_tenant WHERE ancestors like CONCAT('%', #{tid}, '%') AND t_type = '2')
+            AND channel IN (SELECT t_id FROM sys_tenant WHERE (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) AND t_type = '2')
         </if>
     </select>
 </mapper>
