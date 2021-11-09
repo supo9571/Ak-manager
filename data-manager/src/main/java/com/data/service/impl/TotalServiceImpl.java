@@ -23,7 +23,7 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public Map getLeft(int tid) {
+    public Map getLeft(String tid) {
         Map map = totalMapper.getLeft(tid,DateUtils.getDate());
         map.put("yesterdayBalance",totalMapper.getYesterdayBalance(tid,DateUtils.getYesterday()));
         map.put("onlinePlayer",totalMapper.getOnlinePlayer(tid));
@@ -31,7 +31,7 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public Map getRight(int tid, String beginTime, String endTime) {
+    public Map getRight(String tid, String beginTime, String endTime) {
         return totalMapper.getRight(tid,beginTime,endTime);
     }
 }

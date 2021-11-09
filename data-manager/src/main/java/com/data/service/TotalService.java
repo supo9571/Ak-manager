@@ -11,7 +11,7 @@ import java.util.Map;
 public interface TotalService {
     List getTotals(Summarize summarize);
 
-    Map getLeft(int tid);
+    Map getLeft(String tid);
 
-    Map getRight(int tid, String beginTime, String endTime);
+    Map getRight(String tid, String beginTime, String endTime);
 }

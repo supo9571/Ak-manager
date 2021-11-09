@@ -16,11 +16,11 @@ public interface TotalMapper {
 
     List getTotals(Summarize summarize);
 
-    Map getLeft(@Param("tid") int tid, @Param("date") String date);
+    Map getLeft(@Param("tid") String tid, @Param("date") String date);
 
-    BigDecimal getYesterdayBalance(@Param("tid")int tid,@Param("date") String yesterday);
+    BigDecimal getYesterdayBalance(@Param("tid")String tid,@Param("date") String yesterday);
 
-    Integer getOnlinePlayer(int tid);
+    Integer getOnlinePlayer(@Param("tid")String tid);
 
-    Map getRight(@Param("tid") int tid,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+    Map getRight(@Param("tid") String tid,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 }
