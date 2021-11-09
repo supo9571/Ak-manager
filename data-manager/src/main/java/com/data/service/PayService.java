@@ -7,5 +7,5 @@ public interface PayService {
 
     Integer saveBankReg(String uid, String name, Integer money, String channel);
 
-    Integer isNoRepeat(String uid);
+    Integer isNoRepeat(String uid, String channel);
 }

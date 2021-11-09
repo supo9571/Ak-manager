@@ -1,6 +1,7 @@
 package com.data.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.manager.common.core.domain.model.MailRecord;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface MailService {
     void delMail(Integer mid);
 
     List getAdvert(String channelId);
+
+    void sendOutMail(MailRecord mail);
 }

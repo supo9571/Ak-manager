@@ -69,8 +69,10 @@ global-config:
   onlinePlay: http://18.142.67.104:8888/get_play_info
   #游戏服 通讯地址
   reportDomain: http://18.142.67.104:8888
-  #操作金币
+  #充值
   changeCoins: /notify_payment
+  #操作金币
+  changeCoinsGm: /gm
   #驳回提现请求用户返金币
   returnBack: /returnback
   #发邮件
