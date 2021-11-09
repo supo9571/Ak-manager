@@ -33,7 +33,7 @@ public class ReportController {
      * @return
      */
     @PostMapping("/coins/edit")
-    public AjaxResult editCoins(Long amount, Long ex_coins, Integer uid,Integer reason,Long other_amount,int saveflag) {
+    public AjaxResult editCoins(Long amount, Long ex_coins, Integer uid,Integer reason,Long other_amount,Integer saveflag) {
         JSONObject param = new JSONObject();
         param.put("uid", uid);
         param.put("reason", reason);
@@ -57,7 +57,7 @@ public class ReportController {
      * @return
      */
     @PostMapping("/coins/editGm")
-    public AjaxResult editCoinsGm(String cmd,Long value, String uid, String saveflag,Integer reason) {
+    public AjaxResult editCoinsGm(String cmd,Long value, String uid, Integer saveflag,Integer reason) {
         JSONObject param = new JSONObject();
         param.put("cmd", cmd);
         param.put("value", value);
