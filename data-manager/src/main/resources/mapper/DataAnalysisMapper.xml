@@ -147,7 +147,10 @@
         <where>
             payment_status =1
             <if test="beginTime!=null and beginTime !=''">
-                and cro.finish_time between #{beginms} and #{endms}
+                and cro.finish_time >=  #{beginTime}
+            </if>
+            <if test="endTime!=null and endTime !=''">
+                and cro.finish_time <![CDATA[ <= ]]> #{endTime}
             </if>
             <if test="tid!=null and tid!=''">
                 and dr.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
@@ -236,7 +239,10 @@
             )
         </if>
         <if test="beginTime!=null and beginTime !=''">
-            and cro.update_time between #{beginTime} and #{endTime}
+            and cro.finish_time >=  #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and cro.finish_time <![CDATA[ <= ]]> #{endTime}
         </if>
         GROUP BY cro.uid
         ORDER BY rechargeAmount desc LIMIT 100
@@ -348,7 +354,10 @@
             AND (t.ancestors LIKE concat('%', #{currentUserId}, '%') OR t_id = #{currentUserId}))
         </if>
         <if test="beginTime!=null and beginTime !=''">
-            and finish_time between #{beginTime} and #{endTime}
+            and finish_time >=  #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and finish_time <![CDATA[ <= ]]> #{endTime}
         </if>
         <if test="channelId!=null and channelId!=''">
             and channel = #{channelId}
