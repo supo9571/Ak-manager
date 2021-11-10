@@ -25,7 +25,7 @@
             <if test="gameId!=null and gameId !=''">
                 and c.game_type = #{gameId}
             </if>
-            <if test="tid!=null and tid !=0">
+            <if test="tid!=null and tid !='0'">
                 and
                 <foreach item="item" index="index" collection="channel.split(',')" open="(" separator="or" close=")">
                     c.channel like concat('%',#{item},'%')
