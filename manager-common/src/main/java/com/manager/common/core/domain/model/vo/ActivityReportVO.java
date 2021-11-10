@@ -16,7 +16,7 @@ public class ActivityReportVO {
     private Integer rId;
 
     @Excel(name = "活动名称")
-    private Integer rName;
+    private String rName;
 
     @Excel(name = "所属平台")
     private String platformName;
