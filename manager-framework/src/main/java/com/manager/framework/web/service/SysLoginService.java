@@ -1,19 +1,7 @@
 package com.manager.framework.web.service;
 
-import javax.annotation.Resource;
-
-import com.manager.common.core.domain.entity.SysUser;
-import com.manager.common.utils.StringUtils;
-import com.manager.common.utils.google.GoogleAuth;
-import com.manager.framework.manager.AsyncManager;
-import com.manager.system.service.SysIpWhiteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import com.manager.common.constant.Constants;
+import com.manager.common.core.domain.entity.SysUser;
 import com.manager.common.core.domain.model.LoginUser;
 import com.manager.common.core.redis.RedisCache;
 import com.manager.common.exception.CustomException;
@@ -23,12 +11,22 @@ import com.manager.common.exception.user.UserPasswordNotMatchException;
 import com.manager.common.utils.DateUtils;
 import com.manager.common.utils.MessageUtils;
 import com.manager.common.utils.ServletUtils;
+import com.manager.common.utils.StringUtils;
+import com.manager.common.utils.google.GoogleAuth;
 import com.manager.common.utils.ip.IpUtils;
+import com.manager.framework.manager.AsyncManager;
 import com.manager.framework.manager.factory.AsyncFactory;
-import com.manager.system.service.ISysConfigService;
 import com.manager.system.service.ISysUserService;
+import com.manager.system.service.SysIpWhiteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 登录校验方法
@@ -50,9 +48,6 @@ public class SysLoginService {
     private ISysUserService userService;
 
     @Autowired
-    private ISysConfigService configService;
-
-    @Autowired
     private SysIpWhiteService sysIpWhiteService;
 
     /**
@@ -63,7 +58,7 @@ public class SysLoginService {
      * @param googleCode 验证码
      * @return 结果
      */
-    public String login(String username, String password, String googleCode) {
+    public String login(String username, String password, String googleCode, HttpServletRequest request) {
         // 用户验证
         Authentication authentication = null;
         try {
@@ -91,7 +86,7 @@ public class SysLoginService {
         }
         //验证ip
         String ips = sysIpWhiteService.selectIpByUserId(loginUser.getUser().getUserId() + "");
-        if (ips.isEmpty() || ips.contains(IpUtils.getHostIp())) {
+        if (ips.isEmpty() || ips.contains(IpUtils.getIpAddr(request))) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
             recordLoginInfo(loginUser.getUser());
             // 生成token

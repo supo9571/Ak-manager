@@ -14,11 +14,13 @@ import com.manager.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +54,10 @@ public class SysLoginController {
      */
     @ApiOperation(value = "登录方法")
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody) {
+    public AjaxResult login(@RequestBody LoginBody loginBody, HttpServletRequest request) {
         Map map = new HashMap();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getGoogleCode());
+        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getGoogleCode(),request);
         map.put(Constants.TOKEN, token);
         return AjaxResult.success(map);
     }
