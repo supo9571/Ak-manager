@@ -1,5 +1,6 @@
 package com.manager.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.core.domain.entity.GameStore;
 import com.manager.common.utils.StringUtils;
@@ -52,6 +53,8 @@ public class GameStoreServiceImpl implements GameStoreService {
         List<Map> strategyList = gameStoreMapper.getGameStrategyList();
         Map strategyMap = new HashMap();
         strategyList.forEach(map -> {
+            map.put("limit_list", JSON.parse((String) map.get("limit_list")));
+            map.put("game_list", JSON.parse((String) map.get("game_list")));
             strategyMap.put(map.get("strategy_id")+"",new JSONObject(map));
         });
         param.put("strategyList",new JSONObject(strategyMap));
