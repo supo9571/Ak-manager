@@ -144,8 +144,10 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
                     BigDecimal percentage = amountTotal;
                     if (vo.getCount() != 0) {
                         percentage = amountTotal.divide(new BigDecimal(vo.getCount()), 2, BigDecimal.ROUND_HALF_UP);
+                        vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
+                    } else {
+                        vo.setPercentage("0.00%");
                     }
-                    vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
                 }
                 list.add(vo);
             }
