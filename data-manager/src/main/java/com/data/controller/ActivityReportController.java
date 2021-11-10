@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,6 +30,11 @@ public class ActivityReportController extends BaseController {
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Coins coins) {
         List<ActivityReportVO> list = activityReportService.selectActivityList(coins);
+        list.forEach(obj->{
+            if(obj.getAmount().compareTo(BigDecimal.ZERO)>0){
+                obj.setAmount(obj.getAmount().divide(new BigDecimal(10000),2,BigDecimal.ROUND_HALF_UP));
+            }
+        });
         return AjaxResult.success("查询成功", list);
     }
 
