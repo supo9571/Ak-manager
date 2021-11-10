@@ -50,6 +50,7 @@
           and mail_state in (1, 2, 3, 4, 5)
           and tid = #{tid}
           and del_flag != 2
+        order by create_time desc
     </select>
 
     <insert id="saveMailRecord">
