@@ -12,14 +12,16 @@ import java.math.BigDecimal;
 @Data
 public class ActivityReportVO {
 
+
+
     @Excel(name = "活动ID")
-    private Integer rId;
+    private Integer rid;
 
     @Excel(name = "活动名称")
-    private String rName;
+    private String rname;
 
-    @Excel(name = "所属平台")
-    private String platformName;
+    @Excel(name = "所属渠道")
+    private Integer channel;
 
     @Excel(name = "活动奖利")
     private BigDecimal amount;
