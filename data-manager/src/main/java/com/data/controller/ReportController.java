@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 /**
  * @author marvin 2021/9/10
  * 游戏服 通讯
@@ -135,7 +137,7 @@ public class ReportController {
         param.put("coins", coins);
 
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + globalConfig.getReturnBack(),
-                "data=" + param.toJSONString());
+                "uid="+uid+"&coins="+coins+"&saveflag=1");
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
             return AjaxResult.success();
