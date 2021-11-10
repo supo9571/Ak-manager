@@ -73,6 +73,7 @@
                 and u.uid = #{uid}
             </if>
         </where>
+        order by u.end_time desc
     </select>
 
     <select id="selectCardCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
