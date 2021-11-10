@@ -50,7 +50,7 @@ public class PlatformStoreServiceImpl implements PlatformStoreService {
                 }
             }
             for (int i = 0; i < g.length; i++) {
-                if(StringUtils.isNotBlank(s[i])){
+                if(StringUtils.isNotBlank(g[i])){
                     intg[i] = Integer.valueOf(g[i]);
                 }
             }
