@@ -58,8 +58,8 @@
         where
             tid = #{tid}
             <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
-            <if test="updateBy!=null and updateBy!=0"> and update_by = #{updateBy}</if>
-            <if test="updateType!=null and updateType!=0"> and update_type = #{updateType}</if>
+            <if test="updateBy!=null and updateBy!=''"> and update_by = #{updateBy}</if>
+            <if test="updateType!=null and updateType!=''"> and update_type = #{updateType}</if>
             <if test="beginTime!=null and beginTime!=''"> and update_time >= #{beginTime}</if>
             <if test="endTime!=null and endTime!=''"> and #{endTime} >= update_time</if>
         order by update_time desc
