@@ -70,7 +70,7 @@ public class MonthCardServiceImpl implements MonthCardService {
                 List<Map> payList = monthCardMapper.selectBankconfig(payInfo.getInteger("id"), vip, tid);
                 payInfo.put("pay_list", getBankInfo(payList));
             } else {//线上充值
-                List<Map> payList = monthCardMapper.selectOnlineconfig(payInfo.getInteger("id"), vip, phoneType, tid);
+                List<Map> payList = monthCardMapper.selectOnlineconfig(payInfo.getInteger("id"), vip, phoneType, tid,cid);
                 payList.forEach(map -> map.put("btn", Arrays.asList(String.valueOf(map.get("btn")).split(","))));
                 payInfo.put("pay_list", payList);
             }

@@ -33,8 +33,9 @@ public interface MonthCardMapper {
     List<Map> selectBankconfig(@Param("id") Integer id, @Param("vip") int vip, @Param("tid") Integer tid);
 
     @Select("SELECT btn,diy_max,diy_min,is_diy,msg,other_name,online_config_id,pay_type pay_channel,pay_channel_code FROM config_online_recharge where pay_id = #{id} " +
-            "AND status = '1' and vip_list like concat('%',#{vip},'%') and (use_mobile='3' or use_mobile=#{phoneType}) and tid = #{tid} ")
-    List<Map> selectOnlineconfig(@Param("id") Integer id, @Param("vip") Integer vip, @Param("phoneType") String phoneType, @Param("tid") Integer tid);
+            "AND status = '1' and vip_list like concat('%',#{vip},'%') and (use_mobile='3' or use_mobile=#{phoneType}) and tid = #{tid} " +
+            "AND (channel_list = '*' OR channel_list LIKE CONCAT('%',#{channel},'%')) ")
+    List<Map> selectOnlineconfig(@Param("id") Integer id, @Param("vip") Integer vip, @Param("phoneType") String phoneType, @Param("tid") Integer tid,@Param("channel")String channel);
 
     @Select("select recharge_give from config_pay where pay_type = '1' and status = '1' and tid = #{tid} limit 0,1")
     Integer getVipGive(@Param("tid") Integer tid);
