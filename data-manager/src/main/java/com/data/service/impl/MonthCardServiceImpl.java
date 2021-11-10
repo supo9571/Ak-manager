@@ -128,7 +128,7 @@ public class MonthCardServiceImpl implements MonthCardService {
         Integer tid = tenantMapper.getTidByCid(exchangeOrder.getChannel());
         exchangeOrder.setTid(tid);
         if ("alipay".equals(exchangeOrder.getWithdrawType())) {
-            exchangeOrder.setWithdrawType("2");
+            exchangeOrder.setWithdrawType("0");
         } else {
             exchangeOrder.setWithdrawType("1");
         }
