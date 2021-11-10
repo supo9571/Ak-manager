@@ -41,7 +41,7 @@ public class PersonPropertyServiceImpl implements PersonPropertyService {
             propertyMap.put(map.get("property_id")+"",new JSONObject(map));
         });
         param.put("property_list",new JSONObject(propertyMap));
-        result.put("strategy_game_store.json", param.toJSONString());
+        result.put("strategy_person_property.json", param.toJSONString());
         return result.toJSONString();
     }
 }
