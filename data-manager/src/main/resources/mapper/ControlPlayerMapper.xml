@@ -38,12 +38,13 @@
         control_player_config c
         left join data_register r
         on c.uid = r.uid
-        where
+        <where>
             <if test="tid!=null and tid!=0"> and r.channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2') </if>
             <if test="uid!=null and uid!=''"> and c.uid = #{uid}</if>
             <if test="type!=null"> and c.type = #{type}</if>
             <if test="beginTime!=null and beginTime!=''"> and c.create_time >= #{beginTime}</if>
             <if test="endTime!=null and endTime!=''"> and #{endTime} >= c.create_time</if>
+        </where>
         order by create_time desc
     </select>
 
@@ -57,13 +58,14 @@
         from control_player_info i
         left join data_register r
         on i.uid = r.uid
-        where
+        <where>
            <if test="tid!=null and tid!=0"> and r.channel in (select t_id from sys_tenant where tenant = #{tid}) </if>
             <if test="uid!=null and uid!=''"> and i.uid = #{uid}</if>
             <if test="updateBy!=null and updateBy!=''"> and i.update_by = #{updateBy}</if>
             <if test="updateType!=null and updateType!=''"> and i.update_type = #{updateType}</if>
             <if test="beginTime!=null and beginTime!=''"> and i.update_time >= #{beginTime}</if>
             <if test="endTime!=null and endTime!=''"> and #{endTime} >= i.update_time</if>
+        </where>
         order by update_time desc
     </select>
 
