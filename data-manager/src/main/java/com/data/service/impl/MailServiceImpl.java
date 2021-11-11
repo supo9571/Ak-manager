@@ -98,7 +98,12 @@ public class MailServiceImpl implements MailService {
     @Override
     public List getAdvert(String channelId) {
         Integer tid = tenantMapper.getTidByCid(channelId);
-        return mailMapper.getAdvert(tid);
+        List<Map> list = mailMapper.getAdvert(tid);
+        list.forEach(m->{
+            m.put("game_id",Integer.valueOf((String) m.get("game_id")));
+            m.put("view_id",Integer.valueOf((String) m.get("view_id")));
+        });
+        return list;
     }
 
     /**
