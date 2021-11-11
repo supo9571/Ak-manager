@@ -57,7 +57,7 @@ public class GameStoreServiceImpl implements GameStoreService {
             map.put("game_list", JSON.parse((String) map.get("game_list")));
             strategyMap.put(map.get("strategy_id")+"",new JSONObject(map));
         });
-        param.put("strategyList",new JSONObject(strategyMap));
+        param.put("strategy_list",new JSONObject(strategyMap));
         result.put("strategy_game_store.json", param.toJSONString());
         return result.toJSONString();
     }
