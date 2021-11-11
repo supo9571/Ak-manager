@@ -36,7 +36,9 @@ public class UpdateServiceImpl implements UpdateService {
         } else {
             platform = "3";
         }
-        return updateMapper.selectPackage(ip, tenantMapper.getTidByCid(channelId), versionId, platform);
+        String[] vers = versionId.split("\\.");
+        int verInt = Integer.valueOf(vers[0]) * 10000 + Integer.valueOf(vers[1]) * 100 + Integer.valueOf(vers[2]);
+        return updateMapper.selectPackage(ip, tenantMapper.getTidByCid(channelId), versionId, platform,verInt);
     }
 
     @Override
