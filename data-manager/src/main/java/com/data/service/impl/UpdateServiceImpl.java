@@ -97,7 +97,7 @@ public class UpdateServiceImpl implements UpdateService {
             //计算版本号
             String[] vers = versionId.split("\\.");
             int verInt = Integer.valueOf(vers[0]) * 10000 + Integer.valueOf(vers[1]) * 100 + Integer.valueOf(vers[2]);
-            int var = (int) map.get("verInt");
+            Long var = (Long) map.get("verInt");
             if(var>verInt){
                 return (String) map.get("apkUpdateUrl");
             }
