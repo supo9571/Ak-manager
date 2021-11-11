@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.manager.system.mapper.ResultMapper">
     <select id="getGameResult" resultType="java.util.Map">
-        select strategy_name strategyName,
+        select g.strategy_name strategyName,
             sum(add_score) addScore,
             sum(bet_coins) betCoins,
             up,
@@ -15,14 +15,17 @@
             sum(games) games,
             t.tenant tid
         from data_game_result r
+        right join control_game_config g
+        on r.strategy_id = g.id
         LEFT JOIN sys_tenant t
         ON r.channel = t.t_id
         <where>
             <if test="tid != 0"> and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
-            <if test="strategyId != 0"> and strategy_id = #{strategyId}</if>
+            <if test="strategyId != 0"> and r.strategy_id = #{strategyId}</if>
             <if test="day != null and day != ''"> and day = #{day}</if>
+        and g.strategy_status = '1'
         </where>
-        group by strategy_id,day, strategy_name,t.tenant,up,down
+        group by r.strategy_id,day, g.strategy_name,t.tenant,up,down
     </select>
 
     <select id="getPersonResult" resultType="java.util.Map">
@@ -41,7 +44,7 @@
         ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND UNIX_TIMESTAMP(finish_time)>= UNIX_TIMESTAMP(#{day})-2*60*60*24 AND UNIX_TIMESTAMP(#{day})+60*60*24 >=UNIX_TIMESTAMP(finish_time)) threeRechargeAmount
         ,FROM_UNIXTIME(r.time) registerTime
         FROM ${cardName} c
-        LEFT JOIN control_person_config g
+        RIGHT JOIN control_person_config g
         ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') = g.strategy_id
         LEFT JOIN data_register r
         ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') = r.uid
@@ -49,6 +52,7 @@
         ON r.uid = o.uid
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') IS NOT NULL
         and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24
+        and g.strategy_status = '1'
         <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
         <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
         <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
