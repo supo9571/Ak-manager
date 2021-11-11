@@ -135,19 +135,23 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         List<PayInfoVO> list = new ArrayList<>();
         Map<String, BigDecimal> map = mapper.getPayInfoList(param);
         if (map != null) {
-            BigDecimal amountTotal = mapper.rechargeAmount(param);
+            Integer total = 0;
+            for (int i = 1; i <= 12; i++) {
+                total += map.get("count" + i).intValue();
+            }
             for (int i = 1; i <= 12; i++) {
                 PayInfoVO vo = new PayInfoVO();
                 vo.setAmountName(getPayAmountName(i));
                 vo.setCount(map.get("count" + i).intValue());
-                if (amountTotal.compareTo(BigDecimal.ZERO) > 0) {
-                    BigDecimal percentage = amountTotal;
+                if (total > 0) {
                     if (vo.getCount() != 0) {
-                        percentage = amountTotal.divide(new BigDecimal(vo.getCount()), 2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal  percentage = new BigDecimal(total).divide(new BigDecimal(vo.getCount()), 2, BigDecimal.ROUND_HALF_UP);
                         vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
                     } else {
                         vo.setPercentage("0.00%");
                     }
+                }else {
+                    vo.setPercentage("0.00%");
                 }
                 list.add(vo);
             }
