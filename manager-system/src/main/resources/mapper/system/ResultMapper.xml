@@ -22,7 +22,7 @@
         <where>
             <if test="tid != 0"> and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
             <if test="strategyId != 0"> and r.strategy_id = #{strategyId}</if>
-            <if test="day != null and day != ''"> and day = #{day}</if>
+            <if test="day != null and day != ''"> and (day = #{day} or day is null)</if>
         and g.strategy_status = '1'
         </where>
         group by r.strategy_id,day, g.strategy_name,t.tenant,up,down
