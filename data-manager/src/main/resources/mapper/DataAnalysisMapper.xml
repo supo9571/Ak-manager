@@ -95,7 +95,7 @@
         dcu.uid,
         dr.name,
         dr.time,
-        IFNULL(sum(dcu.bet_coins),0) betTotal
+        IFNULL(sum(dcu.bet_coins),0)/10000 betTotal
         FROM
         data_card_user dcu
         LEFT JOIN data_register dr ON dcu.uid = dr.uid
