@@ -35,6 +35,6 @@ public interface MailMapper {
     @Update("update sys_mail_record set del_flag='2',update_time = sysdate() where id = #{id} ")
     void delMail(@Param("id") Integer mid);
 
-    @Select("SELECT ident id,type,IF(type=3,url,'') url,IF(type=4,url,0) view_id,IF(type=5,url,0) game_id FROM sys_rotation_picture where state = '1' and tid = #{tid}")
+    @Select("SELECT ident id,type,IF(type=3,url,'') url,IF(type=4,url,0) view_id,IF(type=5,url,0) game_id FROM sys_rotation_picture where state = '1' and tid = #{tid} order by sort")
     List<Map> getAdvert(@Param("tid")Integer tid);
 }
