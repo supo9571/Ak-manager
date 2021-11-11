@@ -23,8 +23,11 @@
                game_list gameList,
                run_result runResult,
                run_rate runRate,
-               update_time updateTime
-        from control_person_config
+               update_time updateTime,
+               t.run_index runIndex
+        from control_person_config p
+        LEFT JOIN control_tags_config t
+        ON p.strategy_tag_id = t.id
         <where>
             <if test="strategyTagId != 0"> strategy_tag_id = #{strategyTagId} </if>
         </where>
