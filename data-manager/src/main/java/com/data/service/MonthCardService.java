@@ -18,7 +18,7 @@ public interface MonthCardService {
     Integer getVipGive(String channelId);
 
 
-    int getAccountCount(String type, String account);
+    int getAccountCount(String channelId, String uid, String type, String account);
 
     Integer saveExchange(String channel, String uid, String type, String name, String account, String originBank);
 

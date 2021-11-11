@@ -44,9 +44,8 @@ public interface MonthCardMapper {
     Integer getBankGive(Integer tid);
 
 
-
-    @Select("select count(*) from user_exchange where type = #{type} and account = #{account} ")
-    int getAccountCount(@Param("type") String type, @Param("account") String account);
+    @Select("select count(1) from user_exchange where tid = #{tid} and type = #{type} and account = #{account} ")
+    int getAccountCount(@Param("tid") Integer tid, @Param("uid") String uid, @Param("type") String type, @Param("account") String account);
 
     @Insert("insert into user_exchange (uid,tid,type,name,account,origin_bank,channel,create_time) values(#{uid},#{tid},#{type},#{name},#{account},#{originBank},#{channel},sysdate())")
     Integer saveExchange(@Param("channel") String channel, @Param("tid") Integer tid, @Param("uid") String uid,

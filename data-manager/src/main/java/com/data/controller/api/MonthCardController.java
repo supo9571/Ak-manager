@@ -101,7 +101,7 @@ public class MonthCardController extends BaseController {
         }
         String channel = getHeader("Client-ChannelId");//渠道id
         String uid = getHeader("uid"); // uid
-        int count = monthCardService.getAccountCount(type, account);
+        int count = monthCardService.getAccountCount(channel, null, type, account);
         JSONObject jsonObject = new JSONObject();
         if (count >= 2) {
             jsonObject.put("code", 500);

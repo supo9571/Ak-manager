@@ -70,7 +70,7 @@ public class MonthCardServiceImpl implements MonthCardService {
                 List<Map> payList = monthCardMapper.selectBankconfig(payInfo.getInteger("id"), vip, tid);
                 payInfo.put("pay_list", getBankInfo(payList));
             } else {//线上充值
-                List<Map> payList = monthCardMapper.selectOnlineconfig(payInfo.getInteger("id"), vip, phoneType, tid,cid);
+                List<Map> payList = monthCardMapper.selectOnlineconfig(payInfo.getInteger("id"), vip, phoneType, tid, cid);
                 payList.forEach(map -> map.put("btn", Arrays.asList(String.valueOf(map.get("btn")).split(","))));
                 payInfo.put("pay_list", payList);
             }
@@ -95,15 +95,14 @@ public class MonthCardServiceImpl implements MonthCardService {
     }
 
     @Override
-    public int getAccountCount(String type, String account) {
-        return monthCardMapper.getAccountCount(type, account);
+    public int getAccountCount(String channelId, String uid, String type, String account) {
+        return monthCardMapper.getAccountCount(tenantMapper.getTidByCid(channelId), uid, type, account);
     }
 
     @Override
     public Integer getBankGive(String channelId) {
         return monthCardMapper.getBankGive(tenantMapper.getTidByCid(channelId));
     }
-
 
 
     /**
@@ -118,6 +117,7 @@ public class MonthCardServiceImpl implements MonthCardService {
 
     @Autowired
     private GlobalConfig globalConfig;
+
     /**
      * 申请 提现
      *
@@ -137,14 +137,14 @@ public class MonthCardServiceImpl implements MonthCardService {
         List<Map> moneyVal = monthCardMapper.getExchangeConfig(tid);
         BigDecimal i = (BigDecimal) moneyVal.get(0).get("keep_money");
         //操作 用户金币
-        String result = HttpUtils.sendGet(globalConfig.getReportDomain() + "/exchange","uid="+exchangeOrder.getUid()+"&coins="
-                +exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(10000)).longValue()+"&keep_money="+i.longValue());
+        String result = HttpUtils.sendGet(globalConfig.getReportDomain() + "/exchange", "uid=" + exchangeOrder.getUid() + "&coins="
+                + exchangeOrder.getWithdrawMoney().multiply(new BigDecimal(10000)).longValue() + "&keep_money=" + i.longValue());
         JSONObject resultJson = JSONObject.parseObject(result);
         if (resultJson != null && resultJson.getInteger("code") == 0) {
             //查询是否 符合黑名单
             Map blackMap = monthCardMapper.checkBlack(exchangeOrder);
-            if(blackMap!=null){//符合黑名单策略
-                monthCardMapper.saveBlackInfo(tid,exchangeOrder.getUid(),blackMap.get("blackType"),blackMap.get("blackNum"));
+            if (blackMap != null) {//符合黑名单策略
+                monthCardMapper.saveBlackInfo(tid, exchangeOrder.getUid(), blackMap.get("blackType"), blackMap.get("blackNum"));
             }
             Map map = monthCardMapper.findUserByid(exchangeOrder.getUid());
             BigDecimal b = new BigDecimal(10000);
@@ -203,9 +203,9 @@ public class MonthCardServiceImpl implements MonthCardService {
         result.put("code", 200);
         result.put("msg", "ok");
         List list = redisCache.getCacheObject("Bank_List");
-        if(list==null || list.size()<0 ){
+        if (list == null || list.size() < 0) {
             list = monthCardMapper.getBankList();
-            redisCache.setCacheObject("Bank_List",list);
+            redisCache.setCacheObject("Bank_List", list);
         }
         result.put("result", monthCardMapper.getBankList());
         return result;
