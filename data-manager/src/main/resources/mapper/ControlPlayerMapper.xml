@@ -39,7 +39,7 @@
         left join data_register r
         on c.uid = r.uid
         where
-            c.tid = #{tid}
+            <if test="tid!=null and tid!=0"> and r.channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2') </if>
             <if test="uid!=null and uid!=''"> and c.uid = #{uid}</if>
             <if test="type!=null"> and c.type = #{type}</if>
             <if test="beginTime!=null and beginTime!=''"> and c.create_time >= #{beginTime}</if>
@@ -48,20 +48,22 @@
     </select>
 
     <select id="infoList" resultType="java.util.Map">
-        select id,uid,
-        update_type updateType,
-        update_before updateBefore,
-        update_after updateAfter,
-        update_time updateTime,
-        update_by updateBy
-        from control_player_info
+        select i.id,i.uid,
+        i.update_type updateType,
+        i.update_before updateBefore,
+        i.update_after updateAfter,
+        i.update_time updateTime,
+        i.update_by updateBy
+        from control_player_info i
+        left join data_register r
+        on i.uid = r.uid
         where
-            tid = #{tid}
-            <if test="uid!=null and uid!=''"> and uid = #{uid}</if>
-            <if test="updateBy!=null and updateBy!=''"> and update_by = #{updateBy}</if>
-            <if test="updateType!=null and updateType!=''"> and update_type = #{updateType}</if>
-            <if test="beginTime!=null and beginTime!=''"> and update_time >= #{beginTime}</if>
-            <if test="endTime!=null and endTime!=''"> and #{endTime} >= update_time</if>
+           <if test="tid!=null and tid!=0"> and r.channel in (select t_id from sys_tenant where tenant = #{tid}) </if>
+            <if test="uid!=null and uid!=''"> and i.uid = #{uid}</if>
+            <if test="updateBy!=null and updateBy!=''"> and i.update_by = #{updateBy}</if>
+            <if test="updateType!=null and updateType!=''"> and i.update_type = #{updateType}</if>
+            <if test="beginTime!=null and beginTime!=''"> and i.update_time >= #{beginTime}</if>
+            <if test="endTime!=null and endTime!=''"> and #{endTime} >= i.update_time</if>
         order by update_time desc
     </select>
 
@@ -96,7 +98,7 @@
     </delete>
 
     <select id="selectBet" resultType="java.util.Map">
-        select sum(add_score)/1000 addScore,sum(bet_coins)/1000 betCoins from data_card_user
+        select sum(add_score)/10000 addScore,sum(bet_coins)/10000 betCoins,sum(water_reward)/10000 reward from data_card_user
         where uid = #{uid}
     </select>
 </mapper>

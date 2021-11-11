@@ -73,14 +73,15 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
             List<Map> betList = controlPlayerMapper.selectBet(cp.getUid());
             BigDecimal addScore = new BigDecimal(0);
             BigDecimal betCoins = new BigDecimal(0);
+            BigDecimal reward = new BigDecimal(0);
             for (int i = 0; i < betList.size(); i++) {
                 Map m = betList.get(i);
                 if(m!=null){
                     addScore = addScore.add((BigDecimal) m.get("addScore"));
                     betCoins = betCoins.add((BigDecimal) m.get("betCoins"));
+                    reward = reward.add((BigDecimal) m.get("reward"));
                 }
             }
-            BigDecimal reward = addScore.add(betCoins);
             cp.setAddScore(addScore);
             cp.setBetCoins(betCoins);
             cp.setReward(reward);
