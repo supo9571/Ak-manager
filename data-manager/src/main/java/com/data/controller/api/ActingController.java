@@ -81,6 +81,19 @@ public class ActingController extends BaseController {
     }
 
     /**
+     * 获取全民推广信息
+     */
+    @PostMapping("/pay/get_bind_recharge")
+    public JSONObject getRecharge(@RequestBody JSONObject param) {
+        String channelId = getHeader("Client-ChannelId");//渠道id
+        String uid = param.getString("uid");//玩家id
+        String start = param.getString("start");
+        String end_time = param.getString("end_time");
+        String line = param.getString("line");
+        return null;
+    }
+
+    /**
      * 领取记录
      */
     @PostMapping("/agentv2/withdrawhistory")
@@ -130,8 +143,8 @@ public class ActingController extends BaseController {
      * 大厅活动按钮配置
      */
     @PostMapping("/onebyone/get_menu")
-    public JSONObject getMenu(){
-        String channelId = getHeader("Client-ChannelId");//渠道id
+    public JSONObject getMenu(@RequestBody JSONObject param){
+        String channelId = param.getString("user_channle");//渠道id
         return configAgenService.getMenu(channelId);
     }
 

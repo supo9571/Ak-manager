@@ -217,7 +217,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     public JSONObject getMenu(String channelId) {
         JSONObject result = new JSONObject();
         Integer tid = tenantMapper.getTidByCid(channelId);
-        List<Integer> list = configAgentMapper.getActivitys(tid);
+        List<Integer> list = configAgentMapper.getActivitys(tid,channelId);
         JSONArray func = new JSONArray();
         JSONArray top = new JSONArray();
         //特殊活动

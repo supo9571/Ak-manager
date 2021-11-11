@@ -86,8 +86,9 @@ public interface ConfigAgentMapper {
             "or (addressee_type=3 and (addressee like concat('%',#{uid},'%')) or addressee LIKE CONCAT('%',(select agent_id from data_register where uid = #{uid} AND agent_id !='0'),'%')))")
     List<Map> getActList(@Param("tid") Integer tid,@Param("channel")String channel,@Param("uid")String uid);
 
-    @Select("select activity_type from config_activity where activity_begin<=sysdate() AND sysdate()<=activity_end and tid = #{tid} order by sort ")
-    List<Integer> getActivitys(@Param("tid") Integer tid);
+    @Select("select activity_type from config_activity where activity_begin<=sysdate() AND sysdate()<=activity_end and tid = #{tid} " +
+            "and (channel_list = '*' or channel_list like CONCAT('%',#{channel},'%')) order by sort ")
+    List<Integer> getActivitys(@Param("tid") Integer tid,@Param("channel") String channel);
 
     @Select("select count(1) from config_month_recharge where status = '1' and tid = #{tid}")
     int getMonthConfig(@Param("tid") Integer tid);
