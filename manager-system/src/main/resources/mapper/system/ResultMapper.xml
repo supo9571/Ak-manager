@@ -44,7 +44,7 @@
         ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND UNIX_TIMESTAMP(finish_time)>= UNIX_TIMESTAMP(#{day})-2*60*60*24 AND UNIX_TIMESTAMP(#{day})+60*60*24 >=UNIX_TIMESTAMP(finish_time)) threeRechargeAmount
         ,FROM_UNIXTIME(r.time) registerTime
         FROM ${cardName} c
-        RIGHT JOIN control_person_config g
+        LEFT JOIN control_person_config g
         ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') = g.strategy_id
         LEFT JOIN data_register r
         ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') = r.uid
@@ -52,7 +52,6 @@
         ON r.uid = o.uid
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') IS NOT NULL
         and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24
-        and g.strategy_status = '1'
         <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
         <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
         <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
