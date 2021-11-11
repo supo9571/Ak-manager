@@ -7,8 +7,8 @@
         select g.strategy_name strategyName,
             sum(add_score) addScore,
             sum(bet_coins) betCoins,
-            up,
-            down,
+            JSON_EXTRACT(g.limit_list ,'$[0]') up,
+            JSON_EXTRACT(g.limit_list ,'$[1]') down,
             sum(controls) controls,
             sum(sha) sha,
             sum(song) song,
@@ -25,7 +25,7 @@
             <if test="day != null and day != ''"> and (day = #{day} or day is null)</if>
         and g.strategy_status = '1'
         </where>
-        group by r.strategy_id,day, g.strategy_name,t.tenant,up,down
+        group by r.strategy_id,day, g.strategy_name,t.tenant,JSON_EXTRACT(g.limit_list ,'$[0]'),JSON_EXTRACT(g.limit_list ,'$[1]')
     </select>
 
     <select id="getPersonResult" resultType="java.util.Map">
