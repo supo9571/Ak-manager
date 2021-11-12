@@ -85,12 +85,15 @@ public class ActingController extends BaseController {
      */
     @PostMapping("/pay/get_bind_recharge")
     public JSONObject getRecharge(@RequestBody JSONObject param) {
-        String channelId = getHeader("Client-ChannelId");//渠道id
-        String uid = param.getString("uid");//玩家id
-        String start = param.getString("start");
-        String end_time = param.getString("end_time");
-        String line = param.getString("line");
-        return null;
+        String uid = param.getString("uid");
+        Long start = param.getLong("start");
+        Long endTime = param.getLong("end_time");
+        Long line = param.getLong("line");
+        List list = configAgenService.getRecharge(uid,start,endTime,line);
+        JSONObject result = new JSONObject();
+        result.put("code", 200);
+        result.put("result", list);
+        return result;
     }
 
     /**

@@ -29,4 +29,6 @@ public interface ConfigAgenService {
     JSONObject getMenu(String channelId);
 
     JSONObject getBeifen(String channelId);
+
+    List getRecharge(String uid, Long start, Long endTime, Long line);
 }

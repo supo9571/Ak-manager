@@ -95,4 +95,13 @@ public interface ConfigAgentMapper {
 
     @Select("SELECT promotion_domain FROM config_agent where tid = #{tid} limit 0,1")
     String getBeifen(@Param("tid") Integer tid);
+
+    @Select("SELECT uid,SUM(recharge_amount)*10000 recharge_money " +
+            "FROM config_recharge_order " +
+            "WHERE payment_status = '1' " +
+            "AND UNIX_TIMESTAMP(finish_time)>=#{start} " +
+            "AND #{endTime}>=UNIX_TIMESTAMP(finish_time) " +
+            "AND uid IN (SELECT uid FROM data_register WHERE agent_id = #{uid}) " +
+            "GROUP BY uid HAVING SUM(recharge_amount)*10000>#{line} ")
+    List getRecharge(@Param("uid") String uid,@Param("start") Long start,@Param("endTime") Long endTime,@Param("line") Long line);
 }

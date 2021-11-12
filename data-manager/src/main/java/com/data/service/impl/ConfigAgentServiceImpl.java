@@ -282,4 +282,9 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         result.put("downloadurl",configAgentMapper.getBeifen(tenantMapper.getTidByCid(channelId)));
         return result;
     }
+
+    @Override
+    public List getRecharge(String uid, Long start, Long endTime, Long line) {
+        return configAgentMapper.getRecharge(uid,start,endTime,line);
+    }
 }
