@@ -126,7 +126,7 @@
                SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times")) controls,
                SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) sha,
                SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=2,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) song
-        FROM data_card d
+        FROM ${cardName} d
                  LEFT JOIN control_game_config g
                            ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") = g.id
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") >0

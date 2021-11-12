@@ -25,22 +25,34 @@ public class ResultServiceImpl implements ResultService {
     @Autowired
     private ResultMapper resultMapper;
     @Override
-    public List getGameResult(int tid, int strategyId, String day) {
+    public List getGameResult(int tid, int strategyId, String day){
         String date = DateUtils.getDate();
-        String endTime = System.currentTimeMillis()+"";
-        String beginTime = resultMapper.getEndTime();
-        if(StringUtils.isEmpty(beginTime)){
-            beginTime = DateUtils.getTodayTimes()+"000";
+        if(date.equals(day)){
+            String endTime = System.currentTimeMillis()+"";
+            String beginTime = resultMapper.getEndTime();
+            if(StringUtils.isEmpty(beginTime)){
+                beginTime = DateUtils.getTodayTimes()+"000";
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = null;
+            try {
+                today = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String year = String.format("%ty",today);
+            String mon = String.format("%tm", today);
+            String cardName = "data_card_" + year + mon;
+            List<GameResult> list = resultMapper.selectGameResult(beginTime,endTime,cardName);
+            String finalBeginTime = beginTime;
+            list.forEach(gameResult -> {
+                Long games = resultMapper.getGameCount(finalBeginTime,endTime);
+                gameResult.setGames(games);
+                gameResult.setDay(date);
+                gameResult.setEndTime(endTime);
+            });
+            if (list.size()>0) resultMapper.saveGameResult(list);
         }
-        List<GameResult> list = resultMapper.selectGameResult(beginTime,endTime);
-        String finalBeginTime = beginTime;
-        list.forEach(gameResult -> {
-            Long games = resultMapper.getGameCount(finalBeginTime,endTime);
-            gameResult.setGames(games);
-            gameResult.setDay(date);
-            gameResult.setEndTime(endTime);
-        });
-        if (list.size()>0) resultMapper.saveGameResult(list);
         return resultMapper.getGameResult(tid, strategyId, day);
     }
 

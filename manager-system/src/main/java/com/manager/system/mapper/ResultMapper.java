@@ -25,7 +25,7 @@ public interface ResultMapper {
     @Select("select endtime from data_game_result order by endtime desc limit 0,1")
     String getEndTime();
 
-    List selectGameResult(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+    List selectGameResult(@Param("beginTime") String beginTime,@Param("endTime") String endTime,String cardName);
 
     Long getGameCount(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 
