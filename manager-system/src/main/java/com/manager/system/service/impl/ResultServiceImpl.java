@@ -26,7 +26,7 @@ public class ResultServiceImpl implements ResultService {
     private ResultMapper resultMapper;
     @Override
     public List getGameResult(int tid, int strategyId, String day) {
-        String date = DateUtils.getDate();;
+        String date = DateUtils.getDate();
         String endTime = System.currentTimeMillis()+"";
         String beginTime = resultMapper.getEndTime();
         if(StringUtils.isEmpty(beginTime)){

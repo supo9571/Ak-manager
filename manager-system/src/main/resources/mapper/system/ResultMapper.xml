@@ -115,7 +115,7 @@
         and JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') = #{uid}
     </select>
 
-    <select id="selectGameResult" resultType="com.job.executor.domain.GameResult">
+    <select id="selectGameResult" resultType="com.manager.system.domain.vo.GameResult">
         SELECT JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") strategyId ,
                g.strategy_name strategyName,
                SUM(add_score)/10000 addScore,
