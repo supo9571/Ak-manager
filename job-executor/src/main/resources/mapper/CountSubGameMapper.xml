@@ -9,6 +9,7 @@
                u.channel,
                sum(u.bet_coins)/10000 betCount,
                sum(u.pay_fee)/10000 feeCount,
+               SUM(u.water_reward)/10000 rewardCount,
                g2.game_id gameId,
                g2.game_name gameName
         from data_card_user u
@@ -17,45 +18,23 @@
                  left join config_game g2
                            on g.parent_id = g2.game_id
         where u.mstime between #{beginTime} and #{endTime}
-        group by u.table_type, u.channel
+        and u.channel is not null
+        AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = u.channel)
+        AND g2.tid = (SELECT tenant FROM sys_tenant WHERE t_id = u.channel)
+        group by u.table_type, u.channel,g.game_name,g2.game_id,g2.game_name
     </select>
 
     <insert id="saveGameCardInfo">
             insert into
-            data_game_day(day,channel,table_id,table_name,game_id,game_name,bet_count,fee_count)
+            data_game_day(day,channel,table_id,table_name,game_id,game_name,bet_count,fee_count,reward_count)
             values
             <foreach item="item" index="index" collection="list" separator=",">
-                (#{date},#{item.channel},#{item.tableId},#{item.tableName},#{item.gameId},#{item.gameName},#{item.betCount},#{item.feeCount})
+                (#{date},#{item.channel},#{item.tableId},#{item.tableName},#{item.gameId},#{item.gameName},#{item.betCount},#{item.feeCount},#{item.rewardCount})
             </foreach>
             ON DUPLICATE KEY
             UPDATE bet_count=values(bet_count),
-            fee_count=values(fee_count);
+            fee_count=values(fee_count),
+            reward_count=values(reward_count);
     </insert>
-    <select id="getGameWaterInfo" resultType="java.util.Map">
-        SELECT w.table_type tableId,
-               g.game_name tableName,
-               w.channel,
-               SUM(w.reward)/10000 rewardCount,
-               g2.game_id gameId,
-               g2.game_name gameName
-        FROM data_water w
-                 LEFT JOIN config_game g
-                           ON w.table_type = g.game_id
-                 LEFT JOIN config_game g2
-                           ON g.parent_id = g2.game_id
-        where w.mstime between #{beginTime} and #{endTime}
-            and w.channel is not null
-        GROUP BY table_type, channel
-    </select>
 
-    <insert id="saveGameWaterInfo">
-        insert into
-        data_game_day(day,channel,table_id,table_name,game_id,game_name,reward_count)
-        values
-        <foreach item="item" index="index" collection="list" separator=",">
-            (#{date},#{item.channel},#{item.tableId},#{item.tableName},#{item.gameId},#{item.gameName},#{item.rewardCount})
-        </foreach>
-        ON DUPLICATE KEY
-        UPDATE reward_count=values(reward_count);
-    </insert>
 </mapper>
