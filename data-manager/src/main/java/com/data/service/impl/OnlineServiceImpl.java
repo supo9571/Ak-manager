@@ -35,12 +35,12 @@ public class OnlineServiceImpl implements OnlineService {
         if ("0".equals(jsonObject.getString("code"))) {
             try {
                 JSONArray jsonArray = jsonObject.getJSONArray("play_info_list");
-                //清空 data_online
-                onlineMaper.cleanOnline();
                 List list = new ArrayList();
                 jsonArray.forEach(j -> {
                     list.add(JSONObject.toJavaObject((JSON) j, OnlinePlayer.class));
                 });
+                //清空 data_online
+                onlineMaper.cleanOnline();
                 onlineMaper.insertOnline(list);
                 log.info("玩家在线人数更新--->{}", jsonArray.size());
             } catch (Exception e) {
