@@ -46,7 +46,7 @@ public class ResultServiceImpl implements ResultService {
             List<GameResult> list = resultMapper.selectGameResult(beginTime,endTime,cardName);
             String finalBeginTime = beginTime;
             list.forEach(gameResult -> {
-                Long games = resultMapper.getGameCount(finalBeginTime,endTime);
+                Long games = resultMapper.getGameCount(finalBeginTime,endTime,cardName);
                 gameResult.setGames(games);
                 gameResult.setDay(date);
                 gameResult.setEndTime(endTime);

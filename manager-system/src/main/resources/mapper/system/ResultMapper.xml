@@ -138,7 +138,7 @@
     <select id="getGameCount" resultType="java.lang.Long">
         select
             SUM( IF((SELECT COUNT(1) FROM control_game_config WHERE game_list LIKE CONCAT('%',table_type,'%'))=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0 )) game
-        from data_card
+        from ${cardName}
         where mstime between #{beginTime} and #{endTime}
     </select>
 
