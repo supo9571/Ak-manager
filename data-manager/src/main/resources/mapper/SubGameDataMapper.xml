@@ -14,12 +14,13 @@
                 SUM(reward_count) reward_count,
                 SUM(fee_count) fee_count
                 FROM data_game_day
-                WHERE channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+                WHERE channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
                     AND DAY >= #{beginTime}
                     AND #{endTime} >= DAY
                 GROUP BY game_id) d
         ON g.game_id = d.game_id
         WHERE g.parent_id = '0'
+        AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         <if test="gameId!=null and gameId!=0">
             and g.game_id = #{gameId}
         </if>
@@ -30,9 +31,10 @@
         FROM data_card_user c
         LEFT JOIN config_game g
         ON c.game_type = g.game_id
-        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
         AND c.mstime BETWEEN #{beginms} AND #{endms}
         AND g.parent_id = '0'
+        AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         <if test="gameId!=null and gameId!=0">
             and g.game_id = #{gameId}
         </if>
@@ -50,9 +52,10 @@
             c.game_type = g.game_id
         LEFT JOIN data_water w ON
             g.game_id = w.table_type
-        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
             AND c.mstime BETWEEN #{beginms} AND #{endms}
             AND g.parent_id = '0'
+            AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         <if test="gameId!=null and gameId!=0">
             and g.game_id = #{gameId}
         </if>
@@ -70,12 +73,13 @@
         SUM(reward_count) reward_count,
         SUM(fee_count) fee_count
         FROM data_game_day
-        WHERE channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        WHERE channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
         AND DAY >= #{beginTime}
         AND #{endTime} >= DAY
         GROUP BY table_id) d
         ON g.game_id = d.table_id
         WHERE g.parent_id = #{gameId}
+          AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
     </select>
 
     <select id="getHumBurTableDate" resultType="com.manager.common.core.domain.model.SubGameDataExcel">
@@ -83,9 +87,10 @@
         FROM data_card_user c
         LEFT JOIN config_game g
         ON c.table_type = g.game_id
-        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
         AND c.mstime BETWEEN #{beginms} AND #{endms}
         AND g.parent_id = #{gameId}
+        AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         GROUP BY g.game_id,g.game_name
     </select>
 
@@ -100,9 +105,10 @@
             c.game_type = g.game_id
         LEFT JOIN data_water w ON
             g.game_id = w.table_type
-        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+        WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
             AND c.mstime BETWEEN #{beginms} AND #{endms}
             AND g.game_id = #{gameId}
+            AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         GROUP BY g.game_id,g.game_name
     </select>
 </mapper>
