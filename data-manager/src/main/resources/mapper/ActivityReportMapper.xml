@@ -20,6 +20,9 @@
             <if test="beginTime!=null and beginTime !=''">
                 and dc.mstime between #{beginms} and #{endms}
             </if>
+            <if test="tid!=null and tid!=''">
+                and dc.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
         </where>
         GROUP BY dc.channel,r_id,r_name
     </select>

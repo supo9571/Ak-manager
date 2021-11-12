@@ -53,8 +53,8 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
             for (DataWaterTopVO vo : list) {
                 param.setUid(vo.getUid());
                 vo.setGameTableNum(map.get(vo.getUid()));
-                vo.setRechargeAmountTotal(mapper.rechargeAmountTotal(param));
-                vo.setWithdrawAmountTotal(mapper.withdrawAmountTotal(param));
+                vo.setRechargeAmountTotal(mapper.rechargeAmount(param));
+                vo.setWithdrawAmountTotal(mapper.withdrawAmount(param));
             }
         }
         return list;
