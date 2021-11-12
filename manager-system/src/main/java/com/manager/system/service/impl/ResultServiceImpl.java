@@ -1,10 +1,13 @@
 package com.manager.system.service.impl;
 
+import com.manager.common.utils.DateUtils;
+import com.manager.system.domain.vo.GameResult;
 import com.manager.system.mapper.ResultMapper;
 import com.manager.system.service.ResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +26,21 @@ public class ResultServiceImpl implements ResultService {
     private ResultMapper resultMapper;
     @Override
     public List getGameResult(int tid, int strategyId, String day) {
+        String date = DateUtils.getDate();;
+        String endTime = System.currentTimeMillis()+"";
+        String beginTime = resultMapper.getEndTime();
+        if(StringUtils.isEmpty(beginTime)){
+            beginTime = DateUtils.getTodayTimes()+"000";
+        }
+        List<GameResult> list = resultMapper.selectGameResult(beginTime,endTime);
+        String finalBeginTime = beginTime;
+        list.forEach(gameResult -> {
+            Long games = resultMapper.getGameCount(finalBeginTime,endTime);
+            gameResult.setGames(games);
+            gameResult.setDay(date);
+            gameResult.setEndTime(endTime);
+        });
+        if (list.size()>0) resultMapper.saveGameResult(list);
         return resultMapper.getGameResult(tid, strategyId, day);
     }
 

@@ -114,4 +114,49 @@
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag') = #{strategyFlag}
         and JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') = #{uid}
     </select>
+
+    <select id="selectGameResult" resultType="com.job.executor.domain.GameResult">
+        SELECT JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") strategyId ,
+               g.strategy_name strategyName,
+               SUM(add_score)/10000 addScore,
+               SUM(bet_coins)/10000 betCoins,
+               d.channel,
+               JSON_EXTRACT(g.limit_list ,'$[0]') up,
+               JSON_EXTRACT(g.limit_list ,'$[1]') down,
+               SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times")) controls,
+               SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) sha,
+               SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=2,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) song
+        FROM data_card d
+                 LEFT JOIN control_game_config g
+                           ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") = g.id
+        WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") >0
+          and d.mstime between #{beginTime} and #{endTime}
+        GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id"),
+                 g.strategy_name,g.limit_list,d.channel
+    </select>
+
+    <select id="getGameCount" resultType="java.lang.Long">
+        select
+            SUM( IF((SELECT COUNT(1) FROM control_game_config WHERE game_list LIKE CONCAT('%',table_type,'%'))=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0 )) game
+        from data_card
+        where mstime between #{beginTime} and #{endTime}
+    </select>
+
+    <insert id="saveGameResult">
+        insert into
+        data_game_result(day,strategy_id,channel,strategy_name,add_score,bet_coins,up,down,controls,sha,song,games,endtime)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.day},#{item.strategyId},#{item.channel},#{item.strategyName},#{item.addScore},#{item.betCoins},#{item.up}
+            ,#{item.down},#{item.controls},#{item.sha},#{item.song},#{item.games},#{item.endTime})
+        </foreach>
+        ON DUPLICATE KEY
+        UPDATE add_score=add_score+values(add_score),
+        bet_coins=bet_coins+values(bet_coins),
+        controls=controls+values(controls),
+        sha=sha+values(sha),
+        song=song+values(song),
+        games=games+values(games),
+        endtime=values(endtime);
+    </insert>
 </mapper>
