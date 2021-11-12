@@ -32,7 +32,7 @@
         LEFT JOIN config_game g
         ON c.game_type = g.game_id
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
-        AND c.mstime BETWEEN #{beginms} AND #{endms}
+        AND c.mstime BETWEEN #{beginms} AND #{endms}+1000*60*60*24
         AND g.parent_id = '0'
         AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         <if test="gameId!=null and gameId!=0">
@@ -53,7 +53,7 @@
         LEFT JOIN data_water w ON
             g.game_id = w.table_type
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
-            AND c.mstime BETWEEN #{beginms} AND #{endms}
+            AND c.mstime BETWEEN #{beginms} AND #{endms}+1000*60*60*24
             AND g.parent_id = '0'
             AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         <if test="gameId!=null and gameId!=0">
@@ -88,7 +88,7 @@
         LEFT JOIN config_game g
         ON c.table_type = g.game_id
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
-        AND c.mstime BETWEEN #{beginms} AND #{endms}
+        AND c.mstime BETWEEN #{beginms} AND #{endms}+1000*60*60*24
         AND g.parent_id = #{gameId}
         AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         GROUP BY g.game_id,g.game_name
@@ -106,7 +106,7 @@
         LEFT JOIN data_water w ON
             g.game_id = w.table_type
         WHERE c.channel IN (SELECT t_id FROM sys_tenant WHERE (t_id = #{tid} OR ancestors LIKE CONCAT('%',#{tid},'%')) AND t_type = '2')
-            AND c.mstime BETWEEN #{beginms} AND #{endms}
+            AND c.mstime BETWEEN #{beginms} AND #{endms}+1000*60*60*24
             AND g.game_id = #{gameId}
             AND g.tid = (SELECT tenant FROM sys_tenant WHERE t_id = #{tid})
         GROUP BY g.game_id,g.game_name
