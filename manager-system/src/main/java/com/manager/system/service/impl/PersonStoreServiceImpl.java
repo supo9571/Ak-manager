@@ -1,5 +1,6 @@
 package com.manager.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.core.domain.entity.PersonStore;
 import com.manager.common.utils.StringUtils;
@@ -47,6 +48,8 @@ public class PersonStoreServiceImpl implements PersonStoreService {
         List<Map> personList = personStoreMapper.getPersonStrategyList();
         Map personMap = new HashMap();
         personList.forEach(map -> {
+            map.put("condition_list", JSON.parse((String) map.get("condition_list")));
+            map.put("game_list", JSON.parse((String) map.get("game_list")));
             personMap.put(map.get("strategy_id")+"",new JSONObject(map));
         });
         param.put("strategy_list",new JSONObject(personMap));
