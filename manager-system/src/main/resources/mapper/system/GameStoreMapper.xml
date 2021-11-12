@@ -48,6 +48,7 @@
             <if test="playSongLimit != null and playSongLimit != ''"> play_song_limit = #{playSongLimit},</if>
             <if test="danjiShaRate != null and danjiShaRate != ''"> danji_sha_rate = #{danjiShaRate},</if>
             <if test="danjiSongRate != null and danjiSongRate != ''"> danji_song_rate = #{danjiSongRate},</if>
+            <if test="rewardStore != null and rewardStore != ''"> reward_store = #{rewardStore},</if>
         </set>
         where id = #{id}
     </update>
