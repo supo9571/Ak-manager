@@ -102,8 +102,8 @@
     <select id="getPersonResultInfo" resultType="java.util.Map">
         SELECT distinct g.game_name gameName
              ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') uid
-             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet') curBet
-             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward') curReward
+             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet')/10000 curBet
+             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward')/10000 curReward
              ,p.strategy_name strategyName
              ,FROM_UNIXTIME(c.time) handelTime
         FROM ${cardName} c
