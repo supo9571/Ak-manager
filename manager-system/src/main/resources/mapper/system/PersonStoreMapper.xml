@@ -44,7 +44,7 @@
             <if test="danjiPvpMaxRunTimes != null and danjiPvpMaxRunTimes != ''"> danji_pvp_max_run_times = #{danjiPvpMaxRunTimes}, </if>
             <if test="conditionList != null and conditionList != ''"> condition_list = #{conditionList}, </if>
             <if test="gameList != null and gameList != ''"> game_list = #{gameList}, </if>
-            <if test="runResult != null and runResult != ''"> run_result = #{runResult}, </if>
+            <if test="runResult != null"> run_result = #{runResult}, </if>
             <if test="runRate != null and runRate != ''"> run_rate = #{runRate}, </if>
         </set>
         where strategy_id = #{strategyId}
