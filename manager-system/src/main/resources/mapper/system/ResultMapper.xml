@@ -99,7 +99,7 @@
     </select>
 
     <select id="getPersonResultInfo" resultType="java.util.Map">
-        SELECT g.game_name gameName
+        SELECT distinct g.game_name gameName
              ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') uid
              ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet') curBet
              ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward') curReward
