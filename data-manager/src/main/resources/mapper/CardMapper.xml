@@ -31,9 +31,6 @@
                     c.channel like concat('%',#{item},'%')
                 </foreach>
             </if>
-            <if test="tenant!=null and tenant !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
-            </if>
         </where>
         order by c.end_time desc
     </select>
@@ -66,9 +63,6 @@
             <if test="tid!=null and tid !=0">
                 and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
             </if>
-            <if test="tenant!=null and tenant !=''">
-                and u.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
-            </if>
             <if test="uid!=null and uid !=''">
                 and u.uid = #{uid}
             </if>
@@ -95,9 +89,6 @@
                     c.channel like concat('%',#{item},'%')
                 </foreach>
             </if>
-            <if test="tenant!=null and tenant !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
-            </if>
         </where>
         limit 1
     </select>
@@ -118,9 +109,6 @@
             </if>
             <if test="tid!=null and tid !=0">
                 and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
-            </if>
-            <if test="tenant!=null and tenant !=''">
-                and u.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
             <if test="uid!=null and uid !=''">
                 and u.uid = #{uid}
