@@ -22,6 +22,9 @@ public class PlayUser extends BaseEntity {
     @ApiModelProperty("玩家姓名")
     private String name;
 
+    @ApiModelProperty("真是姓名")
+    private String realName;
+
     @ApiModelProperty("注册时间")
     private String time;
 
@@ -118,6 +121,9 @@ public class PlayUser extends BaseEntity {
 
     @ApiModelProperty("携带余额")
     private String curr;
+
+    @ApiModelProperty("封号类型 0 不清币 1清币 2 解封")
+    private String lockType;
 
     private Integer page2;
 }
