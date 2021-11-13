@@ -79,7 +79,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
                 if(m!=null){
                     addScore = addScore.add((BigDecimal) m.get("addScore"));
                     betCoins = betCoins.add((BigDecimal) m.get("betCoins"));
-                    reward = reward.add((BigDecimal) m.get("reward"));
+                    reward = reward.add(m.get("reward")==null?new BigDecimal(0):(BigDecimal) m.get("reward"));
                 }
             }
             cp.setAddScore(addScore);
