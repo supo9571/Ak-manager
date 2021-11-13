@@ -55,9 +55,9 @@
         <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
         <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
         <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
-        order by c.time desc
         GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag'),
         g.strategy_id,r.uid,g.strategy_name,c.channel,r.name,o.uid
+        ORDER BY MAX(c.time) DESC
     </select>
 
     <select id="getPersonResultCount" resultType="java.util.Map">
