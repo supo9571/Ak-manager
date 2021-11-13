@@ -167,7 +167,7 @@
                withdraw_money withdrawMoney
         FROM config_exchange_order
         WHERE uid = #{uid}
-        AND exaa_status = '5'
+        AND exaa_status = '3'
     </select>
 
     <select id="userInfo" resultType="java.util.Map">
