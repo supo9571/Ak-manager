@@ -33,9 +33,11 @@
             curr / 10000 curr,
             cr.recharge_amount as oneRecharge,
             cro.todayAdd,
-            ceo.todayRed
+            ceo.todayRed,
+            dul.lock_type lockType
         from data_register dr
         LEFT JOIN  data_user du on dr.account_id = du.account_id
+        LEFT JOIN  data_user_lock dul on dul.uid = dr.uid
         LEFT JOIN (
             SELECT * from config_recharge_order a where id in (SELECT min(id) FROM config_recharge_order b GROUP BY uid)
             and (a.operate_type <![CDATA[<>]]> '3' and a.operate_type <![CDATA[<>]]> '4'or a.operate_type is null)
@@ -59,6 +61,9 @@
             </if>
             <if test="playUser.name!=null and playUser.name !=''">
                 and dr.name = #{playUser.name}
+            </if>
+            <if test="playUser.realName!=null and playUser.realName !=''">
+                and dr.uid in (select uid from user_exchange where name = #{realName})
             </if>
             <if test="playUser.phone!=null and playUser.phone !=''">
                 and dr.phone = #{playUser.phone}
