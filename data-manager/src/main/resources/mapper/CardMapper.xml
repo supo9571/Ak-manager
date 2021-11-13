@@ -23,7 +23,7 @@
                 and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and c.game_type = #{gameId}
+                and (c.game_type = #{gameId} or c.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and
@@ -61,7 +61,7 @@
                 and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and u.game_type = #{gameId}
+                and and (u.game_type = #{gameId} or u.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
@@ -87,7 +87,7 @@
                 and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and c.game_type = #{gameId}
+                and and (c.game_type = #{gameId} or c.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and
@@ -114,7 +114,7 @@
                 and u.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and u.game_type = #{gameId}
+                and and (u.game_type = #{gameId} or u.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
