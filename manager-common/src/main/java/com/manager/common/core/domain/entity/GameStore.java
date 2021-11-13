@@ -37,7 +37,7 @@ public class GameStore extends BaseEntity {
     private int baseStore;
 
     @ApiModelProperty(value = "返奖库存")
-    private int rewardStore;
+    private String rewardStore;
 
     @ApiModelProperty(value = "风控下限 风控上限 百人阀值 pvp阀值")
     private String limitList;
