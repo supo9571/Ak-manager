@@ -75,11 +75,11 @@
 
     <insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
         insert into data_card_user (`table_gid`,`uid`,`mstime`,`begin_time`,`end_time`,
-        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`,`water_reward`)
+        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`,`water_reward`,`is_banker`)
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
-            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.waterCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward})
+            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.waterCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward},#{item.isBanker})
         </foreach>
     </insert>
 

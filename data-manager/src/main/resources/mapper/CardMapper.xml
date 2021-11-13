@@ -140,7 +140,8 @@
                bet_coins/10000  betCoins,
                left_score/10000 leftScore,
                is_robot   isRobot,
-               uid
+               uid,
+               is_banker isBanker
         from data_card_user
         where table_gid = #{tableGid}
     </select>
