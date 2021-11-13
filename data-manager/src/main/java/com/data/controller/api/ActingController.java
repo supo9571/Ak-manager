@@ -53,7 +53,7 @@ public class ActingController extends BaseController {
      */
     @PostMapping("/agentv2/info")
     public JSONObject info(@RequestBody JSONObject param) {
-        String channelId = getHeader("Client-PackageChannel");//渠道id
+        String channelId = param.getString("package_channel");//渠道id
         String uid = param.getString("uid");//渠道id
         return configAgenService.getInfo(uid, channelId);
     }
