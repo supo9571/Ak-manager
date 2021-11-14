@@ -44,7 +44,7 @@ public class TotalController extends BaseController {
      * 总览 左侧数据
      */
     @PostMapping("/left")
-    public AjaxResult left(int tid) {
+    public AjaxResult left(String tid) {
         //左侧 玩家数据
         Map left = totalService.getLeft(tid);
         return AjaxResult.success(left);
@@ -54,7 +54,7 @@ public class TotalController extends BaseController {
      * 总览 右侧数据
      */
     @PostMapping("/right")
-    public AjaxResult right(int tid,String beginTime,String endTime) {
+    public AjaxResult right(String tid,String beginTime,String endTime) {
         //右侧 经济 盈亏
         Map right = totalService.getRight(tid,beginTime,endTime);
         return AjaxResult.success(right);

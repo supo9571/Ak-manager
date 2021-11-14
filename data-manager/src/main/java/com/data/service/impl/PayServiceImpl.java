@@ -33,10 +33,10 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     *
+     * 判断是否重复
      */
     @Override
-    public Integer isNoRepeat(String uid) {
-        return payMapper.isNoRepeat(uid);
+    public Integer isNoRepeat(String uid, String channel) {
+        return payMapper.isNoRepeat(uid,tenantMapper.getTidByCid(channel));
     }
 }

@@ -27,6 +27,8 @@ public class CardUser {
 
     private String channel;
 
+    private String isBanker;
+
     public void setCardInfo(Card card) {
         this.tableGid = card.getTableGid();
         this.mstime = card.getMstime();

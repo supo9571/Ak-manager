@@ -32,7 +32,7 @@
         <set>
             <if test="tagType != null and tagType != '' "> tag_type = #{tagType}, </if>
             <if test="tagName != null and tagName != '' "> tag_name = #{tagName}, </if>
-            <if test="runIndex != null and runIndex != '' "> run_index = #{runIndex}, </if>
+            <if test="runIndex != null"> run_index = #{runIndex}, </if>
             <if test="tagDesc != null and tagDesc != '' "> tag_desc = #{tagDesc},</if>
         </set>
         where id = #{id}

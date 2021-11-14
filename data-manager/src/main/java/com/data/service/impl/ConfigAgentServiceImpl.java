@@ -11,6 +11,7 @@ import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -46,21 +47,26 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     @Override
     public JSONObject bindAgent(String channelId, String uid, String agentId) {
         JSONObject result = new JSONObject();
-        Integer tid = tenantMapper.getTidByCid(channelId);
-        Long time = configAgentMapper.selectAgent(tid, agentId);
         result.put("code", 200);
         Map map = new HashMap();
-        if (time == null) {
+        if(StringUtils.isEmpty(uid)){
             map.put("status", false);
-            map.put("msg", "请输入正确的推荐人ID!!!");
-        } else {
-            Integer i = configAgentMapper.setAgentId(agentId, uid, time, System.currentTimeMillis());
-            if (i > 0) {
-                map.put("status", true);
-                map.put("msg", "绑定成功!!!");
-            } else {
+            map.put("msg", "推荐人ID不能为空");
+        }else{
+            Integer tid = tenantMapper.getTidByCid(channelId);
+            Long time = configAgentMapper.selectAgent(tid, agentId);
+            if (time == null) {
                 map.put("status", false);
-                map.put("msg", "推荐人注册时间必须早于自己!!!");
+                map.put("msg", "请输入正确的推荐人ID");
+            } else {
+                Integer i = configAgentMapper.setAgentId(agentId, uid, time, System.currentTimeMillis());
+                if (i > 0) {
+                    map.put("status", true);
+                    map.put("msg", "绑定成功");
+                } else {
+                    map.put("status", false);
+                    map.put("msg", "无法绑定比自己注册时间晚的用户");
+                }
             }
         }
         result.put("result", map);
@@ -126,8 +132,11 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         JSONObject result = new JSONObject();
         result.put("code", 200);
         Map map = configAgentMapper.getInfo(uid, DateUtils.getDate());
+        if(map==null){
+            map = new HashMap();
+        }
         String spreadUrl = configAgentMapper.getSpreatUrl(tenantMapper.getTidByCid(channelId));
-        map.put("spread_url", spreadUrl.concat("?ch=" + channelId + "&uid" + uid));
+        map.put("spread_url", spreadUrl.concat("?ch=" + channelId + "&uid=" + uid));
         result.put("result", map);
         return result;
     }
@@ -185,7 +194,7 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
                     configAgentMapper.saveWithdarw(uid, cash);
                     configAgentMapper.updateWaitIncome(uid, cash, DateUtils.getDate());
                     map.put("rebate", cash);
-                    map.put("commission_pre_all", decimal.subtract(cash));
+                    map.put("commission_pre_all", decimal.subtract(cash).longValue()*10000);
                     result.put("code", 200);
                     result.put("result", map);
                     return result;
@@ -199,16 +208,16 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
     }
 
     @Override
-    public List getActList(String channelId) {
+    public List getActList(String channelId,String uid) {
         Integer tid = tenantMapper.getTidByCid(channelId);
-        return configAgentMapper.getActList(tid);
+        return configAgentMapper.getActList(tid,channelId,uid);
     }
 
     @Override
     public JSONObject getMenu(String channelId) {
         JSONObject result = new JSONObject();
         Integer tid = tenantMapper.getTidByCid(channelId);
-        List<Integer> list = configAgentMapper.getActivitys(tid);
+        List<Integer> list = configAgentMapper.getActivitys(tid,channelId);
         JSONArray func = new JSONArray();
         JSONArray top = new JSONArray();
         //特殊活动
@@ -272,5 +281,10 @@ public class ConfigAgentServiceImpl implements ConfigAgenService {
         JSONObject result = new JSONObject();
         result.put("downloadurl",configAgentMapper.getBeifen(tenantMapper.getTidByCid(channelId)));
         return result;
+    }
+
+    @Override
+    public List getRecharge(String uid, Long start, Long endTime, Long line) {
+        return configAgentMapper.getRecharge(uid,start,endTime,line);
     }
 }

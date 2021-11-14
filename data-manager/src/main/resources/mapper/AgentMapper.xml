@@ -18,10 +18,12 @@
         c.history_income historyIncome,
         from_unixtime(r.time) registerTime,
         from_unixtime(r.login_time) loginTime,
-        (SELECT create_time FROM agent_case_income WHERE uid = d.uid ORDER BY create_time DESC LIMIT 0,1) caseTime
+        t.create_time caseTime
         FROM agent_commission_day d
         LEFT JOIN agent_commission c ON d.uid = c.uid
         LEFT JOIN data_register r ON d.uid = r.uid
+        left join (SELECT MAX(create_time) create_time,uid FROM agent_case_income GROUP BY uid ) t
+        on d.uid = t.uid
         WHERE d.day=#{date}
         <if test="tid!=null and tid !=''">
             and d.channel in (select t_id from sys_tenant where tenant = #{tid} and t_type ='2')
@@ -35,23 +37,25 @@
     </select>
 
     <select id="getCommissionDays" resultType="java.util.Map">
-        select uid,
-               agent_id agentId,
-               channel,
-               team_num teamNum,
-               sub_num subNum,
-               sub_ratio subRatio,
-               sub_income subIncome,
-               other_num otherNum,
-               other_ratio otherRatio,
-               other_income otherIncome,
-               total_income totalIncome,
-               cash_income cashIncome,
-               wait_income waitIncome,
-            day,
-            (SELECT create_time FROM agent_case_income WHERE uid = uid ORDER BY create_time DESC LIMIT 0, 1) caseTime
-        from agent_commission_day
-        where uid = #{uid}
+        select d.uid,
+               d.agent_id agentId,
+               d.channel,
+               d.team_num teamNum,
+               d.sub_num subNum,
+               d.sub_ratio subRatio,
+               d.sub_income subIncome,
+               d.other_num otherNum,
+               d.other_ratio otherRatio,
+               d.other_income otherIncome,
+               d.total_income totalIncome,
+               d.cash_income cashIncome,
+               d.wait_income waitIncome,
+               d.day,
+               t.create_time caseTime
+        from agent_commission_day d
+        left join (SELECT MAX(create_time) create_time,DATE_FORMAT(create_time,'%Y-%m-%d') `date`,uid FROM agent_case_income GROUP BY uid,DATE_FORMAT(create_time,'%Y-%m-%d') ) t
+        on d.uid = t.uid and d.day = t.date
+        where d.uid = #{uid}
     </select>
 
     <select id="getCashs" resultType="java.util.Map">

@@ -33,8 +33,10 @@ public class GlobalConfig {
 
     //游戏服 通讯地址
     private String reportDomain;
-    //操作金币
+    //充值
     private String changeCoins;
+    //操作金币
+    private String changeCoinsGm;
     //发邮件
     private String mail;
     //驳回提现请求用户返金币

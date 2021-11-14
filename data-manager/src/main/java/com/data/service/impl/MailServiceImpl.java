@@ -6,6 +6,7 @@ import com.data.config.GlobalConfig;
 import com.data.mapper.MailMapper;
 import com.data.mapper.TenantMapper;
 import com.data.service.MailService;
+import com.manager.common.core.domain.model.MailRecord;
 import com.manager.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,6 +95,17 @@ public class MailServiceImpl implements MailService {
         mailMapper.delMail(mid);
     }
 
+    @Override
+    public List getAdvert(String channelId) {
+        Integer tid = tenantMapper.getTidByCid(channelId);
+        List<Map> list = mailMapper.getAdvert(tid);
+        list.forEach(m->{
+            m.put("game_id",Integer.valueOf((String) m.get("game_id")));
+            m.put("view_id",Integer.valueOf((String) m.get("view_id")));
+        });
+        return list;
+    }
+
     /**
      * 生成邮件记录
      */
@@ -102,5 +114,13 @@ public class MailServiceImpl implements MailService {
         if (list != null && list.size() > 0) {
             mailMapper.saveMailRecord(list, uid);
         }
+    }
+
+    /**
+     * 发送邮件
+     */
+    @Override
+    public void sendOutMail(MailRecord mail) {
+        mailMapper.sendOutMail(mail);
     }
 }

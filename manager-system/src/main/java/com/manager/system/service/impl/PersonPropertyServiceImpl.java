@@ -1,5 +1,6 @@
 package com.manager.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.core.domain.entity.PersonProperty;
 import com.manager.common.utils.StringUtils;
@@ -38,10 +39,13 @@ public class PersonPropertyServiceImpl implements PersonPropertyService {
         List<Map> propertyList = personPropertyMapper.getPersonPropertyList();
         Map propertyMap = new HashMap();
         propertyList.forEach(map -> {
+            map.put("pvp_property_list", JSON.parse((String) map.get("pvp_property_list")));
+            map.put("fish_property_list", JSON.parse((String) map.get("fish_property_list")));
+            map.put("danji_property_list", JSON.parse((String) map.get("danji_property_list")));
             propertyMap.put(map.get("property_id")+"",new JSONObject(map));
         });
         param.put("property_list",new JSONObject(propertyMap));
-        result.put("strategy_game_store.json", param.toJSONString());
+        result.put("strategy_person_property.json", param.toJSONString());
         return result.toJSONString();
     }
 }

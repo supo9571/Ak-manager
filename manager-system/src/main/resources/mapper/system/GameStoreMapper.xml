@@ -38,7 +38,7 @@
         <set>
             <if test="strategyName != null and strategyName != ''"> strategy_name = #{strategyName},</if>
             <if test="strategyTagId != null and strategyTagId != ''"> strategy_tag_id = #{strategyTagId},</if>
-            <if test="strategyStatus != null and strategyStatus != ''"> strategy_status = #{strategyStatus},</if>
+            <if test="strategyStatus != null"> strategy_status = #{strategyStatus},</if>
             <if test="playShaRate != null and playShaRate != ''"> play_sha_rate = #{playShaRate},</if>
             <if test="playSongRate != null and playSongRate != ''"> play_song_rate = #{playSongRate},</if>
             <if test="gameList != null and gameList != ''"> game_list = #{gameList},</if>
@@ -48,6 +48,7 @@
             <if test="playSongLimit != null and playSongLimit != ''"> play_song_limit = #{playSongLimit},</if>
             <if test="danjiShaRate != null and danjiShaRate != ''"> danji_sha_rate = #{danjiShaRate},</if>
             <if test="danjiSongRate != null and danjiSongRate != ''"> danji_song_rate = #{danjiSongRate},</if>
+            <if test="rewardStore != null and rewardStore != ''"> reward_store = #{rewardStore},</if>
         </set>
         where id = #{id}
     </update>

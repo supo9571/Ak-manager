@@ -22,17 +22,14 @@
             <if test="beginTime!=null and beginTime !=''">
                 and c.mstime between #{beginms} and #{endms}
             </if>
-            <if test="gameId!=null and gameId !=''">
-                and c.game_type = #{gameId}
+            <if test="gameId!=null and gameId !=0">
+                and (c.game_type = #{gameId} or c.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and
                 <foreach item="item" index="index" collection="channel.split(',')" open="(" separator="or" close=")">
                     c.channel like concat('%',#{item},'%')
                 </foreach>
-            </if>
-            <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
         </where>
         order by c.end_time desc
@@ -61,18 +58,16 @@
                 and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and u.game_type = #{gameId}
+                and (u.game_type = #{gameId} or u.table_type = #{gameId})
             </if>
-            <if test="tid!=null and tid !=''">
-                and u.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
-            </if>
-            <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+            <if test="tid!=null and tid !=0">
+                and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
             </if>
             <if test="uid!=null and uid !=''">
                 and u.uid = #{uid}
             </if>
         </where>
+        order by u.end_time desc
     </select>
 
     <select id="selectCardCount" resultType="java.util.Map" parameterType="com.manager.common.core.domain.model.Card">
@@ -86,16 +81,13 @@
                 and c.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and c.game_type = #{gameId}
+                and (c.game_type = #{gameId} or c.table_type = #{gameId})
             </if>
             <if test="tid!=null and tid !=0">
                 and
                 <foreach item="item" index="index" collection="channel.split(',')" open="(" separator="or" close=")">
                     c.channel like concat('%',#{item},'%')
                 </foreach>
-            </if>
-            <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
         </where>
         limit 1
@@ -113,13 +105,10 @@
                 and u.mstime between #{beginms} and #{endms}
             </if>
             <if test="gameId!=null and gameId !=''">
-                and u.game_type = #{gameId}
+                and (u.game_type = #{gameId} or u.table_type = #{gameId})
             </if>
-            <if test="tid!=null and tid !=''">
-                and u.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
-            </if>
-            <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+            <if test="tid!=null and tid !=0">
+                and u.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
             </if>
             <if test="uid!=null and uid !=''">
                 and u.uid = #{uid}
@@ -138,7 +127,9 @@
                pay_fee/10000    payFee,
                bet_coins/10000  betCoins,
                left_score/10000 leftScore,
-               is_robot   isRobot
+               is_robot   isRobot,
+               uid,
+               is_banker isBanker
         from data_card_user
         where table_gid = #{tableGid}
     </select>

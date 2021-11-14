@@ -43,7 +43,7 @@ public class PayController extends BaseController {
         JSONObject result = new JSONObject();
 
         // 判断是否重复
-        Integer isNoRepeat = payService.isNoRepeat(uid);
+        Integer isNoRepeat = payService.isNoRepeat(uid,channel);
         if (isNoRepeat > 0) {
             result.put("code", 500);
             result.put("msg", "上一单还未处理完毕，请稍后再提交");

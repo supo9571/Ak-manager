@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.data.config.GlobalConfig;
 import com.data.config.redis.RedisCache;
 import com.data.controller.BaseController;
+import com.data.mapper.TenantMapper;
 import com.data.service.UserService;
 import com.data.utils.RequestUtils;
 import com.data.utils.Verification;
@@ -35,6 +36,9 @@ public class UserController extends BaseController {
     @Autowired
     private GlobalConfig globalConfig;
 
+    @Autowired
+    private TenantMapper tenantMapper;
+
     /**
      * 短信验证码发送
      *
@@ -60,10 +64,10 @@ public class UserController extends BaseController {
         Integer checkWay = param.getInteger("check_way");
         String password = param.getString("password");
         String requestId = param.getString("requestId");
-        String pkgChannel = getHeader("Client-ChannelId") == null ? "" : getHeader("Client-ChannelId");
+        String pkgChannel = param.getString("package_channel");
 
         if (checkWay == 6) { //登录
-            DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password));
+            DataUser dataUser = userService.findByPassword(phoneNumber, DigestUtils.md5Hex(password),pkgChannel);
             if (dataUser == null) {
                 result.put("code", -1);
                 result.put("desc", "用户名密码错误");
@@ -96,6 +100,27 @@ public class UserController extends BaseController {
                         result.put("desc", "手机号已注册");
                         return result;
                     }
+                    Integer tid = tenantMapper.getTidByCid(pkgChannel);
+                    Map constraint = userService.getConfigRegisterConstraint(tid);
+                    if (constraint != null && constraint.containsKey("ipNum")) {
+                        Integer ipNum = Integer.valueOf(constraint.get("ipNum").toString());
+                        int ipUserCount = userService.getIpUserCount(tid, ip);
+                        if (ipUserCount >= ipNum) {
+                            result.put("code", -1);
+                            result.put("desc", "账号数量已超上限，请用原账号登录");
+                            return result;
+                        }
+                    }
+                    if (constraint != null && constraint.containsKey("deviceNum")) {
+                        Integer deviceNum = Integer.valueOf(constraint.get("deviceNum").toString());
+                        int seedTokenUserCount = userService.getSeedTokenUserCount(tid, matchineToken);
+                        if (seedTokenUserCount >= deviceNum) {
+                            result.put("code", -1);
+                            result.put("desc", "账号数量已超上限，请用原账号登录");
+                            return result;
+                        }
+                    }
+
                     dataUser = new DataUser(phoneNumber, DigestUtils.md5Hex(password), ip, matchineToken, pkgChannel);
                     int n = userService.insertToDataUser(dataUser);
                     if (n > 0) {
@@ -115,6 +140,7 @@ public class UserController extends BaseController {
                         result.put("desc", "手机号已注册");
                         return result;
                     }
+
                     dataUser = new DataUser(Long.valueOf(accountId), phoneNumber, DigestUtils.md5Hex(password));
                     int n = userService.updateDataUser(dataUser);
                     if (n > 0) {

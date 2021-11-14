@@ -4,43 +4,46 @@
 <mapper namespace="com.data.mapper.TotalMapper">
 
     <select id="getTotals" resultType="java.util.Map">
-        SELECT  exchange_count exchangeCount,
-                give_num giveNum,
-                channel,
-                new_recharge_count newRechargeCount,
-                offline_pay_rate offlinePayRate,
-                vip_count vipCount,
-                recharge_give_count rechargeGiveCount,
-                recharge_num rechargeNum,
-                new_exchange_count newExchangeCount,
-                active_num activeNum,
-                activity_count activityCount,
-                exchange_num exchangeNum,
-                system_win systemWin,
-                win_rate winRate,
-                day,
-                reward_count rewardCount,
-                commission_team_count commissionTeamCount,
-                give_count giveCount,
-                online_pay_rate onlinePayRate,
-                fee_count feeCount,
-                alms_count almsCount,
-                new_water newWater,
-                offline_give_count offlineGiveCount,
-                bind_give_count bindGiveCount,
-                performance_count performanceCount,
-                recharge_count rechargeCount,
-                new_num newNum,
-                vip_level_count vipLevelCount,
-                balance_count balanceCount,
-                confiscate_count confiscateCount,
-                new_recharge_num newRechargeNum,
-                actual_exchange_count actualExchangeCount,
-                commission_sub_count commissionSubCount,
-                bet_count betCount
+        SELECT  sum(exchange_count) exchangeCount,
+        sum(give_num) giveNum,
+        sum(new_recharge_count) newRechargeCount,
+        sum(offline_pay_rate) offlinePayRate,
+        sum(vip_count) vipCount,
+        sum(recharge_give_count) rechargeGiveCount,
+        sum(recharge_num) rechargeNum,
+        sum(new_exchange_count) newExchangeCount,
+        sum(active_num) activeNum,
+        sum(activity_count) activityCount,
+        sum(exchange_num) exchangeNum,
+        sum(system_win) systemWin,
+        sum(win_rate) winRate,
+        `day`,
+        sum(reward_count) rewardCount,
+        sum(commission_team_count) commissionTeamCount,
+        sum(give_count) giveCount,
+        sum(online_pay_rate) onlinePayRate,
+        sum(fee_count) feeCount,
+        sum(alms_count) almsCount,
+        sum(new_water) newWater,
+        sum(offline_give_count) offlineGiveCount,
+        sum(bind_give_count) bindGiveCount,
+        sum(performance_count) performanceCount,
+        sum(recharge_count) rechargeCount,
+        sum(new_num) newNum,
+        sum(vip_level_count) vipLevelCount,
+        sum(balance_count) balanceCount,
+        sum(confiscate_count) confiscateCount,
+        sum(new_recharge_num) newRechargeNum,
+        sum(actual_exchange_count) actualExchangeCount,
+        sum(commission_sub_count) commissionSubCount,
+        sum(bet_count) betCount
         from data_total_day
         where day >= #{beginTime} and #{endTime} >= day
         <if test="channel!=null and channel!=0"> and channel = #{channel}</if>
+        <if test="channel!=null and channel==0"> and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%',(select t_id from sys_user where user_id = #{uid}), '%')
+         or t_id =(select t_id from sys_user where user_id = #{uid}) ) and t_type = '2')
+        </if>
+        group by day
     </select>
 
     <select id="getLeft" resultType="java.util.Map">
@@ -50,7 +53,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -59,7 +62,7 @@
         from data_total_day
         where day = #{date}
         <if test="tid!=null and tid!=0">
-            and channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            and channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -67,7 +70,7 @@
         select count(1) from
         data_online
         <if test="tid!=null and tid!=0">
-            where channel in (select t_id from sys_tenant where tenant = #{tid} and t_type = '2')
+            where channel in (select t_id from sys_tenant where (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) and t_type = '2')
         </if>
     </select>
 
@@ -84,7 +87,7 @@
         WHERE DAY >= #{beginTime}
         AND #{endTime}>=DAY
         <if test="tid!=null and tid!=0">
-            AND channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            AND channel IN (SELECT t_id FROM sys_tenant WHERE (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}) AND t_type = '2')
         </if>
     </select>
 </mapper>

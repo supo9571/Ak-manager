@@ -35,7 +35,7 @@ public class OnlinePlayer extends BaseEntity {
     private Long safeBox;
 
     @ApiModelProperty("所属渠道")
-    private Long channel;
+    private String channel;
 
     @ApiModelProperty("注册时间")
     private String time;

@@ -41,7 +41,7 @@
                 </foreach>
             </if>
             <if test="tid!=null and tid !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+                and c.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
@@ -71,7 +71,7 @@
                 and (c.game_type = '0' or c.game_type is null)
             </if>
             <if test="tid!=null and tid !=''">
-                and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+                and c.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') or t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )

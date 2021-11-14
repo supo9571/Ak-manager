@@ -2,6 +2,7 @@ package com.manager.controller.data;
 
 import com.manager.common.core.domain.AjaxResult;
 import com.manager.common.core.domain.model.Summarize;
+import com.manager.common.utils.SecurityUtils;
 import com.manager.common.utils.file.FileUtils;
 import com.manager.common.utils.poi.ExcelUtil;
 import com.manager.openFegin.AgentService;
@@ -37,6 +38,7 @@ public class TotalController {
     @ApiOperation(value = "查询总览下方列表")
     @GetMapping("/list")
     public AjaxResult list(Summarize summarize) {
+        summarize.setUid(SecurityUtils.getUserId());
         return agentService.getTotals(summarize);
     }
 
@@ -61,7 +63,7 @@ public class TotalController {
     @PreAuthorize("@ss.hasPermi('data:total:list')")
     @ApiOperation(value = "查询总览左侧数据")
     @PostMapping("/left")
-    public AjaxResult left(int tid) {
+    public AjaxResult left(String tid) {
         return agentService.getLeft(tid);
     }
 
@@ -71,7 +73,7 @@ public class TotalController {
     @PreAuthorize("@ss.hasPermi('data:total:list')")
     @ApiOperation(value = "查询总览右侧数据")
     @PostMapping("/right")
-    public AjaxResult right(int tid,String beginTime,String endTime) {
+    public AjaxResult right(String tid,String beginTime,String endTime) {
         return agentService.getRight(tid,beginTime,endTime);
     }
 }

@@ -16,7 +16,4 @@ public interface CountSubGameMapper {
 
     void saveGameCardInfo(@Param("date")String date,@Param("list") List list);
 
-    List getGameWaterInfo(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
-
-    void saveGameWaterInfo(@Param("date")String date,@Param("list") List list);
 }

@@ -15,6 +15,9 @@ public class OnlineDataDay {
     @ApiModelProperty("日期")
     private String day;
 
+    private String day1;
+    private String day2;
+
     @ApiModelProperty("平台id")
     private String tid;
 

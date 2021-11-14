@@ -4,40 +4,42 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.manager.system.mapper.ResultMapper">
     <select id="getGameResult" resultType="java.util.Map">
-        select strategy_name strategyName,
+        select g.strategy_name strategyName,
             sum(add_score) addScore,
             sum(bet_coins) betCoins,
-            up,
-            down,
+            JSON_EXTRACT(g.limit_list ,'$[0]') up,
+            JSON_EXTRACT(g.limit_list ,'$[1]') down,
             sum(controls) controls,
             sum(sha) sha,
             sum(song) song,
             sum(games) games,
             t.tenant tid
         from data_game_result r
+        right join control_game_config g
+        on r.strategy_id = g.id and day = #{day}
         LEFT JOIN sys_tenant t
         ON r.channel = t.t_id
         <where>
             <if test="tid != 0"> and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
-            <if test="strategyId != 0"> and strategy_id = #{strategyId}</if>
-            <if test="day != null and day != ''"> and day = #{day}</if>
+            <if test="strategyId != 0"> and r.strategy_id = #{strategyId}</if>
+        and g.strategy_status = '1'
         </where>
-        group by strategy_id,day, strategy_name,t.tenant,up,down
+        group by r.strategy_id,day, g.strategy_name,t.tenant,JSON_EXTRACT(g.limit_list ,'$[0]'),JSON_EXTRACT(g.limit_list ,'$[1]')
     </select>
 
     <select id="getPersonResult" resultType="java.util.Map">
         SELECT g.strategy_id strategyId
         ,g.strategy_name strategyName
         ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag') strategyFlag
-        ,r.uid uid,r.name,c.channel
-        ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet')) curBet
-        ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward')) curReward
-        ,MAX(c.time) handelTime
+        ,r.uid uid,r.name,r.channel
+        ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet'))/10000 curBet
+        ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward'))/10000 curReward
+        ,FROM_UNIXTIME(MAX(c.time)) handelTime
         ,IF(o.uid IS NULL,0,1) online
         ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND finish_time>= CONCAT(#{day},' 00:00:00') AND CONCAT(#{day},' 23:59:59')>=finish_time) rechargeAmount
         ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND CONCAT(#{day},' 23:59:59')>=finish_time) rechargeHistory
-        ,(SELECT SUM(add_score) FROM ${cardUserName} d WHERE d.uid = r.uid AND d.end_time BETWEEN UNIX_TIMESTAMP(#{day}) AND UNIX_TIMESTAMP(#{day})+60*60*24) addScore
-        ,(SELECT SUM(add_score) FROM ${cardUserName} d WHERE d.uid = r.uid AND d.end_time BETWEEN UNIX_TIMESTAMP(#{day})-2*60*60*24 AND UNIX_TIMESTAMP(#{day})+60*60*24) threeAddScore
+        ,(SELECT SUM(add_score)/10000 FROM ${cardUserName} d WHERE d.uid = r.uid AND d.end_time BETWEEN UNIX_TIMESTAMP(#{day}) AND UNIX_TIMESTAMP(#{day})+60*60*24) addScore
+        ,(SELECT SUM(add_score)/10000 FROM ${cardUserName} d WHERE d.uid = r.uid AND d.end_time BETWEEN UNIX_TIMESTAMP(#{day})-2*60*60*24 AND UNIX_TIMESTAMP(#{day})+60*60*24) threeAddScore
         ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND UNIX_TIMESTAMP(finish_time)>= UNIX_TIMESTAMP(#{day})-2*60*60*24 AND UNIX_TIMESTAMP(#{day})+60*60*24 >=UNIX_TIMESTAMP(finish_time)) threeRechargeAmount
         ,FROM_UNIXTIME(r.time) registerTime
         FROM ${cardName} c
@@ -49,11 +51,12 @@
         ON r.uid = o.uid
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') IS NOT NULL
         and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24
-        <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
+        <if test="tid != 0"> and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
         <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
         <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
         GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag'),
-        g.strategy_id,r.uid,g.strategy_name,c.channel,r.name,o.uid
+        g.strategy_id,r.uid,g.strategy_name,r.channel,r.name,o.uid
+        ORDER BY MAX(c.time) DESC
     </select>
 
     <select id="getPersonResultCount" resultType="java.util.Map">
@@ -62,8 +65,8 @@
             ,g.strategy_name strategyName
             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag') strategyFlag
             ,r.uid uid,r.name,c.channel
-            ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet')) curBet
-            ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward')) curReward
+            ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet'))/10000 curBet
+            ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward'))/10000 curReward
             ,MAX(c.time) handelTime
             ,IF(o.uid IS NULL,0,1) online
             ,(SELECT SUM(recharge_amount) FROM config_recharge_order WHERE uid = r.uid AND payment_status = '1' AND
@@ -86,9 +89,8 @@
             LEFT JOIN data_online o
             ON r.uid = o.uid
             WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') IS NOT NULL
-            and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24<if test="tid != 0">and c.channel
-            in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT(
-            '%', #{tid}, '%'))</if>
+            and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24
+            <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
             <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
             <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
             GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag'),
@@ -97,10 +99,10 @@
     </select>
 
     <select id="getPersonResultInfo" resultType="java.util.Map">
-        SELECT g.game_name gameName
+        SELECT distinct g.game_name gameName
              ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') uid
-             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet') curBet
-             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward') curReward
+             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet')/10000 curBet
+             ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward')/10000 curReward
              ,p.strategy_name strategyName
              ,FROM_UNIXTIME(c.time) handelTime
         FROM ${cardName} c
@@ -111,4 +113,49 @@
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag') = #{strategyFlag}
         and JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].uid') = #{uid}
     </select>
+
+    <select id="selectGameResult" resultType="com.manager.system.domain.vo.GameResult">
+        SELECT JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") strategyId ,
+               g.strategy_name strategyName,
+               SUM(add_score)/10000 addScore,
+               SUM(bet_coins)/10000 betCoins,
+               d.channel,
+               JSON_EXTRACT(g.limit_list ,'$[0]') up,
+               JSON_EXTRACT(g.limit_list ,'$[1]') down,
+               SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times")) controls,
+               SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) sha,
+               SUM(IF(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_result")=2,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0)) song
+        FROM ${cardName} d
+                 LEFT JOIN control_game_config g
+                           ON JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") = g.id
+        WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id") >0
+          and d.mstime between #{beginTime} and #{endTime}
+        GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.strategy_id"),
+                 g.strategy_name,g.limit_list,d.channel
+    </select>
+
+    <select id="getGameCount" resultType="java.lang.Long">
+        select
+            SUM( IF((SELECT COUNT(1) FROM control_game_config WHERE game_list LIKE CONCAT('%',table_type,'%'))=1,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info1'),"$.game_times"),0 )) game
+        from ${cardName}
+        where mstime between #{beginTime} and #{endTime}
+    </select>
+
+    <insert id="saveGameResult">
+        insert into
+        data_game_result(day,strategy_id,channel,strategy_name,add_score,bet_coins,up,down,controls,sha,song,games,endtime)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.day},#{item.strategyId},#{item.channel},#{item.strategyName},#{item.addScore},#{item.betCoins},#{item.up}
+            ,#{item.down},#{item.controls},#{item.sha},#{item.song},#{item.games},#{item.endTime})
+        </foreach>
+        ON DUPLICATE KEY
+        UPDATE add_score=add_score+values(add_score),
+        bet_coins=bet_coins+values(bet_coins),
+        controls=controls+values(controls),
+        sha=sha+values(sha),
+        song=song+values(song),
+        games=games+values(games),
+        endtime=values(endtime);
+    </insert>
 </mapper>

@@ -6,7 +6,7 @@
     <select id="getList" resultType="com.manager.common.core.domain.model.RechargeAndExchange">
         SELECT
             t.day as day,
-            SUM(t.activeUser) as activeUser,
+            t.activeUser as activeUser,
             SUM(t.uid) as uid,
             SUM(t.rechargeCount) as rechargeCount,
             SUM(t.rechargeSum) as rechargeSum,
@@ -118,7 +118,7 @@
             and FROM_UNIXTIME(dr.time, '%Y-%m-%d') <![CDATA[<=]]> #{time2}
         group by
             FROM_UNIXTIME(dr.time, '%Y-%m-%d'), dr.uid
-        ) t group by day order by day DESC
+        ) t group by day,activeUser order by day DESC
     </select>
 
 </mapper>

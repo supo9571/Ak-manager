@@ -16,6 +16,15 @@ public interface UserMapper {
     @Select("select count(phone) from data_user where phone = #{phone}")
     Integer findByphone(@Param("phone") String phone);
 
+    @Select("select ip_num ipNum,device_num deviceNum from config_register_constraint where  tid = #{tid} limit 0,1")
+    Map getConfigRegisterConstraint(Integer tid);
+
+    @Select("select count(account_id) from data_user where tenant = #{tid} and client_ip=#{ip}")
+    int getIpUserCount(@Param("tid") Integer tid, @Param("ip") String ip);
+
+    @Select("select count(account_id) from data_user where tenant = #{tid} and seed_token = #{seedToken}")
+    int getSeedTokenUserCount(@Param("tid") Integer tid, @Param("seedToken") String seedToken);
+
     Integer insertToDataUser(DataUser dataUser);
 
     Integer loadDataUserName(DataUser dataUser);
@@ -23,8 +32,9 @@ public interface UserMapper {
     @Select("select account_id accountId from data_user where seed_token = #{seedToken} and phone is null")
     DataUser findUserBySeedToken(@Param("seedToken") String seedToken);
 
-    @Select("select account_id accountId from data_user where phone = #{phoneNumber} and password = #{password} limit 0,1")
-    DataUser findByPassword(@Param("phoneNumber") String phoneNumber, @Param("password") String password);
+    @Select("select account_id accountId from data_user where phone = #{phoneNumber} and password = #{password} " +
+            "and package_channel in (SELECT t_id FROM sys_tenant WHERE tenant = #{tid}) limit 0,1")
+    DataUser findByPassword(@Param("phoneNumber") String phoneNumber, @Param("password") String password,@Param("tid") Integer tid);
 
     @Select("select account_id accountId from data_user where phone = #{phoneNumber} limit 0,1")
     DataUser findByPhone(@Param("phoneNumber") String phoneNumber);

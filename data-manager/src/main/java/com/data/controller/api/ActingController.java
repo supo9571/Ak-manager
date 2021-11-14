@@ -53,7 +53,7 @@ public class ActingController extends BaseController {
      */
     @PostMapping("/agentv2/info")
     public JSONObject info(@RequestBody JSONObject param) {
-        String channelId = getHeader("Client-ChannelId");//渠道id
+        String channelId = param.getString("package_channel");//渠道id
         String uid = param.getString("uid");//渠道id
         return configAgenService.getInfo(uid, channelId);
     }
@@ -78,6 +78,22 @@ public class ActingController extends BaseController {
         String uid = param.getString("uid");//玩家id
         String agentId = param.getString("agent_id");//代理id
         return configAgenService.bindAgent(channelId, uid, agentId);
+    }
+
+    /**
+     * 获取全民推广信息
+     */
+    @PostMapping("/pay/get_bind_recharge")
+    public JSONObject getRecharge(@RequestBody JSONObject param) {
+        String uid = param.getString("uid");
+        Long start = param.getLong("start");
+        Long endTime = param.getLong("end_time");
+        Long line = param.getLong("line");
+        List list = configAgenService.getRecharge(uid,start,endTime,line);
+        JSONObject result = new JSONObject();
+        result.put("code", 200);
+        result.put("result", list);
+        return result;
     }
 
     /**
@@ -109,16 +125,17 @@ public class ActingController extends BaseController {
     public JSONObject withdraw(@RequestBody JSONObject param){
         String uid = getHeader("uid");//玩家id
         BigDecimal cash = param.getBigDecimal("cash");//领取金额
-        return configAgenService.getWithdraw(uid, cash);
+        return configAgenService.getWithdraw(uid, cash.divide(new BigDecimal(10000)));
     }
 
     /**
-     * 轮播图配置接口
+     * 活动列表配置
      */
     @PostMapping("/act/get_act_list")
     public JSONObject getActList(){
         String channelId = getHeader("Client-ChannelId");//渠道id
-        List list = configAgenService.getActList(channelId);
+        String uid = getHeader("uid");
+        List list = configAgenService.getActList(channelId,uid);
         JSONObject result = new JSONObject();
         result.put("code", 200);
         result.put("result", list);
@@ -129,8 +146,8 @@ public class ActingController extends BaseController {
      * 大厅活动按钮配置
      */
     @PostMapping("/onebyone/get_menu")
-    public JSONObject getMenu(){
-        String channelId = getHeader("Client-ChannelId");//渠道id
+    public JSONObject getMenu(@RequestBody JSONObject param){
+        String channelId = param.getString("user_channle");//渠道id
         return configAgenService.getMenu(channelId);
     }
 

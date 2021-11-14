@@ -35,7 +35,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", controlPlayer.getType());
         param.put("risk_power", controlPlayer.getRiskPower());
-        param.put("level", controlPlayer.getSendLevel());
+        param.put("level", Math.abs(controlPlayer.getSendLevel()));
         param.put("uid", controlPlayer.getUid());
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
@@ -73,14 +73,15 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
             List<Map> betList = controlPlayerMapper.selectBet(cp.getUid());
             BigDecimal addScore = new BigDecimal(0);
             BigDecimal betCoins = new BigDecimal(0);
+            BigDecimal reward = new BigDecimal(0);
             for (int i = 0; i < betList.size(); i++) {
                 Map m = betList.get(i);
                 if(m!=null){
                     addScore = addScore.add((BigDecimal) m.get("addScore"));
                     betCoins = betCoins.add((BigDecimal) m.get("betCoins"));
+                    reward = reward.add(m.get("reward")==null?new BigDecimal(0):(BigDecimal) m.get("reward"));
                 }
             }
-            BigDecimal reward = addScore.add(betCoins);
             cp.setAddScore(addScore);
             cp.setBetCoins(betCoins);
             cp.setReward(reward);
@@ -100,7 +101,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", controlPlayer.getType());
         param.put("risk_power", controlPlayer.getRiskPower());
-        param.put("level", controlPlayer.getSendLevel());
+        param.put("level", Math.abs(controlPlayer.getSendLevel()));
         param.put("uid", controlPlayer.getUid());
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
@@ -144,7 +145,7 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
                 controlPlayerInfo.setTid(controlPlayer.getTid());
                 controlPlayerMapper.addInfo(controlPlayerInfo);
             }
-            if(oldControl.getMark().equals(controlPlayer.getMark())){
+            if(!oldControl.getMark().equals(controlPlayer.getMark())){
                 ControlPlayerInfo controlPlayerInfo = new ControlPlayerInfo();
                 controlPlayerInfo.setUpdateType(5);
                 controlPlayerInfo.setUpdateBefore(oldControl.getMark());
@@ -165,6 +166,8 @@ public class ControlPlayerServiceImpl implements ControlPlayerService {
         param.put("cmd", "send_risk_user");
         param.put("type", 0);
         param.put("uid", controlPlayer.getUid());
+        param.put("risk_power", 0);
+        param.put("level", 0);
         String result = HttpUtils.sendPost(globalConfig.getReportDomain() + "/gm",
                 "data=" + param.toJSONString());
         JSONObject resultJson = JSONObject.parseObject(result);

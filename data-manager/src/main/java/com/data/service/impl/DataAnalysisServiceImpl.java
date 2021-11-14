@@ -1,5 +1,6 @@
 package com.data.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.data.mapper.DataAnalysisMapper;
 import com.data.service.DataAnalysisService;
 import com.manager.common.core.domain.model.param.DataAnalysisParam;
@@ -47,13 +48,13 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         List<DataWaterTopVO> list = mapper.getDataWaterTopList(param);
         if (!CollectionUtils.isEmpty(list)) {
             List<Map> userList = mapper.getUserTableList(param);
-            Map<String, Integer> map = userList.stream().collect(Collectors.toMap(v -> String.valueOf(v.get("uid")),
+            Map<Integer, Integer> map = userList.stream().collect(Collectors.toMap(v -> Integer.valueOf(v.get("uid").toString()),
                     v -> Integer.valueOf(v.get("count").toString())));
             for (DataWaterTopVO vo : list) {
                 param.setUid(vo.getUid());
                 vo.setGameTableNum(map.get(vo.getUid()));
-                vo.setRechargeAmountTotal(mapper.rechargeAmountTotal(param));
-                vo.setWithdrawAmountTotal(mapper.withdrawAmountTotal(param));
+                vo.setRechargeAmountTotal(mapper.rechargeAmount(param));
+                vo.setWithdrawAmountTotal(mapper.withdrawAmount(param));
             }
         }
         return list;
@@ -134,17 +135,23 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         List<PayInfoVO> list = new ArrayList<>();
         Map<String, BigDecimal> map = mapper.getPayInfoList(param);
         if (map != null) {
-            BigDecimal amountTotal = mapper.rechargeAmount(param);
+            Integer total = 0;
+            for (int i = 1; i <= 12; i++) {
+                total += map.get("count" + i).intValue();
+            }
             for (int i = 1; i <= 12; i++) {
                 PayInfoVO vo = new PayInfoVO();
                 vo.setAmountName(getPayAmountName(i));
                 vo.setCount(map.get("count" + i).intValue());
-                if (amountTotal.compareTo(BigDecimal.ZERO) > 0) {
-                    BigDecimal percentage = amountTotal;
+                if (total > 0) {
                     if (vo.getCount() != 0) {
-                        percentage = amountTotal.divide(new BigDecimal(vo.getCount()), 2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal percentage = new BigDecimal(vo.getCount()).divide(new BigDecimal(total), 2, BigDecimal.ROUND_HALF_UP);
+                        vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
+                    } else {
+                        vo.setPercentage("0.00%");
                     }
-                    vo.setPercentage(percentage.setScale(2, RoundingMode.HALF_UP) + "%");
+                }else {
+                    vo.setPercentage("0.00%");
                 }
                 list.add(vo);
             }

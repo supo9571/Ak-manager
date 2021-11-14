@@ -75,16 +75,36 @@
 
     <insert id="insertCardUser" parameterType="com.consumer.domain.CardUser">
         insert into data_card_user (`table_gid`,`uid`,`mstime`,`begin_time`,`end_time`,
-        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`,`water_reward`)
+        `game_type`,`table_type`,`add_score`,`pay_fee`,`bet_coins`,`left_score`,`is_robot`, `channel`,`water_reward`,`is_banker`)
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{item.tableGid},#{item.uid},#{item.mstime},#{item.beginTime},#{item.endTime},
-            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.waterCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward})
+            #{item.gameType},#{item.tableType},#{item.addScore},#{item.payFee},#{item.waterCoins},#{item.leftScore},#{item.isRobot},#{item.channel},#{item.waterReward},#{item.isBanker})
         </foreach>
     </insert>
 
     <insert id="insertWater" parameterType="com.consumer.domain.WaterHistory">
         insert into data_water (`key`, `op`, `time`, `mstime`, `uid`, `r`, `value`, `reward`, `table_type`, `table_gid`, `channel`)
         values (#{key}, #{op}, #{time}, #{mstime}, #{uid}, #{r}, #{value}, #{reward}, #{tableType}, #{tableGid}, #{channel})
+    </insert>
+
+    <insert id="saveMailRecord">
+        insert into
+        sys_mail_record(tid,signature,addressee,mail_title,mail_prop,mail_content,mail_state,personal_mail_id,create_time,update_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.tid},
+            #{item.notice_signature},
+            #{uid},
+            #{item.notice_title},
+            #{item.send_out_gold},
+            #{item.notice_content},
+            2,
+            #{item.id},
+            sysdate(),
+            sysdate()
+            )
+        </foreach>
     </insert>
 </mapper>

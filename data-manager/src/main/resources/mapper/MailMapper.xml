@@ -12,7 +12,7 @@
                 or
                     (addressee like concat('%', #{channel}, '%') and addressee_type = '2')
                 or
-                    (addressee like concat('%', #{uid}, '%') and addressee_type = '3')
+                    ((addressee like concat('%', #{uid}, '%') or addressee LIKE CONCAT('%',(select agent_id from data_register where uid = #{uid} AND agent_id !='0'),'%')) and addressee_type = '3')
             )
           and tid = #{tid}
     </select>
@@ -39,7 +39,7 @@
                personal_mail_id                               config_id,
                mail_content                                   content,
                mail_title                                     content_title,
-               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i::%s') create_at,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') create_at,
                2                                              mail_type,
                signature                                      op_user,
                mail_title                                     title,
@@ -50,6 +50,7 @@
           and mail_state in (1, 2, 3, 4, 5)
           and tid = #{tid}
           and del_flag != 2
+        order by create_time desc
     </select>
 
     <insert id="saveMailRecord">
@@ -70,5 +71,31 @@
             sysdate()
             )
         </foreach>
+    </insert>
+
+    <insert id="sendOutMail">
+        insert into sys_mail_record(
+            tid,
+            addressee,
+            mail_title,
+            mail_prop,
+            create_time,
+            update_time,
+            mail_content,
+            signature,
+            mail_state,
+            del_flag)
+        values (
+           #{tid},
+           #{addressee},
+           #{mailTitle},
+           #{mailProp},
+           sysdate(),
+           sysdate(),
+           #{mailContent},
+           '运营团队',
+           2,
+           0
+       )
     </insert>
 </mapper>

@@ -24,9 +24,11 @@ public interface ConfigAgenService {
 
     JSONObject getWithdraw(String uid, BigDecimal cash);
 
-    List getActList(String channelId);
+    List getActList(String channelId,String uid);
 
     JSONObject getMenu(String channelId);
 
     JSONObject getBeifen(String channelId);
+
+    List getRecharge(String uid, Long start, Long endTime, Long line);
 }

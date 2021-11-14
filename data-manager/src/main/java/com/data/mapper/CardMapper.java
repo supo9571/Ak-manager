@@ -26,6 +26,6 @@ public interface CardMapper {
 
     List<Map> findUserInfo(@Param("tableGid") String tableGid);
 
-    @Select("SELECT GROUP_CONCAT(t_id SEPARATOR ',') FROM sys_tenant WHERE t_type = '2' AND ancestors LIKE CONCAT('%', #{tid}, '%')")
+    @Select("SELECT GROUP_CONCAT(t_id SEPARATOR ',') FROM sys_tenant WHERE t_type = '2' AND (ancestors LIKE CONCAT('%', #{tid}, '%') or t_id = #{tid})")
     String getChannel(@Param("tid") String tid);
 }

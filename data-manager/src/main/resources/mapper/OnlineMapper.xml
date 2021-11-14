@@ -5,7 +5,7 @@
 
     <select id="selectOnline" resultType="java.util.Map"
             parameterType="com.manager.common.core.domain.model.OnlinePlayer">
-        select o.uid,o.name,g.game_name gameName,
+        select distinct o.uid,o.name,g.game_name gameName,
         o.coins/10000 coins,r.safe_box/10000 safeBox,r.today_add/10000 todayAdd,
         r.today_red/10000 todayRed,r.channel,FROM_UNIXTIME(r.time) registerTime,
         r.register_ip registerIp,r.login_ip loginIp,r.login_device_id loginDeviceId
@@ -20,10 +20,10 @@
                 and r.login_ip = #{loginIp}
             </if>
             <if test="tid!=null and tid !=''">
-                and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))
+                and o.channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') OR t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
+                and o.channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )
             </if>
             <if test="uid!=null and uid !=''">
                 and o.uid = #{uid}
@@ -44,8 +44,7 @@
         from data_online
         <where>
             <if test="tid!=null and tid !=''">
-                and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%',
-                #{tid},'%'))
+                and channel in (select t_id from sys_tenant where t_type = '2' and (ancestors like CONCAT('%', #{tid}, '%') OR t_id = #{tid}))
             </if>
             <if test="tenant!=null and tenant !=''">
                 and channel in (select t_id from sys_tenant where t_type = '2' and tenant = #{tenant} )

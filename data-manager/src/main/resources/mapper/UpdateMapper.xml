@@ -14,7 +14,9 @@
           and deny_version not like CONCAT('%', #{versionId}, '%')
           and status = '1'
           and sysdate() >= release_time
-        order by release_time
+          and ver_int >#{verInt}
+        order by ver_int desc
+        limit 0,1
     </select>
 
     <insert id="addAllUpdate" parameterType="com.manager.common.core.domain.model.Allupdate">

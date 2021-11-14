@@ -1,10 +1,13 @@
 package com.manager.system.service.impl;
 
+import com.manager.common.utils.DateUtils;
+import com.manager.system.domain.vo.GameResult;
 import com.manager.system.mapper.ResultMapper;
 import com.manager.system.service.ResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +25,34 @@ public class ResultServiceImpl implements ResultService {
     @Autowired
     private ResultMapper resultMapper;
     @Override
-    public List getGameResult(int tid, int strategyId, String day) {
+    public List getGameResult(int tid, int strategyId, String day){
+        String date = DateUtils.getDate();
+        if(date.equals(day)){
+            String endTime = System.currentTimeMillis()+"";
+            String beginTime = resultMapper.getEndTime();
+            if(StringUtils.isEmpty(beginTime)){
+                beginTime = DateUtils.getTodayTimes()+"000";
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = null;
+            try {
+                today = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String year = String.format("%ty",today);
+            String mon = String.format("%tm", today);
+            String cardName = "data_card_" + year + mon;
+            List<GameResult> list = resultMapper.selectGameResult(beginTime,endTime,cardName);
+            String finalBeginTime = beginTime;
+            list.forEach(gameResult -> {
+                Long games = resultMapper.getGameCount(finalBeginTime,endTime,cardName);
+                gameResult.setGames(games);
+                gameResult.setDay(date);
+                gameResult.setEndTime(endTime);
+            });
+            if (list.size()>0) resultMapper.saveGameResult(list);
+        }
         return resultMapper.getGameResult(tid, strategyId, day);
     }
 

@@ -22,6 +22,11 @@ public class InsertHandler {
 
     public void insertRegister(JSONObject result) {
         Register register = JSON.toJavaObject(result, Register.class);
+        //判断 是否有新注册邮件
+        List list = insertMapper.getMailConfig(register.getChannel());
+        if(list.size()>0){
+            insertMapper.saveMailRecord(list, register.getUid());
+        }
         insertMapper.insertReg(register);
     }
 
@@ -79,14 +84,14 @@ public class InsertHandler {
 
 //    @PostConstruct
 //    public void test() {
-//        JSONObject result = JSONObject.parseObject("{\"total_num\":4,\"loser_list\":[{\"water_coins\":0,\"uid\":101891,\"left_score\":5218589,\"add_score\":-6601265,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"water_coins\":0,\"uid\":102001,\"left_score\":4726774,\"add_score\":-5026406,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false},{\"water_coins\":0,\"uid\":104099,\"left_score\":13126965,\"add_score\":-6701874,\"pay_fee\":0,\"is_robot\":true,\"is_banker\":false}],\"curr_round\":10,\"begin_time\":1633935085,\"time\":1633935092,\"table_type\":202,\"system_win\":0,\"exinfo\":{\"system_result\":0,\"control_info2\":{},\"control_uid\":0,\"control_info1\":{\"game_times\":0}},\"end_time\":1633935092,\"winner_list\":[{\"water_coins\":0,\"uid\":101119,\"left_score\":35742688,\"add_score\":17413143,\"pay_fee\":916400,\"is_robot\":true,\"is_banker\":true}],\"table_gid\":\"20211011145132_12\",\"game_type\":2,\"address\":\":00000022\",\"key\":\"tablesvr_1_1633935092_32\",\"op\":\"card_record\",\"mstime\":1633935092476,\"side_list\":[{\"cards\":[312,309,407,404,102],\"card_times\":-1,\"side\":5,\"add_score\":-6601265,\"bet_times\":20,\"card_type\":2,\"is_banker\":false,\"banker_times\":1,\"uid\":101891},{\"cards\":[212,209,208,307,305],\"card_times\":-2,\"side\":2,\"add_score\":-5026406,\"bet_times\":15,\"card_type\":9,\"is_banker\":false,\"banker_times\":1,\"uid\":102001},{\"cards\":[412,311,106,303,101],\"card_times\":3,\"side\":4,\"add_score\":17413143,\"bet_times\":0,\"card_type\":10,\"is_banker\":true,\"banker_times\":4,\"uid\":101119},{\"cards\":[413,313,409,306,301],\"card_times\":-1,\"side\":3,\"add_score\":-6701874,\"bet_times\":20,\"card_type\":6,\"is_banker\":false,\"banker_times\":2,\"uid\":104099}]}");
-//        Card card = JSON.toJavaObject(result, Card.class);
-//        if ("{}".equals(card.getLoserList()) && "{}".equals(card.getWinnerList())) return;
-//        if (card.getLoserList() == null && card.getWinnerList() == null) return;
-//        List<CardUser> list = new ArrayList<>();
-//        setCardUser(card, list);
-//        insertMapper.insertCard(card);
-//        insertMapper.insertCardUser(list);
+//        JSONObject result = JSONObject.parseObject("{\"agent_id\":0,\"account_id\":397,\"ip\":96505136,\"op\":\"register\",\"time\":1636350251,\"device_brand\":\"MuMu\",\"platform\":100,\"phone\":\"\",\"mstime\":1636350251367,\"register_ip\":\"5.192.141.48\",\"client_version\":\"1.0.0-1.0.18\",\"uid\":110396,\"name\":\"会员110396\",\"channel\":\"10001\",\"device_id\":\"D03975BDE58CA0E67FA71771E0EE4BB9\",\"key\":\"hallsvr_1_1636350251_11793\",\"cur_channel\":\"10001\"}");
+//        Register register = JSON.toJavaObject(result, Register.class);
+//        //判断 是否有新注册邮件
+//        List list = insertMapper.getMailConfig(register.getChannel());
+//        if(list.size()>0){
+//            insertMapper.saveMailRecord(list, register.getUid());
+//        }
+//        insertMapper.insertReg(register);
 //    }
 
 

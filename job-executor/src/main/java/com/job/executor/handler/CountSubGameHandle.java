@@ -32,15 +32,10 @@ public class CountSubGameHandle {
         String date = DateUtil.formatDate(new Date());//当天日期
         String beginTime = DateUtil.getTodayTimes()+"000";
         String endTime = System.currentTimeMillis() + "";
-        //获取 游戏 投注 税收
+        //获取 游戏 投注 税收 返奖金额
         List gameCardInfo = countSubGameMapper.getGameCardInfo(beginTime,endTime);
         if(gameCardInfo.size()>0){
             countSubGameMapper.saveGameCardInfo(date,gameCardInfo);
-        }
-        //获取 游戏 返奖金额
-        List gameWaterInfo = countSubGameMapper.getGameWaterInfo(beginTime,endTime);
-        if(gameWaterInfo.size()>0){
-            countSubGameMapper.saveGameWaterInfo(date,gameWaterInfo);
         }
     }
 }

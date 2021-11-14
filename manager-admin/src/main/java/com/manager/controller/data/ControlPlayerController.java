@@ -49,7 +49,6 @@ public class ControlPlayerController {
     @ApiOperation(value = "查询玩家风控设置")
     @PostMapping("/list")
     public AjaxResult list(@RequestBody ControlPlayer controlPlayer) {
-        controlPlayer.setTid(0);
         return subGameDataService.list(controlPlayer);
     }
 
@@ -61,6 +60,7 @@ public class ControlPlayerController {
     @Log(title = "修改玩家风控设置", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     public AjaxResult edit(@RequestBody ControlPlayer controlPlayer) {
+        controlPlayer.setTid(0);
         controlPlayer.setCreateBy(SecurityUtils.getUsername());
         return subGameDataService.edit(controlPlayer);
     }
@@ -73,6 +73,7 @@ public class ControlPlayerController {
     @Log(title = "移除玩家风控设置", businessType = BusinessType.DELETE)
     @PostMapping("/del")
     public AjaxResult del(@RequestBody ControlPlayer controlPlayer) {
+        controlPlayer.setTid(0);
         controlPlayer.setCreateBy(SecurityUtils.getUsername());
         return subGameDataService.del(controlPlayer);
     }
@@ -84,7 +85,6 @@ public class ControlPlayerController {
     @ApiOperation(value = "查询玩家风控设日志")
     @PostMapping("/infoList")
     public AjaxResult infoList(@RequestBody ControlPlayerInfo controlPlayerInfo) {
-        controlPlayerInfo.setTid(0);
         return subGameDataService.infoList(controlPlayerInfo);
     }
 

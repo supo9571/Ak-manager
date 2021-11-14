@@ -5,8 +5,9 @@
 
     <select id="selectActivityList" resultType="com.manager.common.core.domain.model.vo.ActivityReportVO" parameterType="com.manager.common.core.domain.model.Coins">
         SELECT
-            r_id as rId,
-            r_name as rName,
+            dc.channel,
+            r_id as rid,
+            r_name as rname,
             IFNULL(sum(dc.value),0) as amount
         FROM
             data_coins dc
@@ -19,8 +20,11 @@
             <if test="beginTime!=null and beginTime !=''">
                 and dc.mstime between #{beginms} and #{endms}
             </if>
+            <if test="tid!=null and tid!=''">
+                and dc.channel IN (SELECT t_id FROM sys_tenant WHERE tenant = #{tid} AND t_type = '2')
+            </if>
         </where>
-        GROUP BY r_id,r_name
+        GROUP BY dc.channel,r_id,r_name
     </select>
 
 </mapper>

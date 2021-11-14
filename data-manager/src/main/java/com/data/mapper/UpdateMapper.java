@@ -16,7 +16,7 @@ import java.util.Map;
 @Mapper
 public interface UpdateMapper {
 
-    List<Map> selectPackage(@Param("ip") String ip, @Param("tid") int tid, @Param("versionId") String versionId, @Param("platform") String platform);
+    List<Map> selectPackage(@Param("ip") String ip, @Param("tid") int tid, @Param("versionId") String versionId, @Param("platform") String platform,@Param("verInt")Integer verInt);
 
     @Select("select accord_addr,info,live_url,open_type from config_consumer where status = '1'")
     List<Map> selectConsumer();
@@ -35,7 +35,7 @@ public interface UpdateMapper {
     @Delete("delete from config_update where id = #{id}")
     Integer deleteAllupdate(@Param("id") String id);
 
-    @Select("SELECT c.id,c.version,c.tid,c.status,c.apk_update_url apkUpdateUrl,c.update_time updateTime FROM config_update c LEFT JOIN sys_tenant t ON c.tid = t.tenant" +
+    @Select("SELECT c.id,c.version,c.tid,c.status,c.apk_update_url apkUpdateUrl,c.update_time updateTime,ver_int verInt FROM config_update c LEFT JOIN sys_tenant t ON c.tid = t.tenant" +
             " WHERE t.t_id= #{tid} and c.status = '1' ORDER BY ver_int DESC LIMIT 0,1")
     Map selectAllupdate(@Param("tid") String tid);
 
@@ -52,6 +52,6 @@ public interface UpdateMapper {
 
     List findHotupdateById(@Param("id") Integer id);
 
-    @Select("select title,content info,signature inscribe,notice_time from sys_stop_taking_notice where tid=#{tid} and SYSDATE()>begin_time AND end_time>SYSDATE() order by update_time limit 0,1")
+    @Select("select title,content info,signature inscribe,DATE_FORMAT(notice_time,'%Y-%m-%d %H:%i:%s') notice_time from sys_stop_taking_notice where tid=#{tid} and SYSDATE()>begin_time AND end_time>SYSDATE() order by update_time limit 0,1")
     Map selectStopNotice(@Param("tid") Integer tid);
 }

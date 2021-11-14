@@ -22,8 +22,12 @@
                condition_list conditionList,
                game_list gameList,
                run_result runResult,
-               run_rate runRate
-        from control_person_config
+               run_rate runRate,
+               update_time updateTime,
+               t.run_index runIndex
+        from control_person_config p
+        LEFT JOIN control_tags_config t
+        ON p.strategy_tag_id = t.id
         <where>
             <if test="strategyTagId != 0"> strategy_tag_id = #{strategyTagId} </if>
         </where>
@@ -33,14 +37,14 @@
         update control_person_config
         <set>
             <if test="strategyName != null and strategyName != ''"> strategy_name = #{strategyName}, </if>
-            <if test="strategyTagId != null and strategyTagId != ''"> strategy_tag_id = #{strategyTagId}, </if>
+            <if test="strategyTagId != null "> strategy_tag_id = #{strategyTagId}, </if>
             <if test="strategyDesc != null and strategyDesc != ''"> strategy_desc = #{strategyDesc}, </if>
-            <if test="strategyStatus != null and strategyStatus != ''"> strategy_status = #{strategyStatus}, </if>
-            <if test="fishMaxRunTimes != null and fishMaxRunTimes != ''"> fish_max_run_times = #{fishMaxRunTimes}, </if>
-            <if test="danjiPvpMaxRunTimes != null and danjiPvpMaxRunTimes != ''"> danji_pvp_max_run_times = #{danjiPvpMaxRunTimes}, </if>
+            <if test="strategyStatus != null"> strategy_status = #{strategyStatus}, </if>
+            <if test="fishMaxRunTimes != null"> fish_max_run_times = #{fishMaxRunTimes}, </if>
+            <if test="danjiPvpMaxRunTimes != null "> danji_pvp_max_run_times = #{danjiPvpMaxRunTimes}, </if>
             <if test="conditionList != null and conditionList != ''"> condition_list = #{conditionList}, </if>
             <if test="gameList != null and gameList != ''"> game_list = #{gameList}, </if>
-            <if test="runResult != null and runResult != ''"> run_result = #{runResult}, </if>
+            <if test="runResult != null"> run_result = #{runResult}, </if>
             <if test="runRate != null and runRate != ''"> run_rate = #{runRate}, </if>
         </set>
         where strategy_id = #{strategyId}

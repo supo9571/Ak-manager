@@ -36,7 +36,9 @@ public class UpdateServiceImpl implements UpdateService {
         } else {
             platform = "3";
         }
-        return updateMapper.selectPackage(ip, tenantMapper.getTidByCid(channelId), versionId, platform);
+        String[] vers = versionId.split("\\.");
+        int verInt = Integer.valueOf(vers[0]) * 10000 + Integer.valueOf(vers[1]) * 100 + Integer.valueOf(vers[2]);
+        return updateMapper.selectPackage(ip, tenantMapper.getTidByCid(channelId), versionId, platform,verInt);
     }
 
     @Override
@@ -91,10 +93,16 @@ public class UpdateServiceImpl implements UpdateService {
     public String selectAllupdate(String channelId, String versionId) {
         //查询该平台 最新版本更新地址
         Map map = updateMapper.selectAllupdate(channelId);
-        if (map == null || versionId.equals(map.get("version"))) {
-            return null;
+        if (map != null && !versionId.equals(map.get("version"))) {
+            //计算版本号
+            String[] vers = versionId.split("\\.");
+            int verInt = Integer.valueOf(vers[0]) * 10000 + Integer.valueOf(vers[1]) * 100 + Integer.valueOf(vers[2]);
+            Long var = (Long) map.get("verInt");
+            if(var>verInt){
+                return (String) map.get("apkUpdateUrl");
+            }
         }
-        return (String) map.get("apkUpdateUrl");
+        return null;
     }
 
     /**

@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +35,14 @@ public class ActivityReportController extends BaseController {
     private DataService dataService;
 
     @ApiOperation(value = "获取活动列表")
+    @PreAuthorize("@ss.hasPermi('data:activity:report:list')")
     @GetMapping("/list")
     public AjaxResult list(Coins coins) {
         return dataService.getActivityList(coins);
     }
 
     @ApiOperation(value = "活动列表导出")
+    @PreAuthorize("@ss.hasPermi('data:activity:report:list')")
     @Log(title = "活动列表导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(@RequestBody Coins coins, HttpServletResponse response) throws IOException {
