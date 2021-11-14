@@ -16,13 +16,12 @@
             t.tenant tid
         from data_game_result r
         right join control_game_config g
-        on r.strategy_id = g.id
+        on r.strategy_id = g.id and day = #{day}
         LEFT JOIN sys_tenant t
         ON r.channel = t.t_id
         <where>
             <if test="tid != 0"> and channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
             <if test="strategyId != 0"> and r.strategy_id = #{strategyId}</if>
-            <if test="day != null and day != ''"> and (day = #{day} or day is null)</if>
         and g.strategy_status = '1'
         </where>
         group by r.strategy_id,day, g.strategy_name,t.tenant,JSON_EXTRACT(g.limit_list ,'$[0]'),JSON_EXTRACT(g.limit_list ,'$[1]')
@@ -32,7 +31,7 @@
         SELECT g.strategy_id strategyId
         ,g.strategy_name strategyName
         ,JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag') strategyFlag
-        ,r.uid uid,r.name,c.channel
+        ,r.uid uid,r.name,r.channel
         ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_bet'))/10000 curBet
         ,SUM(JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].cur_reward'))/10000 curReward
         ,FROM_UNIXTIME(MAX(c.time)) handelTime
@@ -52,11 +51,11 @@
         ON r.uid = o.uid
         WHERE JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_id') IS NOT NULL
         and c.time between UNIX_TIMESTAMP(#{day}) and UNIX_TIMESTAMP(#{day})+60*60*24
-        <if test="tid != 0"> and c.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
+        <if test="tid != 0"> and r.channel in (select t_id from sys_tenant where t_type = '2' and ancestors like CONCAT('%', #{tid}, '%'))</if>
         <if test="uid != null and uid != '' "> and r.uid = #{uid}</if>
         <if test="strategyId != null and strategyId != '' "> and g.strategy_id = #{strategyId}</if>
         GROUP BY JSON_EXTRACT(JSON_EXTRACT(exinfo,'$.control_info2'),'$[0].strategy_flag'),
-        g.strategy_id,r.uid,g.strategy_name,c.channel,r.name,o.uid
+        g.strategy_id,r.uid,g.strategy_name,r.channel,r.name,o.uid
         ORDER BY MAX(c.time) DESC
     </select>
 
